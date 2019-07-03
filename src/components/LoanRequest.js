@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from "react-country-flag";
+import { Link } from "react-router-dom";
 import '../assets/vendor/font-awesome/css/font-awesome.css';
 import '../assets/vendor/nucleo/css/nucleo.css';
 
-class MyLoans extends Component {
+class LoanRequest extends Component {
   constructor(){
     super();
 
   }
   render() {
   return (
-    <div className="MyLoans text-center">
+    <div className="LoanRequest text-center">
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
           <div className="container" style={{maxWidth: '1080px'}}>
@@ -116,30 +117,49 @@ class MyLoans extends Component {
                 <span className="span-50"></span>
                 <span className="span-100"></span>
               </div>
-              <div className="container shape-container d-flex align-items-center">
-                <div className="col px-0">
+              <div className="container shape- d-flex align-items-center">
+                <div className="col-lg-7">
                   <div class="card">
-              <div class="card-header text-left">
-                <a href="#" class="btn btn-primary">My borrowed loans</a>
-                <a href="#" class="btn btn-secondary">My funded loans</a>
+              <div class="card-header text-center">
+                <h5> New Loan Request</h5>
               </div>
               <div class="card-body">
               <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                <span class="alert-text">You haven't borrowed yet. Check the available loan offers below!</span>
+                <span class="alert-text">Choose your collateral currency.</span>
               </div>
               <div className="btn-wrapper" style={{marginTop:'200px'}}>
-                <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0" data-toggle="scroll">
-                  <span className="btn-inner--text">View All Offers</span>
-                </a>
+              <Link>
+                  <span className="btn-inner--text"><img src="/assets/img/eth.png"/></span>
                 <br/>
-                <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
-                  <span className="btn-inner--text">View All Requests</span>
-                </a>
+                <p>Ethereum</p>
+              </Link>
               </div>
               </div>
                   </div>
                 </div>
+                  <div className="col-md-5">
+                <div class="card">
+            <div class="card-header text-center">
+              Overview
+            </div>
+            <div className="card-body text-left">
+            <p>Collateral</p>
+            <p>Loan amount</p>
+            <p>Duration</p>
+            <p>Monthly interest (MPR)</p>
+            <p>Collateral Safeness</p>
+            <div className="btn-wrapper text-center" style={{marginTop:'120px'}}>
+              <br/>
+              <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                <span className="btn-inner--text">Create</span>
+              </a>
+            </div>
+            </div>
+                </div>
+                </div>
               </div>
+
+
 
               </section>
 
@@ -152,4 +172,4 @@ class MyLoans extends Component {
 }
 }
 
-export default MyLoans;
+export default LoanRequest;
