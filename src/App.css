@@ -23,6 +23,10 @@
   color: #61dafb;
 }
 
+.col-lg-7 {
+    max-width: 99%!important;
+}
+
 h1 {
     font-size: 3.5rem;
 }
