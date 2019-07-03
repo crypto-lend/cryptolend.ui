@@ -7,7 +7,10 @@ import '../assets/vendor/nucleo/css/nucleo.css';
 class LoanRequest extends Component {
   constructor(){
     super();
-
+    this.state={
+      collateral:false,
+      loanAmount:true
+    }
   }
   render() {
   return (
@@ -123,51 +126,53 @@ class LoanRequest extends Component {
               <div class="card-header text-center">
                 <h5> New Loan Request</h5>
               </div>
-              <div class="card-body">
+              <div class="card-body"  style={{display:this.state.collateral?'block':'none'}}>
               <div class="alert alert-primary alert-dismissible fade show" role="alert">
                 <span class="alert-text">Choose your collateral currency.</span>
               </div>
-              <div className="btn-wrapper" style={{marginTop:'200px'}}>
-              <Link>
+              <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loanAmount:true})}}>
                   <span className="btn-inner--text"><img src="/assets/img/eth.png"/></span>
                 <br/>
                 <p>Ethereum</p>
-              </Link>
+              </div>
+              </div>
+              <div class="card-body"style={{display:this.state.loanAmount?'block':'none'}}>
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <span class="alert-text">Insert the collateral amount.</span>
+              </div>
+              <input class="form-control form-control-lg" type="text" placeholder="ETH"/>
+              <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loanAmount:true})}}>
+              <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                <span className="btn-inner--text">Next</span>
+              </a>
               </div>
               </div>
                   </div>
                 </div>
                   <div className="col-md-5">
                 <div class="card">
-            <div class="card-header text-center">
-              Overview
-            </div>
-            <div className="card-body text-left">
-            <p>Collateral</p>
-            <p>Loan amount</p>
-            <p>Duration</p>
-            <p>Monthly interest (MPR)</p>
-            <p>Collateral Safeness</p>
-            <div className="btn-wrapper text-center" style={{marginTop:'120px'}}>
-              <br/>
-              <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
-                <span className="btn-inner--text">Create</span>
-              </a>
-            </div>
-            </div>
+                  <div class="card-header text-center">
+                    Overview
+                  </div>
+                  <div className="card-body text-left">
+                  <div><p>Collateral __________________________(not set)</p></div>
+                  <div><p>Loan amount _______________________(not set)</p></div>
+                  <p>Duration ___________________________(not set)</p>
+                  <p>Monthly interest (MPR) ______________(not set)</p>
+                  <p>Collateral Safeness __________________(not set)</p>
+                  <div className="btn-wrapper text-center" style={{marginTop:'120px'}}>
+                    <br/>
+                    <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                      <span className="btn-inner--text">Create</span>
+                    </a>
+                  </div>
+                  </div>
                 </div>
                 </div>
               </div>
-
-
-
               </section>
-
     </div>
-
   </div>
-
-
   );
 }
 }
