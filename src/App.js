@@ -1,30 +1,23 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import LandingPage from './components/LandingPage';
-import MyLoans from './components/MyLoans';
-import LoanRequest from './components/LoanRequest';
-
 import './assets/vendor/font-awesome/css/font-awesome.css';
 import './assets/vendor/nucleo/css/nucleo.css';
 import './App.css';
 
-class App extends Component {
-  constructor(){
-    super();
+import { Provider } from 'react-redux';
 
-  }
-  render() {
-  return (
-    <Router>
-      <div className="App">
-        <Route path="/" exact component={LandingPage} />
-        <Route path="/myloans" exact component={MyLoans} />
-        <Route path="/request-loan" exact component={LoanRequest} />
+import { createAppStore } from './components/state/stores/AppStore';
 
-      </div>
-    </Router>
-  );
-}
-}
+import { AppRouter } from './components/routers/AppRouter';
 
+import { Web3Provider } from './components/Web3/Web3Provider';
+
+const App = () => (
+  <Provider store={createAppStore()}>
+    <div className="container">
+      <Web3Provider />
+      <AppRouter />
+    </div>
+  </Provider>
+);
 export default App;
