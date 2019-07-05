@@ -35,7 +35,7 @@ class LandingPage extends Component {
                     </a>
                   </li>
                   <li className="nav-item dropdown">
-                    <a href="#" className="nav-link" data-toggle="dropdown" href="/request-loan" role="button">
+                    <a href="#" className="nav-link" data-toggle="dropdown" href="/request" role="button">
                       <i className="ni ni-collection d-lg-none"></i>
                       <span className="nav-link-inner--text">Create Loan Request</span>
                     </a>

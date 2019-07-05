@@ -14,7 +14,7 @@ import { Web3Provider } from './components/Web3/Web3Provider';
 
 const App = () => (
   <Provider store={createAppStore()}>
-    <div className="container">
+    <div >
       <Web3Provider />
       <AppRouter />
     </div>
