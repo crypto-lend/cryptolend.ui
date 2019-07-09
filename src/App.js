@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import React  from 'react';
 import './assets/vendor/font-awesome/css/font-awesome.css';
 import './assets/vendor/nucleo/css/nucleo.css';
 import './App.css';

@@ -10,7 +10,7 @@ class MyLoans extends Component {
     this.state = {
       borrowedLoans:true,
       fundedLoans:false
-    }
+    };
   }
   render() {
     return (
