@@ -9,4 +9,4 @@ import { FetchNetworkReducer } from './fetchNetworkWeb3';
 export const AppReducer = combineReducers({
   accounts: FetchAccountsReducer,
   network: FetchNetworkReducer,
-})
+});
