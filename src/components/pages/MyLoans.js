@@ -7,6 +7,10 @@ class MyLoans extends Component {
   constructor(){
     super();
 
+    this.state = {
+      borrowedLoans:true,
+      fundedLoans:false
+    }
   }
   render() {
   return (
@@ -20,7 +24,6 @@ class MyLoans extends Component {
             <div className="navbar-collapse collapse" id="navbar_global">
               <div className="navbar-collapse-header">
                 <div className="row">
-
                   <div className="col-6 collapse-close">
                     <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
                       <span></span>
@@ -43,7 +46,7 @@ class MyLoans extends Component {
                   </a>
                 </li>
                 <li className="nav-item dropdown">
-                  <a href="#" className="nav-link" data-toggle="dropdown" href="#" role="button">
+                  <a href="#" className="nav-link" data-toggle="dropdown" href="/offer" role="button">
                     <i className="ni ni-ui-04 d-lg-none"></i>
                     <span className="nav-link-inner--text">Create Loan Offers</span>
                   </a>
@@ -63,7 +66,7 @@ class MyLoans extends Component {
 
                 <li className="nav-item dropdown">
                   <a href="#" className="nav-link" data-toggle="tooltip" title="Statistics" href="#" role="button">
-                  <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                  <i className="fa fa-bar-chart" aria-hidden="true"></i>
                   </a>
                 </li>
 
@@ -82,7 +85,7 @@ class MyLoans extends Component {
                 <li className="nav-item dropdown">
                 <a href="#" className="nav-link" data-toggle="tooltip" title="Wallet" role="button">
                   <svg x="0px" y="0px" viewBox="0 0 24 24" space="preserve" width="24" height="16">
-                    <g class="nc-icon-wrapper" fill="#444444">
+                    <g className="nc-icon-wrapper" fill="#444444">
                       <path fill="#fff" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
                       </path>
                     </g>
@@ -91,7 +94,7 @@ class MyLoans extends Component {
                 </li>
                 <li className="nav-item dropdown">
                   <a href="#" className="nav-link" data-toggle="tooltip" title="My account" href="#" role="button">
-                  <i class="ni ni-circle-08" aria-hidden="true"></i>
+                  <i className="ni ni-circle-08" aria-hidden="true"></i>
                   </a>
                 </li>
                 <li className="nav-item dropdown">
@@ -118,14 +121,19 @@ class MyLoans extends Component {
               </div>
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
-                  <div class="card">
-              <div class="card-header text-left">
-                <a href="#" class="btn btn-primary">My borrowed loans</a>
-                <a href="#" class="btn btn-secondary">My funded loans</a>
+                  <div className="card">
+              <div className="card-header text-left">
+                <a href="#" className={this.state.borrowedLoans? " btn btn-primary" : " btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:true, fundedLoans:false})}}>My borrowed loans</a>
+                <a href="#" className={this.state.fundedLoans? "btn btn-primary" : "btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:false, fundedLoans:true})}}>My funded loans</a>
               </div>
-              <div class="card-body">
-              <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                <span class="alert-text">You haven't borrowed yet. Check the available loan offers below!</span>
+              <div className="card-body">
+              <div className="alert alert-primary alert-dismissible fade show" role="alert">
+              {
+                this.state.borrowedLoans?  <span className="alert-text">You haven't borrowed yet. Check the available loan offers below!</span>
+                :
+                <span className="alert-text">You haven't lent yet. Check the available loan request below!</span>
+              }
+
               </div>
               <div className="btn-wrapper" style={{marginTop:'200px'}}>
                 <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0" data-toggle="scroll">

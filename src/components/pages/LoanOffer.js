@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 
-class LoanRequest extends Component {
+class LoanOffer extends Component {
   constructor(){
     super();
-    this.state = {
+    this.state={
       collateral:true,
       loan:false,
       currency:false,
@@ -26,7 +26,7 @@ class LoanRequest extends Component {
   }
   render() {
   return (
-    <div className="LoanRequest text-center">
+    <div className="LoanOffer text-center">
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
           <div className="container" style={{maxWidth: '1080px'}}>
@@ -55,7 +55,7 @@ class LoanRequest extends Component {
                 <li className="nav-item dropdown">
                   <a href="#" className="nav-link" data-toggle="dropdown" href="/request" role="button">
                     <i className="ni ni-collection d-lg-none"></i>
-                    <span className="nav-link-inner--text">Create Loan Request</span>
+                    <span className="nav-link-inner--text">Create Loan Offer</span>
                   </a>
                 </li>
                 <li className="nav-item dropdown">
@@ -136,11 +136,11 @@ class LoanRequest extends Component {
                 <div className="col-lg-7">
                   <div class="card">
               <div class="card-header text-center">
-                <h5> New Loan Request</h5>
+                <h5> New Loan Offer</h5>
               </div>
               <div class="card-body"  style={{display:this.state.collateral?'block':'none'}}>
               <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                <span class="alert-text">Choose your collateral currency.</span>
+                <span class="alert-text">Choose your loan offer currency.</span>
               </div>
               <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true})}}>
                   <span className="btn-inner--text"><img src="/assets/img/eth.png"/></span>
@@ -150,7 +150,7 @@ class LoanRequest extends Component {
               </div>
               <div class="card-body"style={{display:this.state.loan?'block':'none'}}>
               <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                <span class="alert-text">Insert the collateral amount.</span>
+                <span class="alert-text">Insert the loan offer amount.</span>
               </div>
               <input class="form-control form-control-lg" type="text" placeholder="ETH" onChange={(e)=>{this.setState({collateralValue:e.target.value})}}/>
               <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false,loan:false, currency:true})}}>
@@ -201,17 +201,12 @@ class LoanRequest extends Component {
               </div>
               <br/>
 
-              <div className="btn-wrapper" style={{marginTop:'155px', cursor:'pointer'}}>
+              <div className="btn-wrapper" style={{marginTop:'245px', cursor:'pointer'}}>
               {
                 this.state.durationArr.map((item,i)=>{
-                  return <button id={i} type="button" class="btn btn-outline-primary" onClick={()=>{this.setState({duration:item})}}>{item}</button>;
+                  return <button id={i} type="button" class="btn btn-outline-primary">{item}</button>;
                 })
               }
-              <div className="btn-wrapper" style={{cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false})}}>
-              <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
-                <span className="btn-inner--text">Next</span>
-              </a>
-              </div>
               </div>
               <div class="card-body"style={{display:this.state.borrow?'block':'none'}}>
               <div class="alert alert-primary alert-dismissible fade show" role="alert">
@@ -233,12 +228,10 @@ class LoanRequest extends Component {
                     Overview
                   </div>
                   <div className="card-body text-left">
-                    <div><p>Collateral __________________________{this.state.collateralValue}</p></div>
                   <div><p>Loan amount _______________________{this.state.loanAmount}</p></div>
                   <p>Duration ___________________________{this.state.duration}</p>
-                  <p>Monthly interest (MPR) ______________{this.state.monthlyInt}</p>
-                  <p>Collateral Safeness __________________{this.state.collateralSafe}</p>
-                  <div className="btn-wrapper text-center" style={{marginTop:'120px'}} onClick={()=>{}}>
+                  <div><p>Collateral __________________________{this.state.collateralValue}</p></div>
+                  <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{}}>
                     <br/>
                     <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                       <span className="btn-inner--text">Create</span>
@@ -255,4 +248,4 @@ class LoanRequest extends Component {
 }
 }
 
-export default LoanRequest;
+export default LoanOffer;
