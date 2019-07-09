@@ -7,6 +7,10 @@ class MyLoans extends Component {
   constructor(){
     super();
 
+    this.state = {
+      borrowedLoans:true,
+      fundedLoans:false
+    }
   }
   render() {
     return (

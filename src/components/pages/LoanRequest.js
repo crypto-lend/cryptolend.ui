@@ -7,12 +7,13 @@ import '../../assets/vendor/nucleo/css/nucleo.css';
 class LoanRequest extends Component {
   constructor(){
     super();
-    this.state={
-      collateral:false,
+    this.state = {
+      collateral:true,
       loan:false,
       currency:false,
       borrow:false,
-      durationView:true,
+      durationView:false,
+      mprView:false,
       collateralValue: '(not set)',
       loanAmount: '(not set)',
       duration: '(not set)',
