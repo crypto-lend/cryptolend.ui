@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
-import InstallMetaMask  from '../Web3/InstallMetaMask';
+import {InstallMetaMask}  from '../Web3/InstallMetaMask';
 import { EthereumIcon } from '../Web3/EthereumIcon';
-
 class LandingPage extends Component {
   constructor(props){
     super(props);
@@ -13,10 +12,6 @@ class LandingPage extends Component {
     const web3 = window.web3;
     return (
       <div>
-        {
-          !web3 && InstallMetaMask
-        }
-
         <div className="LandingPage text-center">
           <header className="header-global">
             <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
@@ -109,6 +104,7 @@ class LandingPage extends Component {
               </div>
             </nav>
           </header>
+
           <div className="position-relative">
             <section className="section-hero section-shaped my-0">
               <div className="shape shape-style-1 shape-primary">
@@ -123,8 +119,13 @@ class LandingPage extends Component {
                 <span className="span-50"></span>
                 <span className="span-100"></span>
               </div>
+
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
+                  {
+                    !web3 &&
+                    <InstallMetaMask/>
+                  }
                   <div className="col-lg-7 text-center">
                     <h1 style={{color:'white'}}> THE GLOBAL LENDING MARKETPLACE</h1>
                     <div className="btn-wrapper" style={{marginTop:'80px'}}>
@@ -143,7 +144,6 @@ class LandingPage extends Component {
             </section>
           </div>
         </div>
-        <EthereumIcon />
       </div>
     );
   }

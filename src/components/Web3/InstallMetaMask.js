@@ -1,19 +1,12 @@
 import React from 'react';
 
-function InstallMetamask() {
-  return (
-    <div className="modal is-active">
-      <div className="modal-background"></div>
-      <div className="modal-content">
-        <p className="image download-metamask">
-          <a href="https://metamask.io/" rel="noopener noreferrer" target="_blank">
-            <img src="../images/metamask.png" alt=""></img>
-          </a>
-        </p>
-      </div>
-      <button className="modal-close is-large" aria-label="close"></button>
-    </div>
-  );
-}
+const InstallMetaMask = () => (
+  <div className="meta-mask-img">
+  <p style={{color:"white"}}> Metamask not installed!</p>
+    <a href="https://metamask.io/">
+      <img style={{width:"25%"}} className="meta-mask-img" src={ require('../images/metamask.png') } />
+    </a>
+  </div>
+);
 
-export default InstallMetamask;
+export { InstallMetaMask };
