@@ -120,16 +120,20 @@ class MyLoans extends Component {
               <span className="span-50"></span>
               <span className="span-100"></span>
             </div>
-            <div className="container shape-container d-flex align-items-center">
-              <div className="col px-0">
-                <div className="card">
-                  <div className="card-header text-left">
-                    <a href="#" className="btn btn-primary">My borrowed loans</a>
-                    <a href="#" className="btn btn-secondary">My funded loans</a>
-                  </div>
-                  <div className="card-body">
+                  <div className="container shape-container d-flex align-items-center">
+                      <div className="col px-0">
+                        <div className="card">
+                    <div className="card-header text-left">
+                      <a href="#" className={this.state.borrowedLoans? " btn btn-primary" : " btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:true, fundedLoans:false})}}>My borrowed loans</a>
+                      <a href="#" className={this.state.fundedLoans? "btn btn-primary" : "btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:false, fundedLoans:true})}}>My funded loans</a>
+                    </div>
+                    <div className="card-body">
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
-                      <span className="alert-text">You haven't borrowed yet. Check the available loan offers below!</span>
+                    {
+                      this.state.borrowedLoans?  <span className="alert-text">You haven't borrowed yet. Check the available loan offers below!</span>
+                      :
+                      <span className="alert-text">You haven't lent yet. Check the available loan request below!</span>
+                    }
                     </div>
                     <div className="btn-wrapper" style={{marginTop:'200px'}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0" data-toggle="scroll">
