@@ -8,7 +8,6 @@ class LandingPage extends Component {
 
   }
   render() {
-    // This is how you do it? Got it
     const web3 = window.web3;
     return (
       <div>
@@ -120,6 +119,7 @@ class LandingPage extends Component {
                 <span className="span-100"></span>
               </div>
 
+
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
                   {
@@ -144,6 +144,9 @@ class LandingPage extends Component {
             </section>
           </div>
         </div>
+        <div>
+
+       </div>
       </div>
     );
   }

@@ -21,7 +21,18 @@ class LoanOffer extends Component {
       collateralSafe: '(not set)',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
-      durationEnd:360
+      durationEnd:360,
+      erc20_tokens :  ['ERC20 TOKENS', 'BNB', 'GTO', 'QKC', 'NEXO',
+          'PAX','EGT',  'MANA','POWR',
+          'TUSD','LAMB','CTXC','ENJ',
+          'CELR','HTB','ICX',  'WTC',
+          'USD', 'BTM','EDO', 'SXDT',
+          'OMG','CRO','TOP','SXUT',
+          'MEDX','ITC','REP','STO',
+          'LINK','CMT','WAX',
+          'MATIC','ELF', 'COSM',
+          'HT','BZ','NAS',
+          'FET','PPT','MCO']
     };
   }
   render() {
@@ -142,10 +153,22 @@ class LoanOffer extends Component {
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your loan offer currency.</span>
                     </div>
-                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
-                      <span className="btn-inner--text"><img src="/assets/img/eth.png"/></span>
+                    <div className="row mt-5">
+                    <div className="col-md-6" style={{marginBottom:'258px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
+                      <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
+                    </div>
+                  <div class="col-md-4 form-group">
+
+                      <select class="form-control" id="exampleFormControlSelect1">
+                      {
+                        this.state.erc20_tokens.map((item,i)=>{
+                          return <option>{item}</option>;
+                      })
+                      }
+                      </select>
+                    </div>
                     </div>
                   </div>
                   <div className="card-body"style={{display:this.state.loan?'block':'none'}}>
