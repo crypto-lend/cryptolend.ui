@@ -22,7 +22,7 @@ class LoanOffer extends Component {
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
       durationEnd:360,
-      erc20_tokens :  ['ERC20 TOKENS', 'BNB', 'GTO', 'QKC', 'NEXO',
+      erc20_tokens :  ['BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -66,7 +66,7 @@ class LoanOffer extends Component {
                   <li className="nav-item dropdown">
                     <a href="#" className="nav-link" data-toggle="dropdown" href="/request" role="button">
                       <i className="ni ni-collection d-lg-none"></i>
-                      <span className="nav-link-inner--text">Create Loan Offer</span>
+                      <span className="nav-link-inner--text">Create Loan Request</span>
                     </a>
                   </li>
                   <li className="nav-item dropdown">
@@ -154,13 +154,13 @@ class LoanOffer extends Component {
                       <span className="alert-text">Choose your loan offer currency.</span>
                     </div>
                     <div className="row mt-5">
-                    <div className="col-md-6" style={{marginBottom:'258px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
+                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'258px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
                     </div>
                   <div class="col-md-4 form-group">
-
+                      <label class="form-control-label" for="exampleFormControlSelect1">ERC20 TOKENS</label>
                       <select class="form-control" id="exampleFormControlSelect1">
                       {
                         this.state.erc20_tokens.map((item,i)=>{
