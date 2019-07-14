@@ -12,11 +12,10 @@ class LoanRequest extends Component {
       borrow:false,
       durationView:false,
       mprView:false,
-      collateralValue: '(not set)',
-      loanAmount: '(not set)',
-      duration: '(not set)',
-      monthlyInt: '(not set)',
-      collateralSafe: '(not set)',
+      collateralValue: null,
+      loanAmount: null,
+      duration: null,
+      monthlyInt: null,
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
       durationEnd:360,
@@ -34,6 +33,8 @@ class LoanRequest extends Component {
     };
   }
   render() {
+
+    const { duration } = this.state;
     return (
       <div className="LoanRequest text-center">
         <header className="header-global">
@@ -151,14 +152,14 @@ class LoanRequest extends Component {
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your collateral currency.</span>
                     </div>
-                    <div className="row">
-                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'258px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
+                    <div className="row mt-5">
+                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
                     </div>
                   <div class="col-md-4 form-group">
-                      <label class="form-control-label" for="exampleFormControlSelect1">ERC20</label>
+                      <label class="form-control-label" for="exampleFormControlSelect1">ERC20 TOKENS</label>
                       <select class="form-control" id="exampleFormControlSelect1">
                       {
                         this.state.erc20_tokens.map((item,i)=>{
@@ -185,8 +186,8 @@ class LoanRequest extends Component {
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your loan currency.</span>
                     </div>
-                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({currency:false, borrow:true});}}>
-                      <span className="btn-inner--text"><img src="/assets/img/eth.png"/></span>
+                    <div className="btn-wrapper" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}}  onClick={()=>{this.setState({currency:false, borrow:true});}}>
+                      <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
                     </div>
@@ -213,7 +214,7 @@ class LoanRequest extends Component {
                     <div className="btn-wrapper" style={{marginTop:'245px', cursor:'pointer'}}>
                       {
                         this.state.durationArr.map((item,i)=>{
-                          return <button id={i} type="button" className="btn btn-outline-primary">{item}</button>;
+                          return <button id={i} type="button" className="btn btn-outline-primary" onClick={()=>{this.setState({duration:item})}}>{item}</button>;
                         })
                       }
                     </div>
@@ -226,11 +227,21 @@ class LoanRequest extends Component {
                     Overview
                   </div>
                   <div className="card-body text-left">
-                    <div><p>Collateral __________________________{this.state.collateralValue}</p></div>
-                    <div><p>Loan amount _______________________{this.state.loanAmount}</p></div>
-                    <p>Duration ___________________________{this.state.duration}</p>
+                  {this.state.collateralValue ?
+                    <div><p>Collateral __________________________{this.state.collateralValue} ETH</p></div>
+                    :<div><p>Collateral __________________________(not set)</p></div>
+                  }
+                  {
+                    this.state.loanAmount ? <div><p>Loan amount _______________________{this.state.loanAmount} ETH</p></div>
+                    :
+                     <div><p>Loan amount _______________________(not set)</p></div>
+                  }
+                    {
+                      duration?<p>Duration ___________________________{this.state.duration} days</p>
+                      :
+                      <p>Duration ___________________________(not set)</p>
+                    }
                     <p>Monthly interest (MPR) ______________{this.state.monthlyInt}</p>
-                    <p>Collateral Safeness __________________{this.state.collateralSafe}</p>
                     <div className="btn-wrapper text-center" style={{marginTop:'120px'}} onClick={()=>{this.setState({collateral:false, loan:false, currency:true});}}>
                       <br/>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">

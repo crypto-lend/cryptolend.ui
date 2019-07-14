@@ -154,7 +154,7 @@ class LoanOffer extends Component {
                       <span className="alert-text">Choose your loan offer currency.</span>
                     </div>
                     <div className="row mt-5">
-                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'258px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
+                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
