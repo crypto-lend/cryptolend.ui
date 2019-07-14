@@ -22,7 +22,7 @@ class LoanOffer extends Component {
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
       durationEnd:360,
-      erc20_tokens :  ['BNB', 'GTO', 'QKC', 'NEXO',
+      erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -159,8 +159,7 @@ class LoanOffer extends Component {
                       <br/>
                       <p>Ethereum</p>
                     </div>
-                  <div class="col-md-4 form-group">
-                      <label class="form-control-label" for="exampleFormControlSelect1">ERC20 TOKENS</label>
+                  <div class="col-md-4 form-group mt-3">
                       <select class="form-control" id="exampleFormControlSelect1">
                       {
                         this.state.erc20_tokens.map((item,i)=>{
@@ -227,7 +226,7 @@ class LoanOffer extends Component {
                     <div className="btn-wrapper" style={{marginTop:'245px', cursor:'pointer'}}>
                       {
                         this.state.durationArr.map((item,i)=>{
-                          return <button id={i} type="button" className="btn btn-outline-primary">{item}</button>;
+                          return <button id={i} type="button" className="btn btn-outline-primary"onClick={()=>{this.setState({duration:item})}}>{item}</button>;
                         })
                       }
                     </div>

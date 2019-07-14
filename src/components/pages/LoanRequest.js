@@ -34,11 +34,17 @@ class LoanRequest extends Component {
           'HT','BZ','NAS',
           'FET','PPT','MCO']
     };
-    axios.get('https://min-api.cryptocompare.com/data/price?fsym=BNB&tsyms=');
   }
 
   handleMonthlyInterest = () => {
     this.setState({monthlyInt: this.state.monthlyInt + 0.25});
+    axios.get('https://min-api.cryptocompare.com/data/price?fsym=BNB&tsyms=ETH').then(function (response) {
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
   }
   render() {
 
