@@ -2,13 +2,20 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import {InstallMetaMask}  from '../Web3/InstallMetaMask';
 import { EthereumIcon } from '../Web3/EthereumIcon';
+import {fetchNetwork, fetchAccounts, getAccounts} from '../../services/Web3Service';
 class LandingPage extends Component {
   constructor(props){
     super(props);
 
   }
+
+  fetchWeb3 = async () => {
+    const res = await getAccounts();
+    console.log('........',res);
+  }
   render() {
     const web3 = window.web3;
+    this.fetchWeb3();
     return (
       <div>
         <div className="LandingPage text-center">

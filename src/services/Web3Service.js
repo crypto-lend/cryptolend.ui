@@ -33,7 +33,7 @@ export const fetchAccounts = () => {
   });
 };
 
-function getAccounts() {
+export function getAccounts() {
   try {
     const { web3 } = window;
     // throws if no account selected
