@@ -7,13 +7,13 @@ class LoanRequest extends Component {
   constructor(){
     super();
     this.state = {
-      collateral:false,
+      collateral:true,
       loan:false,
       currency:false,
       borrow:false,
       durationView:false,
       mprView:false,
-      monthlyInterest:true,
+      monthlyInterest:false,
       borrowLess:false,
       collateralValue: null,
       loanAmount: null,
@@ -22,6 +22,9 @@ class LoanRequest extends Component {
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
       durationEnd:360,
+      totalPremium:null,
+      monthlyInstallment:null,
+      originationFee:'2%',
       collateralCurrency:'ETH',
       erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
@@ -323,19 +326,32 @@ class LoanRequest extends Component {
   }
 
 
- createLoanRequest = (principal, duration, interest, collateralAddress, collateralAmount) => {
-  const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(this.state.FinocialAddress);
-    FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, {
-    from: window.web3.eth.accounts[0]
-    }, function(err, res) {
-    if(!err){
-    console.log("Transaction in process")
+  createLoanRequest = (principal, duration, interest, collateralAddress, collateralAmount) => {
+    const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(this.state.FinocialAddress);
+      FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, {
+      from: window.web3.eth.accounts[0]
+      }, function(err, res) {
+      if(!err){
+      console.log("Transaction in process")
+      }
+    });
     }
-  });
-  }
 
-  handleMonthlyInterest = () => {
-    this.setState({monthlyInt: this.state.monthlyInt + 0.25});
+  handleMonthlyInterest = (e) => {
+
+    const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment } = this.state;
+
+    if(e.target.value=='plus')
+      this.setState({monthlyInt: this.state.monthlyInt + 0.25});
+    else if(e.target.value=='minus')
+    this.setState({monthlyInt: this.state.monthlyInt - 0.25});
+
+    let totalRepayment = (loanAmount *  monthlyInt * (duration/30+1) / 2 * 100 ) + (loanAmount * 0.02)
+    this.setState({monthlyInstallment : (loanAmount *  monthlyInt * (duration/30+1) / 2 * loanAmount * 100 )})
+    this.setState({totalPremium: totalRepayment - loanAmount});
+
+    console.log('monthlyInstallment : ',monthlyInstallment);
+    console.log('totalPremium',totalPremium);
   }
 
   handleCollateralConversion = () => {
@@ -354,7 +370,7 @@ class LoanRequest extends Component {
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess } = this.state;
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee } = this.state;
 
 
     return (
@@ -572,7 +588,7 @@ class LoanRequest extends Component {
 
 
                     <div className="text-left">
-                    <button className="btn btn-icon btn-primary" type="button" onClick={()=>{this.setState({monthlyInt: monthlyInt - 0.25})}}>
+                    <button className="btn btn-icon btn-primary" type="button" value="minus" onClick={this.handleMonthlyInterest}>
                       <i className="fa fa-minus"></i>
                     </button>
                     </div>
@@ -580,7 +596,7 @@ class LoanRequest extends Component {
                       <input className="form-control" type="text" value={monthlyInt} style={{width:'60px', marginTop: '-43px',  marginLeft: '215px'}} id="example-time-input"/>
                     </div>
                     <div className="text-right" style={{marginTop: '-44px'}}>
-                    <button className="btn btn-icon btn-primary" type="button" onClick={this.handleMonthlyInterest}>
+                    <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={this.handleMonthlyInterest}>
                       <i className="fa fa-plus"></i>
                     </button>
                     </div>
@@ -588,11 +604,11 @@ class LoanRequest extends Component {
 
                   </div>
                   <div className="alert alert-primary alert-dismissible fade show text-left pl-3 " role="alert">
-                    <span className="alert-text">Total premium for this loan : </span>
+                    <span className="alert-text">Total premium for this loan : {totalPremium}</span>
                   </div>
-                  <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly instalment :</h6>
+                  <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly instalment : {monthlyInstallment}</h6>
                   <p className="text-left pl-3" style={{fontSize:"12px"}}>The first instalment will include the loan origination fee</p>
-                  <h6 className="text-left pl-3" style={{fontSize:"13px"}}><span>Origination fee :</span></h6>
+                  <h6 className="text-left pl-3" style={{fontSize:"13px"}}><span>Origination fee : {originationFee}</span></h6>
                 </div>
               </div>
               <div className="col-md-5">
