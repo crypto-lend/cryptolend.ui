@@ -10,7 +10,7 @@ class LandingPage extends Component {
   }
 
   fetchWeb3 = async () => {
-    const res = await getAccounts();
+    const res = await fetchAccounts();
     console.log('........',res);
   }
   render() {

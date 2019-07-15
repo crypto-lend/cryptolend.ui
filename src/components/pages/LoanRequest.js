@@ -7,13 +7,14 @@ class LoanRequest extends Component {
   constructor(){
     super();
     this.state = {
-      collateral:true,
+      collateral:false,
       loan:false,
       currency:false,
       borrow:false,
       durationView:false,
       mprView:false,
-      monthlyInterest:false,
+      monthlyInterest:true,
+      borrowLess:false,
       collateralValue: null,
       loanAmount: null,
       duration: null,
@@ -32,23 +33,330 @@ class LoanRequest extends Component {
           'LINK','CMT','WAX',
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
-          'FET','PPT','MCO']
+          'FET','PPT','MCO'],
+           FinocialABI: [
+            {
+            "constant": false,
+            "inputs": [],
+            "name": "unpause",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [
+            {
+            "name": "account",
+            "type": "address"
+            }
+            ],
+            "name": "isPauser",
+            "outputs": [
+            {
+            "name": "",
+            "type": "bool"
+            }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [],
+            "name": "paused",
+            "outputs": [
+            {
+            "name": "",
+            "type": "bool"
+            }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "constant": false,
+            "inputs": [],
+            "name": "renouncePauser",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": false,
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": false,
+            "inputs": [
+            {
+            "name": "account",
+            "type": "address"
+            }
+            ],
+            "name": "addPauser",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": false,
+            "inputs": [],
+            "name": "pause",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+            {
+            "name": "",
+            "type": "address"
+            }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [],
+            "name": "isOwner",
+            "outputs": [
+            {
+            "name": "",
+            "type": "bool"
+            }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            }
+            ],
+            "name": "loans",
+            "outputs": [
+            {
+            "name": "",
+            "type": "address"
+            }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "constant": false,
+            "inputs": [
+            {
+            "name": "newOwner",
+            "type": "address"
+            }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+            },
+            {
+            "anonymous": false,
+            "inputs": [
+            {
+            "indexed": false,
+            "name": "",
+            "type": "address"
+            },
+            {
+            "indexed": false,
+            "name": "",
+            "type": "address"
+            }
+            ],
+            "name": "LoanContractCreated",
+            "type": "event"
+            },
+            {
+            "anonymous": false,
+            "inputs": [
+            {
+            "indexed": false,
+            "name": "account",
+            "type": "address"
+            }
+            ],
+            "name": "Paused",
+            "type": "event"
+            },
+            {
+            "anonymous": false,
+            "inputs": [
+            {
+            "indexed": false,
+            "name": "account",
+            "type": "address"
+            }
+            ],
+            "name": "Unpaused",
+            "type": "event"
+            },
+            {
+            "anonymous": false,
+            "inputs": [
+            {
+            "indexed": true,
+            "name": "account",
+            "type": "address"
+            }
+            ],
+            "name": "PauserAdded",
+            "type": "event"
+            },
+            {
+            "anonymous": false,
+            "inputs": [
+            {
+            "indexed": true,
+            "name": "account",
+            "type": "address"
+            }
+            ],
+            "name": "PauserRemoved",
+            "type": "event"
+            },
+            {
+            "anonymous": false,
+            "inputs": [
+            {
+            "indexed": true,
+            "name": "previousOwner",
+            "type": "address"
+            },
+            {
+            "indexed": true,
+            "name": "newOwner",
+            "type": "address"
+            }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
+            },
+            {
+            "constant": false,
+            "inputs": [
+            {
+            "name": "_loanAmount",
+            "type": "uint256"
+            },
+            {
+            "name": "_duration",
+            "type": "uint128"
+            },
+            {
+            "name": "_interest",
+            "type": "uint256"
+            },
+            {
+            "name": "_collateralAddress",
+            "type": "address"
+            },
+            {
+            "name": "_collateralAmount",
+            "type": "uint256"
+            }
+            ],
+            "name": "createNewLoanRequest",
+            "outputs": [
+            {
+            "name": "_loanContractAddress",
+            "type": "address"
+            }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [],
+            "name": "getAllLoans",
+            "outputs": [
+            {
+            "name": "",
+            "type": "address[]"
+            }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            }
+            ],
+            FinocialAddress : "0xFd83a46B72C14BFaB495E778CEFFad01A449bdD8",
+            collateralAddress : "0xe33916b99fa6260B2F16D21197c13f59CB08888E"
     };
+  }
+
+
+ createLoanRequest = (principal, duration, interest, collateralAddress, collateralAmount) => {
+  const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(this.state.FinocialAddress);
+    FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, {
+    from: window.web3.eth.accounts[0]
+    }, function(err, res) {
+    if(!err){
+    console.log("Transaction in process")
+    }
+  });
   }
 
   handleMonthlyInterest = () => {
     this.setState({monthlyInt: this.state.monthlyInt + 0.25});
-    axios.get('https://min-api.cryptocompare.com/data/price?fsym=BNB&tsyms=ETH').then(function (response) {
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
   }
+
+  handleCollateralConversion = () => {
+    let { collateralCurrency,collateralValue,loanAmount } = this.state;
+    var self = this;
+
+    axios.get(`https://min-api.cryptocompare.com/data/price?fsym=${collateralCurrency}&tsyms=ETH`).then(function (response) {
+      self.setState({loanAmount:response.data.ETH * collateralValue * 0.6});
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    this.setState({currency:false, borrow:true});
+}
+
   render() {
 
-    const { duration, monthlyInt } = this.state;
+
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess } = this.state;
+
+
     return (
       <div className="LoanRequest text-center">
         <header className="header-global">
@@ -162,7 +470,7 @@ class LoanRequest extends Component {
                   <div className="card-header text-center">
                     <h5> New Loan Request</h5>
                   </div>
-                  <div className="card-body"  style={{display:this.state.collateral?'block':'none'}}>
+                  <div className="card-body"  style={{display:collateral?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your collateral currency.</span>
                     </div>
@@ -177,7 +485,7 @@ class LoanRequest extends Component {
                         this.setState({collateralCurrency:e.target.value});
                       }}>
                       {
-                        this.state.erc20_tokens.map((item,i) => {
+                        erc20_tokens.map((item,i) => {
                           return <option>{item}</option>;
                       })
                       }
@@ -191,41 +499,52 @@ class LoanRequest extends Component {
                       </a>
                     </div>
                     </div>
-                  <div className="card-body" style={{display:this.state.loan?'block':'none'}}>
+                  <div className="card-body" style={{display:loan?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Insert the collateral amount.</span>
                     </div>
-                    <input className="form-control form-control-lg" type="text" placeholder={this.state.collateralCurrency} onChange={(e)=>{this.setState({collateralValue:e.target.value});}}/>
-                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false,loan:false, currency:true});}}>
+                    <input className="form-control form-control-lg" type="text" placeholder={collateralCurrency} onChange={(e)=>{this.setState({collateralValue:e.target.value});}}/>
+                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{
+                      this.setState({collateral:false,loan:false, currency:true});
+                    }}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
                     </div>
                   </div>
 
-                  <div className="card-body"  style={{display:this.state.currency?'block':'none'}}>
+                  <div className="card-body"  style={{display:currency?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your loan currency.</span>
                     </div>
-                    <div className="btn-wrapper" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}}  onClick={()=>{this.setState({currency:false, borrow:true});}}>
+                    <div className="btn-wrapper" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}}  onClick={this.handleCollateralConversion}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
                     </div>
                   </div>
 
-                  <div className="card-body"style={{display:this.state.borrow?'block':'none'}}>
+                  <div className="card-body"style={{display:borrow?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
-                      <span className="alert-text">Great! you can borrow now.</span>
+                      <span className="alert-text">Great! you can borrow :</span>
                     </div>
-                    <input className="form-control form-control-lg" type="text" placeholder="ETH" onChange={(e)=>{this.setState({loanAmount:e.target.value});}}/>
+
+                    {borrowLess?
+                      <input className="form-control form-control-lg" type="text" value={loanAmount}  onChange={(e)=>{this.setState({loanAmount:e.target.value});}}/>
+                  :
+                  <div>
+                    <p style={{border:'solid grey 1px'}}>{loanAmount} {collateralCurrency}</p>
+                    <a classNmae="text-right" style={{cursor:'pointer'}} onClick={()=>{this.setState({borrowLess:true})}}>want to borrow less ?</a>
+                  </div>
+                }
+
                     <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
                     </div>
                   </div>
-                  <div className="card-body"  style={{display:this.state.durationView?'block':'none'}}>
+                  <div className="card-body"  style={{display:durationView?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Define loan duration.</span>
 
@@ -234,7 +553,7 @@ class LoanRequest extends Component {
 
                     <div className="btn-wrapper" style={{marginTop:'140px', cursor:'pointer'}}>
                       {
-                        this.state.durationArr.map((item,i)=>{
+                        durationArr.map((item,i)=>{
                           return <button id={i} type="button" className="btn btn-outline-primary" onClick={()=>{this.setState({duration:item})}}>{item}</button>;
                         })
                       }
@@ -246,7 +565,7 @@ class LoanRequest extends Component {
                     </div>
                   </div>
 
-                  <div className="card-body"style={{display:this.state.monthlyInterest?'block':'none', marginBottom:'310px'}}>
+                  <div className="card-body"style={{display:monthlyInterest?'block':'none', marginBottom:'310px'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose the monthly interest percentage for this loan.</span>
                     </div>
@@ -258,14 +577,22 @@ class LoanRequest extends Component {
                     </button>
                     </div>
                     <div className="text-right">
-                      <input className="form-control" type="number" value={monthlyInt} style={{width:'68px', marginTop: '-43px',  marginLeft: '215px'}} id="example-time-input"/>
+                      <input className="form-control" type="text" value={monthlyInt} style={{width:'60px', marginTop: '-43px',  marginLeft: '215px'}} id="example-time-input"/>
                     </div>
                     <div className="text-right" style={{marginTop: '-44px'}}>
                     <button className="btn btn-icon btn-primary" type="button" onClick={this.handleMonthlyInterest}>
                       <i className="fa fa-plus"></i>
                     </button>
                     </div>
+
+
                   </div>
+                  <div className="alert alert-primary alert-dismissible fade show text-left pl-3 " role="alert">
+                    <span className="alert-text">Total premium for this loan : </span>
+                  </div>
+                  <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly instalment :</h6>
+                  <p className="text-left pl-3" style={{fontSize:"12px"}}>The first instalment will include the loan origination fee</p>
+                  <h6 className="text-left pl-3" style={{fontSize:"13px"}}><span>Origination fee :</span></h6>
                 </div>
               </div>
               <div className="col-md-5">
@@ -273,34 +600,40 @@ class LoanRequest extends Component {
                   <div className="card-header text-center">
                     Overview
                   </div>
-                  <div className="card-body text-left mt-5">
-                  {this.state.collateralValue ?
-                    <div><p>Collateral __________________________{this.state.collateralValue} {this.state.collateralCurrency}</p></div>
-                    :<div><p>Collateral __________________________(not set)</p></div>
+                  <div className="card-body text-left mt-5" style={{marginBottom:monthlyInt?'84px':'223px'}}>
+                  {collateralValue ?
+                    <div><p>Collateral : {collateralValue} {collateralCurrency}</p></div>
+                    :<div><p>Collateral : (not set)</p></div>
                   }
                   {
-                    this.state.loanAmount ? <div><p>Loan amount _______________________{this.state.loanAmount} ETH </p></div>
+                    loanAmount ? <div><p>Loan amount : {loanAmount} ETH </p></div>
                     :
-                     <div><p>Loan amount _______________________(not set)</p></div>
+                     <div><p>Loan amount : (not set)</p></div>
                   }
                   {
-                    duration?<p>Duration ___________________________{this.state.duration} days</p>
+                    duration?<p>Duration : {duration} days</p>
                     :
-                    <p>Duration ___________________________(not set)</p>
+                    <p>Duration : (not set)</p>
                   }
                   {
                     monthlyInt ?
-                    <p>Monthly interest (MPR) ______________{this.state.monthlyInt} %</p>
+                    <p>Monthly interest (MPR) : {monthlyInt} %</p>
                     :
-                    <p>Monthly interest (MPR) ______________(not set)</p>
+                    <p>Monthly interest (MPR) : (not set)</p>
                   }
-                    <div className="btn-wrapper text-center" style={{marginTop:'120px'}} onClick={()=>{}}>
+
+                  </div>
+                  { monthlyInt?
+                    <div className="btn-wrapper text-center pb-4" onClick={()=>{
+                      this.createLoanRequest(loanAmount,duration,monthlyInt,collateralAddress, collateralValue);
+                      }}>
                       <br/>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>
-                  </div>
+                  :''
+                  }
                 </div>
               </div>
             </div>
