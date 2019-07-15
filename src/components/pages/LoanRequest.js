@@ -18,7 +18,7 @@ class LoanRequest extends Component {
       collateralValue: null,
       loanAmount: null,
       duration: null,
-      monthlyInt: 0,
+      monthlyInt: 5,
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
       durationEnd:360,
@@ -341,17 +341,23 @@ class LoanRequest extends Component {
 
     const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment } = this.state;
 
-    if(e.target.value=='plus')
-      this.setState({monthlyInt: this.state.monthlyInt + 0.25});
-    else if(e.target.value=='minus')
-    this.setState({monthlyInt: this.state.monthlyInt - 0.25});
+    if(e.target.value=='plus'){
+      this.setState({monthlyInt: monthlyInt});
+      let totalRepayment = ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * 100) ) + (duration/30 * 0.02)
+      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
+      this.setState({totalPremium: totalRepayment});
 
-    let totalRepayment = (loanAmount *  monthlyInt * (duration/30+1) / 2 * 100 ) + (loanAmount * 0.02)
-    this.setState({monthlyInstallment : (loanAmount *  monthlyInt * (duration/30+1) / 2 * loanAmount * 100 )})
-    this.setState({totalPremium: totalRepayment - loanAmount});
+      console.log('loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment ++++ ',loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment);
+    }
+    else if(e.target.value=='minus'){
+      this.setState({monthlyInt: monthlyInt});
+      let totalRepayment = ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * 100) ) + (duration/30 * 0.02)
+      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
+      this.setState({totalPremium: totalRepayment});
 
-    console.log('monthlyInstallment : ',monthlyInstallment);
-    console.log('totalPremium',totalPremium);
+      console.log('loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment ---- ',loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment);
+
+    }
   }
 
   handleCollateralConversion = () => {
@@ -603,12 +609,16 @@ class LoanRequest extends Component {
 
 
                   </div>
+                  {monthlyInt?<div>
                   <div className="alert alert-primary alert-dismissible fade show text-left pl-3 " role="alert">
-                    <span className="alert-text">Total premium for this loan : {totalPremium}</span>
+                    <span className="alert-text">Total premium for this loan : {totalPremium} ETH</span>
                   </div>
-                  <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly instalment : {monthlyInstallment}</h6>
+                  <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly instalment : {monthlyInstallment} ETH</h6>
                   <p className="text-left pl-3" style={{fontSize:"12px"}}>The first instalment will include the loan origination fee</p>
                   <h6 className="text-left pl-3" style={{fontSize:"13px"}}><span>Origination fee : {originationFee}</span></h6>
+                  </div>
+                  :''
+                }
                 </div>
               </div>
               <div className="col-md-5">
