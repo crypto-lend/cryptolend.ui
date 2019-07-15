@@ -18,7 +18,7 @@ class LoanRequest extends Component {
       collateralValue: null,
       loanAmount: null,
       duration: null,
-      monthlyInt: 5,
+      monthlyInt: 0,
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
       durationEnd:360,
@@ -342,20 +342,20 @@ class LoanRequest extends Component {
     const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment } = this.state;
 
     if(e.target.value=='plus'){
-      this.setState({monthlyInt: monthlyInt});
-      let totalRepayment = ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
-      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
+      this.setState({monthlyInt: monthlyInt + 0.25});
+      let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
+      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
       this.setState({totalPremium: totalRepayment});
 
-      console.log('loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment ++++ ',loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment);
+      console.log('loanAmount, monthlyInt, duration ++++ ',loanAmount, monthlyInt, duration);
     }
     else if(e.target.value=='minus'){
-      this.setState({monthlyInt: monthlyInt});
-      let totalRepayment = ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
-      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
+      this.setState({monthlyInt: monthlyInt - 0.25});
+      let totalRepayment = ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
+      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
       this.setState({totalPremium: totalRepayment});
 
-      console.log('loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment ---- ',loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment);
+      console.log('loanAmount, monthlyInt, duration ---- ',loanAmount, monthlyInt, duration);
 
     }
   }
@@ -587,7 +587,7 @@ class LoanRequest extends Component {
                     </div>
                   </div>
 
-                  <div className="card-body"style={{display:monthlyInterest?'block':'none', marginBottom:'310px'}}>
+                  <div className="card-body"style={{display:monthlyInterest?'block':'none', marginBottom:monthlyInt?'169px':'310px'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose the monthly interest percentage for this loan.</span>
                     </div>
