@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
+import { Link } from 'react-router-dom';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 
-class MyLoans extends Component {
+class ViewAllRequests extends Component {
   constructor(){
     super();
-
-    this.state = {
-      borrowedLoans:true,
-      fundedLoans:false
+    this.state={
+      loanAmount:'1.5 ETH',
+      collateralValue: '3 ETH',
+      earnings:'3.4% (20% APR)',
+      duration: '90 days',
+      safeness: 'SAFE',
+      expireIn: '5D 15H 30M'
     };
   }
   render() {
     return (
-      <div className="MyLoans text-center">
+      <div className="ViewAllRequests text-center">
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
@@ -120,44 +124,112 @@ class MyLoans extends Component {
               <span className="span-50"></span>
               <span className="span-100"></span>
             </div>
-                  <div className="container shape-container d-flex align-items-center">
-                      <div className="col px-0">
-                        <div className="card">
-                    <div className="card-header text-left">
-                      <a href="#" className={this.state.borrowedLoans? " btn btn-primary" : " btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:true, fundedLoans:false})}}>My loan Requests</a>
-                      <a href="#" className={this.state.fundedLoans? "btn btn-primary" : "btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:false, fundedLoans:true})}}>My loan offers</a>
-                    </div>
-                    <div className="card-body">
-                    <div className="alert alert-primary alert-dismissible fade show" role="alert">
-                    {
-                      this.state.borrowedLoans?  <span className="alert-text">You haven't borrowed yet. Check the available loan offers below!</span>
-                      :
-                      <span className="alert-text">You haven't lent yet. Check the available loan request below!</span>
-                    }
-                    </div>
-                    <div className="btn-wrapper" style={{marginTop:'200px'}}>
-                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0" data-toggle="scroll">
-                        <span className="btn-inner--text">View All Offers</span>
-                      </a>
-                      <br/>
-                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
-                        <span className="btn-inner--text">View All Requests</span>
+            <div className="container shape- d-flex align-items-center">
+
+
+              <div className="col-md-5">
+                <div className="card">
+                  <div className="card-header">
+
+                  <div class="row row-example">
+                <div class="col-sm">
+                  <span><p>Loan amount  </p></span>
+                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount}</span>
+
+                </div>
+                <div class="col-sm">
+                  <span><p>Collateral </p></span>
+                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.collateralValue}</span>
+                </div>
+              </div>
+                  </div>
+                  <div className="card-body text-left">
+                  <p>Earnings : {this.state.earnings}</p>
+                  <p>Duration  : {this.state.duration}</p>
+                  <p>Safeness : {this.state.safeness}</p>
+                  <p>Expires in : {this.state.expireIn}</p>
+                    <div className="btn-wrapper text-center" onClick={()=>{}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-sm-0 m-5">
+                        <span className="btn-inner--text">Fund Now</span>
                       </a>
                     </div>
                   </div>
+                </div>
+                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                  <span className="alert-text">Waiting for lender(s)</span>
+                </div>
+              </div>
+              <div className="col-md-5">
+                <div className="card">
+                  <div className="card-header">
+
+                  <div class="row row-example">
+                <div class="col-sm">
+                  <span><p>Loan amount  </p></span>
+                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount}</span>
+
+                </div>
+                <div class="col-sm">
+                  <span><p>Collateral </p></span>
+                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.collateralValue}</span>
+                </div>
+              </div>
+                  </div>
+                  <div className="card-body text-left">
+                  <p>Earnings : {this.state.earnings}</p>
+                  <p>Duration  : {this.state.duration}</p>
+                  <p>Safeness : {this.state.safeness}</p>
+                  <p>Expires in : {this.state.expireIn}</p>
+                    <div className="btn-wrapper text-center" onClick={()=>{}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-sm-0 m-5">
+                        <span className="btn-inner--text">Fund Now</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                  <span className="alert-text">Waiting for lender(s)</span>
+                </div>
+              </div>
+              <div className="col-md-5">
+                <div className="card">
+                  <div className="card-header">
+
+                  <div class="row row-example">
+                <div class="col-sm">
+                  <span><p>Loan amount  </p></span>
+                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount}</span>
+
+                </div>
+                <div class="col-sm">
+                  <span><p>Collateral </p></span>
+                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.collateralValue}</span>
+                </div>
+              </div>
+                  </div>
+                  <div className="card-body text-left">
+                  <p>Earnings : {this.state.earnings}</p>
+                  <p>Duration  : {this.state.duration}</p>
+                  <p>Safeness : {this.state.safeness}</p>
+                  <p>Expires in : {this.state.expireIn}</p>
+                    <div className="btn-wrapper text-center" onClick={()=>{}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-sm-0 m-5">
+                        <span className="btn-inner--text">Fund Now</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                  <span className="alert-text">Waiting for lender(s)</span>
                 </div>
               </div>
             </div>
 
           </section>
-
         </div>
-
       </div>
-
-
     );
   }
 }
 
-export default MyLoans;
+export default ViewAllRequests;

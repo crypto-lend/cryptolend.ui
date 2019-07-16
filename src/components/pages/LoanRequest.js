@@ -24,6 +24,7 @@ class LoanRequest extends Component {
       durationEnd:360,
       totalPremium:null,
       monthlyInstallment:null,
+      apr:0,
       originationFee:'2%',
       collateralCurrency:'ETH',
       erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
@@ -339,24 +340,22 @@ class LoanRequest extends Component {
 
   handleMonthlyInterest = (e) => {
 
-    const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment } = this.state;
+    const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment, apr } = this.state;
 
-    if(e.target.value=='plus'){
+    if(e.target.value=='plus' && monthlyInt<5){
       this.setState({monthlyInt: monthlyInt + 0.25});
       let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
       this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
       this.setState({totalPremium: totalRepayment});
-
-      console.log('loanAmount, monthlyInt, duration ++++ ',loanAmount, monthlyInt, duration);
+      this.setState({apr: (totalRepayment / loanAmount / duration) * 365 * 100})
+      console.log("apr : ",apr, totalRepayment);
     }
-    else if(e.target.value=='minus'){
+    else if(e.target.value=='minus' && monthlyInt>0){
       this.setState({monthlyInt: monthlyInt - 0.25});
       let totalRepayment = ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
       this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
       this.setState({totalPremium: totalRepayment});
-
-      console.log('loanAmount, monthlyInt, duration ---- ',loanAmount, monthlyInt, duration);
-
+      this.setState({apr: (totalPremium / loanAmount / duration) * 365 * 100})
     }
   }
 
@@ -376,7 +375,7 @@ class LoanRequest extends Component {
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee } = this.state;
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr } = this.state;
 
 
     return (
@@ -419,7 +418,7 @@ class LoanRequest extends Component {
                     </a>
                   </li>
                   <li className="nav-item dropdown">
-                    <a href="#" className="nav-link" data-toggle="dropdown" href="#" role="button">
+                    <a href="#" className="nav-link" data-toggle="dropdown" href="/view-requests" role="button">
                       <i className="ni ni-collection d-lg-none"></i>
                       <span className="nav-link-inner--text">View All Request</span>
                     </a>
@@ -555,8 +554,8 @@ class LoanRequest extends Component {
                       <input className="form-control form-control-lg" type="text" value={loanAmount}  onChange={(e)=>{this.setState({loanAmount:e.target.value});}}/>
                   :
                   <div>
-                    <p style={{border:'solid grey 1px'}}>{loanAmount} {collateralCurrency}</p>
-                    <a classNmae="text-right" style={{cursor:'pointer'}} onClick={()=>{this.setState({borrowLess:true})}}>want to borrow less ?</a>
+                    <p style={{border:'solid grey 1px'}}>{loanAmount} ETH</p>
+                    <a className="text-right" style={{cursor:'pointer'}} onClick={()=>{this.setState({borrowLess:true})}}>want to borrow less ?</a>
                   </div>
                 }
 
@@ -595,7 +594,7 @@ class LoanRequest extends Component {
 
                     <div className="text-left">
                     <button className="btn btn-icon btn-primary" type="button" value="minus" onClick={this.handleMonthlyInterest}>
-                      <i className="fa fa-minus"></i>
+                      <span><i className="fa fa-minus"></i></span>
                     </button>
                     </div>
                     <div className="text-right">
@@ -603,7 +602,7 @@ class LoanRequest extends Component {
                     </div>
                     <div className="text-right" style={{marginTop: '-44px'}}>
                     <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={this.handleMonthlyInterest}>
-                      <i className="fa fa-plus"></i>
+                      <span><i className="fa fa-plus"></i></span>
                     </button>
                     </div>
 
@@ -611,7 +610,7 @@ class LoanRequest extends Component {
                   </div>
                   {monthlyInt?<div>
                   <div className="alert alert-primary alert-dismissible fade show text-left pl-3 " role="alert">
-                    <span className="alert-text">Total premium for this loan : {totalPremium} ETH</span>
+                    <span className="alert-text">Total premium for this loan : {totalPremium} ETH ({apr.toFixed(2)}% APR)</span>
                   </div>
                   <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly instalment : {monthlyInstallment} ETH</h6>
                   <p className="text-left pl-3" style={{fontSize:"12px"}}>The first instalment will include the loan origination fee</p>
@@ -651,7 +650,7 @@ class LoanRequest extends Component {
                   </div>
                   { monthlyInt?
                     <div className="btn-wrapper text-center pb-4" onClick={()=>{
-                      this.createLoanRequest(loanAmount,duration,monthlyInt,collateralAddress, collateralValue);
+                      this.createLoanRequest(loanAmount,duration,monthlyInt,collateralAddress,collateralValue);
                       }}>
                       <br/>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
