@@ -10,6 +10,7 @@ import  LoanRequest from '../pages/LoanRequest';
 import  LoanOffer from '../pages/LoanOffer';
 import  MyLoans  from '../pages/MyLoans';
 import ViewAllRequests from '../pages/ViewAllRequests';
+import ViewAllOffers from '../pages/ViewAllOffers';
 
 // COMPONENT
 
@@ -22,6 +23,7 @@ export const AppRouter = () => (
         <Route path='/request' component={LoanRequest} />
         <Route path='/offer' component={LoanOffer} />
         <Route path='/view-requests' component={ViewAllRequests} />
+        <Route path='/view-offers' component={ViewAllOffers} />
         <Redirect to='/' />
       </Switch>
     </Fragment>

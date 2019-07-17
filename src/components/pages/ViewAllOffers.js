@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 
-class ViewAllRequests extends Component {
+class ViewAllOffers extends Component {
   constructor(){
     super();
     this.state={
@@ -30,7 +30,7 @@ class ViewAllRequests extends Component {
   render() {
     const {erc20_tokens} = this.state;
     return (
-      <div className="ViewAllRequests text-center">
+      <div className="ViewAllOffers text-center">
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
@@ -322,7 +322,6 @@ class ViewAllRequests extends Component {
                 </div>
               </div>
             </div>
-
           </section>
         </div>
       </div>
@@ -330,4 +329,4 @@ class ViewAllRequests extends Component {
   }
 }
 
-export default ViewAllRequests;
+export default ViewAllOffers;

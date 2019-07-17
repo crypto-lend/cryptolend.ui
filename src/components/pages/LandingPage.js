@@ -63,7 +63,7 @@ class LandingPage extends Component {
                       </a>
                     </li>
                     <li className="nav-item dropdown">
-                      <a href="#" className="nav-link" data-toggle="dropdown" href="#" role="button">
+                      <a href="#" className="nav-link" data-toggle="dropdown" href="/view-offers" role="button">
                         <i className="ni ni-ui-04 d-lg-none"></i>
                         <span className="nav-link-inner--text">View All Offers</span>
                       </a>

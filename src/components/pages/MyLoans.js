@@ -59,7 +59,7 @@ class MyLoans extends Component {
                     </a>
                   </li>
                   <li className="nav-item dropdown">
-                    <a href="#" className="nav-link" data-toggle="dropdown" href="#" role="button">
+                    <a href="#" className="nav-link" data-toggle="dropdown" href="/view-offers" role="button">
                       <i className="ni ni-ui-04 d-lg-none"></i>
                       <span className="nav-link-inner--text">View All Offers</span>
                     </a>
@@ -136,11 +136,11 @@ class MyLoans extends Component {
                     }
                     </div>
                     <div className="btn-wrapper" style={{marginTop:'200px'}}>
-                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0" data-toggle="scroll">
+                      <a href="/view-offers" className="btn btn-primary btn-icon mb-3 mb-sm-0" data-toggle="scroll">
                         <span className="btn-inner--text">View All Offers</span>
                       </a>
                       <br/>
-                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                      <a href="/view-requests" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">View All Requests</span>
                       </a>
                     </div>
