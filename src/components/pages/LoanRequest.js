@@ -25,7 +25,7 @@ class LoanRequest extends Component {
       totalPremium:null,
       monthlyInstallment:null,
       apr:0,
-      originationFee:'2%',
+      originationFee:1,
       collateralCurrency:'ETH',
       erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
@@ -336,24 +336,25 @@ class LoanRequest extends Component {
       console.log("Transaction in process")
       }
     });
+      window.location.reload();
     }
 
   handleMonthlyInterest = (e) => {
 
-    const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment, apr } = this.state;
+    const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment, apr, originationFee } = this.state;
 
     if(e.target.value=='plus' && monthlyInt<5){
       this.setState({monthlyInt: monthlyInt + 0.25});
-      let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
-      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
+      let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * originationFee/100)
+      this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
       this.setState({totalPremium: totalRepayment});
       this.setState({apr: (totalRepayment / loanAmount / duration) * 365 * 100})
       console.log("apr : ",apr, totalRepayment);
     }
     else if(e.target.value=='minus' && monthlyInt>0){
       this.setState({monthlyInt: monthlyInt - 0.25});
-      let totalRepayment = ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * 0.02)
-      this.setState({monthlyInstallment : ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) )})
+      let totalRepayment = ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * originationFee/100)
+      this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
       this.setState({totalPremium: totalRepayment});
       this.setState({apr: (totalPremium / loanAmount / duration) * 365 * 100})
     }
@@ -612,9 +613,9 @@ class LoanRequest extends Component {
                   <div className="alert alert-primary alert-dismissible fade show text-left pl-3 " role="alert">
                     <span className="alert-text">Total premium for this loan : {totalPremium} ETH ({apr.toFixed(2)}% APR)</span>
                   </div>
-                  <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly instalment : {monthlyInstallment} ETH</h6>
-                  <p className="text-left pl-3" style={{fontSize:"12px"}}>The first instalment will include the loan origination fee</p>
-                  <h6 className="text-left pl-3" style={{fontSize:"13px"}}><span>Origination fee : {originationFee}</span></h6>
+                  <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly installment : {monthlyInstallment} ETH</h6>
+                  <p className="text-left pl-3" style={{fontSize:"12px"}}>The first installment will include the loan origination fee</p>
+                  <h6 className="text-left pl-3" style={{fontSize:"13px"}}><span>Origination fee : {originationFee}%</span></h6>
                   </div>
                   :''
                 }
