@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
-import '../../assets/vendor/font-awesome/css/font-awesome.css';
-import '../../assets/vendor/nucleo/css/nucleo.css';
+import Nouislider from "nouislider-react";
+import './ViewAllOffers.css';
 
 class ViewAllOffers extends Component {
   constructor(){
     super();
-    this.state={
+    this.state = {
       loanAmount:'1.5 ETH',
       collateralValue: '3 ETH',
       earnings:'3.4% (20% APR)',
@@ -206,16 +206,15 @@ class ViewAllOffers extends Component {
                   </div>
                 </li>
                 <li>
-                <div>
-                  <div id="input-slider-range" data-range-value-min="100" data-range-value-max="500"></div>
-                    <div className="row d-none">
-                        <div className="col-6">
-                            <span className="range-slider-value value-low" data-range-value-low="200" id="input-slider-range-value-low"></span>
-                        </div>
-                        <div className="col-6 text-right">
-                            <span className="range-slider-value value-high" data-range-value-high="400" id="input-slider-range-value-high"></span>
-                        </div>
-                    </div>
+                <div className="mt-3">
+                  <label for="">Monthly Interest</label>
+                  <Nouislider range={{ min: 0, max: 100 }} start={[0, 100]} connect />
+                </div>
+                </li>
+                <li>
+                <div className="mt-3">
+                  <label for="">Duration</label>
+                  <Nouislider range={{ min: 0, max: 100 }} start={[0, 100]} connect />
                   </div>
                 </li>
               </ul>
@@ -225,21 +224,21 @@ class ViewAllOffers extends Component {
             </div>
           </div>
 
-              <div className="col-md-5">
-                <div className="card">
-                  <div className="card-header">
+              <div className="col-md-4">
+                    <div className="card">
+                      <div className="card-header">
+                      <div className="row row-example">
 
-                  <div className="row row-example">
-                <div className="col-sm">
-                  <span><p>Loan amount  </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount}</span>
-
-                </div>
-                <div className="col-sm">
-                  <span><p>Collateral </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.collateralValue}</span>
-                </div>
-              </div>
+                        <div className="ml-5">
+                          <img src='/assets/img/32/color/btc.png'/>
+                          <img src='/assets/img/32/color/bnb.png'/>
+                          <img src='/assets/img/32/color/mana.png'/>
+                          <img src='/assets/img/32/color/gto.png'/>
+                          <img src='/assets/img/32/color/powr.png'/>
+                       </div>
+                    </div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>MPR 0.4% 0.25% 0.25% 0.8% 0.4%</div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
                   <p>Earnings : {this.state.earnings}</p>
@@ -247,7 +246,7 @@ class ViewAllOffers extends Component {
                   <p>Safeness : {this.state.safeness}</p>
                   <p>Expires in : {this.state.expireIn}</p>
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon mb-sm-0 m-5">
+                      <a href="#" className="btn btn-primary btn-icon m-1">
                         <span className="btn-inner--text">Fund Now</span>
                       </a>
                     </div>
@@ -257,21 +256,21 @@ class ViewAllOffers extends Component {
                   <span className="alert-text">Waiting for lender(s)</span>
                 </div>
               </div>
-              <div className="col-md-5">
-                <div className="card">
-                  <div className="card-header">
+              <div className="col-md-4">
+                    <div className="card">
+                      <div className="card-header">
+                      <div className="row row-example">
 
-                  <div className="row row-example">
-                <div className="col-sm">
-                  <span><p>Loan amount  </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount}</span>
-
-                </div>
-                <div className="col-sm">
-                  <span><p>Collateral </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.collateralValue}</span>
-                </div>
-              </div>
+                        <div className="ml-5">
+                          <img src='/assets/img/32/color/btc.png'/>
+                          <img src='/assets/img/32/color/bnb.png'/>
+                          <img src='/assets/img/32/color/mana.png'/>
+                          <img src='/assets/img/32/color/gto.png'/>
+                          <img src='/assets/img/32/color/powr.png'/>
+                       </div>
+                    </div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>MPR 0.4% 0.25% 0.25% 0.8% 0.4%</div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
                   <p>Earnings : {this.state.earnings}</p>
@@ -279,7 +278,7 @@ class ViewAllOffers extends Component {
                   <p>Safeness : {this.state.safeness}</p>
                   <p>Expires in : {this.state.expireIn}</p>
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon mb-sm-0 m-5">
+                      <a href="#" className="btn btn-primary btn-icon m-1">
                         <span className="btn-inner--text">Fund Now</span>
                       </a>
                     </div>
@@ -289,21 +288,21 @@ class ViewAllOffers extends Component {
                   <span className="alert-text">Waiting for lender(s)</span>
                 </div>
               </div>
-              <div className="col-md-5">
-                <div className="card">
-                  <div className="card-header">
+              <div className="col-md-4">
+                    <div className="card">
+                      <div className="card-header">
+                      <div className="row row-example">
 
-                  <div className="row row-example">
-                <div className="col-sm">
-                  <span><p>Loan amount  </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount}</span>
-
-                </div>
-                <div className="col-sm">
-                  <span><p>Collateral </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.collateralValue}</span>
-                </div>
-              </div>
+                        <div className="ml-5">
+                          <img src='/assets/img/32/color/btc.png'/>
+                          <img src='/assets/img/32/color/bnb.png'/>
+                          <img src='/assets/img/32/color/mana.png'/>
+                          <img src='/assets/img/32/color/gto.png'/>
+                          <img src='/assets/img/32/color/powr.png'/>
+                       </div>
+                    </div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>MPR 0.4% 0.25% 0.25% 0.8% 0.4%</div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
                   <p>Earnings : {this.state.earnings}</p>
@@ -311,7 +310,7 @@ class ViewAllOffers extends Component {
                   <p>Safeness : {this.state.safeness}</p>
                   <p>Expires in : {this.state.expireIn}</p>
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon mb-sm-0 m-5">
+                      <a href="#" className="btn btn-primary btn-icon m-1">
                         <span className="btn-inner--text">Fund Now</span>
                       </a>
                     </div>
