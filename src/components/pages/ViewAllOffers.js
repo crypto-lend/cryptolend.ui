@@ -11,9 +11,18 @@ class ViewAllOffers extends Component {
       loanAmount:'1.5 ETH',
       collateralValue: '3 ETH',
       earnings:'3.4% (20% APR)',
-      duration: '90 days',
+      duration: [90, 30, 120],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
+      waitingForBorrower:true,
+      waitingForCollateral:true,
+      waitingForPayback:true,
+      finished:true,
+      minMonthlyInt:'0',
+      maxMonthlyInt:'5',
+      minDuration:'0',
+      maxDuration:'12',
+      defaulted:true,
       erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
@@ -28,7 +37,7 @@ class ViewAllOffers extends Component {
     };
   }
   render() {
-    const {erc20_tokens} = this.state;
+    const {erc20_tokens,duration,minDuration,maxDuration} = this.state;
     return (
       <div className="ViewAllOffers text-center">
         <header className="header-global">
@@ -177,44 +186,57 @@ class ViewAllOffers extends Component {
                 <div className="card">
                   <label for="">Loan state</label>
                     <div className="card-body">
-                      <form>
-                        <div className="row">
-                          <div className="col text-left">
-                            <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                              <label className="custom-control-label" for="customCheck1">Waiting for Lenders</label>
-                            </div>
-                            <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                              <label className="custom-control-label" for="customCheck1">Waiting for collateral</label>
-                            </div>
-                            <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                              <label className="custom-control-label" for="customCheck1">Waiting for Payback</label>
-                            </div>
-                            <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                              <label className="custom-control-label" for="customCheck1">Finished</label>
-                            </div>  <div className="custom-control custom-checkbox mb-3">
-                                <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                                <label className="custom-control-label" for="customCheck1">Defaulted</label>
-                            </div>
+                    <form>
+                      <div className="row">
+                        <div className="col text-left">
+                          <div className="custom-control custom-checkbox mb-3 ">
+                            <input className="custom-control-input" id="customCheck1" type="checkbox" checked={this.state.waitingForBorrower} onClick={()=>{this.setState({waitingForBorrower:!this.state.waitingForBorrower})}}/>
+                            <label className="custom-control-label" for="customCheck1">Waiting for Borrowers</label>
+                          </div>
+                          <div className="custom-control custom-checkbox mb-3 ">
+                            <input className="custom-control-input" id="customCheck2" type="checkbox" checked={this.state.waitingForCollateral} onClick={()=>{this.setState({waitingForCollateral:!this.state.waitingForCollateral})}}/>
+                            <label className="custom-control-label" for="customCheck2">Waiting for collateral</label>
+                          </div>
+                          <div className="custom-control custom-checkbox mb-3 ">
+                            <input className="custom-control-input" id="customCheck3" type="checkbox" checked={this.state.waitingForPayback} onClick={()=>{this.setState({waitingForPayback:!this.state.waitingForPayback})}}/>
+                            <label className="custom-control-label" for="customCheck3">Waiting for Payback</label>
+                          </div>
+                          <div className="custom-control custom-checkbox mb-3 ">
+                            <input className="custom-control-input" id="customCheck4" type="checkbox" checked={this.state.finished} onClick={()=>{this.setState({finished:!this.state.finished})}}/>
+                            <label className="custom-control-label" for="customCheck4">Finished</label>
+                          </div>  <div className="custom-control custom-checkbox mb-3 ">
+                              <input className="custom-control-input" id="customCheck5" type="checkbox" checked={this.state.defaulted} onClick={()=>{this.setState({defaulted:!this.state.defaulted})}}/>
+                              <label className="custom-control-label" for="customCheck5">Defaulted</label>
                           </div>
                         </div>
-                      </form>
+                      </div>
+                    </form>
                     </div>
                   </div>
                 </li>
                 <li>
                 <div className="mt-3">
                   <label for="">Monthly Interest</label>
-                  <Nouislider range={{ min: 0, max: 100 }} start={[0, 100]} connect />
+                  <div className="">
+                  <label style={{marginLeft:'-180px'}}> ({this.state.minMonthlyInt} %) </label>
+                  </div>
+                  <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
+                  <label> ({this.state.maxMonthlyInt} %)</label>
+                  </div>
+
+                  <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]}); console.log(this.state.maxMonthlyInt);}} />
                 </div>
                 </li>
                 <li>
                 <div className="mt-3">
                   <label for="">Duration</label>
-                  <Nouislider range={{ min: 0, max: 100 }} start={[0, 100]} connect />
+                  <div className="">
+                  <label style={{marginLeft:'-180px'}}> ({this.state.minDuration} Month) </label>
+                  </div>
+                  <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
+                  <label> ({this.state.maxDuration} Month)</label>
+                  </div>
+                  <Nouislider range={{ min: 0, max: 12 }} start={[0, 12]} connect onChange={(e)=>{this.setState({minDuration:e[0],maxDuration:e[1]}); console.log(this.state.maxDuration);}} />
                   </div>
                 </li>
               </ul>
@@ -224,6 +246,42 @@ class ViewAllOffers extends Component {
             </div>
           </div>
 
+              {
+                this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration &&
+                <div className="col-md-4">
+                    <div className="card">
+                      <div className="card-header">
+                      <div className="row row-example">
+
+                        <div className="ml-5">
+                          <img src='/assets/img/32/color/btc.png'/>
+                          <img src='/assets/img/32/color/bnb.png'/>
+                          <img src='/assets/img/32/color/mana.png'/>
+                          <img src='/assets/img/32/color/gto.png'/>
+                          <img src='/assets/img/32/color/powr.png'/>
+                       </div>
+                    </div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>MPR 0.4% 0.25% 0.25% 0.8% 0.4%</div>
+                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
+                  </div>
+                  <div className="card-body text-left">
+                  <p>Duration  : {this.state.duration[0]}</p>
+                  <p>Amount  : 1 ETH</p>
+
+                    <div className="btn-wrapper text-center" onClick={()=>{}}>
+                      <a href="#" className="btn btn-primary btn-icon mt-2">
+                        <span className="btn-inner--text">Take this loan</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                  <span className="alert-text">Waiting for borrower</span>
+                </div>
+              </div>
+          }
+          {
+            this.state.waitingForBorrower  && duration[1]/30>minDuration && duration[1]/30<maxDuration &&
               <div className="col-md-4">
                     <div className="card">
                       <div className="card-header">
@@ -241,21 +299,24 @@ class ViewAllOffers extends Component {
                     <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Earnings : {this.state.earnings}</p>
-                  <p>Duration  : {this.state.duration}</p>
-                  <p>Safeness : {this.state.safeness}</p>
-                  <p>Expires in : {this.state.expireIn}</p>
+                  <p>Duration  : {this.state.duration[1]}</p>
+                  <p>Amount  : 1.5 ETH</p>
+
+
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon m-1">
-                        <span className="btn-inner--text">Fund Now</span>
+                      <a href="#" className="btn btn-primary btn-icon mt-2">
+                        <span className="btn-inner--text">Take this loan</span>
                       </a>
                     </div>
                   </div>
                 </div>
                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                  <span className="alert-text">Waiting for lender(s)</span>
+                  <span className="alert-text">Waiting for borrower</span>
                 </div>
               </div>
+          }
+              {
+                this.state.waitingForBorrower && duration[2]/30>minDuration && duration[2]/30<maxDuration &&
               <div className="col-md-4">
                     <div className="card">
                       <div className="card-header">
@@ -273,53 +334,21 @@ class ViewAllOffers extends Component {
                     <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Earnings : {this.state.earnings}</p>
-                  <p>Duration  : {this.state.duration}</p>
-                  <p>Safeness : {this.state.safeness}</p>
-                  <p>Expires in : {this.state.expireIn}</p>
-                    <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon m-1">
-                        <span className="btn-inner--text">Fund Now</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                  <span className="alert-text">Waiting for lender(s)</span>
-                </div>
-              </div>
-              <div className="col-md-4">
-                    <div className="card">
-                      <div className="card-header">
-                      <div className="row row-example">
+                  <p>Duration  : {this.state.duration[2]}</p>
+                  <p>Amount  : 2 ETH</p>
 
-                        <div className="ml-5">
-                          <img src='/assets/img/32/color/btc.png'/>
-                          <img src='/assets/img/32/color/bnb.png'/>
-                          <img src='/assets/img/32/color/mana.png'/>
-                          <img src='/assets/img/32/color/gto.png'/>
-                          <img src='/assets/img/32/color/powr.png'/>
-                       </div>
-                    </div>
-                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>MPR 0.4% 0.25% 0.25% 0.8% 0.4%</div>
-                    <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
-                  </div>
-                  <div className="card-body text-left">
-                  <p>Earnings : {this.state.earnings}</p>
-                  <p>Duration  : {this.state.duration}</p>
-                  <p>Safeness : {this.state.safeness}</p>
-                  <p>Expires in : {this.state.expireIn}</p>
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon m-1">
-                        <span className="btn-inner--text">Fund Now</span>
+                      <a href="#" className="btn btn-primary btn-icon mt-2">
+                        <span className="btn-inner--text">Take this loan</span>
                       </a>
                     </div>
                   </div>
                 </div>
                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                  <span className="alert-text">Waiting for lender(s)</span>
+                  <span className="alert-text">Waiting for borrower</span>
                 </div>
               </div>
+            }
             </div>
           </section>
         </div>

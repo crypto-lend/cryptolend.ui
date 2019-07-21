@@ -13,10 +13,19 @@ class ViewAllRequests extends Component {
       loanAmount:'1.5 ETH',
       collateralValue: '3',
       earnings:'3.4% (20% APR)',
-      duration: '90 days',
+      duration: [90, 30, 120],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
-      erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
+      waitingForLender:true,
+      waitingForCollateral:true,
+      waitingForPayback:true,
+      finished:true,
+      defaulted:true,
+      minMonthlyInt:'0',
+      maxMonthlyInt:'5',
+      minDuration:'0',
+      maxDuration:'12',
+      erc20_tokens :  ['ALL', 'BTC','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -30,7 +39,7 @@ class ViewAllRequests extends Component {
     };
   }
   render() {
-    const {erc20_tokens} = this.state;
+    const {erc20_tokens,duration,minDuration,maxDuration} = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <header className="header-global">
@@ -183,23 +192,23 @@ class ViewAllRequests extends Component {
                         <div className="row">
                           <div className="col text-left">
                             <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
+                              <input className="custom-control-input" id="customCheck1" type="checkbox" checked={this.state.waitingForLender} onClick={()=>{this.setState({waitingForLender:!this.state.waitingForLender})}}/>
                               <label className="custom-control-label" for="customCheck1">Waiting for Lenders</label>
                             </div>
                             <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                              <label className="custom-control-label" for="customCheck1">Waiting for collateral</label>
+                              <input className="custom-control-input" id="customCheck2" type="checkbox" checked={this.state.waitingForCollateral} onClick={()=>{this.setState({waitingForCollateral:!this.state.waitingForCollateral})}}/>
+                              <label className="custom-control-label" for="customCheck2">Waiting for collateral</label>
                             </div>
                             <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                              <label className="custom-control-label" for="customCheck1">Waiting for Payback</label>
+                              <input className="custom-control-input" id="customCheck3" type="checkbox" checked={this.state.waitingForPayback} onClick={()=>{this.setState({waitingForPayback:!this.state.waitingForPayback})}}/>
+                              <label className="custom-control-label" for="customCheck3">Waiting for Payback</label>
                             </div>
                             <div className="custom-control custom-checkbox mb-3">
-                              <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                              <label className="custom-control-label" for="customCheck1">Finished</label>
+                              <input className="custom-control-input" id="customCheck4" type="checkbox" checked={this.state.finished} onClick={()=>{this.setState({finished:!this.state.finished})}}/>
+                              <label className="custom-control-label" for="customCheck4">Finished</label>
                             </div>  <div className="custom-control custom-checkbox mb-3">
-                                <input className="custom-control-input" id="customCheck1" type="checkbox"/>
-                                <label className="custom-control-label" for="customCheck1">Defaulted</label>
+                                <input className="custom-control-input" id="customCheck5" type="checkbox" checked={this.state.defaulted} onClick={()=>{this.setState({defaulted:!this.state.defaulted})}}/>
+                                <label className="custom-control-label" for="customCheck5">Defaulted</label>
                             </div>
                           </div>
                         </div>
@@ -210,23 +219,38 @@ class ViewAllRequests extends Component {
                 <li>
                 <div className="mt-3">
                   <label for="">Monthly Interest</label>
-                  <Nouislider range={{ min: 0, max: 100 }} start={[0, 100]} connect />
+                  <div className="">
+                  <label style={{marginLeft:'-180px'}}> ({this.state.minMonthlyInt} %) </label>
+                  </div>
+                  <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
+                  <label> ({this.state.maxMonthlyInt} %)</label>
+                  </div>
+
+                  <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]}); console.log(this.state.maxMonthlyInt);}} />
                 </div>
                 </li>
                 <li>
                 <div className="mt-3">
                   <label for="">Duration</label>
-                  <Nouislider range={{ min: 0, max: 100 }} start={[0, 100]} connect />
+                  <div className="">
+                  <label style={{marginLeft:'-180px'}}> ({this.state.minDuration} Month) </label>
+                  </div>
+                  <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
+                  <label> ({this.state.maxDuration} Month)</label>
+                  </div>
+                  <Nouislider range={{ min: 0, max: 12 }} start={[0, 12]} connect onChange={(e)=>{this.setState({minDuration:e[0],maxDuration:e[1]}); console.log(this.state.maxDuration);}} />
                   </div>
                 </li>
               </ul>
             </div>
-            <div className="card-footer">
+            <div className="card-footer" style={{marginTop:'-40px'}}>
               <a href="#!" className=" text-muted">Reset Filters</a>
             </div>
           </div>
 
-              <div className="col-md-4">
+              {
+                this.state.waitingForLender && duration[0]/30>minDuration && duration[0]/30<maxDuration &&
+                 <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
 
@@ -244,7 +268,7 @@ class ViewAllRequests extends Component {
                   </div>
                   <div className="card-body text-left">
                   <p>Earnings : {this.state.earnings}</p>
-                  <p>Duration  : {this.state.duration}</p>
+                  <p>Duration  : {this.state.duration[0]} days</p>
                   <p>Safeness : {this.state.safeness}</p>
                   <p>Expires in : {this.state.expireIn}</p>
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
@@ -258,7 +282,11 @@ class ViewAllRequests extends Component {
                   <span className="alert-text">Waiting for lender(s)</span>
                 </div>
               </div>
-              <div className="col-md-4">
+
+            }
+              {
+                this.state.waitingForPayback && duration[1]/30>minDuration && duration[1]/30<maxDuration &&
+                <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
 
@@ -274,23 +302,22 @@ class ViewAllRequests extends Component {
                 </div>
               </div>
                   </div>
-                  <div className="card-body text-left">
+                  <div className="card-body text-left" style={{marginBottom:'80px'}}>
                   <p>Earnings : {this.state.earnings}</p>
-                  <p>Duration  : {this.state.duration}</p>
+                  <p>Duration  : {this.state.duration[1]} days</p>
                   <p>Safeness : {this.state.safeness}</p>
-                  <p>Expires in : {this.state.expireIn}</p>
-                    <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon m-1">
-                        <span className="btn-inner--text">Fund Now</span>
-                      </a>
-                    </div>
+
                   </div>
                 </div>
-                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                  <span className="alert-text">Waiting for lender(s)</span>
+                <div className="alert alert-warning alert-dismissible fade show text-center" role="alert">
+                  <span className="alert-text">Waiting for Payback</span>
                 </div>
               </div>
-              <div className="col-md-4">
+
+              }
+            {
+              this.state.waitingForLender && duration[2]/30>minDuration && duration[2]/30<maxDuration &&
+                <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
 
@@ -308,7 +335,7 @@ class ViewAllRequests extends Component {
                   </div>
                   <div className="card-body text-left">
                   <p>Earnings : {this.state.earnings}</p>
-                  <p>Duration  : {this.state.duration}</p>
+                  <p>Duration  : {this.state.duration[2]} days</p>
                   <p>Safeness : {this.state.safeness}</p>
                   <p>Expires in : {this.state.expireIn}</p>
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
@@ -322,8 +349,9 @@ class ViewAllRequests extends Component {
                   <span className="alert-text">Waiting for lender(s)</span>
                 </div>
               </div>
-            </div>
 
+          }
+            </div>
           </section>
         </div>
       </div>

@@ -348,7 +348,7 @@ class LoanRequest extends Component {
       let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * originationFee/100)
       this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
       this.setState({totalPremium: totalRepayment});
-      this.setState({apr: (totalRepayment / loanAmount / duration) * 365 * 100})
+      this.setState({apr: (totalRepayment / loanAmount) * 100})
       console.log("apr : ",apr, totalRepayment);
     }
     else if(e.target.value=='minus' && monthlyInt>0){
@@ -356,7 +356,7 @@ class LoanRequest extends Component {
       let totalRepayment = ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * originationFee/100)
       this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
       this.setState({totalPremium: totalRepayment});
-      this.setState({apr: (totalPremium / loanAmount / duration) * 365 * 100})
+      this.setState({apr: (totalPremium / loanAmount )  * 100})
     }
   }
 
@@ -497,7 +497,7 @@ class LoanRequest extends Component {
                       <span className="alert-text">Choose your collateral currency.</span>
                     </div>
                     <div className="row mt-5">
-                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'125px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
+                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'85px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
@@ -526,7 +526,7 @@ class LoanRequest extends Component {
                       <span className="alert-text">Insert the collateral amount.</span>
                     </div>
                     <input className="form-control form-control-lg" type="text" placeholder={collateralCurrency} onChange={(e)=>{this.setState({collateralValue:e.target.value});}}/>
-                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{
+                    <div className="btn-wrapper" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{
                       this.setState({collateral:false,loan:false, currency:true});
                     }}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
@@ -539,7 +539,7 @@ class LoanRequest extends Component {
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your loan currency.</span>
                     </div>
-                    <div className="btn-wrapper" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}}  onClick={this.handleCollateralConversion}>
+                    <div className="btn-wrapper" style={{marginTop:'25px', marginBottom:'247px', cursor:'pointer'}}  onClick={this.handleCollateralConversion}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
@@ -560,7 +560,7 @@ class LoanRequest extends Component {
                   </div>
                 }
 
-                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
+                    <div className="btn-wrapper" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
@@ -573,7 +573,7 @@ class LoanRequest extends Component {
                     </div>
                     <br/>
 
-                    <div className="btn-wrapper" style={{marginTop:'140px', cursor:'pointer'}}>
+                    <div className="btn-wrapper" style={{marginTop:'85px', cursor:'pointer'}}>
                       {
                         durationArr.map((item,i)=>{
                           return <button id={i} type="button" className="btn btn-outline-primary" onClick={()=>{this.setState({duration:item})}}>{item}</button>;
@@ -587,7 +587,7 @@ class LoanRequest extends Component {
                     </div>
                   </div>
 
-                  <div className="card-body"style={{display:monthlyInterest?'block':'none', marginBottom:monthlyInt?'169px':'310px'}}>
+                  <div className="card-body"style={{display:monthlyInterest?'block':'none', marginBottom:monthlyInt?'123px':'260px'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose the monthly interest percentage for this loan.</span>
                     </div>
