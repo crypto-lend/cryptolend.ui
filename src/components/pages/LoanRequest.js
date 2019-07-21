@@ -345,7 +345,7 @@ class LoanRequest extends Component {
 
     if(e.target.value=='plus' && monthlyInt<5){
       this.setState({monthlyInt: monthlyInt + 0.25});
-      let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * originationFee/100)
+      let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) )
       this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
       this.setState({totalPremium: totalRepayment});
       this.setState({apr: (totalRepayment / loanAmount) * 100})
@@ -353,7 +353,7 @@ class LoanRequest extends Component {
     }
     else if(e.target.value=='minus' && monthlyInt>0){
       this.setState({monthlyInt: monthlyInt - 0.25});
-      let totalRepayment = ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * 100) ) + (loanAmount * originationFee/100)
+      let totalRepayment = ((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * 100) )
       this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt - 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
       this.setState({totalPremium: totalRepayment});
       this.setState({apr: (totalPremium / loanAmount )  * 100})
