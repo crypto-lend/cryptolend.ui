@@ -10,7 +10,7 @@ class ViewAllOffers extends Component {
     this.state = {
       loanAmount:'1.5 ETH',
       collateralValue: '3 ETH',
-      earnings:'3.4% (20% APR)',
+      earnings:[3.5,1.25,5],
       duration: [90, 30, 120],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
@@ -223,7 +223,6 @@ class ViewAllOffers extends Component {
                   <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
                   <label> ({this.state.maxMonthlyInt} %)</label>
                   </div>
-
                   <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]}); console.log(this.state.maxMonthlyInt);}} />
                 </div>
                 </li>
@@ -247,7 +246,7 @@ class ViewAllOffers extends Component {
           </div>
 
               {
-                this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration &&
+                this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration && 
                 <div className="col-md-4">
                     <div className="card">
                       <div className="card-header">
@@ -265,7 +264,7 @@ class ViewAllOffers extends Component {
                     <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Duration  : {this.state.duration[0]}</p>
+                  <p>Duration  : {this.state.duration[0]} days</p>
                   <p>Amount  : 1 ETH</p>
 
                     <div className="btn-wrapper text-center" onClick={()=>{}}>
@@ -299,7 +298,7 @@ class ViewAllOffers extends Component {
                     <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Duration  : {this.state.duration[1]}</p>
+                  <p>Duration  : {this.state.duration[1]} days</p>
                   <p>Amount  : 1.5 ETH</p>
 
 
@@ -334,7 +333,7 @@ class ViewAllOffers extends Component {
                     <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Duration  : {this.state.duration[2]}</p>
+                  <p>Duration  : {this.state.duration[2]} days</p>
                   <p>Amount  : 2 ETH</p>
 
                     <div className="btn-wrapper text-center" onClick={()=>{}}>

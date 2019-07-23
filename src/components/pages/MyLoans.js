@@ -9,7 +9,11 @@ class MyLoans extends Component {
 
     this.state = {
       borrowedLoans:true,
-      fundedLoans:false
+      fundedLoans:false,
+      display1:'none',
+      display2:'none',
+      display3:'none',
+      display4:'none'
     };
   }
   render() {
@@ -128,9 +132,215 @@ class MyLoans extends Component {
                       <a href="#" className={this.state.fundedLoans? "btn btn-primary" : "btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:false, fundedLoans:true})}}>My loan offers</a>
                     </div>
                     <div className="card-body">
-                    <div className="alert alert-primary alert-dismissible fade show" role="alert">
+                    <div>
                     {
-                      this.state.borrowedLoans?  <span className="alert-text">You haven't borrowed yet. Check the available loan offers below!</span>
+                      this.state.borrowedLoans?    <div className="table-responsive" style={{marginTop:"50px"}}>
+              <table className="table align-items-center table-flush">
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col">Link</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Completion</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr onClick={()=>{this.state.display1=='none'?this.setState({display1:'block'}):this.setState({display1:'none'})}}>
+                    <th scope="row">
+                      <div className="media align-items-center">
+                        <a href="#" className="avatar rounded-circle mr-3">
+                          <img alt="Image placeholder" src="insta.jpeg"/>
+                        </a>
+                        <div className="media-body">
+                          <span className="mb-0 text-sm">Instagram</span>
+                        </div>
+                      </div>
+                    </th>
+                    <td>
+                      <span className="badge badge-dot mr-4">
+                        <i className="bg-warning"></i> pending
+                      </span>
+                    </td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <span className="mr-2">60%</span>
+                        <div>
+                          <div className="progress">
+                            <div className="progress-bar bg-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={{width: '60%'}}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-right">
+                      <button className="btn btn-primary" type="button" >Edit</button>
+                      <div className="dropdown">
+                        <a className="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i className="fa fa-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <div style={{height:'200px', display:this.state.display1}}>
+                    <div className="link-item__body"><div className="link-body-info">
+                      <div className="hidden-wrap">
+                        <div className="link-info-url small line-clamp">
+                        <a target="_blank"></a>
+                        </div>
+                        <div className="link-info-date small">created on January 10, 2019</div>
+                        </div>
+                        <div className="link-pixel-sets mt1"><span className="small">Tracking Pixels:</span>&nbsp;
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <tr onClick={()=>{this.state.display2=='none'?this.setState({display2:'block'}):this.setState({display2:'none'})}}>
+                    <th scope="row">
+                      <div className="media align-items-center">
+                        <a href="#" className="avatar rounded-circle mr-3">
+                          <img alt="Image placeholder" src="fb.png"/>
+                        </a>
+                        <div className="media-body">
+                          <span className="mb-0 text-sm">Facebook</span>
+                        </div>
+                      </div>
+                    </th>
+                    <td>
+                      <span className="badge badge-dot">
+                        <i className="bg-success"></i> completed
+                      </span>
+                    </td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <span className="mr-2">100%</span>
+                        <div>
+                          <div className="progress">
+                            <div className="progress-bar bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: '100%'}}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-right">
+                      <button className="btn btn-primary" type="button">Edit</button>
+                      <div className="dropdown">
+                        <a className="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i className="fa fa-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <div style={{height:'200px', display:this.state.display2}}>
+                  <div className="link-item__body"><div className="link-body-info">
+                    <div className="hidden-wrap">
+                      <div className="link-info-url small line-clamp">
+                      <a target="_blank"></a>
+                      </div>
+                      <div className="link-info-date small">created on January 10, 2019</div>
+                      </div>
+                      <div className="link-pixel-sets mt1"><span className="small">Tracking Pixels:</span>&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <tr onClick={()=>{this.state.display3=='none'?this.setState({display3:'block'}):this.setState({display3:'none'})}}>
+                    <th scope="row">
+                      <div className="media align-items-center">
+                        <a href="#" className="avatar rounded-circle mr-3">
+                          <img alt="Image placeholder" src="whatsapp.jpeg"/>
+                        </a>
+                        <div className="media-body">
+                          <span className="mb-0 text-sm">Whatsapp</span>
+                        </div>
+                      </div>
+                    </th>
+                    <td>
+                      <span className="badge badge-dot mr-4">
+                        <i className="bg-danger"></i> delayed
+                      </span>
+                    </td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <span className="mr-2">72%</span>
+                        <div>
+                          <div className="progress">
+                            <div className="progress-bar bg-danger" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" style={{width: '72%'}}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-right">
+                    <button className="btn btn-primary" type="button">Edit</button>
+                      <div className="dropdown">
+                        <a className="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i className="fa fa-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <div style={{height:'200px', display:this.state.display3}}>
+                  <div className="link-item__body"><div className="link-body-info">
+                    <div className="hidden-wrap">
+                      <div className="link-info-url small line-clamp">
+                      <a target="_blank"></a>
+                      </div>
+                      <div className="link-info-date small">created on January 10, 2019</div>
+                      </div>
+                      <div className="link-pixel-sets mt1"><span className="small">Tracking Pixels:</span>&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <tr onClick={()=>{this.state.display4=='none'?this.setState({display4:'block'}):this.setState({display4:'none'})}}>
+                    <th scope="row">
+                      <div className="media align-items-center">
+                        <a href="#" className="avatar rounded-circle mr-3">
+                          <img alt="Image placeholder" src="telegram.png"/>
+                        </a>
+                        <div className="media-body">
+                          <span className="mb-0 text-sm">Telegram</span>
+                        </div>
+                      </div>
+                    </th>
+
+                    <td>
+                      <span className="badge badge-dot">
+                        <i className="bg-info"></i> on schedule
+                      </span>
+                    </td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <span className="mr-2">90%</span>
+                        <div>
+                          <div className="progress">
+                            <div className="progress-bar bg-info" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style={{width: '90%'}}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-right">
+                      <button className="btn btn-primary" type="button">Edit</button>
+                      <div className="dropdown">
+                        <a className="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i className="fa fa-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <div style={{height:'200px', display:this.state.display4}}>
+                  <div className="link-item__body"><div className="link-body-info">
+                    <div className="hidden-wrap">
+                      <div className="link-info-url small line-clamp">
+                      <a target="_blank"></a>
+                      </div>
+                      <div className="link-info-date small">created on January 10, 2019</div>
+                      </div>
+                      <div className="link-pixel-sets mt1"><span className="small">Tracking Pixels:</span>&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </tbody>
+              </table>
+            </div>
                       :
                       <span className="alert-text">You haven't lent yet. Check the available loan request below!</span>
                     }

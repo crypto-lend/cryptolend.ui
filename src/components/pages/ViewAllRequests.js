@@ -9,10 +9,10 @@ import './ViewAllOffers.css';
 class ViewAllRequests extends Component {
   constructor(){
     super();
-    this.state={
+    this.state = {
       loanAmount:'1.5 ETH',
       collateralValue: '3',
-      earnings:'3.4% (20% APR)',
+      earnings:[3.5,1.25,5],
       duration: [90, 30, 120],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
@@ -21,10 +21,10 @@ class ViewAllRequests extends Component {
       waitingForPayback:true,
       finished:true,
       defaulted:true,
-      minMonthlyInt:'0',
-      maxMonthlyInt:'5',
-      minDuration:'0',
-      maxDuration:'12',
+      minMonthlyInt:0,
+      maxMonthlyInt:5,
+      minDuration:0,
+      maxDuration:12,
       erc20_tokens :  ['ALL', 'BTC','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
@@ -39,7 +39,7 @@ class ViewAllRequests extends Component {
     };
   }
   render() {
-    const {erc20_tokens,duration,minDuration,maxDuration} = this.state;
+    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt} = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <header className="header-global">
@@ -220,25 +220,24 @@ class ViewAllRequests extends Component {
                 <div className="mt-3">
                   <label for="">Monthly Interest</label>
                   <div className="">
-                  <label style={{marginLeft:'-180px'}}> ({this.state.minMonthlyInt} %) </label>
+                  <label style={{marginLeft:'-180px'}}> ({minMonthlyInt} %) </label>
                   </div>
                   <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
-                  <label> ({this.state.maxMonthlyInt} %)</label>
+                  <label> ({maxMonthlyInt} %)</label>
                   </div>
-
-                  <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]}); console.log(this.state.maxMonthlyInt);}} />
+                  <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]});}} />
                 </div>
                 </li>
                 <li>
                 <div className="mt-3">
                   <label for="">Duration</label>
                   <div className="">
-                  <label style={{marginLeft:'-180px'}}> ({this.state.minDuration} Month) </label>
+                  <label style={{marginLeft:'-180px'}}> ({minDuration} Month) </label>
                   </div>
                   <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
-                  <label> ({this.state.maxDuration} Month)</label>
+                  <label> ({maxDuration} Month)</label>
                   </div>
-                  <Nouislider range={{ min: 0, max: 12 }} start={[0, 12]} connect onChange={(e)=>{this.setState({minDuration:e[0],maxDuration:e[1]}); console.log(this.state.maxDuration);}} />
+                  <Nouislider range={{ min: 0, max: 12 }} start={[0, 12]} connect onChange={(e)=>{this.setState({minDuration:e[0],maxDuration:e[1]});}} />
                   </div>
                 </li>
               </ul>
@@ -249,7 +248,7 @@ class ViewAllRequests extends Component {
           </div>
 
               {
-                this.state.waitingForLender && duration[0]/30>minDuration && duration[0]/30<maxDuration &&
+                this.state.waitingForLender && duration[0]/30>minDuration && duration[0]/30<=maxDuration && earnings[0]>minMonthlyInt && earnings[0]<=maxMonthlyInt &&
                  <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
@@ -267,7 +266,7 @@ class ViewAllRequests extends Component {
               </div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Earnings : {this.state.earnings}</p>
+                  <p>Earnings : {this.state.earnings[0]} %</p>
                   <p>Duration  : {this.state.duration[0]} days</p>
                   <p>Safeness : {this.state.safeness}</p>
                   <p>Expires in : {this.state.expireIn}</p>
@@ -285,7 +284,7 @@ class ViewAllRequests extends Component {
 
             }
               {
-                this.state.waitingForPayback && duration[1]/30>minDuration && duration[1]/30<maxDuration &&
+                this.state.waitingForPayback && duration[1]/30>minDuration && duration[1]/30<=maxDuration && earnings[1]>minMonthlyInt && earnings[1]<=maxMonthlyInt &&
                 <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
@@ -303,7 +302,7 @@ class ViewAllRequests extends Component {
               </div>
                   </div>
                   <div className="card-body text-left" style={{marginBottom:'80px'}}>
-                  <p>Earnings : {this.state.earnings}</p>
+                  <p>Earnings : {this.state.earnings[1]} %</p>
                   <p>Duration  : {this.state.duration[1]} days</p>
                   <p>Safeness : {this.state.safeness}</p>
 
@@ -316,7 +315,7 @@ class ViewAllRequests extends Component {
 
               }
             {
-              this.state.waitingForLender && duration[2]/30>minDuration && duration[2]/30<maxDuration &&
+              this.state.waitingForLender && duration[2]/30>minDuration && duration[2]/30<=maxDuration && earnings[2]>minMonthlyInt && earnings[2]<=maxMonthlyInt &&
                 <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
@@ -334,7 +333,7 @@ class ViewAllRequests extends Component {
               </div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Earnings : {this.state.earnings}</p>
+                  <p>Earnings : {this.state.earnings[2]} %</p>
                   <p>Duration  : {this.state.duration[2]} days</p>
                   <p>Safeness : {this.state.safeness}</p>
                   <p>Expires in : {this.state.expireIn}</p>
