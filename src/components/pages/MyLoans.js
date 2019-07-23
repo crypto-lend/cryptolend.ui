@@ -345,7 +345,7 @@ class MyLoans extends Component {
                       <span className="alert-text">You haven't lent yet. Check the available loan request below!</span>
                     }
                     </div>
-                    <div className="btn-wrapper" style={{marginTop:'200px'}}>
+                    <div className="btn-wrapper">
                       <a href="/view-offers" className="btn btn-primary btn-icon mb-3 mb-sm-0" data-toggle="scroll">
                         <span className="btn-inner--text">View All Offers</span>
                       </a>
