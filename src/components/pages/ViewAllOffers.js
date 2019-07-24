@@ -155,7 +155,7 @@ class ViewAllOffers extends Component {
               <i className="fa fa-filter" aria-hidden="true"></i>
               <a className="ls-1 text-primary py-3 mb-0 ml-2">View All Requests</a>
             </div>
-            <div className="card-body px-lg-7">
+            <div className="card-body">
 
               <ul className="list-unstyled my-4">
                 <li>
@@ -246,7 +246,7 @@ class ViewAllOffers extends Component {
           </div>
 
               {
-                this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration && 
+                this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration &&
                 <div className="col-md-4">
                     <div className="card">
                       <div className="card-header">
