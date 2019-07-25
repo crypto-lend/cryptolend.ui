@@ -8,7 +8,8 @@ class LoanOffer extends Component {
   constructor(){
     super();
     this.state = {
-      collateral:true,
+      loanCurrency:true,
+      collateral:false,
       loan:false,
       currency:false,
       borrow:false,
@@ -19,14 +20,33 @@ class LoanOffer extends Component {
       duration: '(not set)',
       monthlyInt: '(not set)',
       collateralSafe: '(not set)',
+      collateralCurrency:'',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:0,
       durationEnd:360,
-      stableCoins :  ['STABLE COINS','DAI', 'PAX', 'TUSD']
+      stableCoins :  ['STABLE COINS','DAI', 'PAX', 'TUSD'],
+      erc20_tokens :  ['BNB', 'GTO', 'QKC', 'NEXO',
+          'PAX','EGT',  'MANA','POWR',
+          'TUSD','LAMB','CTXC','ENJ',
+          'CELR','HTB','ICX',  'WTC',
+          'USD', 'BTM','EDO', 'SXDT',
+          'OMG','CRO','TOP','SXUT',
+          'MEDX','ITC','REP','STO',
+          'LINK','CMT','WAX',
+          'MATIC','ELF', 'COSM',
+          'HT','BZ','NAS',
+          'FET','PPT','MCO'],
+          collateralArr : []
+
     };
   }
+
+  handleAddCollateral = () => {
+    this.state.collateralArr.push(1);
+  }
+
   render() {
-    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess } = this.state;
+    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -141,12 +161,12 @@ class LoanOffer extends Component {
                   <div className="card-header text-center">
                     <h5> New Loan Offer</h5>
                   </div>
-                  <div className="card-body"  style={{display:this.state.collateral?'block':'none'}}>
+                  <div className="card-body"  style={{display:this.state.loanCurrency?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text"><strong>Choose your loan offer currency.</strong></span>
                     </div>
                     <div className="row mt-5">
-                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false, loan:true});}}>
+                    <div className="col-md-6" style={{marginTop:'25px', marginBottom:'230px', cursor:'pointer'}} onClick={()=>{this.setState({loanCurrency:false, loan:true});}}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
@@ -167,7 +187,7 @@ class LoanOffer extends Component {
                       <span className="alert-text"><strong>Insert the loan offer amount.</strong></span>
                     </div>
                     <input className="form-control form-control-lg" type="text" placeholder="ETH" onChange={(e)=>{this.setState({loanAmount:e.target.value});}}/>
-                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:false,loan:false, borrow:true});}}>
+                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({loanCurrency:false,loan:false, borrow:true});}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
@@ -190,12 +210,57 @@ class LoanOffer extends Component {
                       <span className="alert-text"><strong>Are you willing to lend less?</strong></span>
                     </div>
                     <input className="form-control form-control-lg" type="text"  value={loanAmount} placeholder={loanAmount} onChange={(e)=>{this.setState({loanAmount:e.target.value});}}/>
-                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
+                    <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:true, borrow:false});}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
                     </div>
                   </div>
+                  <div className="card-body" style={{display:this.state.collateral?'block':'none'}}>
+                    <div className="alert alert-primary alert-dismissible fade show" role="alert">
+                      <span className="alert-text">Add your collateral.</span>
+                    </div>
+
+                    {
+
+                           <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                                <div className="col-md-12 form-group mt-5">
+                                    <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
+                                      this.setState({collateralCurrency:e.target.value});
+                                    }}>
+                                    {
+                                      erc20_tokens.map((item) => {
+                                        return <option>{item}</option>;
+                                    })
+                                    }
+                                    </select>
+                                    <h6 class="mt-4">LTV</h6>
+                                    <span class="font-weight-bold mb-0">50%</span>
+                                    <h6 class="mt-4">Interest</h6>
+                                    <span class="font-weight-bold mb-0">0.25%</span>
+                                  </div>
+                               </div>
+
+
+
+
+
+                    }
+
+                    <div className="text-center mt-3">
+                    <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={()=>{this.handleAddCollateral()}}>
+                      <span><i className="fa fa-plus"></i></span>
+                    </button>
+                    </div>
+
+                    <div className="btn-wrapper" style={{marginTop:'0px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, collateral:false});}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                        <span className="btn-inner--text">Next</span>
+                      </a>
+                    </div>
+                  </div>
+
+
                   <div className="card-body"  style={{display:this.state.durationView?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Define loan duration.</span>
@@ -210,17 +275,7 @@ class LoanOffer extends Component {
                         })
                       }
                     </div>
-                    <div className="card-body"style={{display:this.state.borrow?'block':'none'}}>
-                      <div className="alert alert-primary alert-dismissible fade show" role="alert">
-                        <span className="alert-text">Great! you can borrow now.</span>
-                      </div>
-                      <input className="form-control form-control-lg" type="text" placeholder="ETH" onChange={(e)=>{this.setState({loanAmount:e.target.value});}}/>
-                      <div className="btn-wrapper" style={{marginTop:'200px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
-                        <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
-                          <span className="btn-inner--text">Next</span>
-                        </a>
-                      </div>
-                    </div>
+
                   </div>
                 </div>
               </div>
