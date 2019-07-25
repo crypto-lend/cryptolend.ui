@@ -8,8 +8,8 @@ class LoanOffer extends Component {
   constructor(){
     super();
     this.state = {
-      loanCurrency:true,
-      collateral:false,
+      loanCurrency:false,
+      collateral:true,
       loan:false,
       currency:false,
       borrow:false,
@@ -36,17 +36,18 @@ class LoanOffer extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
-          collateralArr : []
+          collateralCount : 0
 
     };
   }
 
   handleAddCollateral = () => {
-    this.state.collateralArr.push(1);
+    this.state.collateralCount++;
+    console.log(this.state.collateralCount);
   }
 
   render() {
-    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency } = this.state;
+    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency, collateralCount } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -221,9 +222,9 @@ class LoanOffer extends Component {
                       <span className="alert-text">Add your collateral.</span>
                     </div>
 
-                    {
+                    {<div className="row ml-2">
 
-                           <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                           { <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
                                       this.setState({collateralCurrency:e.target.value});
@@ -240,10 +241,44 @@ class LoanOffer extends Component {
                                     <span class="font-weight-bold mb-0">0.25%</span>
                                   </div>
                                </div>
+                           }
 
+                               {collateralCount>1 && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                                    <div className="col-md-12 form-group mt-5">
+                                        <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
+                                          this.setState({collateralCurrency:e.target.value});
+                                        }}>
+                                        {
+                                          erc20_tokens.map((item) => {
+                                            return <option>{item}</option>;
+                                        })
+                                        }
+                                        </select>
+                                        <h6 class="mt-4">LTV</h6>
+                                        <span class="font-weight-bold mb-0">50%</span>
+                                        <h6 class="mt-4">Interest</h6>
+                                        <span class="font-weight-bold mb-0">0.25%</span>
+                                      </div>
+                                   </div>}
 
-
-
+                                   {collateralCount>2 && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                                        <div className="col-md-12 form-group mt-5">
+                                            <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
+                                              this.setState({collateralCurrency:e.target.value});
+                                            }}>
+                                            {
+                                              erc20_tokens.map((item) => {
+                                                return <option>{item}</option>;
+                                            })
+                                            }
+                                            </select>
+                                            <h6 class="mt-4">LTV</h6>
+                                            <span class="font-weight-bold mb-0">50%</span>
+                                            <h6 class="mt-4">Interest</h6>
+                                            <span class="font-weight-bold mb-0">0.25%</span>
+                                          </div>
+                                        </div>}
+                                     </div>
 
                     }
 
