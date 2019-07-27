@@ -8,8 +8,8 @@ class LoanOffer extends Component {
   constructor(){
     super();
     this.state = {
-      loanCurrency:false,
-      collateral:true,
+      loanCurrency:true,
+      collateral:false,
       loan:false,
       currency:false,
       borrow:false,
@@ -20,9 +20,9 @@ class LoanOffer extends Component {
       duration: '(not set)',
       monthlyInt: '(not set)',
       collateralSafe: '(not set)',
-      collateralCurrency:'',
+      collateralCurrency:[],
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
-      durationStart:0,
+      durationStart:1,
       durationEnd:360,
       stableCoins :  ['STABLE COINS','DAI', 'PAX', 'TUSD'],
       erc20_tokens :  ['BNB', 'GTO', 'QKC', 'NEXO',
@@ -37,17 +37,16 @@ class LoanOffer extends Component {
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
           collateralCount : 0
-
     };
   }
 
   handleAddCollateral = () => {
-    this.state.collateralCount++;
+    this.setState({collateralCount:this.state.collateralCount + 1})
     console.log(this.state.collateralCount);
   }
 
   render() {
-    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency, collateralCount } = this.state;
+    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency, collateralCount, collateralValue } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -224,10 +223,11 @@ class LoanOffer extends Component {
 
                     {<div className="row ml-2">
 
-                           { <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                           {!!collateralCount && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
-                                      this.setState({collateralCurrency:e.target.value});
+                                      this.setState({collateralCurrency:collateralCurrency.push(e.target.value)});
+
                                     }}>
                                     {
                                       erc20_tokens.map((item) => {
@@ -243,7 +243,7 @@ class LoanOffer extends Component {
                                </div>
                            }
 
-                               {collateralCount>1 && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                               {!!(collateralCount>1) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                     <div className="col-md-12 form-group mt-5">
                                         <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
                                           this.setState({collateralCurrency:e.target.value});
@@ -261,7 +261,7 @@ class LoanOffer extends Component {
                                       </div>
                                    </div>}
 
-                                   {collateralCount>2 && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                                   {!!(collateralCount>2) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                         <div className="col-md-12 form-group mt-5">
                                             <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
                                               this.setState({collateralCurrency:e.target.value});
@@ -283,12 +283,12 @@ class LoanOffer extends Component {
                     }
 
                     <div className="text-center mt-3">
-                    <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={()=>{this.handleAddCollateral()}}>
+                    <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={this.handleAddCollateral}>
                       <span><i className="fa fa-plus"></i></span>
                     </button>
                     </div>
 
-                    <div className="btn-wrapper" style={{marginTop:'0px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, collateral:false});}}>
+                    <div className="btn-wrapper" style={{marginTop:collateralCount?'-30px':'176px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, collateral:false});}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
@@ -320,9 +320,9 @@ class LoanOffer extends Component {
                     Overview
                   </div>
                   <div className="card-body text-left">
-                    <div><p>Loan amount {this.state.loanAmount} ETH</p></div>
-                    <div><p>Collateral {this.state.collateralValue}</p></div>
-                    <p>Duration {this.state.duration} days</p>
+                    <div><p>Loan amount {loanAmount} ETH</p></div>
+                    <div><p>Collateral {collateralValue}</p></div>
+                    <p>Duration {duration} days</p>
 
                     <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{}}>
                       <br/>

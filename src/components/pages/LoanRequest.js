@@ -569,7 +569,6 @@ class LoanRequest extends Component {
                   <div className="card-body"  style={{display:durationView?'block':'none'}}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Define loan duration.</span>
-
                     </div>
                     <br/>
 
