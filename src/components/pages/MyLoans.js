@@ -9,7 +9,7 @@ class MyLoans extends Component {
     super();
 
     this.state = {
-      borrowedLoans:false, fundedLoans:true, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
+      borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
   }
   render() {
