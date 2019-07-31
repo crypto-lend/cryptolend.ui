@@ -6,3 +6,9 @@ th {
 #repay {
       border-bottom-style: hidden!important;
 }
+
+
+
+.container {
+    max-width: 1260px;
+}

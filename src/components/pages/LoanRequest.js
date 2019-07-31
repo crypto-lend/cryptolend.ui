@@ -649,15 +649,26 @@ class LoanRequest extends Component {
 
                   </div>
                   { monthlyInt?
-                    <div className="btn-wrapper text-center pb-4" onClick={()=>{
+                    <div className="btn-wrapper text-center" onClick={()=>{
                       this.createLoanRequest(loanAmount,duration,monthlyInt,collateralAddress,collateralValue);
                       }}>
                       <br/>
-                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                      <a href="#" className="btn btn-primary btn-icon ">
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>
                   :''
+                  }
+                  {
+                    monthlyInt ?
+                    <div className="btn-wrapper text-center" onClick={()=>{
+                      }}>
+                      <br/>
+                      <a href="#" className="btn btn-primary mb-2">
+                        <span className="btn-inner--text">Transfer collateral</span>
+                      </a>
+                    </div>
+                    :''
                   }
                 </div>
               </div>
