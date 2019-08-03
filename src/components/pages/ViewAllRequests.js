@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
-import { FinocialLoanABI, FinocialABI, FinocialAddress } from '../Web3/abi';
+import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './ViewAllOffers.css';
@@ -15,8 +15,10 @@ class ViewAllRequests extends Component {
       loanAmount:[],
       collateralValue: [],
       earnings:[],
-      loanAddress:[],
+      loanAddresses:[],
       duration: [],
+      collateralAddress: [],
+      status:[],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForLender:true,
@@ -49,31 +51,70 @@ class ViewAllRequests extends Component {
     const FinocialInstance = window.web3.eth.contract(FinocialABI).at(FinocialAddress);
 
     FinocialInstance.getAllLoans((err, loanContractAddress) => {
-      let {loanAmount, collateralValue, duration, earnings,loanAddress} = this.state;
-      this.setState({loanAddress:loanContractAddress});
+      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status} = this.state;
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
+                  console.log('getLoanData :',res[4].toNumber());
                 if(!err)
                   {loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());
                   duration.push(res[1].toNumber());
                   earnings.push(res[2].toFixed(2));
-                }
+                  status.push(res[4].toNumber());
+                  collateralAddress.push(res[5]);
+                  loanAddresses.push(loanAddress);
+
+
                    this.setState({
                      loanAmount: loanAmount,
                      collateralValue: collateralValue,
                      duration: duration,
                      earnings: earnings,
+                     status: status,
+                     collateralAddress: collateralAddress,
+                     loanAddresses: loanAddresses
                    })
-                });});
-                console.log('loanAmount :',this.state.loanAmount);
+                   console.log('collateralAddress', this.state.collateralAddress);
 
+                 }
+                });
+              });
       }
 
     });
+  }
+
+  handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
+    // Transfer Collateral to Loan Contract
+    // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
+
+    // Transaction 1 Approval
+
+    const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
+    tokenContractInstance.approve(loanContractAddress, collateralAmount, {
+          from: window.web3.eth.accounts[0]
+        },
+        function(err, res) {
+          if (!err) {
+            console.log(res);
+          } else {
+
+          }
+     });
+
+
+     // Transaction 2 Transfer to Loan Contract
+
+    const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+    FinocialLoanInstance.transferCollateralToLoan({
+      from: window.web3.eth.accounts[0]
+        },function(err, res){
+        if(!err)
+           console.log(res);
+        });
   }
 
 
@@ -89,7 +130,7 @@ class ViewAllRequests extends Component {
   }
 
   render() {
-    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt, loanAddress} = this.state;
+    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses} = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <header className="header-global">
@@ -319,16 +360,29 @@ class ViewAllRequests extends Component {
                    <p>Duration  : {this.state.duration[i]} days</p>
                    <p>Safeness : {this.state.safeness}</p>
                    <p>Expires in : {this.state.expireIn}</p>
-                     <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount[i], loanAddress[i])}>
+                    {!status[i] && <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount[i], loanAddresses[i])}>
                        <a href="#" className="btn btn-primary btn-icon m-1">
                          <span className="btn-inner--text">Fund Now</span>
                        </a>
-                     </div>
+                     </div>}
                    </div>
                  </div>
-                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                   <span className="alert-text">Waiting for lender(s)</span>
-                 </div>
+                 {
+                   !status[i]?
+                   <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                     <span className="alert-text">Waiting for lender(s)</span>
+                   </div>
+                   :
+                   <div className="btn-wrapper text-center" onClick={()=>{
+                     this.handleTransferCollateral(collateralAddress[i], loanAddresses[i], collateralValue[i])
+                     }}>
+                     <br/>
+                     <a href="#" className="btn btn-primary mb-2">
+                       <span className="btn-inner--text">Transfer collateral</span>
+                     </a>
+                   </div>
+
+               }
                </div>;
                 })
             }

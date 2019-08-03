@@ -59,35 +59,7 @@ class LoanRequest extends Component {
       window.location.reload();
     }
 
-    handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
-      // Transfer Collateral to Loan Contract
-      // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
 
-      // Transaction 1 Approval
-
-      const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
-      tokenContractInstance.approve(loanContractAddress, collateralAmount, {
-            from: window.web3.eth.accounts[0]
-          },
-          function(err, res) {
-            if (!err) {
-              console.log(res);
-            } else {
-
-            }
-       });
-
-
-       // Transaction 2 Transfer to Loan Contract
-
-      const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
-      FinocialLoanInstance.transferCollateralToLoan({
-        from: window.web3.eth.accounts[0]
-          },function(err, res){
-          if(!err)
-             console.log(res);
-          });
-    }
 
   handleMonthlyInterest = (e) => {
 
@@ -375,7 +347,7 @@ class LoanRequest extends Component {
                   <div className="card-header text-center">
                     Overview
                   </div>
-                  <div className="card-body text-left mt-5" style={{marginBottom:monthlyInt?'84px':'150px'}}>
+                  <div className="card-body text-left mt-5" style={{marginBottom:monthlyInt?'160px':'253px'}}>
                   {collateralValue ?
                     <div><p>Collateral : {collateralValue} {collateralCurrency}</p></div>
                     :<div><p>Collateral : (not set)</p></div>
@@ -409,18 +381,7 @@ class LoanRequest extends Component {
                     </div>
                   :''
                   }
-                  {
 
-                    <div className="btn-wrapper text-center" onClick={()=>{
-                      this.handleTransferCollateral(collateralAddress, FinocialAddress, collateralValue)
-                      }}>
-                      <br/>
-                      <a href="#" className="btn btn-primary mb-2">
-                        <span className="btn-inner--text">Transfer collateral</span>
-                      </a>
-                    </div>
-
-                  }
                 </div>
               </div>
             </div>
