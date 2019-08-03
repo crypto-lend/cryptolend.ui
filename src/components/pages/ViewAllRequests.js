@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
+import { FinocialLoanABI, FinocialABI, FinocialAddress } from '../Web3/abi';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './ViewAllOffers.css';
@@ -9,23 +10,25 @@ import './ViewAllOffers.css';
 class ViewAllRequests extends Component {
   constructor(){
     super();
+    this.viewAllRequest();
     this.state = {
-      loanAmount:'1.5 ETH',
-      collateralValue: '3',
-      earnings:[3.5,1.25,5],
-      duration: [90, 30, 120],
+      loanAmount:[],
+      collateralValue: [],
+      earnings:[],
+      loanAddress:[],
+      duration: [],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForLender:true,
-      waitingForCollateral:true,
-      waitingForPayback:true,
-      finished:true,
+      waitingForCollateral:false,
+      waitingForPayback:false,
+      finished:false,
       defaulted:true,
       minMonthlyInt:0,
       maxMonthlyInt:5,
       minDuration:0,
       maxDuration:12,
-      erc20_tokens :  ['ALL', 'BTC','BNB', 'GTO', 'QKC', 'NEXO',
+      erc20_tokens :  ['ALL','TTT', 'BTC','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -36,10 +39,57 @@ class ViewAllRequests extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
+           FinocialABI: FinocialABI,
+
     };
   }
+
+  //Get All Loans
+  viewAllRequest = () => {
+    const FinocialInstance = window.web3.eth.contract(FinocialABI).at(FinocialAddress);
+
+    FinocialInstance.getAllLoans((err, loanContractAddress) => {
+      let {loanAmount, collateralValue, duration, earnings,loanAddress} = this.state;
+      this.setState({loanAddress:loanContractAddress});
+      if(!err){
+        // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
+        loanContractAddress.map((loanAddress)=>{
+                const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+                FinocialLoanInstance.getLoanData((err, res)=>{
+                if(!err)
+                  {loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
+                  collateralValue.push(res[6].toNumber());
+                  duration.push(res[1].toNumber());
+                  earnings.push(res[2].toFixed(2));
+                }
+                   this.setState({
+                     loanAmount: loanAmount,
+                     collateralValue: collateralValue,
+                     duration: duration,
+                     earnings: earnings,
+                   })
+                });});
+                console.log('loanAmount :',this.state.loanAmount);
+
+      }
+
+    });
+  }
+
+
+  approveLoanRequest = (loanAmount,loanContractAddress) => {
+    const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+    FinocialLoanInstance.approveLoanRequest({
+      from: window.web3.eth.accounts[0],
+      value: window.web3.toWei(loanAmount)
+        },function(err, res){
+        if(!err)
+           console.log(res);
+        });
+  }
+
   render() {
-    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt} = this.state;
+    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt, loanAddress} = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <header className="header-global">
@@ -163,7 +213,7 @@ class ViewAllRequests extends Component {
                 <li>
                   <div className="form-group">
                       <label for="exampleFormControlSelect1">Loan Currency</label>
-                      <select className="form-control" id="exampleFormControlSelect1" onClick={ (e)=>{
+                      <select className="form-control" id="exampleFormControlSelect1" onClick={ (e) => {
                         this.setState({collateralCurrency:e.target.value});
                       }}>
                       <option>ETH</option>;
@@ -173,7 +223,7 @@ class ViewAllRequests extends Component {
                 <li>
                 <div className="form-group">
                     <label for="exampleFormControlSelect1">Collateral Currency</label>
-                    <select className="form-control" id="exampleFormControlSelect1" onClick={ (e)=>{
+                    <select className="form-control" id="exampleFormControlSelect1" onClick={ (e) => {
                       this.setState({collateralCurrency:e.target.value});
                     }}>
                     {
@@ -246,43 +296,43 @@ class ViewAllRequests extends Component {
               <a href="#!" className=" text-muted">Reset Filters</a>
             </div>
           </div>
-
+            <div className="ml-4 row">
               {
-                this.state.waitingForLender && duration[0]/30>minDuration && duration[0]/30<=maxDuration && earnings[0]>minMonthlyInt && earnings[0]<=maxMonthlyInt &&
-                 <div className="col-md-4">
-                <div className="card">
-                  <div className="card-header">
+                this.state.loanAmount.map((loanAmount,i)=>{
+                return <div className="col-sm-4">
+                 <div className="card">
+                   <div className="card-header">
 
-                  <div className="row row-example">
-                <div className="col-sm">
-                  <span><p>Loan amount  </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount}</span>
-
-                </div>
-                <div className="col-sm">
-                  <span><p>Collateral </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/32/color/btc.png"/> {this.state.collateralValue} BTC</span>
-                </div>
-              </div>
-                  </div>
-                  <div className="card-body text-left">
-                  <p>Earnings : {this.state.earnings[0]} %</p>
-                  <p>Duration  : {this.state.duration[0]} days</p>
-                  <p>Safeness : {this.state.safeness}</p>
-                  <p>Expires in : {this.state.expireIn}</p>
-                    <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon m-1">
-                        <span className="btn-inner--text">Fund Now</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                  <span className="alert-text">Waiting for lender(s)</span>
-                </div>
-              </div>
-
+                   <div className="row row-example">
+                 <div className="col-sm">
+                   <span><p>Amount  </p></span>
+                   <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {loanAmount[i]} ETH </span>
+                 </div>
+                 <div className="col-sm">
+                   <span><p>Collateral </p></span>
+                   <span className="btn-inner--text"> {this.state.collateralValue[i]} TTT</span>
+                 </div>
+               </div>
+                   </div>
+                   <div className="card-body text-left">
+                   <p>Earnings : {this.state.earnings[i]} %</p>
+                   <p>Duration  : {this.state.duration[i]} days</p>
+                   <p>Safeness : {this.state.safeness}</p>
+                   <p>Expires in : {this.state.expireIn}</p>
+                     <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount[i], loanAddress[i])}>
+                       <a href="#" className="btn btn-primary btn-icon m-1">
+                         <span className="btn-inner--text">Fund Now</span>
+                       </a>
+                     </div>
+                   </div>
+                 </div>
+                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                   <span className="alert-text">Waiting for lender(s)</span>
+                 </div>
+               </div>;
+                })
             }
+            </div>
               {
                 this.state.waitingForPayback && duration[1]/30>minDuration && duration[1]/30<=maxDuration && earnings[1]>minMonthlyInt && earnings[1]<=maxMonthlyInt &&
                 <div className="col-md-4">
@@ -292,7 +342,7 @@ class ViewAllRequests extends Component {
                   <div className="row row-example">
                 <div className="col-sm">
                   <span><p>Loan amount  </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> 0.06 ETH</span>
+                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount} ETH</span>
 
                 </div>
                 <div className="col-sm">
@@ -315,7 +365,7 @@ class ViewAllRequests extends Component {
 
               }
             {
-              this.state.waitingForLender && duration[2]/30>minDuration && duration[2]/30<=maxDuration && earnings[2]>minMonthlyInt && earnings[2]<=maxMonthlyInt &&
+              !this.state.waitingForLender && duration[2]/30>minDuration && duration[2]/30<=maxDuration && earnings[2]>minMonthlyInt && earnings[2]<=maxMonthlyInt &&
                 <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
@@ -348,7 +398,6 @@ class ViewAllRequests extends Component {
                   <span className="alert-text">Waiting for lender(s)</span>
                 </div>
               </div>
-
           }
             </div>
           </section>

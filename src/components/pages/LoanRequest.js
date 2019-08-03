@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { FinocialLoanABI, FinocialABI, StandardTokenABI } from '../Web3/abi';
+
 
 class LoanRequest extends Component {
   constructor(){
@@ -27,7 +29,7 @@ class LoanRequest extends Component {
       apr:0,
       originationFee:1,
       collateralCurrency:'ETH',
-      erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
+      erc20_tokens :  ['ERC20 TOKENS','TTT','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -38,298 +40,16 @@ class LoanRequest extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
-           FinocialABI: [
-            {
-            "constant": false,
-            "inputs": [],
-            "name": "unpause",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [
-            {
-            "name": "account",
-            "type": "address"
-            }
-            ],
-            "name": "isPauser",
-            "outputs": [
-            {
-            "name": "",
-            "type": "bool"
-            }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [],
-            "name": "paused",
-            "outputs": [
-            {
-            "name": "",
-            "type": "bool"
-            }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "constant": false,
-            "inputs": [],
-            "name": "renouncePauser",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": false,
-            "inputs": [],
-            "name": "renounceOwnership",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": false,
-            "inputs": [
-            {
-            "name": "account",
-            "type": "address"
-            }
-            ],
-            "name": "addPauser",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": false,
-            "inputs": [],
-            "name": "pause",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [],
-            "name": "owner",
-            "outputs": [
-            {
-            "name": "",
-            "type": "address"
-            }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [],
-            "name": "isOwner",
-            "outputs": [
-            {
-            "name": "",
-            "type": "bool"
-            }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [
-            {
-            "name": "",
-            "type": "uint256"
-            }
-            ],
-            "name": "loans",
-            "outputs": [
-            {
-            "name": "",
-            "type": "address"
-            }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "constant": false,
-            "inputs": [
-            {
-            "name": "newOwner",
-            "type": "address"
-            }
-            ],
-            "name": "transferOwnership",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "inputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "constructor"
-            },
-            {
-            "anonymous": false,
-            "inputs": [
-            {
-            "indexed": false,
-            "name": "",
-            "type": "address"
-            },
-            {
-            "indexed": false,
-            "name": "",
-            "type": "address"
-            }
-            ],
-            "name": "LoanContractCreated",
-            "type": "event"
-            },
-            {
-            "anonymous": false,
-            "inputs": [
-            {
-            "indexed": false,
-            "name": "account",
-            "type": "address"
-            }
-            ],
-            "name": "Paused",
-            "type": "event"
-            },
-            {
-            "anonymous": false,
-            "inputs": [
-            {
-            "indexed": false,
-            "name": "account",
-            "type": "address"
-            }
-            ],
-            "name": "Unpaused",
-            "type": "event"
-            },
-            {
-            "anonymous": false,
-            "inputs": [
-            {
-            "indexed": true,
-            "name": "account",
-            "type": "address"
-            }
-            ],
-            "name": "PauserAdded",
-            "type": "event"
-            },
-            {
-            "anonymous": false,
-            "inputs": [
-            {
-            "indexed": true,
-            "name": "account",
-            "type": "address"
-            }
-            ],
-            "name": "PauserRemoved",
-            "type": "event"
-            },
-            {
-            "anonymous": false,
-            "inputs": [
-            {
-            "indexed": true,
-            "name": "previousOwner",
-            "type": "address"
-            },
-            {
-            "indexed": true,
-            "name": "newOwner",
-            "type": "address"
-            }
-            ],
-            "name": "OwnershipTransferred",
-            "type": "event"
-            },
-            {
-            "constant": false,
-            "inputs": [
-            {
-            "name": "_loanAmount",
-            "type": "uint256"
-            },
-            {
-            "name": "_duration",
-            "type": "uint128"
-            },
-            {
-            "name": "_interest",
-            "type": "uint256"
-            },
-            {
-            "name": "_collateralAddress",
-            "type": "address"
-            },
-            {
-            "name": "_collateralAmount",
-            "type": "uint256"
-            }
-            ],
-            "name": "createNewLoanRequest",
-            "outputs": [
-            {
-            "name": "_loanContractAddress",
-            "type": "address"
-            }
-            ],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [],
-            "name": "getAllLoans",
-            "outputs": [
-            {
-            "name": "",
-            "type": "address[]"
-            }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            }
-            ],
-            FinocialAddress : "0xFd83a46B72C14BFaB495E778CEFFad01A449bdD8",
-            collateralAddress : "0xe33916b99fa6260B2F16D21197c13f59CB08888E"
+           FinocialABI: FinocialABI,
+            FinocialAddress : "0x8EC614f3569910c3b27C74D59E46F383DDd5Fe1A",
+            collateralAddress : "0xcA211C948cc2c5EAA6D73D8fb0F4fe027614e6B0"
     };
   }
 
 
   createLoanRequest = (principal, duration, interest, collateralAddress, collateralAmount) => {
     const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(this.state.FinocialAddress);
-      FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, {
+      FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
       from: window.web3.eth.accounts[0]
       }, function(err, res) {
       if(!err){
@@ -337,6 +57,36 @@ class LoanRequest extends Component {
       }
     });
       window.location.reload();
+    }
+
+    handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
+      // Transfer Collateral to Loan Contract
+      // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
+
+      // Transaction 1 Approval
+
+      const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
+      tokenContractInstance.approve(loanContractAddress, collateralAmount, {
+            from: window.web3.eth.accounts[0]
+          },
+          function(err, res) {
+            if (!err) {
+              console.log(res);
+            } else {
+
+            }
+       });
+
+
+       // Transaction 2 Transfer to Loan Contract
+
+      const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+      FinocialLoanInstance.transferCollateralToLoan({
+        from: window.web3.eth.accounts[0]
+          },function(err, res){
+          if(!err)
+             console.log(res);
+          });
     }
 
   handleMonthlyInterest = (e) => {
@@ -376,7 +126,7 @@ class LoanRequest extends Component {
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr } = this.state;
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress } = this.state;
 
 
     return (
@@ -625,7 +375,7 @@ class LoanRequest extends Component {
                   <div className="card-header text-center">
                     Overview
                   </div>
-                  <div className="card-body text-left mt-5" style={{marginBottom:monthlyInt?'84px':'223px'}}>
+                  <div className="card-body text-left mt-5" style={{marginBottom:monthlyInt?'84px':'150px'}}>
                   {collateralValue ?
                     <div><p>Collateral : {collateralValue} {collateralCurrency}</p></div>
                     :<div><p>Collateral : (not set)</p></div>
@@ -660,15 +410,16 @@ class LoanRequest extends Component {
                   :''
                   }
                   {
-                    monthlyInt ?
+
                     <div className="btn-wrapper text-center" onClick={()=>{
+                      this.handleTransferCollateral(collateralAddress, FinocialAddress, collateralValue)
                       }}>
                       <br/>
                       <a href="#" className="btn btn-primary mb-2">
                         <span className="btn-inner--text">Transfer collateral</span>
                       </a>
                     </div>
-                    :''
+
                   }
                 </div>
               </div>
