@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
+import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './MyLoans.css';
@@ -7,11 +8,60 @@ import './MyLoans.css';
 class MyLoans extends Component {
   constructor(){
     super();
+    this.viewAllRequest();
 
     this.state = {
+      loanAmount:[],
+      collateralValue: [],
+      earnings:[],
+      loanAddresses:[],
+      duration: [],
+      collateralAddress: [],
+      status:[],
       borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
   }
+
+  //Get All Loans
+  viewAllRequest = () => {
+    const FinocialInstance = window.web3.eth.contract(FinocialABI).at(FinocialAddress);
+
+    FinocialInstance.getAllLoans((err, loanContractAddress) => {
+      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status} = this.state;
+      if(!err){
+        // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
+        loanContractAddress.map((loanAddress)=>{
+                const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+                FinocialLoanInstance.getLoanData((err, res)=>{
+                if(!err && window.web3.eth.defaultAccount===res[9]){
+                  loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
+                  collateralValue.push(res[6].toNumber());
+                  duration.push(res[1].toNumber());
+                  earnings.push(res[2].toFixed(2));
+                  status.push(res[4].toNumber());
+                  collateralAddress.push(res[5]);
+                  loanAddresses.push(loanAddress);
+
+                   this.setState({
+                     loanAmount: loanAmount,
+                     collateralValue: collateralValue,
+                     duration: duration,
+                     earnings: earnings,
+                     status: status,
+                     collateralAddress: collateralAddress,
+                     loanAddresses: loanAddresses
+                   })
+
+                    // console.log('loanAmount', loanAmount);
+
+                 }
+                });
+              });
+      }
+
+    });
+  }
+
   render() {
     const {
       borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8
