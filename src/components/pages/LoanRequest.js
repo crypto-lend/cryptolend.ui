@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { FinocialLoanABI, FinocialABI, StandardTokenABI } from '../Web3/abi';
+import Loader from 'react-loader';
+import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
 
 
 class LoanRequest extends Component {
@@ -17,6 +18,7 @@ class LoanRequest extends Component {
       mprView:false,
       monthlyInterest:false,
       borrowLess:false,
+      loaded:true,
       collateralValue: null,
       loanAmount: null,
       duration: null,
@@ -41,22 +43,22 @@ class LoanRequest extends Component {
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
            FinocialABI: FinocialABI,
-            FinocialAddress : "0x337CC7937E90E7a2eeC160407a78f30D095Fb020",
             collateralAddress : "0xd6a7a0e2a2a5B0cB6A173294c02eb97802B89645"
     };
   }
 
 
   createLoanRequest = (principal, duration, interest, collateralAddress, collateralAmount) => {
-    const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(this.state.FinocialAddress);
+    const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(FinocialAddress);
       FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
       from: window.web3.eth.accounts[0]
       }, function(err, res) {
       if(!err){
       console.log("Transaction in process")
+
       }
     });
-      window.location.reload();
+
     }
 
 
@@ -103,6 +105,7 @@ class LoanRequest extends Component {
 
     return (
       <div className="LoanRequest text-center">
+      <Loader loaded={this.state.loaded}/>
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>

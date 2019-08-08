@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
+import Loader from 'react-loader';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './MyLoans.css';
@@ -18,6 +19,10 @@ class MyLoans extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
+      repaymentAmount:[],
+      fees:[],
+      repaymentNumber:[],
+      loaded:false,
       borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
   }
@@ -27,13 +32,15 @@ class MyLoans extends Component {
     const FinocialInstance = window.web3.eth.contract(FinocialABI).at(FinocialAddress);
 
     FinocialInstance.getAllLoans((err, loanContractAddress) => {
-      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status} = this.state;
+      this.setState({loaded:true})
+      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber} = this.state;
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
 
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
+                  console.log(res);
                 if(!err){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());
@@ -52,50 +59,68 @@ class MyLoans extends Component {
                      collateralAddress: collateralAddress,
                      loanAddresses: loanAddresses
                    })
-                    console.log('loanAddress', loanAddress);
-                     console.log('loanAmount', loanAmount);
 
-                     // Get repayment Amount to paid for a particular repayment duration
 
-                   FinocialLoanInstance.getRepaymentAmount(function(err, res){
-                      if(!err)
-                         res.map((repay,i) => {
-                           if(i<2)
-                            console.log(i,' : ',window.web3.fromWei(repay.toNumber()));
-                           else {
-                             console.log(i,' : ',repay.toNumber());
-
-                           }
-                         })
-                         // res structure would be
-                         // {
-                         //  repaymentAmount,
-                         //  fees,
-                         //  repaymentNumber
-                         // }
-
-                         // Note: repaymentAmount includes fees, so dont add it again
-                      });
 
                  }
                 });
-
-
 
               });
             }
 
           });
+          this.setState({loaded:false})
+        }
+
+        getRepayments = (loanAddress) => {
+        let {repaymentAmount, repaymentNumber} = this.state;
+        this.setState({loaded:true})
+
+
+          // Get repayment Amount to paid for a particular repayment duration
+        const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+
+
+        FinocialLoanInstance.getRepaymentAmount((err, res)=>{
+          console.log(res);
+
+           if(!err){
+             res.map((repay,i) => {
+               if(i==0)
+                 repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
+               else if(i==2) {
+                 repaymentNumber.push(repay.toNumber());
+               }
+             })
+           }
+           });
+           this.setState({loaded:false})
+
+        }
+
+
+        handleRepayment = (loanContractAddress, repaymentAmount) => {
+          // Repay Loan
+
+          const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+          FinocialLoanInstance.repayLoan({
+          from: window.web3.eth.accounts[0],
+          value: window.web3.toWei(repaymentAmount)
+           },function(err, res){
+           if(!err)
+              console.log(res);
+           });
         }
 
 
 
   render() {
     const {
-      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status
+      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber
     } = this.state;
     return (
       <div className="MyLoans text-center">
+      <Loader loaded={this.state.loaded}/>
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
@@ -228,7 +253,10 @@ class MyLoans extends Component {
                 </thead>
                 <tbody>
                   {loanAmount.map((amount,i)=>{
-                    return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false})}}>
+                    return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
+                      this.getRepayments(loanAddresses[i]);
+
+                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false})}}>
                     <th scope="row mt-3">
                       <div className="media align-items-center">
                         <div className="media-body">
@@ -265,7 +293,7 @@ class MyLoans extends Component {
                     </td>
                     <td>
                       <div className="text-center">
-                        <span className="">Waiting for lender</span>
+                        <span className="">Waiting for lender {status[i]}</span>
                         <div>
                         </div>
                       </div>
@@ -281,124 +309,73 @@ class MyLoans extends Component {
                   })
 
                   }
-                  { display1 && <tr id="repay">
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Repayments</span>
-                    </div>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> R1</span>
 
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R2</span>
-                        </div>
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R3</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Amount</span>
-                    </div>
-                      <span>
-                        1.7 ETH
-                        </span>
-
-                        <div>
-                          <span>  1.6 ETH</span>
-                        </div>
-                        <div>
-                          <span> 1.6 ETH</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Due Date</span>
-                    </div>
-                      <span>
-                        Oct 10, 2019
-                        </span>
-
-                        <div>
-                          <span>  Nov 10, 2019</span>
-                        </div>
-                        <div>
-                          <span> Dec 10, 2019</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Status</span>
-                    </div>
-                      <span>
-                        Paid
-                        </span>
-
-                        <div>
-                          <span>  Unpaid</span>
-                        </div>
-                        <div>
-                          <span> Defaulted/ Overdue</span>
-                        </div>
-                    </td>
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Action</span>
-                    </div>
-                      <span>
-                      <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={true} >Repay</button>
-                        </span>
-
-                        <div>
-                          <span>
-                          <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={false} >Repay</button>
+                  { repaymentAmount.map((repaymentAmount,i)=>{
+                    return display1 && <tr id="repay" key={i}>
+                      <td>
+                      <div className="media-body">
+                        <span className="mb-0 text-sm">Repayment No.</span>
+                      </div>
+                        <span className="badge-dot">
+                          <i className="bg-info"> </i>
+                            {repaymentNumber[i]}
                           </span>
-                        </div>
-                        <div>
-                          <span>
-                            <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={false} >Repay</button>
+                      </td>
+                      <td>
+                      <div className="media-body">
+                        <span className="mb-0 text-sm">Amount</span>
+                      </div>
+                        <span>
+                          {repaymentAmount}
                           </span>
-                        </div>
-                    </td>
 
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Comments</span>
-                    </div>
-                      <span>
-                      --
-                        </span>
-
-                        <div>
-                          <span>
-                          --
+                      </td>
+                      <td>
+                      <div className="media-body">
+                        <span className="mb-0 text-sm">Due Date</span>
+                      </div>
+                        <span>
+                          Oct 10, 2019
                           </span>
-                        </div>
-                        <div>
-                          <span> Paid from collateral</span>
-                        </div>
-                    </td>
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Collateral</span>
-                    </div>
-                      <span>
-                      Value : 4 ETH
-                        </span>
-
-                        <div>
-                          <span>
-                          Remain : 2 ETH
+                      </td>
+                      <td>
+                      <div className="media-body">
+                        <span className="mb-0 text-sm">Status</span>
+                      </div>
+                        <span>
+                          {repaymentNumber[i]==0?'Expired':'Active'}
                           </span>
-                        </div>
-                        <div>
-                          <span>30% Loan Repaid</span>
-                        </div>
-                    </td>
+                      </td>
 
-                    </tr>
+                      <td>
+                      <div className="media-body">
+                        <span className="mb-0 text-sm">Action</span>
+                      </div>
+                        <span>
+                        <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!repaymentNumber[i]} onClick={()=>this.handleRepayment(loanAddresses[i],repaymentAmount)} >Repay</button>
+                          </span>
+                      </td>
+
+                      <td>
+                      <div className="media-body">
+                        <span className="mb-0 text-sm">Comments</span>
+                      </div>
+                        <span>
+                        --
+                          </span>
+                      </td>
+
+                      <td>
+                      <div className="media-body">
+                        <span className="mb-0 text-sm">Collateral</span>
+                      </div>
+                        <span>
+                        Value : 4 ETH
+                          </span>
+                      </td>
+
+                      </tr>
+                  })
                   }
 
                 </tbody>
