@@ -29,7 +29,7 @@ class LoanRequest extends Component {
       apr:0,
       originationFee:1,
       collateralCurrency:'ETH',
-      erc20_tokens :  ['ERC20 TOKENS','TTT','BNB', 'GTO', 'QKC', 'NEXO',
+      erc20_tokens :  ['TTT','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -225,6 +225,7 @@ class LoanRequest extends Component {
                       <p>Ethereum</p>
                     </div>
                   <div className="col-md-4 form-group mt-3">
+                    <label id="exampleFormControlSelect1">ERC20 TOKENS</label>
                       <select className="form-control" id="exampleFormControlSelect1" onClick={ (e)=>{
                         this.setState({collateralCurrency:e.target.value});
                       }}>
