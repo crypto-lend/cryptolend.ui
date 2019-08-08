@@ -40,8 +40,8 @@ class MyLoans extends Component {
 
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
-                  console.log(res);
-                if(!err){
+                  console.log(res[9]);
+                if(!err && window.web3.eth.defaultAccount==res[9]){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());
                   duration.push(res[1].toNumber());
