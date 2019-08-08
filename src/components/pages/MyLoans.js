@@ -31,9 +31,10 @@ class MyLoans extends Component {
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
+
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
-                if(!err && window.web3.eth.defaultAccount===res[9]){
+                if(!err){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());
                   duration.push(res[1].toNumber());
@@ -51,16 +52,43 @@ class MyLoans extends Component {
                      collateralAddress: collateralAddress,
                      loanAddresses: loanAddresses
                    })
+                    console.log('loanAddress', loanAddress);
+                     console.log('loanAmount', loanAmount);
 
-                    // console.log('loanAmount', loanAmount);
+                     // Get repayment Amount to paid for a particular repayment duration
+
+                   FinocialLoanInstance.getRepaymentAmount(function(err, res){
+                      if(!err)
+                         res.map((repay,i) => {
+                           if(i<2)
+                            console.log(i,' : ',window.web3.fromWei(repay.toNumber()));
+                           else {
+                             console.log(i,' : ',repay.toNumber());
+
+                           }
+                         })
+                         // res structure would be
+                         // {
+                         //  repaymentAmount,
+                         //  fees,
+                         //  repaymentNumber
+                         // }
+
+                         // Note: repaymentAmount includes fees, so dont add it again
+                      });
 
                  }
                 });
-              });
-      }
 
-    });
-  }
+
+
+              });
+            }
+
+          });
+        }
+
+
 
   render() {
     const {
@@ -200,7 +228,7 @@ class MyLoans extends Component {
                 </thead>
                 <tbody>
                   {loanAmount.map((amount,i)=>{
-                    return <tr style={{cursor:'pointer'}} onClick={()=>{this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false})}}>
+                    return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false})}}>
                     <th scope="row mt-3">
                       <div className="media align-items-center">
                         <div className="media-body">

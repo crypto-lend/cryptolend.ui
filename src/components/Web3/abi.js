@@ -927,6 +927,6 @@ export const StandardTokenABI = [
     }
   ];
 
-export const FinocialAddress = "0x8EC614f3569910c3b27C74D59E46F383DDd5Fe1A";
+export const FinocialAddress = "0x337CC7937E90E7a2eeC160407a78f30D095Fb020";
 
 export default abi;

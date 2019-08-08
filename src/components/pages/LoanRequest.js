@@ -41,8 +41,8 @@ class LoanRequest extends Component {
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
            FinocialABI: FinocialABI,
-            FinocialAddress : "0x8EC614f3569910c3b27C74D59E46F383DDd5Fe1A",
-            collateralAddress : "0xcA211C948cc2c5EAA6D73D8fb0F4fe027614e6B0"
+            FinocialAddress : "0x337CC7937E90E7a2eeC160407a78f30D095Fb020",
+            collateralAddress : "0xd6a7a0e2a2a5B0cB6A173294c02eb97802B89645"
     };
   }
 
@@ -69,7 +69,7 @@ class LoanRequest extends Component {
       this.setState({monthlyInt: monthlyInt + 0.25});
       let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) )
       this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
-      this.setState({totalPremium: totalRepayment});
+      this.setState({totalPremium: totalRepayment.toFixed(4)});
       this.setState({apr: (totalRepayment / loanAmount) * 100})
       console.log("apr : ",apr, totalRepayment);
     }
@@ -372,7 +372,7 @@ class LoanRequest extends Component {
                   </div>
                   { monthlyInt?
                     <div className="btn-wrapper text-center" onClick={()=>{
-                      this.createLoanRequest(loanAmount,duration,monthlyInt,collateralAddress,collateralValue);
+                      this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralAddress,collateralValue);
                       }}>
                       <br/>
                       <a href="#" className="btn btn-primary btn-icon ">

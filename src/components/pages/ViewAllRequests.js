@@ -100,21 +100,23 @@ class ViewAllRequests extends Component {
         function(err, res) {
           if (!err) {
             console.log(res);
+
+            // Transaction 2 Transfer to Loan Contract
+
+           const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+           FinocialLoanInstance.transferCollateralToLoan({
+             from: window.web3.eth.accounts[0]
+               },function(err, res){
+               if(!err)
+                  console.log(res);
+               });
           } else {
 
           }
      });
 
 
-     // Transaction 2 Transfer to Loan Contract
 
-    const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
-    FinocialLoanInstance.transferCollateralToLoan({
-      from: window.web3.eth.accounts[0]
-        },function(err, res){
-        if(!err)
-           console.log(res);
-        });
   }
 
 
@@ -360,7 +362,7 @@ class ViewAllRequests extends Component {
                    <p>Duration  : {this.state.duration[i]} days</p>
                    <p>Safeness : {this.state.safeness}</p>
                    <p>Expires in : {this.state.expireIn}</p>
-                    {!status[i] && <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount[i], loanAddresses[i])}>
+                    {!!status[i] && <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount, loanAddresses[i])}>
                        <a href="#" className="btn btn-primary btn-icon m-1">
                          <span className="btn-inner--text">Fund Now</span>
                        </a>
@@ -368,7 +370,7 @@ class ViewAllRequests extends Component {
                    </div>
                  </div>
                  {
-                   !status[i]?
+                   !!status[i]?
                    <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                      <span className="alert-text">Waiting for lender(s)</span>
                    </div>
