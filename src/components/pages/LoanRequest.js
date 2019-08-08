@@ -252,12 +252,19 @@ class LoanRequest extends Component {
                       <span className="alert-text">Insert the collateral amount.</span>
                     </div>
                     <input className="form-control form-control-lg" type="text" placeholder={collateralCurrency} onChange={(e)=>{this.setState({collateralValue:e.target.value});}}/>
-                    <div className="btn-wrapper" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{
-                      this.setState({collateral:false,loan:false, currency:true});
+                    <div className="row">
+                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({collateral:true,loan:false})}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                        <span className="btn-inner--text">Back</span>
+                      </a>
+                    </div>
+                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{
+                      this.setState({loan:false, currency:true});
                     }}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
+                      </div>
                     </div>
                   </div>
 
@@ -270,6 +277,12 @@ class LoanRequest extends Component {
                       <br/>
                       <p>Ethereum</p>
                     </div>
+                    <div className="btn-wrapper" style={{marginTop:'20px', cursor:'pointer'}} onClick={()=>{this.setState({currency:false, loan:true});}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                        <span className="btn-inner--text">Back</span>
+                      </a>
+                    </div>
+
                   </div>
 
                   <div className="card-body"style={{display:borrow?'block':'none'}}>
@@ -285,11 +298,17 @@ class LoanRequest extends Component {
                     <a className="text-right" style={{cursor:'pointer'}} onClick={()=>{this.setState({borrowLess:true})}}>want to borrow less ?</a>
                   </div>
                 }
-
-                    <div className="btn-wrapper" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
+                <div className="row">
+                <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({currency:true, borrow:false});}}>
+                  <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                    <span className="btn-inner--text">Back</span>
+                  </a>
+                </div>
+                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
+                      </div>
                     </div>
                   </div>
                   <div className="card-body"  style={{display:durationView?'block':'none'}}>
@@ -305,10 +324,17 @@ class LoanRequest extends Component {
                         })
                       }
                     </div>
-                    <div className="btn-wrapper" style={{marginTop:'20px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:false,monthlyInterest:true})}}>
+                    <div className="row">
+                    <div className="col-md-6" style={{marginTop:'20px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:false, borrow:true});}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                        <span className="btn-inner--text">Back</span>
+                      </a>
+                    </div>
+                    <div className="col-md-6" style={{marginTop:'20px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:false,monthlyInterest:true})}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
+                    </div>
                     </div>
                   </div>
 
@@ -324,12 +350,18 @@ class LoanRequest extends Component {
                     </button>
                     </div>
                     <div className="text-right">
-                      <input className="form-control" type="text" value={monthlyInt} style={{width:'60px', marginTop: '-43px',  marginLeft: '215px'}} id="example-time-input"/>
+                      <input className="form-control" type="text" value={monthlyInt} style={{width:'60px', marginTop: '-43px',  marginLeft: '289px'}} id="example-time-input"/>
                     </div>
                     <div className="text-right" style={{marginTop: '-44px'}}>
                     <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={this.handleMonthlyInterest}>
                       <span><i className="fa fa-plus"></i></span>
                     </button>
+                    </div>
+
+                    <div className="btn-wrapper" style={{marginTop:'20px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true,monthlyInterest:false})}}>
+                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                        <span className="btn-inner--text">Back</span>
+                      </a>
                     </div>
 
 
