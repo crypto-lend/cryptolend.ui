@@ -19,6 +19,7 @@ class MyLoans extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
+      loanStatuses:['EXPIRED','ACTIVE','FUNDED','REPAID','DEFAULTED'],
       repaymentAmount:[],
       fees:[],
       repaymentNumber:[],
@@ -129,7 +130,7 @@ class MyLoans extends Component {
 
   render() {
     const {
-      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol
+      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, loanStatuses
     } = this.state;
     return (
       <div className="MyLoans text-center">
@@ -306,7 +307,7 @@ class MyLoans extends Component {
                     </td>
                     <td>
                       <div className="text-center">
-                        <span className="">Waiting for lender {status[i]}</span>
+                        <span className=""> {loanStatuses[status[i]]}</span>
                         <div>
                         </div>
                       </div>
