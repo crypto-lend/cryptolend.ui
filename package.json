@@ -91,11 +91,7 @@
     "lint": "eslint .; exit 0",
     "lint:fix": "eslint . --fix; exit 0",
     "predeploy": "yarn run build",
-<<<<<<< HEAD
     "deploy": "gh-pages -d build"
-=======
-    "deploy": "gh-pages -d build",
->>>>>>> f70e53a849a10793780363bebe56ee86d2e29858
   },
   "eslintConfig": {
     "extends": "react-app"

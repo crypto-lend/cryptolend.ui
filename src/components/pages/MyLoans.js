@@ -286,7 +286,7 @@ class MyLoans extends Component {
 
                     <td>
                       <div className="text-center">
-                        <span className="">{earnings[i]}%</span>
+                        <span className="">{earnings[i]/100}%</span>
                         <div>
                         </div>
                       </div>
