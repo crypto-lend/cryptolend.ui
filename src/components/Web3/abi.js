@@ -275,6 +275,14 @@ export const FinocialLoanABI = [
           "type": "uint8"
         },
         {
+          "name": "_outstandingAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "_remainingCollateralAmount",
+          "type": "uint256"
+        },
+        {
           "name": "_borrower",
           "type": "address"
         },
@@ -290,6 +298,39 @@ export const FinocialLoanABI = [
     {
       "constant": true,
       "inputs": [],
+      "name": "getPaidRepaymentsCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCurrentRepaymentNumber",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "repaymentNumber",
+          "type": "uint256"
+        }
+      ],
       "name": "getRepaymentAmount",
       "outputs": [
         {
@@ -297,11 +338,11 @@ export const FinocialLoanABI = [
           "type": "uint256"
         },
         {
-          "name": "fees",
+          "name": "monthlyInterest",
           "type": "uint256"
         },
         {
-          "name": "repaymentNumber",
+          "name": "fees",
           "type": "uint256"
         }
       ],
@@ -987,6 +1028,6 @@ export const ERC20TokenABI = [
   }
 ];
 
-export const FinocialAddress = "0x284e7792b1E580c1dc9f3336a1F82B2c27c804bd";
+export const FinocialAddress = "0xd9D34DE3192C7811aa0C177e620BEf9f9b69f2E7";
 
 export default abi;

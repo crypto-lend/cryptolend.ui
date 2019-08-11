@@ -19,7 +19,7 @@ class MyLoans extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
-      loanStatuses:['EXPIRED','ACTIVE','FUNDED','REPAID','DEFAULTED'],
+      loanStatuses:['INACTIVE','ACTIVE','FUNDED','REPAID','DEFAULTED'],
       repaymentAmount:[],
       fees:[],
       repaymentNumber:[],
@@ -47,8 +47,8 @@ class MyLoans extends Component {
 
 
                 FinocialLoanInstance.getLoanData((err, res)=>{
-                  // console.log(res[9]);
-                if(!err && window.web3.eth.defaultAccount==res[9]){
+                   console.log(res[11]);
+                if(!err && window.web3.eth.defaultAccount==res[11]){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());
                   duration.push(res[1].toNumber());

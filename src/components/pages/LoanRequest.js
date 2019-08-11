@@ -45,7 +45,7 @@ class LoanRequest extends Component {
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
            FinocialABI: FinocialABI,
-            collateralAddress : "0x863F9b9DBD33aCC77e038404AceF541F50a7921E"
+            collateralAddress : "0xF49f319FBe62ec00e02741F250d8069821f23BA0"
     };
   }
 
