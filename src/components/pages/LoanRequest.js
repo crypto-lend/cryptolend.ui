@@ -19,6 +19,7 @@ class LoanRequest extends Component {
       monthlyInterest:false,
       borrowLess:false,
       loaded:true,
+      alertLoanAmount:false,
       collateralValue: null,
       loanAmount: null,
       duration: null,
@@ -28,6 +29,7 @@ class LoanRequest extends Component {
       durationEnd:360,
       totalPremium:null,
       monthlyInstallment:null,
+      loanAmountInput:'',
       apr:0,
       originationFee:1,
       collateralCurrency:'ETH',
@@ -100,7 +102,7 @@ class LoanRequest extends Component {
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress } = this.state;
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, loanAmountInput } = this.state;
 
 
     return (
@@ -291,7 +293,17 @@ class LoanRequest extends Component {
                     </div>
 
                     {borrowLess?
-                      <input className="form-control form-control-lg" type="text" value={loanAmount}  onChange={(e)=>{this.setState({loanAmount:e.target.value});}}/>
+                      <div>
+                      <input className="form-control form-control-lg" type="text" value={loanAmountInput}  onChange={(e)=>{
+                        if(e.target.value>loanAmount)
+                          this.setState({alertLoanAmount:true, loanAmountInput:e.target.value});
+                        else
+                          this.setState({alertLoanAmount:false, loanAmount:e.target.value, loanAmountInput:e.target.value});
+                      }}/>
+                      {alertLoanAmount && <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span className="alert-text">Please select less than or equal to {loanAmount}</span>
+                        </div>}
+                      </div>
                   :
                   <div>
                     <p style={{border:'solid grey 1px'}}>{loanAmount} ETH</p>
