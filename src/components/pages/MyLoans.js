@@ -237,7 +237,7 @@ class MyLoans extends Component {
               }
          });
 
-
+         window.location.reload();
 
       }
 
