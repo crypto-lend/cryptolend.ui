@@ -30,11 +30,11 @@ class MyLoans extends Component {
   }
 
   //Get All Loans
-  viewAllRequest = () => {
+  viewAllRequest = async () => {
     const FinocialInstance = window.web3.eth.contract(FinocialABI).at(FinocialAddress);
 
     FinocialInstance.getAllLoans((err, loanContractAddress) => {
-      this.setState({loaded:true})
+      this.setState({loaded:false})
       let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol} = this.state;
 
       if(!err){
@@ -42,9 +42,6 @@ class MyLoans extends Component {
         loanContractAddress.map((loanAddress)=>{
 
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
-
-
-
 
                 FinocialLoanInstance.getLoanData((err, res)=>{
                    console.log(res[11]);
@@ -55,6 +52,7 @@ class MyLoans extends Component {
                   earnings.push(res[2].toFixed(2));
                   status.push(res[4].toNumber());
                   collateralAddress.push(res[5]);
+                  loanAddresses.push(loanAddress);
 
                   const tokenContract = window.web3.eth.contract(ERC20TokenABI).at(res[5])
 
@@ -79,37 +77,28 @@ class MyLoans extends Component {
 
               });
             }
-
           });
-          this.setState({loaded:false})
-
-
+          this.setState({loaded:true})
         }
 
         getRepayments = (loanAddress) => {
         let {repaymentAmount, repaymentNumber} = this.state;
         this.setState({loaded:true})
 
-
           // Get repayment Amount to paid for a particular repayment duration
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
 
+        FinocialLoanInstance.getRepaymentAmount(1, function(err, repayResponse) {
+          if (!err){
+            repayResponse.map((repay,i) => {
+              console.log(window.web3.fromWei(repay.toNumber()));
+              if(i==0)
+                repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
 
-        FinocialLoanInstance.getRepaymentAmount((err, res)=>{
-          console.log(res);
-
-           if(!err){
-             res.map((repay,i) => {
-               if(i==0)
-                 repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
-               else if(i==2) {
-                 repaymentNumber.push(repay.toNumber());
-               }
-             })
-           }
-           });
-           this.setState({loaded:false})
-
+            })
+          }
+        })
+        this.setState({loaded:false})
         }
 
 
@@ -269,7 +258,7 @@ class MyLoans extends Component {
                   {loanAmount.map((amount,i)=>{
                     return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
                       this.getRepayments(loanAddresses[i]);
-
+                      // console.log('loanAddresses',i,loanAddresses[i]);
                       this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false})}}>
                     <th scope="row mt-3">
                       <div className="media align-items-center">
@@ -324,15 +313,14 @@ class MyLoans extends Component {
 
                   }
 
-                  { repaymentAmount.map((repaymentAmount,i)=>{
-                    return display1 && <tr id="repay" key={i}>
+                  { display1 && <tr id="repay">
                       <td>
                       <div className="media-body">
                         <span className="mb-0 text-sm">Repayment No.</span>
                       </div>
                         <span className="badge-dot">
                           <i className="bg-info"> </i>
-                            {repaymentNumber[i]}
+                            {repaymentNumber[0] && duration[0]/30}
                           </span>
                       </td>
                       <td>
@@ -340,7 +328,7 @@ class MyLoans extends Component {
                         <span className="mb-0 text-sm">Amount</span>
                       </div>
                         <span>
-                          {repaymentAmount}
+                          {repaymentAmount[0]}
                           </span>
 
                       </td>
@@ -357,7 +345,7 @@ class MyLoans extends Component {
                         <span className="mb-0 text-sm">Status</span>
                       </div>
                         <span>
-                          {repaymentNumber[i]==0?'Expired':'Active'}
+                          {repaymentNumber[0]==0?'Expired':'Active'}
                           </span>
                       </td>
 
@@ -366,7 +354,7 @@ class MyLoans extends Component {
                         <span className="mb-0 text-sm">Action</span>
                       </div>
                         <span>
-                        <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!repaymentNumber[i]} onClick={()=>this.handleRepayment(loanAddresses[i],repaymentAmount)} >Repay</button>
+                        <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!repaymentNumber[0]} onClick={()=>this.handleRepayment(loanAddresses[0],repaymentAmount)} >Repay</button>
                           </span>
                       </td>
 
@@ -389,7 +377,6 @@ class MyLoans extends Component {
                       </td>
 
                       </tr>
-                  })
                   }
 
                 </tbody>
