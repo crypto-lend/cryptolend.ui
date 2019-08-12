@@ -22,6 +22,7 @@ class MyLoans extends Component {
       loanStatuses:['INACTIVE','ACTIVE','FUNDED','REPAID','DEFAULTED'],
       repaymentAmount:[],
       dueDate:[],
+      currentDate:'',
       fees:[],
       repaymentNumber:[],
       tokenSymbol:[],
@@ -37,7 +38,7 @@ class MyLoans extends Component {
 
     FinocialInstance.getAllLoans((err, loanContractAddress) => {
       this.setState({loaded:false})
-      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, dueDate} = this.state;
+      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, dueDate, currentDate} = this.state;
 
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
@@ -49,7 +50,14 @@ class MyLoans extends Component {
                   let startedOn = res[3].toNumber();
                   let date = new Date(startedOn* 1000)
                   date.setDate(date.getDate() + 30);
-                  console.log('expire date',date);
+                  date = date.toString().split(' GMT+0530 (India Standard Time)')[0]
+
+                  currentDate = new Date();
+                  currentDate = currentDate.toString().split(' GMT+0530 (India Standard Time)')[0]
+                  if(currentDate<date)
+                    console.log(currentDate);
+                  else
+                  console.log(date);
 
                 if(!err && window.web3.eth.defaultAccount==res[11]){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
@@ -121,7 +129,7 @@ class MyLoans extends Component {
         }
 
         handleRepaymentRows = () => {
-          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, duration, dueDate} = this.state;
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, duration, dueDate, currentDate} = this.state;
           repaymentRows=[];
           for (var i = 0; i < (duration[0]/30); i++) {
 
@@ -149,7 +157,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Due Date</span>
                </div>
                  <span>
-                   {dueDate[0].toString().split('GMT+0530 (India Standard Time)')}
+                   {dueDate[i]}
                    </span>
                </td>
                <td>
@@ -157,7 +165,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Status</span>
                </div>
                  <span>
-                   {repaymentNumber[i]==0?'Expired':'Active'}
+                   {currentDate<dueDate[i]?'Not Due':'Due'}
                    </span>
                </td>
 
