@@ -24,6 +24,7 @@ class MyLoans extends Component {
       fees:[],
       repaymentNumber:[],
       tokenSymbol:[],
+      repaymentRows:[],
       loaded:false,
       borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
@@ -59,9 +60,6 @@ class MyLoans extends Component {
                   tokenContract.symbol((err,res)=>{
                     tokenSymbol.push(res);
                   })
-
-
-
                    this.setState({
                      loanAmount: loanAmount,
                      collateralValue: collateralValue,
@@ -115,11 +113,86 @@ class MyLoans extends Component {
            });
         }
 
+        handleRepaymentRows = () => {
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, duration} = this.state;
+          repaymentRows=[];
+          for (var i = 0; i < (duration[0]/30); i++) {
+
+              repaymentRows.push(<tr id="repay" key={i}>
+               <td>
+               <div className="media-body">
+                 <span className="mb-0 text-sm">Repayment No.</span>
+               </div>
+                 <span className="badge-dot">
+                   <i className="bg-info"> </i>
+                     {i+1}
+                   </span>
+               </td>
+               <td>
+               <div className="media-body">
+                 <span className="mb-0 text-sm">Amount</span>
+               </div>
+                 <span>
+                   {repaymentAmount[i]} ETH
+                   </span>
+
+               </td>
+               <td>
+               <div className="media-body">
+                 <span className="mb-0 text-sm">Due Date</span>
+               </div>
+                 <span>
+                   Oct 10, 2019
+                   </span>
+               </td>
+               <td>
+               <div className="media-body">
+                 <span className="mb-0 text-sm">Status</span>
+               </div>
+                 <span>
+                   {repaymentNumber[0]==0?'Expired':'Active'}
+                   </span>
+               </td>
+
+               <td>
+               <div className="media-body">
+                 <span className="mb-0 text-sm">Action</span>
+               </div>
+                 <span>
+                 <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!repaymentNumber[0]} onClick={()=>this.handleRepayment(loanAddresses[0],repaymentAmount)} >Repay</button>
+                   </span>
+               </td>
+
+               <td>
+               <div className="media-body">
+                 <span className="mb-0 text-sm">Comments</span>
+               </div>
+                 <span>
+                 --
+                   </span>
+               </td>
+
+               <td>
+               <div className="media-body">
+                 <span className="mb-0 text-sm">Collateral</span>
+               </div>
+                 <span>
+                 Value : 4 ETH
+                   </span>
+               </td>
+
+               </tr>);
+
+        }
+        return repaymentRows;
+
+      }
+
 
 
   render() {
     const {
-      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, loanStatuses
+      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, loanStatuses, repaymentRows
     } = this.state;
     return (
       <div className="MyLoans text-center">
@@ -258,7 +331,6 @@ class MyLoans extends Component {
                   {loanAmount.map((amount,i)=>{
                     return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
                       this.getRepayments(loanAddresses[i]);
-                      // console.log('loanAddresses',i,loanAddresses[i]);
                       this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false})}}>
                     <th scope="row mt-3">
                       <div className="media align-items-center">
@@ -269,7 +341,7 @@ class MyLoans extends Component {
                     </th>
                     <td>
                       <span className="badge-dot">
-                        <i className="bg-info"></i> {amount}
+                        <i className="bg-info"></i> {amount} ETH
                       </span>
                     </td>
                     <td>
@@ -307,78 +379,10 @@ class MyLoans extends Component {
                     <td className="">
                       <button className="btn btn-primary" type="button" >Pay Now</button>
                     </td>
-
                   </tr>;
                   })
-
                   }
-
-                  { display1 && <tr id="repay">
-                      <td>
-                      <div className="media-body">
-                        <span className="mb-0 text-sm">Repayment No.</span>
-                      </div>
-                        <span className="badge-dot">
-                          <i className="bg-info"> </i>
-                            {repaymentNumber[0] && duration[0]/30}
-                          </span>
-                      </td>
-                      <td>
-                      <div className="media-body">
-                        <span className="mb-0 text-sm">Amount</span>
-                      </div>
-                        <span>
-                          {repaymentAmount[0]}
-                          </span>
-
-                      </td>
-                      <td>
-                      <div className="media-body">
-                        <span className="mb-0 text-sm">Due Date</span>
-                      </div>
-                        <span>
-                          Oct 10, 2019
-                          </span>
-                      </td>
-                      <td>
-                      <div className="media-body">
-                        <span className="mb-0 text-sm">Status</span>
-                      </div>
-                        <span>
-                          {repaymentNumber[0]==0?'Expired':'Active'}
-                          </span>
-                      </td>
-
-                      <td>
-                      <div className="media-body">
-                        <span className="mb-0 text-sm">Action</span>
-                      </div>
-                        <span>
-                        <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!repaymentNumber[0]} onClick={()=>this.handleRepayment(loanAddresses[0],repaymentAmount)} >Repay</button>
-                          </span>
-                      </td>
-
-                      <td>
-                      <div className="media-body">
-                        <span className="mb-0 text-sm">Comments</span>
-                      </div>
-                        <span>
-                        --
-                          </span>
-                      </td>
-
-                      <td>
-                      <div className="media-body">
-                        <span className="mb-0 text-sm">Collateral</span>
-                      </div>
-                        <span>
-                        Value : 4 ETH
-                          </span>
-                      </td>
-
-                      </tr>
-                  }
-
+                  { display1 && this.handleRepaymentRows()}
                 </tbody>
               </table>
             </div>
@@ -649,9 +653,6 @@ class MyLoans extends Component {
                           <span> Defaulted/ Overdue</span>
                         </div>
                     </td>
-
-
-
                     <td>
                     <div className="media-body">
                       <span className="mb-0 text-sm">Comments</span>
