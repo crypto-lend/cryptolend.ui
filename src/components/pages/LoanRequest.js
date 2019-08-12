@@ -3,7 +3,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Loader from 'react-loader';
-import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
+import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
 
 class LoanRequest extends Component {
@@ -45,7 +45,7 @@ class LoanRequest extends Component {
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
            FinocialABI: FinocialABI,
-            collateralAddress : "0xF49f319FBe62ec00e02741F250d8069821f23BA0"
+            collateralAddress : CollateralAddress
     };
   }
 

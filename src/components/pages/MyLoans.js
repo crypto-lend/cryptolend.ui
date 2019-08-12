@@ -21,6 +21,7 @@ class MyLoans extends Component {
       status:[],
       loanStatuses:['INACTIVE','ACTIVE','FUNDED','REPAID','DEFAULTED'],
       repaymentAmount:[],
+      dueDate:[],
       fees:[],
       repaymentNumber:[],
       tokenSymbol:[],
@@ -36,7 +37,7 @@ class MyLoans extends Component {
 
     FinocialInstance.getAllLoans((err, loanContractAddress) => {
       this.setState({loaded:false})
-      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol} = this.state;
+      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, dueDate} = this.state;
 
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
@@ -45,7 +46,11 @@ class MyLoans extends Component {
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
 
                 FinocialLoanInstance.getLoanData((err, res)=>{
-                   console.log(res[11]);
+                  let startedOn = res[3].toNumber();
+                  let date = new Date(startedOn* 1000)
+                  date.setDate(date.getDate() + 30);
+                  console.log('expire date',date);
+
                 if(!err && window.web3.eth.defaultAccount==res[11]){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());
@@ -54,6 +59,7 @@ class MyLoans extends Component {
                   status.push(res[4].toNumber());
                   collateralAddress.push(res[5]);
                   loanAddresses.push(loanAddress);
+                  dueDate.push(date);
 
                   const tokenContract = window.web3.eth.contract(ERC20TokenABI).at(res[5])
 
@@ -68,7 +74,8 @@ class MyLoans extends Component {
                      status: status,
                      collateralAddress: collateralAddress,
                      loanAddresses: loanAddresses,
-                     tokenSymbol:tokenSymbol
+                     tokenSymbol:tokenSymbol,
+                     dueDate:dueDate
                    })
                  }
                 });
@@ -80,29 +87,29 @@ class MyLoans extends Component {
         }
 
         getRepayments = (loanAddress) => {
-        let {repaymentAmount, repaymentNumber} = this.state;
-        this.setState({loaded:true})
+        let {repaymentAmount, repaymentNumber,duration} = this.state;
+        // repaymentAmount = [];
 
+        this.setState({loaded:true})
           // Get repayment Amount to paid for a particular repayment duration
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
-
-        FinocialLoanInstance.getRepaymentAmount(1, function(err, repayResponse) {
+        for (var i = 0; i < (duration[0]/30); i++) {
+        FinocialLoanInstance.getRepaymentAmount(i+1, function(err, repayResponse) {
           if (!err){
             repayResponse.map((repay,i) => {
               console.log(window.web3.fromWei(repay.toNumber()));
               if(i==0)
                 repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
-
             })
           }
-        })
+        })}
         this.setState({loaded:false})
         }
 
 
         handleRepayment = (loanContractAddress, repaymentAmount) => {
           // Repay Loan
-
+          console.log('loanContractAddress', loanContractAddress,'repaymentAmount', repaymentAmount);
           const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
           FinocialLoanInstance.repayLoan({
           from: window.web3.eth.accounts[0],
@@ -114,7 +121,7 @@ class MyLoans extends Component {
         }
 
         handleRepaymentRows = () => {
-          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, duration} = this.state;
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, duration, dueDate} = this.state;
           repaymentRows=[];
           for (var i = 0; i < (duration[0]/30); i++) {
 
@@ -142,7 +149,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Due Date</span>
                </div>
                  <span>
-                   Oct 10, 2019
+                   {dueDate[0].toString().split('GMT+0530 (India Standard Time)')}
                    </span>
                </td>
                <td>
@@ -150,7 +157,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Status</span>
                </div>
                  <span>
-                   {repaymentNumber[0]==0?'Expired':'Active'}
+                   {repaymentNumber[i]==0?'Expired':'Active'}
                    </span>
                </td>
 
@@ -159,7 +166,13 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Action</span>
                </div>
                  <span>
-                 <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!repaymentNumber[0]} onClick={()=>this.handleRepayment(loanAddresses[0],repaymentAmount)} >Repay</button>
+                 <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!!repaymentNumber[i]} onClick={
+                   ()=>{
+                     this.handleRepayment(loanAddresses[1],repaymentAmount[0])
+                     console.log(loanAddresses,repaymentAmount);
+                   }
+
+                 } >Repay</button>
                    </span>
                </td>
 
@@ -382,7 +395,7 @@ class MyLoans extends Component {
                   </tr>;
                   })
                   }
-                  { display1 && this.handleRepaymentRows()}
+                  { display1 && this.handleRepaymentRows(loanAddresses[1],repaymentAmount[0])}
                 </tbody>
               </table>
             </div>

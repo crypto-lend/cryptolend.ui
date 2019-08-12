@@ -1028,6 +1028,8 @@ export const ERC20TokenABI = [
   }
 ];
 
-export const FinocialAddress = "0xd9D34DE3192C7811aa0C177e620BEf9f9b69f2E7";
+export const FinocialAddress = "0xf9BbaE9DB33974A1E1179506614a794a0C11af3f";
+
+export const CollateralAddress = "0x24537D46B42Fd99414d9A1c27387cC357D76B1eE";
 
 export default abi;
