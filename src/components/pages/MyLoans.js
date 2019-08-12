@@ -46,6 +46,11 @@ class MyLoans extends Component {
 
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
 
+
+                FinocialLoanInstance.getPaidRepaymentsCount((err, res)=>{
+                  console.log();
+                });
+
                 FinocialLoanInstance.getLoanData((err, res)=>{
                   let startedOn = res[3].toNumber();
                   let date = new Date(startedOn* 1000)
@@ -209,7 +214,7 @@ class MyLoans extends Component {
 
       }
 
-      handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
+      approveRequest = (collateralAddress, loanContractAddress, collateralAmount) => {
         // Transfer Collateral to Loan Contract
         // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
 
@@ -223,21 +228,28 @@ class MyLoans extends Component {
               if (!err) {
                 console.log(res);
 
-                // Transaction 2 Transfer to Loan Contract
 
-               const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
-               FinocialLoanInstance.transferCollateralToLoan({
-                 from: window.web3.eth.accounts[0]
-                   },function(err, res){
-                   if(!err)
-                      console.log(res);
-                   });
               } else {
 
               }
          });
 
-         window.location.reload();
+      }
+
+
+
+      handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
+        // Transfer Collateral to Loan Contract
+
+         // Transaction 2 Transfer to Loan Contract
+
+        const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+        FinocialLoanInstance.transferCollateralToLoan({
+          from: window.web3.eth.accounts[0]
+            },function(err, res){
+            if(!err)
+               console.log(res);
+            });
 
       }
 
@@ -430,9 +442,16 @@ class MyLoans extends Component {
                     </td>
                     <td className="">
                       <button className="btn btn-primary" type="button" onClick={()=>{
+                        this.approveRequest(collateralAddress[i], loanAddresses[i], collateralValue[i])
+                        }}>
+                        Approve
+                      </button>
+                    </td>
+                    <td className="">
+                      <button className="btn btn-primary" type="button" onClick={()=>{
                         this.handleTransferCollateral(collateralAddress[i], loanAddresses[i], collateralValue[i])
                         }}>
-                        Pay Now
+                        Transfer
                       </button>
                     </td>
                   </tr>;

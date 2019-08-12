@@ -362,15 +362,21 @@ class ViewAllRequests extends Component {
                    <p>Duration  : {this.state.duration[i]} days</p>
                    <p>Safeness : {this.state.safeness}</p>
                    <p>Expires in : {this.state.expireIn}</p>
-                    {!!status[i] && <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount, loanAddresses[i])}>
-                       <a href="#" className="btn btn-primary btn-icon m-1">
-                         <span className="btn-inner--text">Fund Now</span>
-                       </a>
-                     </div>}
+                    {status[i]==2 ? <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                      <span className="alert-text">Alreay Funded</span>
+                    </div>
+                    :
+                    <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount, loanAddresses[i])}>
+                     <a href="#" className="btn btn-primary btn-icon m-1">
+                       <span className="btn-inner--text">Fund Now</span>
+                     </a>
+                   </div>
+
+                 }
                    </div>
                  </div>
                  {
-                   !!status[i] &&
+                   status[i]!=2 &&
                    <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                      <span className="alert-text">Waiting for lender(s)</span>
                    </div>
