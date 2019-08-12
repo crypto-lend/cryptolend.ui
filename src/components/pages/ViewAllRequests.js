@@ -87,37 +87,37 @@ class ViewAllRequests extends Component {
     });
   }
 
-  handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
-    // Transfer Collateral to Loan Contract
-    // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
-
-    // Transaction 1 Approval
-
-    const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
-    tokenContractInstance.approve(loanContractAddress, collateralAmount, {
-          from: window.web3.eth.accounts[0]
-        },
-        function(err, res) {
-          if (!err) {
-            console.log(res);
-
-            // Transaction 2 Transfer to Loan Contract
-
-           const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
-           FinocialLoanInstance.transferCollateralToLoan({
-             from: window.web3.eth.accounts[0]
-               },function(err, res){
-               if(!err)
-                  console.log(res);
-               });
-          } else {
-
-          }
-     });
-
-
-
-  }
+  // handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
+  //   // Transfer Collateral to Loan Contract
+  //   // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
+  //
+  //   // Transaction 1 Approval
+  //
+  //   const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
+  //   tokenContractInstance.approve(loanContractAddress, collateralAmount, {
+  //         from: window.web3.eth.accounts[0]
+  //       },
+  //       function(err, res) {
+  //         if (!err) {
+  //           console.log(res);
+  //
+  //           // Transaction 2 Transfer to Loan Contract
+  //
+  //          const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+  //          FinocialLoanInstance.transferCollateralToLoan({
+  //            from: window.web3.eth.accounts[0]
+  //              },function(err, res){
+  //              if(!err)
+  //                 console.log(res);
+  //              });
+  //         } else {
+  //
+  //         }
+  //    });
+  //
+  //
+  //
+  // }
 
 
   approveLoanRequest = (loanAmount,loanContractAddress) => {
@@ -370,20 +370,10 @@ class ViewAllRequests extends Component {
                    </div>
                  </div>
                  {
-                   !!status[i]?
+                   !!status[i] &&
                    <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                      <span className="alert-text">Waiting for lender(s)</span>
                    </div>
-                   :
-                   <div className="btn-wrapper text-center" onClick={()=>{
-                     this.handleTransferCollateral(collateralAddress[i], loanAddresses[i], collateralValue[i])
-                     }}>
-                     <br/>
-                     <a href="#" className="btn btn-primary mb-2">
-                       <span className="btn-inner--text">Transfer collateral</span>
-                     </a>
-                   </div>
-
                }
                </div>;
                 })
