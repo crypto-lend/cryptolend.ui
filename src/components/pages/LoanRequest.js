@@ -358,7 +358,7 @@ class LoanRequest extends Component {
 
                     <div className="text-left">
                     <button className="btn btn-icon btn-primary" type="button" value="minus" onClick={this.handleMonthlyInterest}>
-                      <span><i className="fa fa-minus"></i></span>
+                      -
                     </button>
                     </div>
                     <div className="text-right">
@@ -366,7 +366,7 @@ class LoanRequest extends Component {
                     </div>
                     <div className="text-right" style={{marginTop: '-44px'}}>
                     <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={this.handleMonthlyInterest}>
-                      <span><i className="fa fa-plus"></i></span>
+                      +
                     </button>
                     </div>
 
