@@ -73,7 +73,7 @@ class LoanRequest extends Component {
       this.setState({monthlyInt: monthlyInt + 0.25});
       let totalRepayment = ((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * 100) )
       this.setState({monthlyInstallment : (((loanAmount *  (monthlyInt + 0.25) * ((duration/30)+1)) / (2 * duration/30 * 100) ) + loanAmount / (duration/30))})
-      this.setState({totalPremium: totalRepayment.toFixed(4)});
+      this.setState({totalPremium: totalRepayment});
       this.setState({apr: (totalRepayment / loanAmount) * 100})
       console.log("apr : ",apr, totalRepayment);
     }

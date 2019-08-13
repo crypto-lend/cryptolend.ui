@@ -325,7 +325,7 @@ class ViewAllRequests extends Component {
                </div>
                    </div>
                    <div className="card-body text-left">
-                   <p>Earnings : {this.state.earnings[i]} %</p>
+                   <p>Earnings : {this.state.earnings[i]/100} %</p>
                    <p>Duration  : {this.state.duration[i]} days</p>
                    <p>Safeness : {this.state.safeness}</p>
                    <p>Expires in : {this.state.expireIn}</p>
