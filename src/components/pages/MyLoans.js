@@ -31,6 +31,7 @@ class MyLoans extends Component {
       currentLoanAddress:'',
       currentLoanNumber:0,
       currentDueDate:'',
+      currentCollateralValue:'',
       loaded:true,
       borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
@@ -132,7 +133,7 @@ class MyLoans extends Component {
            });
         }
 
-        handleRepaymentRows = (currentLoanAddress,duration, currentDueDate) => {
+        handleRepaymentRows = (currentLoanAddress,duration, currentDueDate, currentCollateralValue) => {
           let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate} = this.state;
           repaymentRows=[];
 
@@ -204,7 +205,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Collateral</span>
                </div>
                  <span>
-                 Value : 4 ETH
+                 Value : {currentCollateralValue} TTT
                    </span>
                </td>
 
@@ -266,7 +267,7 @@ class MyLoans extends Component {
   render() {
     const {
       borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount,
-       repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, currentLoanAddress, loaded, currentLoanNumber, dueDate, currentDueDate
+       repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, currentLoanAddress, loaded, currentLoanNumber, dueDate, currentDueDate, currentCollateralValue
     } = this.state;
     return (
       <div className="MyLoans text-center">
@@ -406,7 +407,7 @@ class MyLoans extends Component {
                     return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
                       this.getRepayments(loanAddresses[i]);
                       this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
-                         repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i]
+                         repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
                        })
                       if(display1==true)
                         window.location="/myloans";
@@ -473,7 +474,7 @@ class MyLoans extends Component {
                   </tr>;
                   })
                   }
-                  { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate)}
+                  { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate, currentCollateralValue)}
                 </tbody>
               </table>
             </div>
