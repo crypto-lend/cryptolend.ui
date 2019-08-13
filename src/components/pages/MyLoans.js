@@ -100,14 +100,13 @@ class MyLoans extends Component {
           });
         }
 
-        getRepayments = (loanAddress, duration) => {
-        let {repaymentAmount, repaymentNumber, loaded} = this.state;
+        getRepayments = (loanAddress) => {
+        let {repaymentAmount, repaymentNumber,duration, loaded} = this.state;
 
         this.setState({loaded:!loaded})
           // Get repayment Amount to paid for a particular repayment duration
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
-        for (var i = 0; i < (duration/30); i++) {
-          console.log(duration/30);
+        for (var i = 0; i < 12; i++) {
         FinocialLoanInstance.getRepaymentAmount(i+1, (err, repayResponse) => {
           if (!err){
             repayResponse.map((repay,i) => {
@@ -136,7 +135,7 @@ class MyLoans extends Component {
         }
 
         handleRepaymentRows = (currentLoanAddress,duration, currentDueDate) => {
-          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate, repaymentDuration} = this.state;
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate} = this.state;
           repaymentRows=[];
 
           for (var i = 0; i < (duration/30); i++) {
@@ -187,7 +186,7 @@ class MyLoans extends Component {
                  <span>
                  <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!!repaymentNumber[i]} onClick={
                    ()=>{
-                     this.getRepayments(currentLoanAddress,repaymentDuration)
+                     this.getRepayments(currentLoanAddress)
                      this.handleRepayment(currentLoanAddress,repaymentAmount[i])
                    }
 
@@ -401,11 +400,10 @@ class MyLoans extends Component {
                 <tbody>
                   {loanAmount.map((amount,i)=>{
                     return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
+                      this.getRepayments(loanAddresses[i]);
                       this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
                          repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i]
                        })
-                       this.getRepayments(loanAddresses[i], repaymentDuration);
-
                       if(display1==true)
                         window.location="/myloans";
                     }}>
