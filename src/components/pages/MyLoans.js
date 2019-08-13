@@ -28,6 +28,9 @@ class MyLoans extends Component {
       tokenSymbol:[],
       repaymentRows:[],
       repaymentDuration:0,
+      currentLoanAddress:'',
+      currentLoanNumber:0,
+      currentDueDate:'',
       loaded:true,
       borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
@@ -48,22 +51,19 @@ class MyLoans extends Component {
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
 
 
-                FinocialLoanInstance.getPaidRepaymentsCount((err, res)=>{
-                  console.log();
-                });
+                // FinocialLoanInstance.getPaidRepaymentsCount((err, res)=>{
+                //   console.log('getPaidRepaymentsCount',res.toNumber());
+                // });
 
                 FinocialLoanInstance.getLoanData((err, res)=>{
                   let startedOn = res[3].toNumber();
                   let date = new Date(startedOn* 1000)
-                  date.setDate(date.getDate() + 30);
+                  // date.setDate(date.getDate() + 30);
                   date = date.toString().split(' GMT+0530 (India Standard Time)')[0]
 
                   currentDate = new Date();
                   currentDate = currentDate.toString().split(' GMT+0530 (India Standard Time)')[0]
-                  if(currentDate<date)
-                    console.log(currentDate);
-                  else
-                  console.log(date);
+
 
                 if(!err && window.web3.eth.defaultAccount==res[11]){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
@@ -91,6 +91,7 @@ class MyLoans extends Component {
                      tokenSymbol:tokenSymbol,
                      dueDate:dueDate
                    })
+
                  }
                 });
 
@@ -99,13 +100,14 @@ class MyLoans extends Component {
           });
         }
 
-        getRepayments = (loanAddress) => {
-        let {repaymentAmount, repaymentNumber,duration, loaded} = this.state;
+        getRepayments = (loanAddress, duration) => {
+        let {repaymentAmount, repaymentNumber, loaded} = this.state;
 
         this.setState({loaded:!loaded})
           // Get repayment Amount to paid for a particular repayment duration
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
-        for (var i = 0; i < (duration[0]/30); i++) {
+        for (var i = 0; i < (duration/30); i++) {
+          console.log(duration/30);
         FinocialLoanInstance.getRepaymentAmount(i+1, (err, repayResponse) => {
           if (!err){
             repayResponse.map((repay,i) => {
@@ -115,7 +117,6 @@ class MyLoans extends Component {
             })
 
             this.setState({repaymentAmount:repaymentAmount})
-
           }
         })}
         }
@@ -134,9 +135,10 @@ class MyLoans extends Component {
            });
         }
 
-        handleRepaymentRows = (duration) => {
-          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate} = this.state;
+        handleRepaymentRows = (currentLoanAddress,duration, currentDueDate) => {
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate, repaymentDuration} = this.state;
           repaymentRows=[];
+
           for (var i = 0; i < (duration/30); i++) {
 
               repaymentRows.push(<tr id="repay" key={i}>
@@ -163,7 +165,10 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Due Date</span>
                </div>
                  <span>
-                   {dueDate[i]}
+                   {
+                   currentDueDate = currentDueDate + ' GMT+0530 (India Standard Time)'
+                   &&
+                     currentDueDate}
                    </span>
                </td>
                <td>
@@ -182,8 +187,8 @@ class MyLoans extends Component {
                  <span>
                  <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!!repaymentNumber[i]} onClick={
                    ()=>{
-                     this.handleRepayment(loanAddresses[1],repaymentAmount[1])
-                     console.log(loanAddresses,repaymentAmount);
+                     this.getRepayments(currentLoanAddress,repaymentDuration)
+                     this.handleRepayment(currentLoanAddress,repaymentAmount[i])
                    }
 
                  } >Repay</button>
@@ -239,9 +244,9 @@ class MyLoans extends Component {
 
 
 
-      handleTransferCollateral = (collateralAddress, loanContractAddress, collateralAmount) => {
+      handleTransferCollateral = (loanContractAddress) => {
         // Transfer Collateral to Loan Contract
-
+        console.log('In handleTransferCollateral',loanContractAddress);
          // Transaction 2 Transfer to Loan Contract
 
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
@@ -257,7 +262,8 @@ class MyLoans extends Component {
 
   render() {
     const {
-      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, loaded
+      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount,
+       repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, currentLoanAddress, loaded, currentLoanNumber, dueDate, currentDueDate
     } = this.state;
     return (
       <div className="MyLoans text-center">
@@ -395,8 +401,11 @@ class MyLoans extends Component {
                 <tbody>
                   {loanAmount.map((amount,i)=>{
                     return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
-                      this.getRepayments(loanAddresses[i]);
-                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false, repaymentDuration:duration[i]})
+                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
+                         repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i]
+                       })
+                       this.getRepayments(loanAddresses[i], repaymentDuration);
+
                       if(display1==true)
                         window.location="/myloans";
                     }}>
@@ -442,18 +451,19 @@ class MyLoans extends Component {
                       </div>
                     </td>
                     <td>
-                      <span className="">January 10, 2020</span>
+                      <span className="">{dueDate[i]}</span>
                     </td>
                     <td className="">
-                      <button className="btn btn-primary" type="button" onClick={()=>{
+                      <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
                         this.approveRequest(collateralAddress[i], loanAddresses[i], collateralValue[i])
                         }}>
                         Approve
                       </button>
                     </td>
                     <td className="">
-                      <button className="btn btn-primary" type="button" onClick={()=>{
-                        this.handleTransferCollateral(collateralAddress[i], loanAddresses[i], collateralValue[i])
+                      <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
+                        console.log('loanAddresses transferCollateral ',loanAddresses);
+                        this.handleTransferCollateral(loanAddresses[i])
                         }}>
                         Transfer
                       </button>
@@ -461,7 +471,7 @@ class MyLoans extends Component {
                   </tr>;
                   })
                   }
-                  { display1 && this.handleRepaymentRows(repaymentDuration)}
+                  { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate)}
                 </tbody>
               </table>
             </div>
