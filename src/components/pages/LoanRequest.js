@@ -294,11 +294,11 @@ class LoanRequest extends Component {
 
                     {borrowLess?
                       <div>
-                      <input className="form-control form-control-lg" type="text" value={loanAmountInput}  onChange={(e)=>{
+                      <input className="form-control form-control-lg" type="text" placeholder={loanAmount}  onChange={(e)=>{
                         if(e.target.value>loanAmount)
                           this.setState({alertLoanAmount:true, loanAmountInput:e.target.value});
                         else
-                          this.setState({alertLoanAmount:false, loanAmount:e.target.value, loanAmountInput:e.target.value});
+                          this.setState({alertLoanAmount:false, loanAmountInput:e.target.value});
                       }}/>
                       {alertLoanAmount && <div className="alert alert-danger alert-dismissible fade show" role="alert">
                         <span className="alert-text">Please select less than or equal to {loanAmount}</span>
