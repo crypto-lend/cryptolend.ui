@@ -57,12 +57,10 @@ class MyLoans extends Component {
 
                 FinocialLoanInstance.getLoanData((err, res)=>{
                   let startedOn = res[3].toNumber();
-                  let date = new Date(startedOn* 1000)
-                  // date.setDate(date.getDate() + 30);
-                  date = date.toString().split(' GMT+0530 (India Standard Time)')[0]
+                  let date = startedOn;
 
                   currentDate = new Date();
-                  currentDate = currentDate.toString().split(' GMT+0530 (India Standard Time)')[0]
+                  currentDate = currentDate.toString()
 
 
                 if(!err && window.web3.eth.defaultAccount==res[11]){
@@ -164,10 +162,8 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Due Date</span>
                </div>
                  <span>
-                   {
-                   currentDueDate = currentDueDate + ' GMT+0530 (India Standard Time)'
-                   &&
-                     currentDueDate}
+                   {  this.convertDate(currentDueDate,i).split(' GMT+0530 (India Standard Time)')[0]
+                   }
                    </span>
                </td>
                <td>
@@ -175,7 +171,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Status</span>
                </div>
                  <span>
-                   {currentDate<dueDate[i]?'Not Due':'Due'}
+                   {currentDate>dueDate[i]?'Not Due':'Due'}
                    </span>
                </td>
 
@@ -256,6 +252,14 @@ class MyLoans extends Component {
                console.log(res);
             });
 
+      }
+
+      convertDate = (currentDueDate,i) =>{
+           let date = new Date(currentDueDate* 1000)
+           date.setDate(date.getDate() + ((i+1)*30));
+           date = date.toString()
+           console.log(date);
+           return date;
       }
 
 
@@ -449,7 +453,7 @@ class MyLoans extends Component {
                       </div>
                     </td>
                     <td>
-                      <span className="">{dueDate[i]}</span>
+                      <span className="">{this.convertDate(dueDate[i],-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
                     </td>
                     <td className="">
                       <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
