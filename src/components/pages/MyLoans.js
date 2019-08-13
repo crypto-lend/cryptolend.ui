@@ -27,7 +27,8 @@ class MyLoans extends Component {
       repaymentNumber:[],
       tokenSymbol:[],
       repaymentRows:[],
-      loaded:false,
+      repaymentDuration:0,
+      loaded:true,
       borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
   }
@@ -96,27 +97,27 @@ class MyLoans extends Component {
               });
             }
           });
-          this.setState({loaded:true})
         }
 
         getRepayments = (loanAddress) => {
-        let {repaymentAmount, repaymentNumber,duration} = this.state;
-        // repaymentAmount = [];
+        let {repaymentAmount, repaymentNumber,duration, loaded} = this.state;
 
-        this.setState({loaded:true})
+        this.setState({loaded:!loaded})
           // Get repayment Amount to paid for a particular repayment duration
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
         for (var i = 0; i < (duration[0]/30); i++) {
-        FinocialLoanInstance.getRepaymentAmount(i+1, function(err, repayResponse) {
+        FinocialLoanInstance.getRepaymentAmount(i+1, (err, repayResponse) => {
           if (!err){
             repayResponse.map((repay,i) => {
               console.log(window.web3.fromWei(repay.toNumber()));
               if(i==0)
                 repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
             })
+
+            this.setState({repaymentAmount:repaymentAmount})
+
           }
         })}
-        this.setState({loaded:false})
         }
 
 
@@ -133,10 +134,10 @@ class MyLoans extends Component {
            });
         }
 
-        handleRepaymentRows = () => {
-          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, duration, dueDate, currentDate} = this.state;
+        handleRepaymentRows = (duration) => {
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate} = this.state;
           repaymentRows=[];
-          for (var i = 0; i < (duration[0]/30); i++) {
+          for (var i = 0; i < (duration/30); i++) {
 
               repaymentRows.push(<tr id="repay" key={i}>
                <td>
@@ -181,7 +182,7 @@ class MyLoans extends Component {
                  <span>
                  <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!!repaymentNumber[i]} onClick={
                    ()=>{
-                     this.handleRepayment(loanAddresses[1],repaymentAmount[0])
+                     this.handleRepayment(loanAddresses[1],repaymentAmount[1])
                      console.log(loanAddresses,repaymentAmount);
                    }
 
@@ -256,11 +257,11 @@ class MyLoans extends Component {
 
   render() {
     const {
-      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, loanStatuses, repaymentRows
+      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, loaded
     } = this.state;
     return (
       <div className="MyLoans text-center">
-      <Loader loaded={this.state.loaded}/>
+      <Loader loaded={loaded}/>
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
@@ -395,7 +396,10 @@ class MyLoans extends Component {
                   {loanAmount.map((amount,i)=>{
                     return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
                       this.getRepayments(loanAddresses[i]);
-                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false})}}>
+                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false, repaymentDuration:duration[i]})
+                      if(display1==true)
+                        window.location="/myloans";
+                    }}>
                     <th scope="row mt-3">
                       <div className="media align-items-center">
                         <div className="media-body">
@@ -457,7 +461,7 @@ class MyLoans extends Component {
                   </tr>;
                   })
                   }
-                  { display1 && this.handleRepaymentRows(loanAddresses[1],repaymentAmount[0])}
+                  { display1 && this.handleRepaymentRows(repaymentDuration)}
                 </tbody>
               </table>
             </div>
