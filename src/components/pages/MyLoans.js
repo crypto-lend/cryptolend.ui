@@ -109,7 +109,6 @@ class MyLoans extends Component {
         FinocialLoanInstance.getRepaymentAmount(i+1, (err, repayResponse) => {
           if (!err){
             repayResponse.map((repay,i) => {
-              console.log(window.web3.fromWei(repay.toNumber()));
               if(i==0)
                 repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
             })
@@ -122,7 +121,6 @@ class MyLoans extends Component {
 
         handleRepayment = (loanContractAddress, repaymentAmount) => {
           // Repay Loan
-          console.log('loanContractAddress', loanContractAddress,'repaymentAmount', repaymentAmount);
           const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
           FinocialLoanInstance.repayLoan({
           from: window.web3.eth.accounts[0],
@@ -183,8 +181,9 @@ class MyLoans extends Component {
                  <span>
                  <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!!repaymentNumber[i]} onClick={
                    ()=>{
+                     console.log('currentLoanAddress', currentLoanAddress,'repaymentAmount', repaymentAmount[0]);
                      this.getRepayments(currentLoanAddress)
-                     this.handleRepayment(currentLoanAddress,repaymentAmount[i])
+                     this.handleRepayment(currentLoanAddress,repaymentAmount[0])
                    }
 
                  } >Repay</button>
@@ -242,7 +241,7 @@ class MyLoans extends Component {
 
       handleTransferCollateral = (loanContractAddress) => {
         // Transfer Collateral to Loan Contract
-        console.log('In handleTransferCollateral',loanContractAddress);
+
          // Transaction 2 Transfer to Loan Contract
 
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
@@ -259,7 +258,6 @@ class MyLoans extends Component {
            let date = new Date(currentDueDate* 1000)
            date.setDate(date.getDate() + ((i+1)*30));
            date = date.toString()
-           console.log(date);
            return date;
       }
 
@@ -465,7 +463,6 @@ class MyLoans extends Component {
                     </td>
                     <td className="">
                       <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
-                        console.log('loanAddresses transferCollateral ',loanAddresses);
                         this.handleTransferCollateral(loanAddresses[i])
                         }}>
                         Transfer
