@@ -5,7 +5,6 @@ import axios from 'axios';
 import Loader from 'react-loader';
 import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
-
 class LoanRequest extends Component {
   constructor(){
     super();
@@ -20,6 +19,7 @@ class LoanRequest extends Component {
       borrowLess:false,
       loaded:true,
       alertLoanAmount:false,
+      createRequestAlert:false,
       collateralValue: null,
       loanAmount: null,
       duration: null,
@@ -51,16 +51,16 @@ class LoanRequest extends Component {
 
 
   createLoanRequest = (principal, duration, interest, collateralAddress, collateralAmount) => {
+    this.setState({createRequestAlert:true})
     const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(FinocialAddress);
       FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
       from: window.web3.eth.accounts[0]
       }, function(err, res) {
       if(!err){
       console.log("Transaction in process")
-
+      window.location="/myloans";
       }
     });
-
     }
 
 
@@ -102,7 +102,7 @@ class LoanRequest extends Component {
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, loanAmountInput } = this.state;
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, loanAmountInput, createRequestAlert } = this.state;
 
 
     return (
@@ -432,9 +432,15 @@ class LoanRequest extends Component {
 
                 </div>
               </div>
+
             </div>
+
           </section>
+
         </div>
+        {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'12%',width:'43%'}} role="alert">
+            <strong>Loan request created successfully!</strong>
+        </div>}
       </div>
     );
   }

@@ -33,6 +33,8 @@ class MyLoans extends Component {
       currentDueDate:'',
       currentCollateralValue:'',
       loaded:true,
+      approveRequestAlert:false,
+      transferCollateralAlert:false,
       borrowedLoans:true, fundedLoans:false, display1:false, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false
     };
   }
@@ -221,6 +223,8 @@ class MyLoans extends Component {
 
         // Transaction 1 Approval
 
+        this.setState({approveRequestAlert:true})
+
         const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
         tokenContractInstance.approve(loanContractAddress, collateralAmount, {
               from: window.web3.eth.accounts[0]
@@ -228,7 +232,7 @@ class MyLoans extends Component {
             function(err, res) {
               if (!err) {
                 console.log(res);
-
+                window.location="/myloans";
 
               } else {
 
@@ -243,13 +247,14 @@ class MyLoans extends Component {
         // Transfer Collateral to Loan Contract
 
          // Transaction 2 Transfer to Loan Contract
-
+         this.setState({transferCollateralAlert:true})
         const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
         FinocialLoanInstance.transferCollateralToLoan({
           from: window.web3.eth.accounts[0]
             },function(err, res){
             if(!err)
                console.log(res);
+               window.location = "/myloans";
             });
 
       }
@@ -265,7 +270,7 @@ class MyLoans extends Component {
   render() {
     const {
       borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount,
-       repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, currentLoanAddress, loaded, currentLoanNumber, dueDate, currentDueDate, currentCollateralValue
+       repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, currentLoanAddress, loaded, currentLoanNumber, dueDate, currentDueDate, currentCollateralValue, approveRequestAlert, transferCollateralAlert
     } = this.state;
     return (
       <div className="MyLoans text-center">
@@ -1099,7 +1104,13 @@ class MyLoans extends Component {
             </div>
 
           </section>
+          {approveRequestAlert && <div className="alert alert-success" role="alert">
+              <strong>Loan request approved successfully! Now transfer collateral please.</strong>
+          </div>}
 
+          {transferCollateralAlert && <div className="alert alert-success" role="alert">
+              <strong>Transfer collateral successfully. Check loan in View all requests.</strong>
+          </div>}
         </div>
 
       </div>
