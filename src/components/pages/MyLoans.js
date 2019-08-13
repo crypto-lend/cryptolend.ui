@@ -170,7 +170,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Status</span>
                </div>
                  <span>
-                   {currentDate>dueDate[i]?'Not Due':'Due'}
+                   {currentDate<=dueDate[i]?'Not Due':'Not Due'}
                    </span>
                </td>
 
