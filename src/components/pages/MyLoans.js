@@ -263,7 +263,7 @@ class MyLoans extends Component {
 
       convertDate = (currentDueDate,i) =>{
            let date = new Date(currentDueDate* 1000)
-           date.setDate(date.getDate() + ((i+1)*30));
+           date.setMinutes(date.getMinutes() + ((i+1)*30));
            date = date.toString()
            return date;
       }
