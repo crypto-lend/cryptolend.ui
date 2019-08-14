@@ -490,7 +490,7 @@ class MyLoans extends Component {
                       </td>
                     </div>}
 
-                    <td>
+                    {status[i]>0 && <td>
                     <button className="btn btn-info" type="button" disabled={status[i]>0?false:true} onClick={()=>{
                       this.getRepayments(loanAddresses[i]);
                       this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
@@ -503,7 +503,7 @@ class MyLoans extends Component {
                     }}>
                       +
                     </button>
-                    </td>
+                    </td>}
                   </tr>;
                   })
                   }
