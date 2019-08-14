@@ -140,7 +140,7 @@ class LandingPage extends Component {
                         <span className="btn-inner--icon"><i className="fa fa-calculator"></i></span>
                         <span className="btn-inner--text">Loan Calculator</span>
                       </a>
-                      <a href="#" className="btn btn-white btn-icon mb-3 mb-sm-0">
+                      <a href="/request" className="btn btn-white btn-icon mb-3 mb-sm-0">
                         <span className="btn-inner--icon"><i className="ni ni-money-coins"></i></span>
                         <span className="btn-inner--text">Start Borrowing</span>
                       </a>

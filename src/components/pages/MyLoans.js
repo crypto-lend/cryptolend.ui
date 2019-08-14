@@ -30,6 +30,7 @@ class MyLoans extends Component {
       repaymentDuration:0,
       currentLoanAddress:'',
       currentLoanNumber:0,
+      repaymentIndex:0,
       currentDueDate:'',
       currentCollateralValue:'',
       loaded:true,
@@ -134,7 +135,7 @@ class MyLoans extends Component {
         }
 
         handleRepaymentRows = (currentLoanAddress,duration, currentDueDate, currentCollateralValue) => {
-          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate} = this.state;
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate, repaymentIndex} = this.state;
           repaymentRows=[];
 
           for (var i = 0; i < (duration/30); i++) {
@@ -183,9 +184,10 @@ class MyLoans extends Component {
                  <span>
                  <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!!repaymentNumber[i]} onClick={
                    ()=>{
-                     console.log('currentLoanAddress', currentLoanAddress,'repaymentAmount', repaymentAmount[0]);
+                     console.log('currentLoanAddress', currentLoanAddress,'repaymentAmount', repaymentAmount[repaymentIndex]);
                      this.getRepayments(currentLoanAddress)
-                     this.handleRepayment(currentLoanAddress,repaymentAmount[0])
+                     this.handleRepayment(currentLoanAddress,repaymentAmount[repaymentIndex])
+                     this.setState({repaymentIndex: repaymentIndex + 1})
                    }
 
                  } >Repay</button>
