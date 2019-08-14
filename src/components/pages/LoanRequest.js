@@ -294,7 +294,7 @@ class LoanRequest extends Component {
 
                     {borrowLess?
                       <div>
-                      <input className="form-control form-control-lg" type="text" placeholder={loanAmount}  onChange={(e)=>{
+                      <input className="form-control form-control-lg" type="number" min="1" max={loanAmount} placeholder={loanAmount} Value={loanAmount} onChange={(e)=>{
                         if(e.target.value>loanAmount)
                           this.setState({alertLoanAmount:true, loanAmountInput:e.target.value});
                         else
@@ -316,7 +316,7 @@ class LoanRequest extends Component {
                     <span className="btn-inner--text">Back</span>
                   </a>
                 </div>
-                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false});}}>
+                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false, loanAmount:loanAmountInput});}}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>

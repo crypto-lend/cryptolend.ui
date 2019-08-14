@@ -183,9 +183,9 @@ class MyLoans extends Component {
                  <span>
                  <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={!!repaymentNumber[i]} onClick={
                    ()=>{
-                     console.log('currentLoanAddress', currentLoanAddress,'repaymentAmount', repaymentAmount[i]);
+                     console.log('currentLoanAddress', currentLoanAddress,'repaymentAmount', repaymentAmount[0]);
                      this.getRepayments(currentLoanAddress)
-                     this.handleRepayment(currentLoanAddress,repaymentAmount[i])
+                     this.handleRepayment(currentLoanAddress,repaymentAmount[0])
                    }
 
                  } >Repay</button>
