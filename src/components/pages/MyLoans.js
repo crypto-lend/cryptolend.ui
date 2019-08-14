@@ -478,21 +478,21 @@ class MyLoans extends Component {
                     <td>
                       <span className="">{this.convertDate(dueDate[i],-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
                     </td>
-                    {status[i]<0 && <td className="">
+                    {status[i]==0 && <td className="">
                       <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
                         this.approveRequest(collateralAddress[i], loanAddresses[i], collateralValue[i])
                         }}>
                         Approve
                       </button>
                     </td>}
-                    {status[i]<0 && <td className="">
+                    {status[i]==0 && <td className="">
                       <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
                         this.handleTransferCollateral(loanAddresses[i])
                         }}>
                         Transfer
                       </button>
                     </td>}
-                    {!(status[i]>0) && <td>
+                    {status[i]>0 && <td>
                     <button className="btn btn-primary" type="button" disabled={status[i]>0?false:true} onClick={()=>{
                       this.handleReturnCollateralToBorrower(loanAddresses[i])
                       }}>
