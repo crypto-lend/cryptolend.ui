@@ -29,6 +29,7 @@ class MyLoans extends Component {
       tokenSymbol:[],
       repaymentRows:[],
       repaymentDuration:0,
+      activeRepayment:0,
       currentLoanAddress:'',
       currentLoanNumber:0,
       repaymentIndex:0,
@@ -116,14 +117,11 @@ class MyLoans extends Component {
         })}
         }
 
-        getPaidRepaymentsCount = (loanAddress,repaymentIndex) => {
+        getPaidRepaymentsCount = (loanAddress) => {
           const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
           FinocialLoanInstance.getPaidRepaymentsCount((err, res)=>{
-            if(!err && res.toNumber()>=repaymentIndex){
-               return true;
-            }
-            else
-              return false;
+            if(!err)
+               this.setState({activeRepayment: res.toNumber()});
           });
         }
 
@@ -141,7 +139,7 @@ class MyLoans extends Component {
         }
 
         handleRepaymentRows = (currentLoanAddress,duration, currentDueDate, currentCollateralValue) => {
-          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate, repaymentIndex} = this.state;
+          let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate, repaymentIndex, activeRepayment} = this.state;
           repaymentRows=[];
 
           for (var i = 0; i < (duration/30); i++) {
@@ -188,7 +186,7 @@ class MyLoans extends Component {
                  <span className="mb-0 text-sm">Action</span>
                </div>
                  <span>
-                 <button className="btn btn-primary" style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" disabled={this.getPaidRepaymentsCount(currentLoanAddress, repaymentIndex)} onClick={
+                 <button className={repaymentIndex==activeRepayment?"btn btn-success":"btn btn-primary"} style={{fontSize:'9px', padding:'2px', fontStyle:'bold' }} type="button" onClick={
                    ()=>{
                      console.log('currentLoanAddress', currentLoanAddress,'repaymentAmount', repaymentAmount[repaymentIndex]);
                      this.handleRepayment(currentLoanAddress,repaymentAmount[repaymentIndex])
@@ -216,6 +214,13 @@ class MyLoans extends Component {
                  Value : {currentCollateralValue} TTT
                    </span>
                </td>
+               {repaymentIndex==duration/30 && <td>
+               <button className="btn btn-primary" type="button" onClick={()=>{
+                 this.handleReturnCollateralToBorrower(loanAddresses[i])
+                 }}>
+                 Claim
+               </button>
+               </td>}
                </tr>);
 
         }
@@ -262,7 +267,6 @@ class MyLoans extends Component {
                console.log(res);
                window.location = "/myloans";
             });
-
       }
 
       handleReturnCollateralToBorrower = (loanAddress) =>{
@@ -281,9 +285,6 @@ class MyLoans extends Component {
            return date;
       }
 
-
-
-
   render() {
     const {
       borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount,
@@ -291,7 +292,7 @@ class MyLoans extends Component {
     } = this.state;
     return (
       <div className="MyLoans text-center">
-      <Loader loaded={loaded}/>
+      {/*<Loader loaded={loaded}/>*/}
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
@@ -424,16 +425,7 @@ class MyLoans extends Component {
                 </thead>
                 <tbody>
                   {loanAmount.map((amount,i)=>{
-                    return <tr key={i} style={{cursor:'pointer'}} onClick={()=>{
-                      this.getRepayments(loanAddresses[i]);
-                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
-                         repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
-                       })
-                      if(display1==true)
-                        window.location="/myloans";
-
-                        this.getPaidRepaymentsCount(currentLoanAddress)
-                    }}>
+                    return <tr key={i}>
                     <th scope="row mt-3">
                       <div className="media align-items-center">
                         <div className="media-body">
@@ -478,27 +470,40 @@ class MyLoans extends Component {
                     <td>
                       <span className="">{this.convertDate(dueDate[i],-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
                     </td>
-                    {status[i]==0 && <td className="">
+
+                    {status[i]==0 &&
+                      <div className="mt-4">
+                      <label id="exampleFormControlSelect">Transfer Collateral</label>
+                      <td>
                       <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
                         this.approveRequest(collateralAddress[i], loanAddresses[i], collateralValue[i])
                         }}>
                         Approve
                       </button>
-                    </td>}
-                    {status[i]==0 && <td className="">
+                      </td>
+                      <td>
                       <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
                         this.handleTransferCollateral(loanAddresses[i])
                         }}>
                         Transfer
                       </button>
-                    </td>}
-                    {status[i]>0 && <td>
-                    <button className="btn btn-primary" type="button" disabled={status[i]>0?false:true} onClick={()=>{
-                      this.handleReturnCollateralToBorrower(loanAddresses[i])
-                      }}>
-                      Claim
+                      </td>
+                    </div>}
+
+                    <td>
+                    <button className="btn btn-info" type="button" disabled={status[i]>0?false:true} onClick={()=>{
+                      this.getRepayments(loanAddresses[i]);
+                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
+                         repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
+                       })
+                      if(display1==true)
+                        window.location="/myloans";
+
+                        this.getPaidRepaymentsCount(currentLoanAddress)
+                    }}>
+                      +
                     </button>
-                    </td>}
+                    </td>
                   </tr>;
                   })
                   }
@@ -1130,12 +1135,13 @@ class MyLoans extends Component {
             </div>
 
           </section>
+
           {approveRequestAlert && <div className="alert alert-success" role="alert">
-              <strong>Loan request approved successfully! Now transfer collateral please.</strong>
+              <strong>Loan request approved successfully!</strong>
           </div>}
 
           {transferCollateralAlert && <div className="alert alert-success" role="alert">
-              <strong>Transfer collateral successfully. Check loan in View all requests.</strong>
+              <strong>Transfer collateral successfully.</strong>
           </div>}
         </div>
 
