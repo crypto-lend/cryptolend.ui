@@ -6,16 +6,36 @@ import {fetchNetwork, fetchAccounts, getAccounts} from '../../services/Web3Servi
 class LandingPage extends Component {
   constructor(props){
     super(props);
+    this.fetchWeb3();
 
+  }
+
+  componentDidMount() {
+    this.fetchWeb3();
   }
 
   fetchWeb3 = async () => {
     const res = await fetchAccounts();
-    console.log('........',res);
+    console.log('window.web3 : ',window.web3);
+
+    window.addEventListener('load', () => {
+    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+    console.log('window.web3 : ',window.web3);
+    
+    if (typeof window.web3 !== 'undefined') {
+      console.log('Login metamask web3');
+      // Use Mist/MetaMask's provider
+    } else {
+      console.log('No web3? You should consider trying MetaMask!');
+      // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+    }
+  });
   }
+
+
+
   render() {
     const web3 = window.web3;
-    this.fetchWeb3();
     return (
       <div>
         <div className="LandingPage text-center">

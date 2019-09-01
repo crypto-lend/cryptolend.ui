@@ -57,8 +57,8 @@ class LoanRequest extends Component {
       from: window.web3.eth.accounts[0]
       }, function(err, res) {
       if(!err){
-      console.log("Transaction in process")
-      window.location="/myloans";
+      console.log("Transaction in process", res)
+
       }
     });
     }
