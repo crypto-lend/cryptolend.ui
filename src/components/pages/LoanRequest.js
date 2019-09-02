@@ -3,7 +3,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Loader from 'react-loader';
-import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
 class LoanRequest extends Component {
   constructor(){
@@ -20,7 +20,7 @@ class LoanRequest extends Component {
       loaded:true,
       alertLoanAmount:false,
       createRequestAlert:false,
-      collateralValue: null,
+      collateralValue: 0,
       loanAmount: null,
       duration: null,
       monthlyInt: 0,
@@ -50,19 +50,42 @@ class LoanRequest extends Component {
   }
 
 
-  createLoanRequest = (principal, duration, interest, collateralAddress, collateralAmount) => {
-    this.setState({createRequestAlert:true})
-    const FinocialInstance = window.web3.eth.contract(this.state.FinocialABI).at(FinocialAddress);
-      FinocialInstance.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
-      from: window.web3.eth.accounts[0]
-      }, function(err, res) {
-      if(!err){
-      console.log("Transaction in process", res)
-
-      }
-    });
+  createLoanRequest = async (principal, duration, interest, collateralAddress, collateralAmount) => {
+    const res = await window.ethereum.enable();
+        console.log(res);
+        // expected output: "Success!"
+        const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+          LoanCreator.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
+          from: window.web3.eth.accounts[0]
+        }, async (err, res) => {
+          if(!err){
+            console.log("Transaction in process", res)
+            const receipt = await this.getTransactionReceipt(res)
+            console.log('receipt',receipt);
+            this.setState({createRequestAlert:true})
+          }
+        });
     }
 
+ getTransactionReceipt = async (hash) => {
+      let receipt = null;
+      while (receipt === null) {
+        // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
+        receipt = await this.getTransactionReceiptPromise(hash);
+        setTimeout(function(){ console.log('Every second'); }, 1000);
+      }
+      return receipt;
+    };
+
+getTransactionReceiptPromise = (hash) => {
+      // here we just promisify getTransactionReceipt function for convenience
+      return new Promise(((resolve, reject) => {
+          window.web3.eth.getTransactionReceipt(hash, function(err, data) {
+              if (err !== null) reject(err);
+              else resolve(data);
+          });
+      }));
+    }
 
 
   handleMonthlyInterest = (e) => {
@@ -439,7 +462,7 @@ class LoanRequest extends Component {
 
         </div>
         {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'12%',width:'43%'}} role="alert">
-            <strong>Loan request created successfully!</strong>
+            <strong>Loan request submitted successfully!</strong>
         </div>}
       </div>
     );
