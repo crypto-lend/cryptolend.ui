@@ -20,6 +20,7 @@ class LoanRequest extends Component {
       loaded:true,
       alertLoanAmount:false,
       createRequestAlert:false,
+      loanRequestContractAddress:'',
       collateralValue: 0,
       loanAmount: null,
       duration: null,
@@ -61,7 +62,7 @@ class LoanRequest extends Component {
           if(!err){
             console.log("Transaction in process", res)
             const receipt = await this.getTransactionReceipt(res)
-            this.setState({createRequestAlert:true})
+            this.setState({createRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
             console.log('receipt',receipt.logs[0].address);
           }
         });
@@ -125,7 +126,7 @@ getTransactionReceiptPromise = (hash) => {
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, loanAmountInput, createRequestAlert } = this.state;
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, loanAmountInput, createRequestAlert, loanRequestContractAddress } = this.state;
 
 
     return (
@@ -385,7 +386,7 @@ getTransactionReceiptPromise = (hash) => {
                     </button>
                     </div>
                     <div className="text-right">
-                      <input className="form-control" type="text" value={monthlyInt} style={{width:'60px', marginTop: '-43px',  marginLeft: '289px'}} id="example-time-input"/>
+                      <input className="form-control" type="text" value={monthlyInt} style={{width:'60px', marginTop: '-43px', marginLeft: '373px'}} id="example-time-input"/>
                     </div>
                     <div className="text-right" style={{marginTop: '-44px'}}>
                     <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={this.handleMonthlyInterest}>
@@ -418,7 +419,7 @@ getTransactionReceiptPromise = (hash) => {
                   <div className="card-header text-center">
                     Overview
                   </div>
-                  <div className="card-body text-left mt-5" style={{marginBottom:monthlyInt?'160px':'253px'}}>
+                  <div className="card-body text-left mt-5" style={{marginBottom:monthlyInt?'176px':'253px'}}>
                   {collateralValue ?
                     <div><p>Collateral : {collateralValue} {collateralCurrency}</p></div>
                     :<div><p>Collateral : (not set)</p></div>
@@ -442,7 +443,7 @@ getTransactionReceiptPromise = (hash) => {
 
                   </div>
                   { monthlyInt?
-                    <div className="btn-wrapper text-center" onClick={()=>{
+                    <div className="btn-wrapper text-center mb-5 mt-5" onClick={()=>{
                       this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralAddress,collateralValue);
                       }}>
                       <br/>
@@ -462,8 +463,13 @@ getTransactionReceiptPromise = (hash) => {
 
         </div>
         {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
-            <strong>Congratulations! Loan Request is Created successfully!</strong>
-        </div>}
+              <strong>Congratulations! Loan Request is Created successfully!</strong>
+          </div>}
+        {
+          createRequestAlert && <div className="alert alert-info" style={{marginLeft:'9.5%',width:'46.5%', color:'#fff', cursor:'pointer'}} role="alert">
+              <a href={"ropsten.etherscan.io/address/"+loanRequestContractAddress} target="_blank">Check transation on Ropsten</a>
+          </div>
+        }
       </div>
     );
   }
