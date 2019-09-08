@@ -62,7 +62,7 @@ class LoanRequest extends Component {
             console.log("Transaction in process", res)
             const receipt = await this.getTransactionReceipt(res)
             this.setState({createRequestAlert:true})
-            console.log('receipt',receipt);
+            console.log('receipt',receipt.logs[0].address);
           }
         });
     }
@@ -461,8 +461,8 @@ getTransactionReceiptPromise = (hash) => {
           </section>
 
         </div>
-        {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'12%',width:'43%'}} role="alert">
-            <strong>Loan request submitted successfully!</strong>
+        {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
+            <strong>Congratulations! Loan Request is Created successfully!</strong>
         </div>}
       </div>
     );
