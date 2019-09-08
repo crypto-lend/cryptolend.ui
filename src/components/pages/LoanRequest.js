@@ -61,6 +61,7 @@ class LoanRequest extends Component {
           if(!err){
             console.log("Transaction in process", res)
             const receipt = await this.getTransactionReceipt(res)
+            this.setState({createRequestAlert:true})
             console.log('receipt',receipt);
           }
         });
@@ -72,7 +73,6 @@ class LoanRequest extends Component {
         // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
         receipt = await this.getTransactionReceiptPromise(hash);
         setTimeout(function(){ console.log('Every second'); }, 1000);
-        this.setState({createRequestAlert:true})
       }
       return receipt;
     };
