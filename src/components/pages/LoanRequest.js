@@ -20,6 +20,8 @@ class LoanRequest extends Component {
       loaded:true,
       alertLoanAmount:false,
       createRequestAlert:false,
+      approveRequestAlert:true,
+      transferCollateralAlert:true,
       loanRequestContractAddress:'',
       collateralValue: 0,
       loanAmount: null,
@@ -51,42 +53,81 @@ class LoanRequest extends Component {
   }
 
 
-  createLoanRequest = async (principal, duration, interest, collateralAddress, collateralAmount) => {
-    const res = await window.ethereum.enable();
-        console.log(res);
-        // expected output: "Success!"
-        const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
-          LoanCreator.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
-          from: window.web3.eth.accounts[0]
-        }, async (err, res) => {
-          if(!err){
-            console.log("Transaction in process", res)
-            const receipt = await this.getTransactionReceipt(res)
-            this.setState({createRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
-            console.log('receipt',receipt.logs[0].address);
-          }
-        });
-    }
+createLoanRequest = async (principal, duration, interest, collateralAddress, collateralAmount) => {
+  const res = await window.ethereum.enable();
+      console.log(res);
+      // expected output: "Success!"
+      const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+        LoanCreator.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
+        from: window.web3.eth.accounts[0]
+      }, async (err, res) => {
+        if(!err){
+          console.log("Transaction in process", res)
+          const receipt = await this.getTransactionReceipt(res)
+          this.setState({createRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
+          console.log('Address of Loan',receipt.logs[0].address);
+        }
+      });
+  }
 
- getTransactionReceipt = async (hash) => {
-      let receipt = null;
-      while (receipt === null) {
-        // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
-        receipt = await this.getTransactionReceiptPromise(hash);
-        setTimeout(function(){ console.log('Every second'); }, 1000);
+  getTransactionReceipt = async (hash) => {
+        let receipt = null;
+        while (receipt === null) {
+          // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
+          receipt = await this.getTransactionReceiptPromise(hash);
+          setTimeout(function(){ console.log('Every second'); }, 1000);
+        }
+        return receipt;
+      };
+
+  getTransactionReceiptPromise = (hash) => {
+        // here we just promisify getTransactionReceipt function for convenience
+        return new Promise(((resolve, reject) => {
+            window.web3.eth.getTransactionReceipt(hash, function(err, data) {
+                if (err !== null) reject(err);
+                else resolve(data);
+            });
+        }));
       }
-      return receipt;
-    };
 
-getTransactionReceiptPromise = (hash) => {
-      // here we just promisify getTransactionReceipt function for convenience
-      return new Promise(((resolve, reject) => {
-          window.web3.eth.getTransactionReceipt(hash, function(err, data) {
-              if (err !== null) reject(err);
-              else resolve(data);
-          });
-      }));
+
+    approveRequest = (collateralAddress, loanContractAddress, collateralAmount) => {
+      // Transfer Collateral to Loan Contract
+      // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
+
+      // Transaction 1 Approval
+
+      this.setState({approveRequestAlert:false})
+
+      const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
+      tokenContractInstance.approve(loanContractAddress, collateralAmount, {
+            from: window.web3.eth.accounts[0]
+          },
+          function(err, res) {
+            if (!err) {
+              console.log(res);
+              // window.location="/myloans";
+            } else {
+
+            }
+      });
+
     }
+
+  handleTransferCollateral = (loanContractAddress) => {
+    // Transfer Collateral to Loan Contract
+
+      // Transaction 2 Transfer to Loan Contract
+      this.setState({transferCollateralAlert:true})
+    const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+    FinocialLoanInstance.transferCollateralToLoan({
+      from: window.web3.eth.accounts[0]
+        },function(err, res){
+        if(!err)
+            console.log(res);
+            // window.location = "/myloans";
+        });
+  }
 
 
   handleMonthlyInterest = (e) => {
@@ -126,7 +167,9 @@ getTransactionReceiptPromise = (hash) => {
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, loanAmountInput, createRequestAlert, loanRequestContractAddress } = this.state;
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, 
+      durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, 
+      loanAmountInput, createRequestAlert, loanRequestContractAddress, approveRequestAlert, transferCollateralAlert } = this.state;
 
 
     return (
@@ -470,6 +513,21 @@ getTransactionReceiptPromise = (hash) => {
               <a href={"ropsten.etherscan.io/address/"+loanRequestContractAddress} target="_blank">Check transation on Ropsten</a>
           </div>
         }
+
+        {createRequestAlert &&
+          <div className="mt-4">
+          <label id="exampleFormControlSelect">Transfer Collateral</label>
+          <button className="btn btn-primary" type="button" disabled={!approveRequestAlert} onClick={()=>{
+            this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
+            }}>
+            Approve
+          </button>
+          <button className="btn btn-primary" type="button" disabled={!transferCollateralAlert} onClick={()=>{
+            this.handleTransferCollateral(loanRequestContractAddress)
+            }}>
+            Transfer
+          </button>
+        </div>}
       </div>
     );
   }
