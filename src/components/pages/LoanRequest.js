@@ -20,8 +20,8 @@ class LoanRequest extends Component {
       loaded:true,
       alertLoanAmount:false,
       createRequestAlert:false,
-      approveRequestAlert:true,
-      transferCollateralAlert:true,
+      approveRequestAlert:false,
+      transferCollateralAlert:false,
       loanRequestContractAddress:'',
       collateralValue: 0,
       loanAmount: null,
@@ -64,7 +64,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
         if(!err){
           console.log("Transaction in process", res)
           const receipt = await this.getTransactionReceipt(res)
-          this.setState({createRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
+          this.setState({createRequestAlert:true, approveRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
           console.log('Address of Loan',receipt.logs[0].address);
         }
       });
@@ -97,8 +97,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
 
       // Transaction 1 Approval
 
-      this.setState({approveRequestAlert:false})
-
+      this.setState({approveRequestAlert:false, transferCollateralAlert:true})
       const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
       tokenContractInstance.approve(loanContractAddress, collateralAmount, {
             from: window.web3.eth.accounts[0]
@@ -118,15 +117,15 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
     // Transfer Collateral to Loan Contract
 
       // Transaction 2 Transfer to Loan Contract
-      this.setState({transferCollateralAlert:true})
-    const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
-    FinocialLoanInstance.transferCollateralToLoan({
-      from: window.web3.eth.accounts[0]
-        },function(err, res){
-        if(!err)
-            console.log(res);
-            // window.location = "/myloans";
-        });
+      this.setState({transferCollateralAlert:false})
+      const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+      FinocialLoanInstance.transferCollateralToLoan({
+        from: window.web3.eth.accounts[0]
+          },function(err, res){
+          if(!err)
+              console.log(res);
+              // window.location = "/myloans";
+          });
   }
 
 
@@ -496,11 +495,25 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     </div>
                   :''
                   }
+                  {approveRequestAlert &&
+                  <button className="btn btn-primary" type="button" disabled={!approveRequestAlert} onClick={()=>{
+                    this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
+                    }}>
+                    Approve
+                  </button>}
+                  {transferCollateralAlert &&
+                  <button className="btn btn-primary" type="button" disabled={!transferCollateralAlert} onClick={()=>{
+                    this.handleTransferCollateral(loanRequestContractAddress)
+                    }}>
+                    Transfer
+                  </button>}
 
                 </div>
               </div>
 
+              
             </div>
+            
 
           </section>
 
@@ -513,21 +526,6 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
               <a href={"ropsten.etherscan.io/address/"+loanRequestContractAddress} target="_blank">Check transation on Ropsten</a>
           </div>
         }
-
-        {createRequestAlert &&
-          <div className="mt-4">
-          <label id="exampleFormControlSelect">Transfer Collateral</label>
-          <button className="btn btn-primary" type="button" disabled={!approveRequestAlert} onClick={()=>{
-            this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
-            }}>
-            Approve
-          </button>
-          <button className="btn btn-primary" type="button" disabled={!transferCollateralAlert} onClick={()=>{
-            this.handleTransferCollateral(loanRequestContractAddress)
-            }}>
-            Transfer
-          </button>
-        </div>}
       </div>
     );
   }
