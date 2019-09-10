@@ -125,7 +125,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
           },function(err, res){
           if(!err)
               console.log(res);
-              // window.location = "/myloans";
+              // window.location = "/myloans ";
               self.setState({transferCollateralAlert:false, transferCollateralSuccessAlert:true})
           });
   }
