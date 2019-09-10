@@ -511,7 +511,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                   </button>}
 
                   {transferCollateralSuccessAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%'}} role="alert">
-                      <strong>Collateral has been transferred successfully. Your loan request is waiting to be funded now!</strong>
+                      Collateral has been transferred successfully. Your loan request is waiting to be funded now!
                   </div>}
                 </div>
               </div>
