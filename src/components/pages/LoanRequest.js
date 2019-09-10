@@ -22,6 +22,7 @@ class LoanRequest extends Component {
       createRequestAlert:false,
       approveRequestAlert:false,
       transferCollateralAlert:false,
+      transferCollateralSuccessAlert:false,
       loanRequestContractAddress:'',
       collateralValue: 0,
       loanAmount: null,
@@ -96,8 +97,8 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
       // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
 
       // Transaction 1 Approval
-
-      this.setState({approveRequestAlert:false, transferCollateralAlert:true})
+      
+      var self = this;
       const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
       tokenContractInstance.approve(loanContractAddress, collateralAmount, {
             from: window.web3.eth.accounts[0]
@@ -106,9 +107,8 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
             if (!err) {
               console.log(res);
               // window.location="/myloans";
-            } else {
-
-            }
+              self.setState({approveRequestAlert:false, transferCollateralAlert:true,transferCollateralSuccessAlert:true})
+            } else {}
       });
 
     }
@@ -116,8 +116,9 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
   handleTransferCollateral = (loanContractAddress) => {
     // Transfer Collateral to Loan Contract
 
+      var self = this;
       // Transaction 2 Transfer to Loan Contract
-      this.setState({transferCollateralAlert:false})
+      
       const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
       FinocialLoanInstance.transferCollateralToLoan({
         from: window.web3.eth.accounts[0]
@@ -125,6 +126,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
           if(!err)
               console.log(res);
               // window.location = "/myloans";
+              self.setState({transferCollateralAlert:false})
           });
   }
 
@@ -168,7 +170,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
 
     const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, 
       durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, 
-      loanAmountInput, createRequestAlert, loanRequestContractAddress, approveRequestAlert, transferCollateralAlert } = this.state;
+      loanAmountInput, createRequestAlert, loanRequestContractAddress, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert } = this.state;
 
 
     return (
@@ -508,24 +510,20 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     Transfer
                   </button>}
 
+                  {transferCollateralSuccessAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%'}} role="alert">
+                      <strong>Collateral has been transferred successfully. Your loan request is waiting to be funded now!</strong>
+                  </div>}
                 </div>
               </div>
-
-              
             </div>
-            
-
           </section>
-
         </div>
         {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
               <strong>Congratulations! Loan Request is Created successfully!</strong>
           </div>}
-        {
-          createRequestAlert && <div className="alert alert-info" style={{marginLeft:'9.5%',width:'46.5%', color:'#fff', cursor:'pointer'}} role="alert">
-              <a href={"ropsten.etherscan.io/address/"+loanRequestContractAddress} target="_blank">Check transation on Ropsten</a>
-          </div>
-        }
+        {createRequestAlert && <div className="alert alert-info" style={{marginLeft:'9.5%',width:'46.5%', color:'#fff', cursor:'pointer'}} role="alert">
+              <a href={"ropsten.etherscan.io/address/"+loanRequestContractAddress} Target="_blank">Check transation on Ropsten</a>
+          </div>}
       </div>
     );
   }
