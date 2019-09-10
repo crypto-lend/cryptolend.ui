@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import axios from 'axios';
 import Loader from 'react-loader';
 import { LoanCreatorABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
@@ -521,9 +521,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
         {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
               <strong>Congratulations! Loan Request is Created successfully!</strong>
           </div>}
-        {createRequestAlert && <div className="alert alert-info" style={{marginLeft:'9.5%',width:'46.5%', color:'#fff', cursor:'pointer'}} role="alert">
-              <a href={"ropsten.etherscan.io/address/"+loanRequestContractAddress} Target="_blank">Check transation on Ropsten</a>
-          </div>}
+        {createRequestAlert && <Link href={"ropsten.etherscan.io/address/"+loanRequestContractAddress}  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }
