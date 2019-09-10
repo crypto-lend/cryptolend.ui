@@ -107,7 +107,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
             if (!err) {
               console.log(res);
               // window.location="/myloans";
-              self.setState({approveRequestAlert:false, transferCollateralAlert:true,transferCollateralSuccessAlert:true})
+              self.setState({approveRequestAlert:false, transferCollateralAlert:true})
             } else {}
       });
 
@@ -126,7 +126,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
           if(!err)
               console.log(res);
               // window.location = "/myloans";
-              self.setState({transferCollateralAlert:false})
+              self.setState({transferCollateralAlert:false, transferCollateralSuccessAlert:true})
           });
   }
 
