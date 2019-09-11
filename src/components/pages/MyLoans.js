@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
-import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, ERC20TokenABI } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress,  FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, ERC20TokenABI } from '../Web3/abi';
 import Loader from 'react-loader';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
@@ -44,10 +44,12 @@ class MyLoans extends Component {
 
   //Get All Loans
   viewAllRequest = async () => {
-    const FinocialInstance = window.web3.eth.contract(FinocialABI).at(FinocialAddress);
+    const FinocialInstance = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
 
     FinocialInstance.getAllLoans((err, loanContractAddress) => {
       this.setState({loaded:false})
+      console.log("LOAN CONTRACT ADDRESS : ", loanContractAddress);
+      
       let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, dueDate, currentDate, currentDueDate} = this.state;
 
       if(!err){
@@ -57,11 +59,12 @@ class MyLoans extends Component {
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
 
                   FinocialLoanInstance.getLoanData((err, res)=>{
+                  console.log("LOAN DATA :", res);
+                  
                   let startedOn = res[3].toNumber();
                   let date = startedOn;
 
                   currentDate = new Date();
-
 
                 if(!err && window.web3.eth.defaultAccount==res[11]){
                   loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));

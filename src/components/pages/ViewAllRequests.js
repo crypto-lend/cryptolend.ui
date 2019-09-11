@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
-import { FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './ViewAllOffers.css';
@@ -48,16 +48,17 @@ class ViewAllRequests extends Component {
 
   //Get All Loans
   viewAllRequest = () => {
-    const FinocialInstance = window.web3.eth.contract(FinocialABI).at(FinocialAddress);
+    const FinocialInstance = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
 
     FinocialInstance.getAllLoans((err, loanContractAddress) => {
       let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status} = this.state;
+      console.log("LOAN ADDRESSES : ", loanContractAddress)
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
-                const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+                const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(LoanCreatorAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
-                  console.log('getLoanData :',res[4].toNumber());
+                  console.log('getLoanData :',res);
                 if(!err)
                   {loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());
