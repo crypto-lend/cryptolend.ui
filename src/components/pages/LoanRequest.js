@@ -65,7 +65,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
         if(!err){
           console.log("Transaction in process", res)
           const receipt = await this.getTransactionReceipt(res)
-          this.setState({createRequestAlert:true, approveRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
+          this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
           console.log('Address of Loan',receipt.logs[0].address);
         }
       });
@@ -499,16 +499,16 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>
-                  :''
+                    :''
                   }
                   {approveRequestAlert &&
-                  <button className="btn btn-primary" type="button" disabled={!approveRequestAlert} onClick={()=>{
+                  <button className="btn btn-primary" type="button" onClick={()=>{
                     this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
                     }}>
                     Approve
                   </button>}
                   {transferCollateralAlert &&
-                  <button className="btn btn-primary" type="button" disabled={!transferCollateralAlert} onClick={()=>{
+                  <button className="btn btn-primary" type="button" onClick={()=>{
                     this.handleTransferCollateral(loanRequestContractAddress)
                     }}>
                     Transfer
