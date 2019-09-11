@@ -384,7 +384,11 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     <span className="btn-inner--text">Back</span>
                   </a>
                 </div>
-                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, borrow:false, loanAmount:loanAmountInput});}}>
+                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} 
+                    onClick={()=>{this.setState({durationView:true, borrow:false, loanAmount:borrowLess?loanAmountInput:loanAmount});
+                    console.log('LOANAMOUNT : ', loanAmount);
+                    
+                    }}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
