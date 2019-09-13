@@ -59,6 +59,8 @@ class ViewAllRequests extends Component {
                 const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(LoanCreatorAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
                   console.log('getLoanData :',res);
+                  console.log("LOAN AMOUNT : ", window.web3.fromWei(res[0]));
+                  
                 if(!err)
                   {loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
                   collateralValue.push(res[6].toNumber());

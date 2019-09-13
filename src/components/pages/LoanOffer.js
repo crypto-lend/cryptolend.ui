@@ -3,7 +3,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
-
+import './LoanOffer.css';
 class LoanOffer extends Component {
   constructor(){
     super();
@@ -236,9 +236,9 @@ class LoanOffer extends Component {
                                     }
                                     </select>
                                     <h6 class="mt-4">LTV</h6>
-                                    <span class="font-weight-bold mb-0">50%</span>
+                                    <input class="font-weight-bold mb-0" value="50%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
                                     <h6 class="mt-4">Interest</h6>
-                                    <span class="font-weight-bold mb-0">0.25%</span>
+                                    <input class="font-weight-bold mb-0" value="0.25%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
                                   </div>
                                </div>
                            }
@@ -255,9 +255,9 @@ class LoanOffer extends Component {
                                         }
                                         </select>
                                         <h6 class="mt-4">LTV</h6>
-                                        <span class="font-weight-bold mb-0">50%</span>
+                                        <input class="font-weight-bold mb-0" value="50%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
                                         <h6 class="mt-4">Interest</h6>
-                                        <span class="font-weight-bold mb-0">0.25%</span>
+                                        <input class="font-weight-bold mb-0" value="0.25%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
                                       </div>
                                    </div>}
 
@@ -273,9 +273,9 @@ class LoanOffer extends Component {
                                             }
                                             </select>
                                             <h6 class="mt-4">LTV</h6>
-                                            <span class="font-weight-bold mb-0">50%</span>
+                                            <input class="font-weight-bold mb-0" value="50%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
                                             <h6 class="mt-4">Interest</h6>
-                                            <span class="font-weight-bold mb-0">0.25%</span>
+                                            <input class="font-weight-bold mb-0" value="0.25%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
                                           </div>
                                         </div>}
                                      </div>
