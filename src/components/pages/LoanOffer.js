@@ -235,7 +235,7 @@ class LoanOffer extends Component {
                            {!!collateralCount && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
-                                      this.setState({collateralCurrency3:e.target.value});
+                                      this.setState({collateralCurrency1:e.target.value});
                                       
                                     }}>
                                     {
