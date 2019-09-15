@@ -61,7 +61,7 @@ class LoanOffer extends Component {
         console.log("collateralMetadata", collateralMetadata);
         // expected output: "Success!"
         const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
-          LoanCreator.createNewLoanOffer( window.web3.toWei(principal), duration, collateralMetadata, {
+          LoanCreator.createNewLoanOffer( window.web3.toWei(principal), duration, JSON.stringify(collateralMetadata), {
           from: window.web3.eth.accounts[0]
         }, async (err, res) => {
           if(!err){
