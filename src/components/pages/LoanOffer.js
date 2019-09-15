@@ -14,6 +14,12 @@ class LoanOffer extends Component {
       currency:false,
       borrow:false,
       durationView:false,
+      ltv1:50,
+      ltv2:50,
+      ltv3:50,
+      mpr1:0.25,
+      mpr2:0.25,
+      mpr3:0.25,
       mprView:false,
       collateralValue: '(not set)',
       loanAmount: '(not set)',
@@ -46,7 +52,8 @@ class LoanOffer extends Component {
   }
 
   render() {
-    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency, collateralCount, collateralValue } = this.state;
+    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency, collateralCount, collateralValue,
+    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3 } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -87,7 +94,7 @@ class LoanOffer extends Component {
                       <span className="nav-link-inner--text">Create Loan Offers</span>
                     </a>
                   </li>
-                  <li className="nav-item dropdown">
+                  <li className="nav-item dropdown"> 
                     <a href="#" className="nav-link" data-toggle="dropdown" href="/view-requests" role="button">
                       <i className="ni ni-collection d-lg-none"></i>
                       <span className="nav-link-inner--text">View All Request</span>
@@ -236,9 +243,9 @@ class LoanOffer extends Component {
                                     }
                                     </select>
                                     <h6 class="mt-4">LTV</h6>
-                                    <input class="font-weight-bold mb-0" value="50%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
+                                    <input class="font-weight-bold mb-0" type="number" value={ltv1} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv1:e.target.value>0 && e.target.value})} />
                                     <h6 class="mt-4">Interest</h6>
-                                    <input class="font-weight-bold mb-0" value="0.25%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
+                                    <input class="font-weight-bold mb-0" type="number" value={mpr1} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr1:e.target.value>0 && e.target.value})} />
                                   </div>
                                </div>
                            }
@@ -255,9 +262,9 @@ class LoanOffer extends Component {
                                         }
                                         </select>
                                         <h6 class="mt-4">LTV</h6>
-                                        <input class="font-weight-bold mb-0" value="50%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
+                                        <input class="font-weight-bold mb-0" type="number" value={ltv2} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv2:e.target.value>0 && e.target.value})} />
                                         <h6 class="mt-4">Interest</h6>
-                                        <input class="font-weight-bold mb-0" value="0.25%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
+                                        <input class="font-weight-bold mb-0" type="number" value={mpr2} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr2:e.target.value>0 && e.target.value})} />
                                       </div>
                                    </div>}
 
@@ -273,9 +280,9 @@ class LoanOffer extends Component {
                                             }
                                             </select>
                                             <h6 class="mt-4">LTV</h6>
-                                            <input class="font-weight-bold mb-0" value="50%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
+                                            <input class="font-weight-bold mb-0" type="number" value={ltv3} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv3:e.target.value>0 && e.target.value})} />
                                             <h6 class="mt-4">Interest</h6>
-                                            <input class="font-weight-bold mb-0" value="0.25%" style={{width: 'inherit', textAlign: 'center'}} onChange={()=>this.setState({})} />
+                                            <input class="font-weight-bold mb-0" type="number" value={mpr3} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr3:e.target.value>0 && e.target.value})} />
                                           </div>
                                         </div>}
                                      </div>
