@@ -329,7 +329,9 @@ class LoanOffer extends Component {
                   <div className="card-header text-center">
                     Overview
                   </div>
-                  <div><p>Loan amount {loanAmount} ETH</p></div>
+                  <div className="card-header text-left">
+                    <p>Loan amount {loanAmount} ETH</p>
+                  </div>
 
                   <div className="card-body text-left">
                     <p>Collateral</p>
@@ -354,7 +356,7 @@ class LoanOffer extends Component {
                       <p>MPR: {mpr3}</p> 
                     </div>
                     }
-                    <p>Duration {duration} days</p>
+                    <div className="mt-4"><p>Duration {duration} days</p></div>
 
                     <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{}}>
                       <br/>
