@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
+import { LoanCreatorABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+
 class LoanOffer extends Component {
   constructor(){
     super();
@@ -47,6 +49,29 @@ class LoanOffer extends Component {
           collateralCount : 0
     };
   }
+
+  createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
+    const res = await window.ethereum.enable();
+    let collateralItem = {};
+    collateralItem.collateralCurrency = collateralCurrency1;
+    collateralItem.ltv = ltv1;
+    collateralItem.mpr = mpr1;
+    let collateralMetadata = [];
+    collateralMetadata.push({collateralItem:collateralItem})
+        console.log("collateralMetadata", collateralMetadata);
+        // expected output: "Success!"
+        const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+          LoanCreator.createNewLoanOffer( window.web3.toWei(principal), duration, collateralMetadata, {
+          from: window.web3.eth.accounts[0]
+        }, async (err, res) => {
+          if(!err){
+            console.log("Transaction in process", res)
+            // const receipt = await this.getTransactionReceipt(res)
+            // this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
+            // console.log('Address of Loan',receipt.logs[0].address);
+          }
+        });
+    }
 
   handleAddCollateral = () => {
     this.setState({collateralCount:this.state.collateralCount + 1})
@@ -358,7 +383,9 @@ class LoanOffer extends Component {
                     }
                     <div className="mt-4"><p>Duration {duration} days</p></div>
 
-                    <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{}}>
+                    <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{
+                      this.createLoanOffer(loanAmount, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3);
+                    }}>
                       <br/>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Create</span>
