@@ -31,6 +31,8 @@ class LoanOffer extends Component {
       collateralCurrency1:null,
       collateralCurrency2:null,
       collateralCurrency3:null,
+      createOfferAlert:false,
+      loanOfferContractAddress:'',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:1,
       durationEnd:360,
@@ -67,7 +69,8 @@ class LoanOffer extends Component {
           if(!err){
             console.log("Transaction in process", res)
             // const receipt = await this.getTransactionReceipt(res)
-            // this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
+            this.setState({createOfferAlert:true});
+              //, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
             // console.log('Address of Loan',receipt.logs[0].address);
           }
         });
@@ -80,7 +83,7 @@ class LoanOffer extends Component {
 
   render() {
     const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency1, collateralCurrency2, collateralCurrency3, collateralCount, collateralValue,
-    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3 } = this.state;
+    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert, loanOfferContractAddress } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -397,6 +400,10 @@ class LoanOffer extends Component {
             </div>
           </section>
         </div>
+        {createOfferAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
+              <strong>Congratulations! Loan Offer is Created successfully!</strong>
+          </div>}
+        {createOfferAlert && <Link href={"ropsten.etherscan.io/address/"+loanOfferContractAddress}  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }
