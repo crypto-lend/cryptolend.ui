@@ -72,6 +72,7 @@ class LoanOffer extends Component {
             const receipt = await this.getTransactionReceipt(res)
             this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
             console.log('Address of Loan',receipt.logs[0].address);
+            this.fundLoanOffer(principal);
           }
         });
     }
@@ -95,6 +96,36 @@ class LoanOffer extends Component {
           });
       }));
     }
+  
+  fundLoanOffer = async (loanAmount) => {
+    const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+
+    await LoanCreator.transferFundsToLoan({
+      from: window.web3.eth.accounts[0],
+      value: loanAmount,
+      gas: 30000
+    });
+  }
+
+  approveLoanOffer = async (interest, collateralAddress, collateralAmount, collateralPrice, ltv) => {
+    // Transfer Collateral to Loan Contract
+    // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
+
+    // Transaction 1 Approval
+    
+    var self = this;
+    const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+    LoanCreator.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
+      from: window.web3.eth.accounts[0],
+      gas: 300000
+    },
+    function(err, res) {
+      if (!err) {
+        console.log(res);
+        // window.location="/myloans";
+        self.setState({approveOfferAlert:false, transferCollateralAlert:true})
+      } else {}
+  })}
 
   handleAddCollateral = () => {
     this.setState({collateralCount:this.state.collateralCount + 1})
