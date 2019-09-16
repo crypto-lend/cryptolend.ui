@@ -32,6 +32,7 @@ class LoanOffer extends Component {
       collateralCurrency2:null,
       collateralCurrency3:null,
       createOfferAlert:false,
+      approveOfferAlert:false,
       loanOfferContractAddress:'',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:1,
@@ -68,12 +69,31 @@ class LoanOffer extends Component {
         }, async (err, res) => {
           if(!err){
             console.log("Transaction in process", res)
-            // const receipt = await this.getTransactionReceipt(res)
-            this.setState({createOfferAlert:true});
-              //, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
-            // console.log('Address of Loan',receipt.logs[0].address);
+            const receipt = await this.getTransactionReceipt(res)
+            this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
+            console.log('Address of Loan',receipt.logs[0].address);
           }
         });
+    }
+
+  getTransactionReceipt = async (hash) => {
+      let receipt = null;
+      while (receipt === null) {
+        // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
+        receipt = await this.getTransactionReceiptPromise(hash);
+        setTimeout(function(){ console.log('Every second'); }, 1000);
+      }
+      return receipt;
+    };
+
+  getTransactionReceiptPromise = (hash) => {
+      // here we just promisify getTransactionReceipt function for convenience
+      return new Promise(((resolve, reject) => {
+          window.web3.eth.getTransactionReceipt(hash, function(err, data) {
+              if (err !== null) reject(err);
+              else resolve(data);
+          });
+      }));
     }
 
   handleAddCollateral = () => {
