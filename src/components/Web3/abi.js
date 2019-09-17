@@ -1946,6 +1946,6 @@ export const FinocialAddress = "0x24537D46B42Fd99414d9A1c27387cC357D76B1eE";
 
 export const LoanCreatorAddress = "0x5f438fec22e2aa53db898ef9d58c30fb892080a1";
 
-export const CollateralAddress = "0x0D07A8ACAfc49db0BaD638509D032fd91d6cB003";
+export const CollateralAddress = "0xB83B46B1cBDAcf2Fa8DEc4aC2A2729E1F86cC1ED";
 
 export default abi;

@@ -73,7 +73,7 @@ class LoanOffer extends Component {
             this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
             console.log('Address of Loan',receipt.logs[0].address);
             this.fundLoanOffer(principal);
-            this.approveLoanOffer(mpr1, this.state.collateralAddress, principal, 0.1, ltv1);
+            this.acceptLoanOffer(mpr1, CollateralAddress.toString(), window.web3.toWei(principal), window.web3.toWei(0.1), ltv1);
           }
         });
     }
@@ -103,7 +103,7 @@ class LoanOffer extends Component {
 
      LoanContract.transferFundsToLoan({
       from: window.web3.eth.accounts[0],
-      value: loanAmount,
+      value: window.web3.toWei(loanAmount),
       gas: 30000
     },
     function(err, res) {
@@ -115,25 +115,20 @@ class LoanOffer extends Component {
   });
   }
 
-  approveLoanOffer = async (interest, collateralAddress, collateralAmount, collateralPrice, ltv) => {
-    // Transfer Collateral to Loan Contract
-    // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
+  acceptLoanOffer = async (interest, collateralAddress, collateralAmount, collateralPrice, ltv) => {
 
-    // Transaction 1 Approval
-    
     var self = this;
     const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
-    LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
+    const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
       from: window.web3.eth.accounts[0],
       gas: 300000
-    },
-    function(err, res) {
-      if (!err) {
-        console.log(res);
-        // window.location="/myloans";
-        self.setState({approveOfferAlert:false, transferCollateralAlert:true})
-      } else {}
-  })}
+    }, function(err, transactionHash) {
+      if (!err)
+        console.log(transactionHash); 
+    })
+    console.log("ACCEPT LOAN :", acceptLoan);
+    
+  }
 
   handleAddCollateral = () => {
     this.setState({collateralCount:this.state.collateralCount + 1})
