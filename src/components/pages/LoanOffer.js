@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
-import { LoanCreatorABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
 class LoanOffer extends Component {
   constructor(){
@@ -73,6 +73,7 @@ class LoanOffer extends Component {
             this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
             console.log('Address of Loan',receipt.logs[0].address);
             this.fundLoanOffer(principal);
+            this.approveLoanOffer(mpr1, this.state.collateralAddress, principal, 0.1, ltv1);
           }
         });
     }
@@ -98,13 +99,20 @@ class LoanOffer extends Component {
     }
   
   fundLoanOffer = async (loanAmount) => {
-    const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
 
-    await LoanCreator.transferFundsToLoan({
+     LoanContract.transferFundsToLoan({
       from: window.web3.eth.accounts[0],
       value: loanAmount,
       gas: 30000
-    });
+    },
+    function(err, res) {
+      if (!err) {
+        console.log(res);
+        // window.location="/myloans";
+        // self.setState({approveOfferAlert:false, transferCollateralAlert:true})
+      } else {}
+  });
   }
 
   approveLoanOffer = async (interest, collateralAddress, collateralAmount, collateralPrice, ltv) => {
@@ -114,8 +122,8 @@ class LoanOffer extends Component {
     // Transaction 1 Approval
     
     var self = this;
-    const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
-    LoanCreator.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
+    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
+    LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
       from: window.web3.eth.accounts[0],
       gas: 300000
     },

@@ -1365,6 +1365,583 @@ export const ERC20TokenABI = [
   }
 ];
 
+export const LoanContractABI = [
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "repaymentNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "getRepaymentAmount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "monthlyInterest",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "fees",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getCurrentRepaymentNumber",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "remainingCollateralAmount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_interestRate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_collateralAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralPriceInETH",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ltv",
+				"type": "uint256"
+			}
+		],
+		"name": "acceptLoanOffer",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "x",
+				"type": "address"
+			}
+		],
+		"name": "toString",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "transferFundsToLoan",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_repaymentNumberMissed",
+				"type": "uint256"
+			}
+		],
+		"name": "makeFailedRepayments",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "transferCollateralToLoan",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getLoanData",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_loanAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_duration",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_interest",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_acceptedCollateralsMetadata",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "startedOn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum LoanContract.LoanStatus",
+				"name": "_loanStatus",
+				"type": "uint8"
+			},
+			{
+				"internalType": "address",
+				"name": "_collateralAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ltv",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum LoanContract.CollateralStatus",
+				"name": "_collateralStatus",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_remainingCollateralAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_borrower",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_lender",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_interestRate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_collateralAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralPriceInETH",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ltv",
+				"type": "uint256"
+			}
+		],
+		"name": "enrichLoan",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "ERC20",
+		"outputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "approveLoanRequest",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "repayLoan",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_loanAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_duration",
+				"type": "uint128"
+			},
+			{
+				"internalType": "string",
+				"name": "_acceptedCollateralsMetadata",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_interestRate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_collateralAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_collateralPriceInETH",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ltv",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_borrower",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_lender",
+				"type": "address"
+			},
+			{
+				"internalType": "enum LoanContract.LoanStatus",
+				"name": "_loanstatus",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "CollateralTransferToLoanFailed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "CollateralTransferToLoanSuccessful",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "FundTransferToLoanSuccessful",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "FundTransferToBorrowerSuccessful",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "LoanRepaid",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_value",
+				"type": "uint256"
+			}
+		],
+		"name": "LoanStarted",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "CollateralTransferReturnedToBorrower",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "CollateralClaimedByLender",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "CollateralSentToLenderForDefaultedRepayment",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "LoanContractUpdated",
+		"type": "event"
+	}
+];
+
 export const FinocialAddress = "0x24537D46B42Fd99414d9A1c27387cC357D76B1eE";
 
 export const LoanCreatorAddress = "0x5f438fec22e2aa53db898ef9d58c30fb892080a1";
