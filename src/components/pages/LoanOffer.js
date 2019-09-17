@@ -33,6 +33,7 @@ class LoanOffer extends Component {
       collateralCurrency3:null,
       createOfferAlert:false,
       approveOfferAlert:false,
+      acceptLoanAlert:false,
       loanOfferContractAddress:'',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:1,
@@ -72,8 +73,7 @@ class LoanOffer extends Component {
             const receipt = await this.getTransactionReceipt(res)
             this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
             console.log('Address of Loan',receipt.logs[0].address);
-            this.fundLoanOffer(principal);
-            this.acceptLoanOffer(mpr1, CollateralAddress.toString(), window.web3.toWei(principal), window.web3.toWei(0.1), ltv1);
+            
           }
         });
     }
@@ -99,6 +99,7 @@ class LoanOffer extends Component {
     }
   
   fundLoanOffer = async (loanAmount) => {
+    let self = this;
     const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
 
      LoanContract.transferFundsToLoan({
@@ -110,7 +111,7 @@ class LoanOffer extends Component {
       if (!err) {
         console.log(res);
         // window.location="/myloans";
-        // self.setState({approveOfferAlert:false, transferCollateralAlert:true})
+        self.setState({approveOfferAlert:false, acceptLoanAlert:true})
       } else {}
   });
   }
@@ -137,7 +138,7 @@ class LoanOffer extends Component {
 
   render() {
     const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency1, collateralCurrency2, collateralCurrency3, collateralCount, collateralValue,
-    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert, loanOfferContractAddress } = this.state;
+    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanOfferContractAddress } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -448,6 +449,26 @@ class LoanOffer extends Component {
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>
+                    {approveOfferAlert &&
+                    <div className="btn-wrapper text-center mt-3">
+                      <button className="btn btn-primary" type="button" onClick={()=>{
+                        this.fundLoanOffer(loanAmount);
+                        }}>
+                        Fund Loan
+                      </button>
+                    </div>}
+                  {acceptLoanAlert &&
+                  <div className="btn-wrapper text-center mt-3">
+                    <button className="btn btn-primary" type="button" onClick={()=>{
+                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
+                      }}>
+                      Accept Loan
+                    </button>
+                  </div>}
+
+                  {acceptLoanAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%'}} role="alert">
+                      Your loan is funded successfully!
+                  </div>}
                   </div>
                 </div>
               </div>
