@@ -38,7 +38,7 @@ class LoanRequest extends Component {
       apr:0,
       originationFee:1,
       collateralCurrency:'ETH',
-      erc20_tokens :  ['TTT','BNB', 'GTO', 'QKC', 'NEXO',
+      erc20_tokens :  ['TTT', 'CHIG', 'BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -546,7 +546,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
         {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
               <strong>Congratulations! Loan Request is Created successfully!</strong>
           </div>}
-        {createRequestAlert && <Link href={"ropsten.etherscan.io/address/"+loanRequestContractAddress}  target='_blank'> Check transation on Ropsten </Link>}
+        {createRequestAlert && <Link href={"https://ropsten.etherscan.io/address/"+loanRequestContractAddress}  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }
