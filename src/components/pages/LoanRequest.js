@@ -23,6 +23,7 @@ class LoanRequest extends Component {
       approveRequestAlert:false,
       transferCollateralAlert:false,
       transferCollateralSuccessAlert:false,
+      transferCollateralFailAlert:false,
       loanRequestContractAddress:'',
       collateralValue: 0,
       loanAmount: null,
@@ -128,7 +129,11 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
               console.log(res);
               const receipt = await this.getTransactionReceipt(res)
               console.log("Receipt : ",receipt);
-              self.setState({transferCollateralAlert:false, transferCollateralSuccessAlert:true})
+              if(receipt)
+                self.setState({transferCollateralAlert:false, transferCollateralSuccessAlert:true})
+              else
+                self.setState({transferCollateralAlert:false, transferCollateralFailAlert:true})
+
           });
   }
 
@@ -172,7 +177,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
 
     const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, 
       durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, FinocialAddress, alertLoanAmount, 
-      loanAmountInput, createRequestAlert, loanRequestContractAddress, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert } = this.state;
+      loanAmountInput, createRequestAlert, loanRequestContractAddress, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
 
 
     return (
@@ -527,7 +532,9 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     }}>
                     Transfer
                   </button>}
-
+                  {transferCollateralFailAlert && <div className="alert alert-warning mt-2" style={{marginLeft:'-1.5%',width:'104.5%'}} role="alert">
+                      Collateral transfer has failed.
+                  </div>}
                   {transferCollateralSuccessAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%'}} role="alert">
                       Collateral has been transferred successfully. Your loan request is waiting to be funded now!
                   </div>}
