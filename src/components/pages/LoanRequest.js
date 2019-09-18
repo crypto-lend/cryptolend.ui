@@ -103,10 +103,11 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
       tokenContractInstance.approve(loanContractAddress, collateralAmount, {
             from: window.web3.eth.accounts[0]
           },
-          function(err, res) {
+          async (err, res) => {
             if (!err) {
               console.log(res);
-              // window.location="/myloans";
+              const receipt = await this.getTransactionReceipt(res)
+              console.log("Receipt : ",receipt);
               self.setState({approveRequestAlert:false, transferCollateralAlert:true})
             } else {}
       });
@@ -122,10 +123,11 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
       const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
       FinocialLoanInstance.transferCollateralToLoan({
         from: window.web3.eth.accounts[0]
-          },function(err, res){
+          }, async (err, res) => {
           if(!err)
               console.log(res);
-              // window.location = "/myloans ";
+              const receipt = await this.getTransactionReceipt(res)
+              console.log("Receipt : ",receipt);
               self.setState({transferCollateralAlert:false, transferCollateralSuccessAlert:true})
           });
   }
@@ -503,16 +505,22 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                   }
                   { approveRequestAlert &&
                     <div className="alert alert-primary" role="alert">
-                        <strong>Transfer collateral of {collateralValue} {collateralCurrency} tokens</strong>
+                        <strong>Approve Transfer collateral of {collateralValue} {collateralCurrency} tokens</strong>
                     </div>
                   }
-                  {approveRequestAlert && 
+                  { approveRequestAlert && 
                   
                   <button className="btn btn-primary" type="button" onClick={()=>{
                     this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
                     }}>
                     Approve
                   </button>}
+
+                  { transferCollateralAlert &&
+                    <div className="alert alert-primary" role="alert">
+                        <strong>Transfer collateral of {collateralValue} {collateralCurrency} tokens</strong>
+                    </div>
+                  }
                   {transferCollateralAlert &&
                   <button className="btn btn-primary" type="button" onClick={()=>{
                     this.handleTransferCollateral(loanRequestContractAddress)
