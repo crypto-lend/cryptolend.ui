@@ -57,11 +57,23 @@ class LoanOffer extends Component {
   createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
     const res = await window.ethereum.enable();
     let collateralItem = {};
+    let collateralMetadata = [];
+
     collateralItem.collateralCurrency = collateralCurrency1;
     collateralItem.ltv = ltv1;
     collateralItem.mpr = mpr1;
-    let collateralMetadata = [];
     collateralMetadata.push({collateralItem:collateralItem})
+
+    collateralItem.collateralCurrency = collateralCurrency2;
+    collateralItem.ltv = ltv2;
+    collateralItem.mpr = mpr2;
+    collateralMetadata.push({collateralItem:collateralItem})
+
+    collateralItem.collateralCurrency = collateralCurrency3;
+    collateralItem.ltv = ltv3;
+    collateralItem.mpr = mpr3;
+    collateralMetadata.push({collateralItem:collateralItem})
+
         console.log("collateralMetadata", collateralMetadata);
         // expected output: "Success!"
         const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
