@@ -82,7 +82,9 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
       };
 
   getTransactionReceiptPromise = (hash) => {
+
         // here we just promisify getTransactionReceipt function for convenience
+
         return new Promise(((resolve, reject) => {
             window.web3.eth.getTransactionReceipt(hash, function(err, data) {
                 if (err !== null) reject(err);
@@ -93,8 +95,6 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
 
 
     approveRequest = (collateralAddress, loanContractAddress, collateralAmount) => {
-      // Transfer Collateral to Loan Contract
-      // this will be two transaction, first transaction will be to Token Contract and Second will be to Loan Contract
 
       // Transaction 1 Approval
       
@@ -501,7 +501,13 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     </div>
                     :''
                   }
-                  {approveRequestAlert &&
+                  { approveRequestAlert &&
+                    <div className="alert alert-primary" role="alert">
+                        <strong>Transfer collateral of {collateralValue} {collateralCurrency} tokens</strong>
+                    </div>
+                  }
+                  {approveRequestAlert && 
+                  
                   <button className="btn btn-primary" type="button" onClick={()=>{
                     this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
                     }}>
