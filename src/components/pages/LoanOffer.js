@@ -35,6 +35,7 @@ class LoanOffer extends Component {
       approveOfferAlert:false,
       acceptLoanAlert:false,
       loanOfferContractAddress:'',
+      ropstenTransactionhash:'',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:1,
       durationEnd:360,
@@ -77,14 +78,19 @@ class LoanOffer extends Component {
         console.log("collateralMetadata", collateralMetadata);
         // expected output: "Success!"
         const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
-          LoanCreator.createNewLoanOffer( window.web3.toWei(principal), duration, JSON.stringify(collateralMetadata), {
+          LoanCreator.createNewLoanOffer( window.web3.toWei(principal), duration, window.web3.toHex(JSON.stringify(collateralMetadata)), {
           from: window.web3.eth.accounts[0]
         }, async (err, res) => {
           if(!err){
             console.log("Transaction in process", res)
             const receipt = await this.getTransactionReceipt(res)
-            this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:receipt.logs[0].address})
-            console.log('Address of Loan',receipt.logs[0].address);
+            console.log('receipt.logs[0].data',receipt.logs[0].data);
+            let address = receipt.logs[0].data;
+            address = address.split("000000000000000000000000");
+            address = "0x" + address[2];
+            console.log("Data Address: ",address);
+            this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:address, ropstenTransactionhash:receipt.transactionHash})
+
             
           }
         });
@@ -110,9 +116,9 @@ class LoanOffer extends Component {
       }));
     }
   
-  fundLoanOffer = async (loanAmount) => {
+  fundLoanOffer = async (loanAmount, loanOfferContractAddress) => {
     let self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanContractAddress);
+    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanOfferContractAddress);
 
      LoanContract.transferFundsToLoan({
       from: window.web3.eth.accounts[0],
@@ -128,10 +134,10 @@ class LoanOffer extends Component {
   });
   }
 
-  acceptLoanOffer = async (interest, collateralAddress, collateralAmount, collateralPrice, ltv) => {
+  acceptLoanOffer = async (interest, collateralAddress, loanOfferContractAddress, collateralAmount, collateralPrice, ltv) => {
 
     var self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanContractAddress);
+    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanOfferContractAddress);
     const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
       from: window.web3.eth.accounts[0],
       gas: 300000
@@ -150,7 +156,7 @@ class LoanOffer extends Component {
 
   render() {
     const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency1, collateralCurrency2, collateralCurrency3, collateralCount, collateralValue,
-    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanOfferContractAddress } = this.state;
+    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanOfferContractAddress, ropstenTransactionhash } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -465,7 +471,7 @@ class LoanOffer extends Component {
                     {approveOfferAlert &&
                     <div className="btn-wrapper text-center mt-3">
                       <button className="btn btn-primary" type="button" onClick={()=>{
-                        this.fundLoanOffer(loanAmount);
+                        this.fundLoanOffer(loanAmount, loanOfferContractAddress);
                         }}>
                         Fund Loan
                       </button>
@@ -473,7 +479,7 @@ class LoanOffer extends Component {
                   {acceptLoanAlert &&
                   <div className="btn-wrapper text-center mt-3">
                     <button className="btn btn-primary" type="button" onClick={()=>{
-                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
+                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), loanOfferContractAddress, window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
                       }}>
                       Accept Loan
                     </button>
@@ -491,8 +497,7 @@ class LoanOffer extends Component {
         {createOfferAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
               <strong>Congratulations! Loan Offer is Created successfully!</strong>
           </div>}
-        {createOfferAlert && <Link href={"https://ropsten.etherscan.io/address/" //+loanOfferContractAddress
-        }  target='_blank'> Check transation on Ropsten </Link>}
+        {createOfferAlert && <Link to={"https://ropsten.etherscan.io/tx/"+ropstenTransactionhash}  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }
