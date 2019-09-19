@@ -65,8 +65,8 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
         if(!err){
           console.log("Transaction in process", res)
           const receipt = await this.getTransactionReceipt(res)
-          this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address})
-          console.log('Address of Loan',receipt.logs[0].address);
+          this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:receipt.transactionHash})
+          console.log('Address of Loan',receipt.transactionHash);
         }
       });
   }
@@ -161,13 +161,21 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
   handleCollateralConversion = () => {
     let { collateralCurrency,collateralValue,loanAmount } = this.state;
     var self = this;
-
-    axios.get(`https://min-api.cryptocompare.com/data/price?fsym=${collateralCurrency}&tsyms=ETH`).then(function (response) {
-      self.setState({loanAmount:response.data.ETH * collateralValue * 0.6});
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    if(collateralCurrency==='CHIG'){
+      axios.get(`https://min-api.cryptocompare.com/data/price?fsym=TTT&tsyms=ETH`).then(function (response) {
+        self.setState({loanAmount:response.data.ETH * collateralValue * 0.6});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+    else
+      axios.get(`https://min-api.cryptocompare.com/data/price?fsym=${collateralCurrency}&tsyms=ETH`).then(function (response) {
+        self.setState({loanAmount:response.data.ETH * collateralValue * 0.6});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     this.setState({currency:false, borrow:true});
 }
 
@@ -545,7 +553,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
         {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
               <strong>Congratulations! Loan Request is Created successfully!</strong>
           </div>}
-        {createRequestAlert && <Link href={"https://ropsten.etherscan.io/address/"+loanRequestContractAddress}  target='_blank'> Check transation on Ropsten </Link>}
+        {createRequestAlert && <Link href={"https://ropsten.etherscan.io/tx/address/"+loanRequestContractAddress}  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }
