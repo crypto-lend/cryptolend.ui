@@ -61,7 +61,7 @@ class MyLoans extends Component {
                   FinocialLoanInstance.getLoanData((err, res)=>{
                   console.log("LOAN DATA :", res);
                   
-                  let startedOn = res[3].toNumber();
+                  let startedOn = ''; //res[3].toNumber();
                   let date = startedOn;
 
                   currentDate = new Date();
