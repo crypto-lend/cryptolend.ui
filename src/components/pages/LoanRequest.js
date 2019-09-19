@@ -3,7 +3,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router';
 import axios from 'axios';
 import Loader from 'react-loader';
-import { LoanCreatorABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+import { LoanCreatorABI, LoanContractABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
 class LoanRequest extends Component {
   constructor(){
@@ -49,7 +49,6 @@ class LoanRequest extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
-           FinocialABI: FinocialABI,
             collateralAddress : CollateralAddress
     };
   }
@@ -121,7 +120,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
       var self = this;
       // Transaction 2 Transfer to Loan Contract
       
-      const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+      const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
       FinocialLoanInstance.transferCollateralToLoan({
         from: window.web3.eth.accounts[0]
           }, async (err, res) => {

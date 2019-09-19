@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
-import { LoanCreatorABI, LoanCreatorAddress,  FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, ERC20TokenABI } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress,  LoanContractABI, StandardTokenABI, ERC20TokenABI } from '../Web3/abi';
 import Loader from 'react-loader';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
@@ -56,7 +56,7 @@ class MyLoans extends Component {
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
 
-                const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+                const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
 
                   FinocialLoanInstance.getLoanData((err, res)=>{
                   console.log("LOAN DATA :", res);
@@ -106,7 +106,7 @@ class MyLoans extends Component {
 
         this.setState({loaded:!loaded})
           // Get repayment Amount to paid for a particular repayment duration
-        const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+        const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
         for (var i = 0; i < 12; i++) {
         FinocialLoanInstance.getRepaymentAmount(i+1, (err, repayResponse) => {
           if (!err){
@@ -121,7 +121,7 @@ class MyLoans extends Component {
         }
 
         getPaidRepaymentsCount = (loanAddress) => {
-          const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+          const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
           FinocialLoanInstance.getPaidRepaymentsCount((err, res)=>{
             if(!err)
                this.setState({activeRepayment: res.toNumber()});
@@ -131,7 +131,7 @@ class MyLoans extends Component {
 
         handleRepayment = (loanContractAddress, repaymentAmount) => {
           // Repay Loan
-          const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+          const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
           FinocialLoanInstance.repayLoan({
           from: window.web3.eth.accounts[0],
           value: window.web3.toWei(repaymentAmount)
@@ -262,7 +262,7 @@ class MyLoans extends Component {
 
          // Transaction 2 Transfer to Loan Contract
          this.setState({transferCollateralAlert:true})
-        const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+        const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
         FinocialLoanInstance.transferCollateralToLoan({
           from: window.web3.eth.accounts[0]
             },function(err, res){
@@ -273,7 +273,7 @@ class MyLoans extends Component {
       }
 
       handleReturnCollateralToBorrower = (loanAddress) =>{
-        const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanAddress);
+        const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
         FinocialLoanInstance.returnCollateralToBorrower((err, res)=>{
           if(!err){
              console.log(res);

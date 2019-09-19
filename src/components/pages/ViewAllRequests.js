@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
-import { LoanCreatorABI, LoanCreatorAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './ViewAllOffers.css';
@@ -41,8 +41,6 @@ class ViewAllRequests extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
-           FinocialABI: FinocialABI,
-
     };
   }
 
@@ -56,7 +54,7 @@ class ViewAllRequests extends Component {
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
-                const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(LoanCreatorAddress);
+                const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
                   console.log('getLoanData :',res);
                   console.log("LOAN AMOUNT : ", window.web3.fromWei(res[0]));
@@ -91,7 +89,7 @@ class ViewAllRequests extends Component {
   }
 
   approveLoanRequest = (loanAmount,loanContractAddress) => {
-    const FinocialLoanInstance = window.web3.eth.contract(FinocialLoanABI).at(loanContractAddress);
+    const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
     FinocialLoanInstance.approveLoanRequest({
       from: window.web3.eth.accounts[0],
       value: window.web3.toWei(loanAmount)
