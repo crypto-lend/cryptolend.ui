@@ -60,28 +60,29 @@ class MyLoans extends Component {
 
                   FinocialLoanInstance.getLoanData((err, res)=>{
                     if(res) {
-                      console.log("LOAN DATA : res[0]", window.web3.fromWei(res[0].toFixed(2)));
+                      console.log("LOAN DATA : res", res);
                   
-                  let startedOn = ''; //res[3].toNumber();
+                  let startedOn = res[4].toNumber();
                   let date = startedOn;
 
                   currentDate = new Date();
 
-                if(!err && window.web3.eth.defaultAccount==res[11]){
-                  loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
-                  collateralValue.push(res[6].toNumber());
+                if(!err && window.web3.eth.defaultAccount===res[12]){
+                  loanAmount.push(window.web3.fromWei(res[0].toFixed(7)));
+                  collateralValue.push(res[7].toNumber());
                   duration.push(res[1].toNumber());
                   earnings.push(res[2].toFixed(2));
-                  status.push(res[4].toNumber());
-                  collateralAddress.push(res[5]);
+                  status.push(res[10].toNumber());
+                  collateralAddress.push(res[6]);
                   loanAddresses.push(loanAddress);
                   dueDate.push(date);
 
                   const tokenContract = window.web3.eth.contract(ERC20TokenABI).at(res[5])
-
-                  tokenContract.symbol((err,res)=>{
-                    tokenSymbol.push(res);
-                  })
+                  // console.log("tokenContract :",res[5].toString());
+                  
+                  // tokenContract.symbol((err,res)=>{
+                  //   tokenSymbol.push(res);
+                  // })
                    this.setState({
                      loanAmount: loanAmount,
                      collateralValue: collateralValue,
