@@ -60,7 +60,7 @@ class ViewAllRequests extends Component {
                   // console.log("LOAN AMOUNT : ", window.web3.fromWei(res[0]));
                   
                 if(res)
-                  {loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
+                  {loanAmount.push(window.web3.fromWei(res[0]).toFixed(7));
                   collateralValue.push(res[7].toNumber());
                   duration.push(res[1].toNumber());
                   earnings.push(res[2].toFixed(2));
