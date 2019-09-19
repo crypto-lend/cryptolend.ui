@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
-import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI, LoanContractAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
 class LoanOffer extends Component {
   constructor(){
@@ -25,7 +25,7 @@ class LoanOffer extends Component {
       mprView:false,
       collateralValue: '(not set)',
       loanAmount: '(not set)',
-      duration: '(not set)',
+      duration: null,
       monthlyInt: '(not set)',
       collateralSafe: '(not set)',
       collateralCurrency1:null,
@@ -112,14 +112,14 @@ class LoanOffer extends Component {
   
   fundLoanOffer = async (loanAmount) => {
     let self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
+    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanContractAddress);
 
      LoanContract.transferFundsToLoan({
       from: window.web3.eth.accounts[0],
       value: window.web3.toWei(loanAmount),
       gas: 30000
     },
-    function(err, res) {
+    (err, res) => {
       if (!err) {
         console.log(res);
         // window.location="/myloans";
@@ -131,11 +131,11 @@ class LoanOffer extends Component {
   acceptLoanOffer = async (interest, collateralAddress, collateralAmount, collateralPrice, ltv) => {
 
     var self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
+    const LoanContract = window.web3.eth.contract(LoanContractABI).at(LoanContractAddress);
     const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
       from: window.web3.eth.accounts[0],
       gas: 300000
-    }, function(err, transactionHash) {
+    }, (err, transactionHash) => {
       if (!err)
         console.log(transactionHash); 
     })
@@ -329,7 +329,7 @@ class LoanOffer extends Component {
 
                            {!!collateralCount && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                 <div className="col-md-12 form-group mt-5">
-                                    <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
+                                    <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
                                       this.setState({collateralCurrency1:e.target.value});
                                       
                                     }}>
@@ -349,7 +349,7 @@ class LoanOffer extends Component {
 
                                {!!(collateralCount>1) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                     <div className="col-md-12 form-group mt-5">
-                                        <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
+                                        <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
                                           this.setState({collateralCurrency2:e.target.value});
                                         }}>
                                         {
@@ -367,7 +367,7 @@ class LoanOffer extends Component {
 
                                    {!!(collateralCount>2) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                         <div className="col-md-12 form-group mt-5">
-                                            <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px'}} onClick={ (e)=>{
+                                            <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
                                               
                                               this.setState({collateralCurrency3:e.target.value});
                                             }}>
@@ -451,16 +451,17 @@ class LoanOffer extends Component {
                       <p>MPR: {mpr3}</p> 
                     </div>
                     }
-                    <div className="mt-4"><p>Duration {duration} days</p></div>
+                    {duration ? <div className="mt-4"><p>Duration {duration} days</p></div>
+                    :<div className="mt-4"><p>Duration  (not set) </p></div>}
 
-                    <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{
+                    {!!duration && <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{
                       this.createLoanOffer(loanAmount, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3);
                     }}>
                       <br/>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Create</span>
                       </a>
-                    </div>
+                    </div>}
                     {approveOfferAlert &&
                     <div className="btn-wrapper text-center mt-3">
                       <button className="btn btn-primary" type="button" onClick={()=>{
@@ -490,7 +491,8 @@ class LoanOffer extends Component {
         {createOfferAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
               <strong>Congratulations! Loan Offer is Created successfully!</strong>
           </div>}
-        {createOfferAlert && <Link href={"ropsten.etherscan.io/address/"+loanOfferContractAddress}  target='_blank'> Check transation on Ropsten </Link>}
+        {createOfferAlert && <Link href={"https://ropsten.etherscan.io/address/" //+loanOfferContractAddress
+        }  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }

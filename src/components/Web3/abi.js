@@ -1942,7 +1942,7 @@ export const LoanContractABI = [
 	}
 ];
 
-export const FinocialAddress = "0x24537D46B42Fd99414d9A1c27387cC357D76B1eE";
+export const LoanContractAddress = "0x24537D46B42Fd99414d9A1c27387cC357D76B1eE";
 
 export const LoanCreatorAddress = "0x5f438fec22e2aa53db898ef9d58c30fb892080a1";
 
