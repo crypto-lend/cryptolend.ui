@@ -57,23 +57,23 @@ class LoanOffer extends Component {
 
   createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
     const res = await window.ethereum.enable();
-    let collateralItem = {};
+    let collateralItem1 = {}, collateralItem2 = {}, collateralItem3 = {};
     let collateralMetadata = [];
 
-    collateralItem.collateralCurrency = collateralCurrency1;
-    collateralItem.ltv = ltv1;
-    collateralItem.mpr = mpr1;
-    collateralMetadata.push({collateralItem:collateralItem})
+    collateralItem1.collateralCurrency1 = collateralCurrency1;
+    collateralItem1.ltv1 = ltv1;
+    collateralItem1.mpr1 = mpr1;
+    collateralMetadata.push({collateralItem1:collateralItem1})
 
-    collateralItem.collateralCurrency = collateralCurrency2;
-    collateralItem.ltv = ltv2;
-    collateralItem.mpr = mpr2;
-    collateralMetadata.push({collateralItem:collateralItem})
+    collateralItem2.collateralCurrency2 = collateralCurrency2;
+    collateralItem2.ltv2 = ltv2;
+    collateralItem2.mpr2 = mpr2;
+    collateralMetadata.push({collateralItem2:collateralItem2})
 
-    collateralItem.collateralCurrency = collateralCurrency3;
-    collateralItem.ltv = ltv3;
-    collateralItem.mpr = mpr3;
-    collateralMetadata.push({collateralItem:collateralItem})
+    collateralItem3.collateralCurrency3 = collateralCurrency3;
+    collateralItem3.ltv3 = ltv3;
+    collateralItem3.mpr3 = mpr3;
+    collateralMetadata.push({collateralItem3:collateralItem3})
 
         console.log("collateralMetadata", collateralMetadata);
         // expected output: "Success!"
