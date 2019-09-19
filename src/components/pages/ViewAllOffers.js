@@ -2,16 +2,21 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
+import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi';
 import './ViewAllOffers.css';
 
 class ViewAllOffers extends Component {
   constructor(){
     super();
+    this.viewAllRequest();
     this.state = {
-      loanAmount:'1.5 ETH',
-      collateralValue: '3 ETH',
-      earnings:[3.5,1.25,5],
-      duration: [90, 30, 120],
+      loanAmount:[],
+      collateralValue: [],
+      earnings:[],
+      loanAddresses:[],
+      duration: [],
+      collateralAddress: [],
+      status:[],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
@@ -36,6 +41,50 @@ class ViewAllOffers extends Component {
           'FET','PPT','MCO'],
     };
   }
+
+  //Get All Loans
+  viewAllRequest = () => {
+    const FinocialInstance = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+
+    FinocialInstance.getAllLoans((err, loanContractAddress) => {
+      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status} = this.state;
+      // console.log("LOAN ADDRESSES : ", loanContractAddress)
+      if(!err){
+        // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
+        loanContractAddress.map((loanAddress)=>{
+                const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
+                FinocialLoanInstance.getLoanData((err, res)=>{
+
+                if(res ){
+                  //&& res[12]==='0x0000000000000000000000000000000000000000'){
+                  console.log('Loan Status :',res[12]);
+                  loanAmount.push(window.web3.fromWei(res[0]).toFixed(7));
+                  collateralValue.push(res[7].toNumber());
+                  duration.push(res[1].toNumber());
+                  earnings.push(res[2].toFixed(2));
+                  status.push(res[10].toNumber());
+                  collateralAddress.push(res[6]);
+                  loanAddresses.push(loanAddress);
+
+
+                    this.setState({
+                      loanAmount: loanAmount,
+                      collateralValue: collateralValue,
+                      duration: duration,
+                      earnings: earnings,
+                      status: status,
+                      collateralAddress: collateralAddress,
+                      loanAddresses: loanAddresses
+                    })
+                  //  console.log('collateralAddress', this.state.collateralAddress);
+                  }
+                });
+              });
+      }
+
+    });
+  }
+
   render() {
     const {erc20_tokens,duration,minDuration,maxDuration} = this.state;
     return (

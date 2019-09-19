@@ -64,14 +64,17 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
         from: window.web3.eth.accounts[0]
       }, async (err, res) => {
         if(!err){
-          console.log("Transaction in process", res)
+          // console.log("Transaction in process", res)
           const receipt = await this.getTransactionReceipt(res)
-          console.log('Receipt',receipt);
+          console.log('receipt.logs[0].data',receipt.logs[0].data);
+          let address = receipt.logs[0].data;
+          address = address.split("000000000000000000000000");
+          address = "0x" + address[2];
+          console.log("Data Address: ",address);
 
-          this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:receipt.logs[0].address,ropstenTransactionhash:receipt.transactionHash})
-          console.log('Address of Loan',receipt.transactionHash);
-          console.log('Address of Loan',receipt.logs[0].address);
-
+          this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:address,ropstenTransactionhash:receipt.transactionHash})
+          
+          
         }
       });
   }
