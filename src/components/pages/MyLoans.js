@@ -59,7 +59,8 @@ class MyLoans extends Component {
                 const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
 
                   FinocialLoanInstance.getLoanData((err, res)=>{
-                  console.log("LOAN DATA :", res);
+                    if(res) {
+                      console.log("LOAN DATA : res[0]", window.web3.fromWei(res[0].toFixed(2)));
                   
                   let startedOn = ''; //res[3].toNumber();
                   let date = startedOn;
@@ -94,6 +95,7 @@ class MyLoans extends Component {
                    })
 
                  }
+                }
                 });
 
               });

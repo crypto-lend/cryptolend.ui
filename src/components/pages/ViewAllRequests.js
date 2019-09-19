@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
-import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi';
+import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI, LoanContractAddress } from '../Web3/abi';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './ViewAllOffers.css';
@@ -54,18 +54,18 @@ class ViewAllRequests extends Component {
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
-                const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(LoanCreatorAddress);
+                const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
                 FinocialLoanInstance.getLoanData((err, res)=>{
                   console.log('getLoanData :',res);
                   // console.log("LOAN AMOUNT : ", window.web3.fromWei(res[0]));
                   
-                if(!err)
+                if(res)
                   {loanAmount.push(window.web3.fromWei(res[0].toFixed(2)));
-                  collateralValue.push(res[6].toNumber());
+                  collateralValue.push(res[7].toNumber());
                   duration.push(res[1].toNumber());
                   earnings.push(res[2].toFixed(2));
-                  status.push(res[4].toNumber());
-                  collateralAddress.push(res[5]);
+                  status.push(res[10].toNumber());
+                  collateralAddress.push(res[6]);
                   loanAddresses.push(loanAddress);
 
 
