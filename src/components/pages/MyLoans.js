@@ -49,7 +49,7 @@ class MyLoans extends Component {
     Instance.getAllLoans((err, loanContractAddress) => {
       this.setState({loaded:false})
       console.log("LOAN CONTRACT ADDRESS : ", loanContractAddress);
-      
+
       let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, dueDate, currentDate, currentDueDate} = this.state;
 
       if(!err){
@@ -61,7 +61,7 @@ class MyLoans extends Component {
                   LoanInstance.getLoanData((err, res)=>{
                     if(res) {
                       console.log("LOAN DATA : res", res);
-                  
+
                   let startedOn = res[4].toNumber();
                   let date = startedOn;
 
@@ -79,7 +79,7 @@ class MyLoans extends Component {
 
                   const tokenContract = window.web3.eth.contract(ERC20TokenABI).at(res[5])
                   // console.log("tokenContract :",res[5].toString());
-                  
+
                   // tokenContract.symbol((err,res)=>{
                   //   tokenSymbol.push(res);
                   // })
@@ -505,7 +505,7 @@ class MyLoans extends Component {
                       if(display1==true)
                         window.location="/myloans";
 
-                        this.getPaidRepaymentsCount(currentLoanAddress)
+                        // this.getPaidRepaymentsCount(currentLoanAddress)
                     }}>
                       +
                     </button>

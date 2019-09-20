@@ -50,7 +50,7 @@ class LoanRequest extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
-            collateralAddress : CollateralAddress
+           collateralAddress : CollateralAddress
     };
   }
 
@@ -73,8 +73,8 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
           console.log("Data Address: ",address);
 
           this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:address,ropstenTransactionhash:receipt.transactionHash})
-          
-          
+
+
         }
       });
   }
@@ -105,7 +105,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
   approveRequest = (collateralAddress, loanContractAddress, collateralAmount) => {
 
     // Transaction 1 Approval
-    
+
     var self = this;
     const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
     tokenContractInstance.approve(loanContractAddress, collateralAmount, {
@@ -127,7 +127,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
 
       var self = this;
       // Transaction 2 Transfer to Loan Contract
-      
+
       const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
       LoanInstance.transferCollateralToLoan({
         from: window.web3.eth.accounts[0]
@@ -190,8 +190,8 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
   render() {
 
 
-    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow, 
-      durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, alertLoanAmount, 
+    const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow,
+      durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, alertLoanAmount,
       loanAmountInput, createRequestAlert, loanRequestContractAddress, ropstenTransactionhash, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
 
 
@@ -406,10 +406,10 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     <span className="btn-inner--text">Back</span>
                   </a>
                 </div>
-                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}} 
+                    <div className="col-md-6" style={{marginTop:'153px', cursor:'pointer'}}
                     onClick={()=>{this.setState({durationView:true, borrow:false, loanAmount:borrowLess?loanAmountInput:loanAmount});
                     console.log('LOANAMOUNT : ', loanAmount);
-                    
+
                     }}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
@@ -528,8 +528,8 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                         <strong>Approve Transfer collateral of {collateralValue} {collateralCurrency} tokens</strong>
                     </div>
                   }
-                  { approveRequestAlert && 
-                  
+                  { approveRequestAlert &&
+
                   <button className="btn btn-primary" type="button" onClick={()=>{
                     this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
                     }}>
