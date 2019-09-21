@@ -309,7 +309,7 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 this.state.loanAmount.map((loanAmount,i)=>{
-                return <div className="col-sm-4">
+                return status[i]>0 && <div className="col-sm-4">
                  <div className="card">
                    <div className="card-header">
 
