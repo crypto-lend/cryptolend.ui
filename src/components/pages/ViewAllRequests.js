@@ -58,13 +58,19 @@ class ViewAllRequests extends Component {
                 FinocialLoanInstance.getLoanData((err, res)=>{
 
                 if(res){
-                  console.log('Loan Status :',res[5].toNumber());
+                  if(res[10].toNumber()>0){
 
+                  console.log('Loan :', res);
+                  let startedOn = res[4].toNumber();
+                  let date = startedOn;
+                  date = this.convertDate(date, -1);
+                  console.log('startedOn:', date);
+                  }
                   loanAmount.push(window.web3.fromWei(res[0]).toFixed(7));
                   collateralValue.push(res[7].toNumber());
                   duration.push(res[1].toNumber());
                   earnings.push(res[2].toFixed(2));
-                  status.push(res[10].toNumber());
+                  status.push(res[5].toNumber());
                   collateralAddress.push(res[6]);
                   loanAddresses.push(loanAddress);
 
@@ -87,6 +93,13 @@ class ViewAllRequests extends Component {
     });
   }
 
+  convertDate = (currentDueDate,i) =>{
+       let date = new Date(currentDueDate* 1000)
+       date.setMinutes(date.getMinutes() + ((i+1)*30));
+       date = date.toString()
+       return date;
+  }
+
   approveLoanRequest = (loanAmount,loanContractAddress) => {
     const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
     FinocialLoanInstance.approveLoanRequest({
@@ -96,6 +109,24 @@ class ViewAllRequests extends Component {
         if(!err)
            console.log(res);
         });
+  }
+
+  fundLoanOffer = async (loanAmount, loanContractAddress) => {
+    let self = this;
+    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
+
+     LoanContract.transferFundsToLoan({
+      from: window.web3.eth.accounts[0],
+      value: window.web3.toWei(loanAmount),
+      gas: 30000
+    },
+    (err, res) => {
+      if (!err) {
+        console.log(res);
+        // window.location="/myloans";
+        self.setState({approveOfferAlert:false, acceptLoanAlert:true})
+      } else {}
+  });
   }
 
   render() {
@@ -309,7 +340,7 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 this.state.loanAmount.map((loanAmount,i)=>{
-                return status[i]>0 && <div className="col-sm-4">
+                return status[i]>1 && <div className="col-sm-4">
                  <div className="card">
                    <div className="card-header">
 
@@ -330,28 +361,22 @@ class ViewAllRequests extends Component {
                    <p>Safeness : {this.state.safeness}</p>
                    <p>Expires in : {this.state.expireIn}</p>
                    </div>
-                  {status[i]==1 &&
-                  <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount, loanAddresses[i])}>
+                  {status[i]==2 &&
+                  <div className="btn-wrapper text-center" onClick={()=>this.fundLoanOffer(loanAmount, loanAddresses[i])}>
                    <a href="#" className="btn btn-primary btn-icon m-1">
                      <span className="btn-inner--text">Fund Now</span>
                    </a>
                  </div>}
                  </div>
-                 {status[i]==2 && <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                 {status[i]==3 && <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                    <span className="alert-text">Already Funded</span>
                  </div>
                 }
                 {
-                   status[i]==1 &&
+                   status[i]==2 &&
                    <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                      <span className="alert-text">Waiting for lender</span>
                    </div>
-               }
-               {
-                 status[i]==0 &&
-                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                   <span className="alert-text">Waiting for collateral</span>
-                 </div>
                }
                </div>;
                 })
