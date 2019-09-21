@@ -72,7 +72,7 @@ class MyLoans extends Component {
                   collateralValue.push(res[7].toNumber());
                   duration.push(res[1].toNumber());
                   earnings.push(res[2].toFixed(2));
-                  status.push(res[10].toNumber());
+                  status.push(res[5].toNumber());
                   collateralAddress.push(res[6]);
                   loanAddresses.push(loanAddress);
                   dueDate.push(date);
@@ -476,25 +476,6 @@ class MyLoans extends Component {
                     <td>
                       <span className="">{this.convertDate(dueDate[i],-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
                     </td>
-
-                    {status[i]==0 &&
-                      <div className="mt-4">
-                      <label id="exampleFormControlSelect">Transfer Collateral</label>
-                      <td>
-                      <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
-                        this.approveRequest(collateralAddress[i], loanAddresses[i], collateralValue[i])
-                        }}>
-                        Approve
-                      </button>
-                      </td>
-                      <td>
-                      <button className="btn btn-primary" type="button" disabled={status[i]>0?true:false} onClick={()=>{
-                        this.handleTransferCollateral(loanAddresses[i])
-                        }}>
-                        Transfer
-                      </button>
-                      </td>
-                    </div>}
 
                     {status[i]>0 && <td>
                     <button className="btn btn-info" type="button" disabled={status[i]>0?false:true} onClick={()=>{
