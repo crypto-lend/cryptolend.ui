@@ -3,6 +3,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import './ViewAllOffers.css';
 
 class ViewAllOffers extends Component {
@@ -17,7 +18,7 @@ class ViewAllOffers extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
-      collateralMetadata:true,
+      collateralMetadata:false,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
@@ -84,6 +85,10 @@ class ViewAllOffers extends Component {
       }
 
     });
+  }
+
+  hideAlert  = () =>{
+    this.setState({collateralMetadata:false});
   }
 
   render() {
@@ -316,7 +321,7 @@ class ViewAllOffers extends Component {
                   <p>Duration  : {this.state.duration[0]} days</p>
                   <p>Amount  : 1 ETH</p>
 
-                    <div className="btn-wrapper text-center" onClick={()=>{}}>
+                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadata:true})}}>
                       <a href="#" className="btn btn-primary btn-icon mt-2">
                         <span className="btn-inner--text">Take this loan</span>
                       </a>
@@ -327,9 +332,7 @@ class ViewAllOffers extends Component {
                   <span className="alert-text">Waiting for borrower</span>
                 </div>
               </div>}
-              {
-            this.state.waitingForBorrower  && duration[1]/30>minDuration && duration[1]/30<maxDuration &&
-              <div className="col-md-4">
+              {this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration && <div className="col-md-4">
                     <div className="card">
                       <div className="card-header">
                       <div className="row row-example">
@@ -346,11 +349,10 @@ class ViewAllOffers extends Component {
                     <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Duration  : {this.state.duration[1]} days</p>
-                  <p>Amount  : 1.5 ETH</p>
+                  <p>Duration  : {this.state.duration[0]} days</p>
+                  <p>Amount  : 1 ETH</p>
 
-
-                    <div className="btn-wrapper text-center" onClick={()=>{}}>
+                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadata:true})}}>
                       <a href="#" className="btn btn-primary btn-icon mt-2">
                         <span className="btn-inner--text">Take this loan</span>
                       </a>
@@ -360,11 +362,8 @@ class ViewAllOffers extends Component {
                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                   <span className="alert-text">Waiting for borrower</span>
                 </div>
-              </div>
-          }
-              {
-                this.state.waitingForBorrower && duration[2]/30>minDuration && duration[2]/30<maxDuration &&
-              <div className="col-md-4">
+              </div>}
+              {this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration && <div className="col-md-4">
                     <div className="card">
                       <div className="card-header">
                       <div className="row row-example">
@@ -381,10 +380,10 @@ class ViewAllOffers extends Component {
                     <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV 50% 50% 50% 50% 50% 50%</div>
                   </div>
                   <div className="card-body text-left">
-                  <p>Duration  : {this.state.duration[2]} days</p>
-                  <p>Amount  : 2 ETH</p>
+                  <p>Duration  : {this.state.duration[0]} days</p>
+                  <p>Amount  : 1 ETH</p>
 
-                    <div className="btn-wrapper text-center" onClick={()=>{}}>
+                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadata:true})}}>
                       <a href="#" className="btn btn-primary btn-icon mt-2">
                         <span className="btn-inner--text">Take this loan</span>
                       </a>
@@ -394,10 +393,50 @@ class ViewAllOffers extends Component {
                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                   <span className="alert-text">Waiting for borrower</span>
                 </div>
-              </div>
-            }
+              </div>}
           </div>
-            {collateralMetadata && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+            {/*collateralMetadata &&
+              <SweetAlert
+                  warning
+                  showCancel
+                  confirmBtnText="Yes, delete it!"
+                  confirmBtnBsStyle="danger"
+                  cancelBtnBsStyle="default"
+                  title="Are you sure?"
+                  onConfirm={this.deleteFile}
+                  onCancel={this.cancelDelete}
+              >
+                  You will not be able to recover this imaginary file!
+              </SweetAlert>*/}
+              { collateralMetadata &&
+              <SweetAlert
+                  custom
+                  showCancel
+                  confirmBtnText="Yes"
+                  cancelBtnText="No"
+                  confirmBtnBsStyle="primary"
+                  cancelBtnBsStyle="default"
+                  customIcon="thumbs-up.jpg"
+                  title="Take this loan?"
+                  onConfirm={this.hideAlert}
+                  onCancel={this.hideAlert}
+              >
+              <div className="col-md-5 form-group mt-5" style={{ marginLeft: '27%'}}>
+                <label for="exampleFormControlSelect1">Select collateral</label>
+                  <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
+                    this.setState({collateralCurrency1:e.target.value});
+
+                  }}>
+                  {
+                    collateral_tokens.map((item) => {
+                      return <option>{item}</option>;
+                  })
+                  }
+                  </select>
+                </div>
+              </SweetAlert>
+              }
+{/*<div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                  <div className="col-md-12 form-group mt-5">
                      <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
                        this.setState({collateralCurrency1:e.target.value});
@@ -411,7 +450,7 @@ class ViewAllOffers extends Component {
                      </select>
                    </div>
                 </div>
-            }
+            */}
             </div>
 
           </section>
