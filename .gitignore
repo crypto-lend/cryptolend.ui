@@ -12,6 +12,7 @@
 
 # production
 /build
+scripts/build.js
 package-lock.json
 yarn.lock
 
