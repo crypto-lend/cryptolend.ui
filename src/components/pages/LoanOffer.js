@@ -91,7 +91,7 @@ class LoanOffer extends Component {
             console.log("Data Address: ",address);
             this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:address, ropstenTransactionhash:receipt.transactionHash})
 
-            
+
           }
         });
     }
@@ -115,7 +115,7 @@ class LoanOffer extends Component {
           });
       }));
     }
-  
+
   fundLoanOffer = async (loanAmount, loanOfferContractAddress) => {
     let self = this;
     const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanOfferContractAddress);
@@ -143,10 +143,10 @@ class LoanOffer extends Component {
       gas: 300000
     }, (err, transactionHash) => {
       if (!err)
-        console.log(transactionHash); 
+        console.log(transactionHash);
     })
     console.log("ACCEPT LOAN :", acceptLoan);
-    
+
   }
 
   handleAddCollateral = () => {
@@ -197,7 +197,7 @@ class LoanOffer extends Component {
                       <span className="nav-link-inner--text">Create Loan Offers</span>
                     </a>
                   </li>
-                  <li className="nav-item dropdown"> 
+                  <li className="nav-item dropdown">
                     <a href="#" className="nav-link" data-toggle="dropdown" href="/view-requests" role="button">
                       <i className="ni ni-collection d-lg-none"></i>
                       <span className="nav-link-inner--text">View All Request</span>
@@ -232,7 +232,7 @@ class LoanOffer extends Component {
                     <a href="#" className="nav-link" data-toggle="tooltip" title="Wallet" role="button">
                       <svg x="0px" y="0px" viewBox="0 0 24 24" space="preserve" width="24" height="16">
                         <g className="nc-icon-wrapper" fill="#444444">
-                          <path fill="#00000080" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
+                          <path fill="#fff" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
                           </path>
                         </g>
                       </svg>
@@ -337,7 +337,7 @@ class LoanOffer extends Component {
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
                                       this.setState({collateralCurrency1:e.target.value});
-                                      
+
                                     }}>
                                     {
                                       erc20_tokens.map((item) => {
@@ -374,7 +374,7 @@ class LoanOffer extends Component {
                                    {!!(collateralCount>2) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                         <div className="col-md-12 form-group mt-5">
                                             <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                                              
+
                                               this.setState({collateralCurrency3:e.target.value});
                                             }}>
                                             {
@@ -434,33 +434,33 @@ class LoanOffer extends Component {
                     <p>Loan amount {loanAmount} ETH</p>
                   </div>
 
-                  <div className="card-body text-left">
+                  <div className="card-body text-left" style={{ marginBottom: !duration?'45%':'21%'}}>
                     <p>Collateral</p>
                     {collateralCurrency1 &&
                       <div className="col">
-                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${collateralCurrency1.toLowerCase()}.png`}/> 
-                      <p>LTV : {ltv1}</p> 
-                      <p>MPR: {mpr1}</p> 
+                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${collateralCurrency1.toLowerCase()}.png`}/>
+                      <p>LTV : {ltv1}</p>
+                      <p>MPR: {mpr1}</p>
                     </div>
                     }
                     {collateralCurrency2 &&
                       <div className="col">
-                      <img id="img2 "alt="img2" src={`/assets/img/32/color/${collateralCurrency2.toLowerCase()}.png`}/> 
-                      <p>LTV : {ltv2}</p> 
-                      <p>MPR: {mpr2}</p> 
+                      <img id="img2 "alt="img2" src={`/assets/img/32/color/${collateralCurrency2.toLowerCase()}.png`}/>
+                      <p>LTV : {ltv2}</p>
+                      <p>MPR: {mpr2}</p>
                     </div>
                     }
                     {collateralCurrency3 &&
                       <div className="col">
-                      <img id="img3 "alt="img3" src={`/assets/img/32/color/${collateralCurrency3.toLowerCase()}.png`}/> 
-                      <p>LTV : {ltv3}</p> 
-                      <p>MPR: {mpr3}</p> 
+                      <img id="img3 "alt="img3" src={`/assets/img/32/color/${collateralCurrency3.toLowerCase()}.png`}/>
+                      <p>LTV : {ltv3}</p>
+                      <p>MPR: {mpr3}</p>
                     </div>
                     }
                     {duration ? <div className="mt-4"><p>Duration {duration} days</p></div>
                     :<div className="mt-4"><p>Duration  (not set) </p></div>}
 
-                    {!!duration && <div className="btn-wrapper text-center" style={{marginTop:'208px'}} onClick={()=>{
+                    {!!duration && <div className="btn-wrapper text-center" onClick={()=>{
                       this.createLoanOffer(loanAmount, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3);
                     }}>
                       <br/>
@@ -485,7 +485,7 @@ class LoanOffer extends Component {
                     </button>
                   </div>}
 
-                  {acceptLoanAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%'}} role="alert">
+                  {acceptLoanAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%', marginTop:'-7%'}} role="alert">
                       Your loan is funded successfully!
                   </div>}
                   </div>
@@ -494,10 +494,10 @@ class LoanOffer extends Component {
             </div>
           </section>
         </div>
-        {createOfferAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
+        {createOfferAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%', marginTop:'-7%'}} role="alert">
               <strong>Congratulations! Loan Offer is Created successfully!</strong>
           </div>}
-        {createOfferAlert && <Link to={"https://ropsten.etherscan.io/tx/"+ropstenTransactionhash}  target='_blank'> Check transation on Ropsten </Link>}
+        {createOfferAlert && <Link to={"https://ropsten.etherscan.io/tx/"+ropstenTransactionhash} style={{color:'#fff'}}  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }

@@ -270,7 +270,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     <a href="#" className="nav-link" data-toggle="tooltip" title="Wallet" role="button">
                       <svg x="0px" y="0px" viewBox="0 0 24 24" space="preserve" width="24" height="16">
                         <g className="nc-icon-wrapper" fill="#444444">
-                          <path fill="#00000080" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
+                          <path fill="#fff" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
                           </path>
                         </g>
                       </svg>
@@ -558,10 +558,10 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
             </div>
           </section>
         </div>
-        {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%'}} role="alert">
+        {createRequestAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%', marginTop:'-7%'}} role="alert">
               <strong>Congratulations! Loan Request is Created successfully!</strong>
           </div>}
-        {createRequestAlert && <Link href={"https://ropsten.etherscan.io/tx/"+ropstenTransactionhash}  target='_blank'> Check transation on Ropsten </Link>}
+        {createRequestAlert && <Link href={"https://ropsten.etherscan.io/tx/"+ropstenTransactionhash} style={{color:'#fff'}}  target='_blank'> Check transation on Ropsten </Link>}
       </div>
     );
   }

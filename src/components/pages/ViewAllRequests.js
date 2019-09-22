@@ -19,6 +19,7 @@ class ViewAllRequests extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
+      collateralMetadata:true,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       loanCurrency:'ETH',
@@ -48,16 +49,16 @@ class ViewAllRequests extends Component {
 
   //Get All Loans
   viewAllRequest = () => {
-    const FinocialInstance = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+    const Instance = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
 
-    FinocialInstance.getAllLoans((err, loanContractAddress) => {
+    Instance.getAllLoans((err, loanContractAddress) => {
       let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status} = this.state;
       // console.log("LOAN ADDRESSES : ", loanContractAddress)
       if(!err){
         // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
         loanContractAddress.map((loanAddress)=>{
-                const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
-                FinocialLoanInstance.getLoanData((err, res)=>{
+                const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
+                LoanInstance.getLoanData((err, res)=>{
 
                 if(res){
                   if(res[10].toNumber()>0){
@@ -75,6 +76,8 @@ class ViewAllRequests extends Component {
                   status.push(res[5].toNumber());
                   collateralAddress.push(res[6]);
                   loanAddresses.push(loanAddress);
+
+                  console.log("loanAddress ", loanAddress);
 
 
                    this.setState({
@@ -103,10 +106,11 @@ class ViewAllRequests extends Component {
   }
 
   approveLoanRequest = (loanAmount,loanContractAddress) => {
-    const FinocialLoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
-    FinocialLoanInstance.approveLoanRequest({
+    const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
+    LoanInstance.approveLoanRequest({
       from: window.web3.eth.accounts[0],
-      value: window.web3.toWei(loanAmount)
+      value: window.web3.toWei(loanAmount),
+      gas: 30000
         },function(err, res){
         if(!err)
            console.log(res);
@@ -126,13 +130,15 @@ class ViewAllRequests extends Component {
       if (!err) {
         console.log(res);
         // window.location="/myloans";
-        self.setState({approveOfferAlert:false, acceptLoanAlert:true})
+        console.log("loanContractAddress ", loanContractAddress);
+        // self.setState({approveOfferAlert:false, acceptLoanAlert:true})
       } else {}
   });
   }
 
   render() {
-    const { erc20_tokens, duration, minDuration, maxDuration, earnings, minMonthlyInt, maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency } = this.state;
+    const { erc20_tokens, duration, minDuration, maxDuration, earnings, minMonthlyInt, maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency,
+    collateralMetadata } = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <header className="header-global">
@@ -207,7 +213,7 @@ class ViewAllRequests extends Component {
                     <a href="#" className="nav-link" data-toggle="tooltip" title="Wallet" role="button">
                       <svg x="0px" y="0px" viewBox="0 0 24 24" space="preserve" width="24" height="16">
                         <g className="nc-icon-wrapper" fill="#444444">
-                          <path fill="#00000080" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
+                          <path fill="#fff" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
                           </path>
                         </g>
                       </svg>
@@ -376,7 +382,7 @@ class ViewAllRequests extends Component {
                    <p>Expires in : {this.state.expireIn}</p>
                    </div>
                   {status[i]==2 &&
-                  <div className="btn-wrapper text-center" onClick={()=>this.fundLoanOffer(loanAmount, loanAddresses[i])}>
+                  <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount, loanAddresses[i])}>
                    <a href="#" className="btn btn-primary btn-icon m-1">
                      <span className="btn-inner--text">Fund Now</span>
                    </a>
@@ -427,9 +433,11 @@ class ViewAllRequests extends Component {
               </div>
 
               }
+              
             </div>
           </section>
         </div>
+
       </div>
     );
   }

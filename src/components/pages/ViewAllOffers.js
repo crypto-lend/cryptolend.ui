@@ -17,6 +17,7 @@ class ViewAllOffers extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
+      collateralMetadata:true,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
@@ -39,6 +40,7 @@ class ViewAllOffers extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
+      collateral_tokens: ['BNB', 'GTO', 'QKC']
     };
   }
 
@@ -85,7 +87,7 @@ class ViewAllOffers extends Component {
   }
 
   render() {
-    const {erc20_tokens,duration,minDuration,maxDuration} = this.state;
+    const { erc20_tokens,duration,minDuration,maxDuration, collateralMetadata, collateral_tokens } = this.state;
     return (
       <div className="ViewAllOffers text-center">
         <header className="header-global">
@@ -160,7 +162,7 @@ class ViewAllOffers extends Component {
                     <a href="#" className="nav-link" data-toggle="tooltip" title="Wallet" role="button">
                       <svg x="0px" y="0px" viewBox="0 0 24 24" space="preserve" width="24" height="16">
                         <g className="nc-icon-wrapper" fill="#444444">
-                          <path fill="#00000080" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
+                          <path fill="#fff" d="M23,4H4H3C2.449,4,2,3.551,2,3s0.449-1,1-1h15v1h2V1c0-0.552-0.448-1-1-1H3C1.343,0,0,1.343,0,3v17 c0,2.209,1.791,4,4,4h19c0.552,0,1-0.448,1-1V5C24,4.448,23.552,4,23,4z M18,16c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2 s2,0.895,2,2C20,15.105,19.105,16,18,16z">
                           </path>
                         </g>
                       </svg>
@@ -293,9 +295,8 @@ class ViewAllOffers extends Component {
             </div>
           </div>
 
-              {
-                this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration &&
-                <div className="col-md-4">
+          <div className="ml-4 row">
+              {this.state.waitingForBorrower && duration[0]/30>minDuration && duration[0]/30<maxDuration && <div className="col-md-4">
                     <div className="card">
                       <div className="card-header">
                       <div className="row row-example">
@@ -325,9 +326,8 @@ class ViewAllOffers extends Component {
                 <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                   <span className="alert-text">Waiting for borrower</span>
                 </div>
-              </div>
-          }
-          {
+              </div>}
+              {
             this.state.waitingForBorrower  && duration[1]/30>minDuration && duration[1]/30<maxDuration &&
               <div className="col-md-4">
                     <div className="card">
@@ -396,7 +396,24 @@ class ViewAllOffers extends Component {
                 </div>
               </div>
             }
+          </div>
+            {collateralMetadata && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                 <div className="col-md-12 form-group mt-5">
+                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
+                       this.setState({collateralCurrency1:e.target.value});
+
+                     }}>
+                     {
+                       collateral_tokens.map((item) => {
+                         return <option>{item}</option>;
+                     })
+                     }
+                     </select>
+                   </div>
+                </div>
+            }
             </div>
+
           </section>
         </div>
       </div>
