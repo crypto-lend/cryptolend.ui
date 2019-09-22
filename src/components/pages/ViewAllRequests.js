@@ -21,7 +21,7 @@ class ViewAllRequests extends Component {
       status:[],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
-      loanCurrency:'',
+      loanCurrency:'ETH',
       collateralCurrency:'TTT',
       waitingForLender:true,
       waitingForCollateral:false,
@@ -335,7 +335,19 @@ class ViewAllRequests extends Component {
                 </li>
               </ul>
             </div>
-            <div className="card-footer" style={{marginTop:'-40px'}}>
+            <div className="card-footer" style={{marginTop:'-40px'}} onClick={()=>{
+              this.setState({ loanCurrency:'ETH',
+                    collateralCurrency:'TTT',
+                    waitingForLender:true,
+                    waitingForCollateral:false,
+                    waitingForPayback:false,
+                    finished:false,
+                    defaulted:false,
+                    minMonthlyInt:0,
+                    maxMonthlyInt:5,
+                    minDuration:0,
+                    maxDuration:12,})
+            }}>
               <a href="#!" className=" text-muted">Reset Filters</a>
             </div>
           </div>
