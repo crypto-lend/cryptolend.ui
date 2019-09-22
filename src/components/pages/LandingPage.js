@@ -38,7 +38,7 @@ class LandingPage extends Component {
     const web3 = window.web3;
     return (
       <div>
-        <div className="LandingPage text-center">
+        <div className="LandingPage text-center" style={{color:'fff'}}>
           <header className="header-global">
             <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
               <div className="container" style={{maxWidth: '1080px'}}>
@@ -154,7 +154,7 @@ class LandingPage extends Component {
                     <InstallMetaMask/>
                   }
                   <div className="col-lg-7 text-center">
-                    <h1 style={{marginTop: '15%'}}> THE GLOBAL LENDING MARKETPLACE</h1>
+                    <strong style={{marginTop: '15%', color:'whitesmoke', fontSize:'50px'}}> THE GLOBAL LENDING MARKETPLACE</strong>
                     <div className="btn-wrapper" style={{marginTop:'80px'}}>
                       <a href="#" className="btn btn-info btn-icon mb-3 mb-sm-0" data-toggle="scroll">
                         <span className="btn-inner--icon"><i className="fa fa-calculator"></i></span>

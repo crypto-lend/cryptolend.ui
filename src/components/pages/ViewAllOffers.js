@@ -455,7 +455,7 @@ class ViewAllOffers extends Component {
                     confirmBtnText="Confirm"
                     confirmBtnBsStyle="info"
                     cancelBtnBsStyle="default"
-                    title="Are you sure?"
+                    title="Accept Loan Offer"
                     onConfirm={this.hideAlertAcceptCollateralConfirm}
                     onCancel={this.hideAlertAcceptCollateralCancel}
                 >
@@ -468,7 +468,7 @@ class ViewAllOffers extends Component {
                     confirmBtnText="Confirm"
                     confirmBtnBsStyle="info"
                     cancelBtnBsStyle="default"
-                    title="Are you sure?"
+                    title="Transfer Collateral"
                     onConfirm={this.hideAlertTransferCollateralConfirm}
                     onCancel={this.hideAlertTransferCollateralCancel}
                 >
