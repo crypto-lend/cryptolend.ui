@@ -132,7 +132,7 @@ class ViewAllRequests extends Component {
   }
 
   render() {
-    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency} = this.state;
+    const { erc20_tokens, duration, minDuration, maxDuration, earnings, minMonthlyInt, maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency } = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <header className="header-global">
@@ -342,7 +342,7 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 this.state.loanAmount.map((loanAmount,i)=>{
-                return this.state.waitingForLender && status[i]>1 && status[i]<3 && collateralCurrency==='TTT' && <div className="col">
+                return this.state.waitingForLender && status[i]>1 && status[i]<3 && collateralCurrency==='TTT' && duration[i]/30>minDuration && duration[i]/30<=maxDuration && earnings[i]/100>minMonthlyInt && earnings[i]/100<=maxMonthlyInt && <div className="col">
                  <div className="card">
                    <div className="card-header">
 
