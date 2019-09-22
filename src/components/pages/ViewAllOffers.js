@@ -18,7 +18,9 @@ class ViewAllOffers extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
-      collateralMetadata:false,
+      collateralMetadataAlert:false,
+      transferCollateralAlert:false,
+      acceptCollateralAlert:false,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
@@ -87,12 +89,35 @@ class ViewAllOffers extends Component {
     });
   }
 
-  hideAlert  = () =>{
-    this.setState({collateralMetadata:false});
+  hideAlertCancel  = () => {
+    this.setState({collateralMetadataAlert:false});
   }
 
+  hideAlertConfirm = () => {
+    this.setState({collateralMetadataAlert:false, acceptCollateralAlert:true});
+  }
+
+  hideAlertAcceptCollateralCancel = () => {
+    this.setState({acceptCollateralAlert:false});
+  }
+
+  hideAlertAcceptCollateralConfirm = () => {
+    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
+  }
+
+  hideAlertTransferCollateralCancel = () => {
+    this.setState({transferCollateralAlert:false});
+  }
+
+  hideAlertTransferCollateralConfirm = () => {
+    this.setState({transferCollateralAlert:false});
+  }
+
+
+
+
   render() {
-    const { erc20_tokens,duration,minDuration,maxDuration, collateralMetadata, collateral_tokens } = this.state;
+    const { erc20_tokens,duration,minDuration,maxDuration, collateralMetadataAlert, collateral_tokens, transferCollateralAlert, acceptCollateralAlert } = this.state;
     return (
       <div className="ViewAllOffers text-center">
         <header className="header-global">
@@ -321,7 +346,7 @@ class ViewAllOffers extends Component {
                   <p>Duration  : {this.state.duration[0]} days</p>
                   <p>Amount  : 1 ETH</p>
 
-                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadata:true})}}>
+                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadataAlert:true})}}>
                       <a href="#" className="btn btn-primary btn-icon mt-2">
                         <span className="btn-inner--text">Take this loan</span>
                       </a>
@@ -352,7 +377,7 @@ class ViewAllOffers extends Component {
                   <p>Duration  : {this.state.duration[0]} days</p>
                   <p>Amount  : 1 ETH</p>
 
-                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadata:true})}}>
+                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadataAlert:true})}}>
                       <a href="#" className="btn btn-primary btn-icon mt-2">
                         <span className="btn-inner--text">Take this loan</span>
                       </a>
@@ -383,7 +408,7 @@ class ViewAllOffers extends Component {
                   <p>Duration  : {this.state.duration[0]} days</p>
                   <p>Amount  : 1 ETH</p>
 
-                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadata:true})}}>
+                    <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadataAlert:true})}}>
                       <a href="#" className="btn btn-primary btn-icon mt-2">
                         <span className="btn-inner--text">Take this loan</span>
                       </a>
@@ -395,31 +420,18 @@ class ViewAllOffers extends Component {
                 </div>
               </div>}
           </div>
-            {/*collateralMetadata &&
+              { collateralMetadataAlert &&
               <SweetAlert
-                  warning
+                  info
                   showCancel
-                  confirmBtnText="Yes, delete it!"
-                  confirmBtnBsStyle="danger"
-                  cancelBtnBsStyle="default"
-                  title="Are you sure?"
-                  onConfirm={this.deleteFile}
-                  onCancel={this.cancelDelete}
-              >
-                  You will not be able to recover this imaginary file!
-              </SweetAlert>*/}
-              { collateralMetadata &&
-              <SweetAlert
-                  custom
-                  showCancel
-                  confirmBtnText="Yes"
-                  cancelBtnText="No"
-                  confirmBtnBsStyle="primary"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  confirmBtnBsStyle="info"
                   cancelBtnBsStyle="default"
                   customIcon="thumbs-up.jpg"
                   title="Take this loan?"
-                  onConfirm={this.hideAlert}
-                  onCancel={this.hideAlert}
+                  onConfirm={this.hideAlertConfirm}
+                  onCancel={this.hideAlertCancel}
               >
               <div className="col-md-5 form-group mt-5" style={{ marginLeft: '27%'}}>
                 <label for="exampleFormControlSelect1">Select collateral</label>
@@ -436,21 +448,32 @@ class ViewAllOffers extends Component {
                 </div>
               </SweetAlert>
               }
-{/*<div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
-                 <div className="col-md-12 form-group mt-5">
-                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                       this.setState({collateralCurrency1:e.target.value});
-
-                     }}>
-                     {
-                       collateral_tokens.map((item) => {
-                         return <option>{item}</option>;
-                     })
-                     }
-                     </select>
-                   </div>
-                </div>
-            */}
+              {acceptCollateralAlert &&
+                <SweetAlert
+                    warning
+                    showCancel
+                    confirmBtnText="Confirm"
+                    confirmBtnBsStyle="info"
+                    cancelBtnBsStyle="default"
+                    title="Are you sure?"
+                    onConfirm={this.hideAlertAcceptCollateralConfirm}
+                    onCancel={this.hideAlertAcceptCollateralCancel}
+                >
+                    Do you want to accept this Loan?
+                </SweetAlert>}
+              {transferCollateralAlert &&
+                <SweetAlert
+                    info
+                    showCancel
+                    confirmBtnText="Confirm"
+                    confirmBtnBsStyle="info"
+                    cancelBtnBsStyle="default"
+                    title="Are you sure?"
+                    onConfirm={this.hideAlertTransferCollateralConfirm}
+                    onCancel={this.hideAlertTransferCollateralCancel}
+                >
+                    Do you want to transfer collateral?
+                </SweetAlert>}
             </div>
 
           </section>
