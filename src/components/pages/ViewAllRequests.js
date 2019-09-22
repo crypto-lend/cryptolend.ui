@@ -21,16 +21,18 @@ class ViewAllRequests extends Component {
       status:[],
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
+      loanCurrency:'',
+      collateralCurrency:'TTT',
       waitingForLender:true,
       waitingForCollateral:false,
       waitingForPayback:false,
       finished:false,
-      defaulted:true,
+      defaulted:false,
       minMonthlyInt:0,
       maxMonthlyInt:5,
       minDuration:0,
       maxDuration:12,
-      erc20_tokens :  ['ALL','TTT', 'BTC','BNB', 'GTO', 'QKC', 'NEXO',
+      erc20_tokens :  ['TTT', 'BTC','BNB', 'GTO', 'QKC', 'NEXO',
           'PAX','EGT',  'MANA','POWR',
           'TUSD','LAMB','CTXC','ENJ',
           'CELR','HTB','ICX',  'WTC',
@@ -130,7 +132,7 @@ class ViewAllRequests extends Component {
   }
 
   render() {
-    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses} = this.state;
+    const {erc20_tokens,duration,minDuration,maxDuration,earnings,minMonthlyInt,maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency} = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <header className="header-global">
@@ -255,7 +257,7 @@ class ViewAllRequests extends Component {
                   <div className="form-group">
                       <label for="exampleFormControlSelect1">Loan Currency</label>
                       <select className="form-control" id="exampleFormControlSelect1" onClick={ (e) => {
-                        this.setState({collateralCurrency:e.target.value});
+                        this.setState({loanCurrency:e.target.value});
                       }}>
                       <option>ETH</option>;
                       </select>
@@ -340,7 +342,7 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 this.state.loanAmount.map((loanAmount,i)=>{
-                return status[i]>1 && <div className="col-sm-4">
+                return this.state.waitingForLender && status[i]>1 && status[i]<3 && collateralCurrency==='TTT' && <div className="col">
                  <div className="card">
                    <div className="card-header">
 
@@ -413,41 +415,6 @@ class ViewAllRequests extends Component {
               </div>
 
               }
-            {
-              !this.state.waitingForLender && duration[2]/30>minDuration && duration[2]/30<=maxDuration && earnings[2]>minMonthlyInt && earnings[2]<=maxMonthlyInt &&
-                <div className="col-md-4">
-                <div className="card">
-                  <div className="card-header">
-
-                  <div className="row row-example">
-                <div className="col-sm">
-                  <span><p>Loan amount  </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> 2.5 ETH</span>
-
-                </div>
-                <div className="col-sm">
-                  <span><p>Collateral </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/32/color/bnb.png"/> BNB</span>
-                </div>
-              </div>
-                  </div>
-                  <div className="card-body text-left">
-                  <p>Earnings : {this.state.earnings[2]} %</p>
-                  <p>Duration  : {this.state.duration[2]} days</p>
-                  <p>Safeness : {this.state.safeness}</p>
-                  <p>Expires in : {this.state.expireIn}</p>
-                    <div className="btn-wrapper text-center" onClick={()=>{}}>
-                      <a href="#" className="btn btn-primary btn-icon m-1">
-                        <span className="btn-inner--text">Fund Now</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                  <span className="alert-text">Waiting for lender(s)</span>
-                </div>
-              </div>
-          }
             </div>
           </section>
         </div>
