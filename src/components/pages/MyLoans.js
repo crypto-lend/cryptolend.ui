@@ -19,7 +19,12 @@ class MyLoans extends Component {
       duration: [],
       collateralAddress: [],
       status:[],
-      loanStatuses:['INACTIVE','ACTIVE','FUNDED','REPAID','DEFAULTED'],
+      loanStatuses:['OFFER',
+        'REQUEST',
+        'ACTIVE',
+        'FUNDED',
+        'REPAID',
+        'DEFAULT'],
       repaymentAmount:[],
       dueDate:[],
       currentDate:null,
@@ -408,96 +413,95 @@ class MyLoans extends Component {
                       <div className="col px-0">
                         <div className="card" >
                     <div className="card-header text-left">
-                      <a href="#" className={borrowedLoans? " btn btn-primary" : " btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:true, fundedLoans:false})}}>My loan Requests</a>
-                      <a href="#" className={fundedLoans? "btn btn-primary" : "btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:false, fundedLoans:true})}}>My loan offers</a>
+                      <a href="#" className={borrowedLoans? " btn btn-primary" : " btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:true, fundedLoans:false})}}>My Borrowed Loans</a>
+                      <a href="#" className={fundedLoans? "btn btn-primary" : "btn btn-secondary"} onClick={()=>{this.setState({borrowedLoans:false, fundedLoans:true})}}>My Funded Loans</a>
                     </div>
                     <div className="card-body">
                     <div>
                     {
-                      borrowedLoans?    <div className="table-responsive" style={{marginTop:"-25px"}}>
-              <table className="table align-items-center table-flush">
-                <thead className="thead">
-                  <tr>
-                    <th scope="col">Loan Id</th>
-                    <th scope="col">Loan Amount</th>
-                    <th scope="col">Collateral Currency</th>
-                    <th scope="col">Duration</th>
-                    <th scope="col">MPR</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Expires on</th>
-                    <th scope="col"><i className="fa fa-arrrow-down"></i></th>
+                      borrowedLoans?  <div className="table-responsive" style={{marginTop:"-25px"}}>
+                        <table className="table align-items-center table-flush">
+                          <thead className="thead">
+                            <tr>
+                              <th scope="col">Loan Id</th>
+                              <th scope="col">Loan Amount</th>
+                              <th scope="col">Collateral Currency</th>
+                              <th scope="col">Duration</th>
+                              <th scope="col">MPR</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Expires on</th>
+                              <th scope="col"><i className="fa fa-arrrow-down"></i></th>
 
-                  </tr>
-                </thead>
-                <tbody>
-                  {loanAmount.map((amount,i)=>{
-                    return <tr key={i}>
-                    <th scope="row mt-3">
-                      <div className="media align-items-center">
-                        <div className="media-body">
-                          <span className="mb-0 text-sm">{i+1}</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> {amount} ETH
-                      </span>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">{tokenSymbol[i]}</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">{duration[i]}</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {loanAmount.map((amount,i)=>{
+                              return status[i]>1 && <tr key={i}>
+                              <th scope="row mt-3">
+                                <div className="media align-items-center">
+                                  <div className="media-body">
+                                    <span className="mb-0 text-sm">{i+1}</span>
+                                  </div>
+                                </div>
+                              </th>
+                              <td>
+                                <span className="badge-dot">
+                                  <i className="bg-info"></i> {amount} ETH
+                                </span>
+                              </td>
+                              <td>
+                                <div className="text-center">
+                                  <span className="">{tokenSymbol[i]}</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="text-center">
+                                  <span className="">{duration[i]}</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
 
-                    <td>
-                      <div className="text-center">
-                        <span className="">{earnings[i]/100}%</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className=""> {loanStatuses[status[i]]}</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="">{this.convertDate(dueDate[i],-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
-                    </td>
+                              <td>
+                                <div className="text-center">
+                                  <span className="">{earnings[i]/100}%</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="text-center">
+                                  <span className=""> {loanStatuses[status[i]]}</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <span className="">{this.convertDate(dueDate[i],-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
+                              </td>
 
-                    {status[i]>0 && <td>
-                    <button className="btn btn-info" type="button" disabled={status[i]>0?false:true} onClick={()=>{
-                      this.getRepayments(loanAddresses[i]);
-                      this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
-                         repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
-                       })
-                      if(display1==true)
-                        window.location="/myloans";
-
-                        // this.getPaidRepaymentsCount(currentLoanAddress)
-                    }}>
-                      +
-                    </button>
-                    </td>}
-                  </tr>;
-                  })
-                  }
-                  { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate, currentCollateralValue)}
-                </tbody>
-              </table>
-            </div>
+                              {status[i]>1 && <td>
+                              <button className="btn btn-info" type="button" onClick={()=>{
+                                this.getRepayments(loanAddresses[i]);
+                                this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
+                                   repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
+                                 })
+                                if(display1==true)
+                                  window.location="/myloans";
+                                  // this.getPaidRepaymentsCount(currentLoanAddress)
+                              }}>
+                                +
+                              </button>
+                              </td>}
+                            </tr>;
+                            })
+                            }
+                            { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate, currentCollateralValue)}
+                          </tbody>
+                        </table>
+                      </div>
                       :
                       <div className="table-responsive" style={{marginTop:"-25px"}}>
               <table className="table align-items-center table-flush">
