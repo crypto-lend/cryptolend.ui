@@ -385,7 +385,7 @@ class ViewAllRequests extends Component {
                 })
             }
             </div>
-              {
+              {/*
                 this.state.waitingForPayback && duration[1]/30>minDuration && duration[1]/30<=maxDuration && earnings[1]>minMonthlyInt && earnings[1]<=maxMonthlyInt &&
                 <div className="col-md-4">
                 <div className="card">
@@ -415,7 +415,7 @@ class ViewAllRequests extends Component {
                 </div>
               </div>
 
-              }
+              */}
 
             </div>
           </section>
