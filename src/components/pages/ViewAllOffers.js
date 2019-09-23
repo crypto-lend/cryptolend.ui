@@ -446,6 +446,7 @@ class ViewAllOffers extends Component {
                   })
                   }
                   </select>
+                  <label for="exampleFormControlSelect1">MPR : 0.5% &nbsp; &nbsp; LTV : 50%</label>
                 </div>
               </SweetAlert>
               }
