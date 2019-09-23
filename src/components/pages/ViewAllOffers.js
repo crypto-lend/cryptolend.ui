@@ -43,7 +43,8 @@ class ViewAllOffers extends Component {
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
-      collateral_tokens: ['BNB', 'GTO', 'QKC']
+      collateral_tokens: ['BNB', 'GTO', 'QKC'],
+      collateralCurrencyToken:''
     };
   }
 
@@ -117,7 +118,7 @@ class ViewAllOffers extends Component {
 
 
   render() {
-    const { erc20_tokens,duration,minDuration,maxDuration, collateralMetadataAlert, collateral_tokens, transferCollateralAlert, acceptCollateralAlert } = this.state;
+    const { erc20_tokens,duration,minDuration,maxDuration, collateralMetadataAlert, collateral_tokens, transferCollateralAlert, acceptCollateralAlert, collateralCurrencyToken } = this.state;
     return (
       <div className="ViewAllOffers text-center">
         <header className="header-global">
@@ -436,7 +437,7 @@ class ViewAllOffers extends Component {
               <div className="col-md-5 form-group mt-5" style={{ marginLeft: '27%'}}>
                 <label for="exampleFormControlSelect1">Select collateral</label>
                   <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                    this.setState({collateralCurrency1:e.target.value});
+                    this.setState({collateralCurrencyToken:e.target.value});
 
                   }}>
                   {
@@ -452,27 +453,27 @@ class ViewAllOffers extends Component {
                 <SweetAlert
                     warning
                     showCancel
-                    confirmBtnText="Confirm"
+                    confirmBtnText="Approve"
                     confirmBtnBsStyle="info"
                     cancelBtnBsStyle="default"
                     title="Accept Loan Offer"
                     onConfirm={this.hideAlertAcceptCollateralConfirm}
                     onCancel={this.hideAlertAcceptCollateralCancel}
                 >
-                    Do you want to accept this Loan?
+                    Approve Transfer collateral of 1000 {collateralCurrencyToken} tokens
                 </SweetAlert>}
               {transferCollateralAlert &&
                 <SweetAlert
                     info
                     showCancel
-                    confirmBtnText="Confirm"
+                    confirmBtnText="Transfer"
                     confirmBtnBsStyle="info"
                     cancelBtnBsStyle="default"
                     title="Transfer Collateral"
                     onConfirm={this.hideAlertTransferCollateralConfirm}
                     onCancel={this.hideAlertTransferCollateralCancel}
                 >
-                    Do you want to transfer collateral?
+                    Transfer collateral of 1000 {collateralCurrencyToken} tokens
                 </SweetAlert>}
             </div>
 
