@@ -61,13 +61,16 @@ class ViewAllRequests extends Component {
                 LoanInstance.getLoanData((err, res)=>{
 
                 if(res){
-                  if(res[10].toNumber()>0){
+                  if(res[5].toNumber()>1){
 
-                  console.log('Loan :', res);
+                  // console.log('Loan :', res);
                   let startedOn = res[4].toNumber();
                   let date = startedOn;
                   date = this.convertDate(date, -1);
-                  console.log('startedOn:', date);
+                  // console.log('startedOn:', date);
+                  console.log('loanAmount', window.web3.fromWei(res[0]).toFixed(7));
+                  console.log("loanAddress ", loanAddress);
+
                   }
                   loanAmount.push(window.web3.fromWei(res[0]).toFixed(7));
                   collateralValue.push(res[7].toNumber());
@@ -77,7 +80,6 @@ class ViewAllRequests extends Component {
                   collateralAddress.push(res[6]);
                   loanAddresses.push(loanAddress);
 
-                  console.log("loanAddress ", loanAddress);
 
 
                    this.setState({
@@ -111,29 +113,10 @@ class ViewAllRequests extends Component {
       from: window.web3.eth.accounts[0],
       value: window.web3.toWei(loanAmount),
       gas: 30000
-        },function(err, res){
+    },(err, res) => {
         if(!err)
-           console.log(res);
+           console.log('loanContractAddress', loanContractAddress);
         });
-  }
-
-  fundLoanOffer = async (loanAmount, loanContractAddress) => {
-    let self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
-
-     LoanContract.transferFundsToLoan({
-      from: window.web3.eth.accounts[0],
-      value: window.web3.toWei(loanAmount),
-      gas: 30000
-    },
-    (err, res) => {
-      if (!err) {
-        console.log(res);
-        // window.location="/myloans";
-        console.log("loanContractAddress ", loanContractAddress);
-        // self.setState({approveOfferAlert:false, acceptLoanAlert:true})
-      } else {}
-  });
   }
 
   render() {
@@ -433,7 +416,7 @@ class ViewAllRequests extends Component {
               </div>
 
               }
-              
+
             </div>
           </section>
         </div>
