@@ -55,6 +55,15 @@ class LoanOffer extends Component {
     };
   }
 
+  arrayRemove = (arr, value) => {
+
+     return arr.filter(function(ele){
+         return ele != value;
+     });
+
+  }
+
+
   createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
     const res = await window.ethereum.enable();
     let collateralItem1 = {}, collateralItem2 = {}, collateralItem3 = {};
@@ -84,11 +93,12 @@ class LoanOffer extends Component {
           if(!err){
             console.log("Transaction in process", res)
             const receipt = await this.getTransactionReceipt(res)
-            console.log('receipt.logs[0].data',receipt.logs[0].data);
+            // console.log('receipt.logs[0].data',receipt.logs[0].data);
             let address = receipt.logs[0].data;
             address = address.split("000000000000000000000000");
             address = "0x" + address[2];
-            console.log("Data Address: ",address);
+            // console.log("Data Address: ",address);
+            console.log("window.web3.toWei(principal) : ",  window.web3.toWei(principal),"duration : ", duration, "window.web3.toHex(JSON.stringify(collateralMetadata)) : ", window.web3.toHex(JSON.stringify(collateralMetadata)), "from: window.web3.eth.accounts[0]",  window.web3.eth.accounts[0]);
             this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:address, ropstenTransactionhash:receipt.transactionHash})
 
 
@@ -337,7 +347,7 @@ class LoanOffer extends Component {
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
                                       this.setState({collateralCurrency1:e.target.value});
-
+                                       // this.setState({erc20_tokens:this.arrayRemove(erc20_tokens, e.target.value)});
                                     }}>
                                     {
                                       erc20_tokens.map((item) => {

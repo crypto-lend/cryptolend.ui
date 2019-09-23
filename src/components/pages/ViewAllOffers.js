@@ -63,6 +63,7 @@ class ViewAllOffers extends Component {
 
                 if(res){
                   console.log('Loan :',res);
+                  console.log("loanAddress ", loanAddress);
                   loanAmount.push(window.web3.fromWei(res[0]).toFixed(7));
                   collateralValue.push(res[7].toNumber());
                   duration.push(res[1].toNumber());
