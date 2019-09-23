@@ -112,7 +112,7 @@ class ViewAllRequests extends Component {
     LoanInstance.approveLoanRequest({
       from: window.web3.eth.accounts[0],
       value: window.web3.toWei(loanAmount),
-      gas: 30000
+      gas: 300000
     },(err, res) => {
         if(!err)
            console.log('loanContractAddress', loanContractAddress);
