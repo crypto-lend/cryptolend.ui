@@ -225,13 +225,13 @@ class MyLoans extends Component {
                  Value : {currentCollateralValue} TTT
                    </span>
                </td>
-               {repaymentIndex==duration/30 && <td>
+               {/*repaymentIndex==duration/30 && <td>
                <button className="btn btn-primary" type="button" onClick={()=>{
                  this.handleReturnCollateralToBorrower(loanAddresses[i])
                  }}>
                  Claim
                </button>
-               </td>}
+               </td>*/}
                </tr>);
 
         }
