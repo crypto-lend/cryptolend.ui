@@ -123,7 +123,7 @@ class ViewAllOffers extends Component {
     return (
       <div className="ViewAllOffers text-center">
         <header className="header-global">
-          <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
+          <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

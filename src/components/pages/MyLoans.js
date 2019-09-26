@@ -305,7 +305,7 @@ class MyLoans extends Component {
       <div className="MyLoans text-center">
       {/*<Loader loaded={loaded}/>*/}
         <header className="header-global">
-          <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
+          <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

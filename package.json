@@ -64,7 +64,7 @@
     "react-app-polyfill": "^1.0.1",
     "react-bootstrap-sweetalert": "^4.4.1",
     "react-country-flag": "^1.0.2",
-    "react-dev-utils": "^9.0.1",
+    "react-dev-utils": "^9.0.4",
     "react-dom": "^16.8.6",
     "react-loader": "^2.4.5",
     "react-redux": "7.1",
