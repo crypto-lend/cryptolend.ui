@@ -154,7 +154,7 @@ class LandingPage extends Component {
                     <InstallMetaMask/>
                   }
                   <div className="col-lg-7 text-center">
-                    <strong style={{marginTop: '15%', color:'whitesmoke', fontSize:'50px'}}> THE GLOBAL LENDING MARKETPLACE</strong>
+                    <strong style={{marginTop: '15%', fontSize:'50px'}}> THE GLOBAL LENDING MARKETPLACE</strong>
                     <div className="btn-wrapper" style={{marginTop:'80px'}}>
                       <a href="#" className="btn btn-info btn-icon mb-3 mb-sm-0" data-toggle="scroll">
                         <span className="btn-inner--icon"><i className="fa fa-calculator"></i></span>
