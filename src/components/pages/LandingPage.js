@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import {InstallMetaMask}  from '../Web3/InstallMetaMask';
 import { EthereumIcon } from '../Web3/EthereumIcon';
+import blocklendr from '../../assets/img/brand/blocklendrLogo.jpg';
 import {fetchNetwork, fetchAccounts, getAccounts} from '../../services/Web3Service';
 class LandingPage extends Component {
   constructor(props){
@@ -58,6 +59,11 @@ class LandingPage extends Component {
                     </div>
                   </div>
                   <ul className="navbar-nav navbar-nav-hover align-items-lg-center">
+                  <li className="nav-item dropdown">
+                  <a href="/home" className="nav-link" data-toggle="dropdown" role="button">
+                    <img src={blocklendr} alt="Blocklendr" style={{width: '50%'}} />
+                    </a>
+                  </li>
                     <li className="nav-item dropdown">
                       <a href="/myloans" className="nav-link" data-toggle="dropdown" role="button">
                         <i className="ni ni-ui-04 d-lg-none"></i>
