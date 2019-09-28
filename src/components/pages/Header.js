@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import {InstallMetaMask}  from '../Web3/InstallMetaMask';
 import { EthereumIcon } from '../Web3/EthereumIcon';
+import { Link } from 'react-router-dom';
 import blocklendr from '../../assets/img/brand/blocklendrLogo.jpg';
 import {fetchNetwork, fetchAccounts, getAccounts} from '../../services/Web3Service';
 export default class Header extends Component {
@@ -40,28 +41,11 @@ export default class Header extends Component {
     return (
           <header className="header-global">
             <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-light">
+              <img src={blocklendr} alt="Blocklendr" style={{width: '10%'}} />
               <div className="container" style={{maxWidth: '1080px'}}>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="navbar-collapse collapse" id="navbar_global">
-                  <div className="navbar-collapse-header">
-                    <div className="row">
 
-                      <div className="col-6 collapse-close">
-                        <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
-                          <span></span>
-                          <span></span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                <div className="navbar-collapse collapse" id="navbar_global">
                   <ul className="navbar-nav navbar-nav-hover align-items-lg-center">
-                  <li className="nav-item dropdown">
-                  <a href="/home" className="nav-link" data-toggle="dropdown" role="button">
-                    <img src={blocklendr} alt="Blocklendr" style={{width: '50%'}} />
-                    </a>
-                  </li>
                     <li className="nav-item dropdown">
                       <a href="/myloans" className="nav-link" data-toggle="dropdown" role="button">
                         <i className="ni ni-ui-04 d-lg-none"></i>
