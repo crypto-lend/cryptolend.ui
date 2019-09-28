@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 // IMPORT PROJECT REFERENCES
 
 import LandingPage  from '../pages/LandingPage';
+import HomePage  from '../pages/HomePage';
 import  LoanRequest from '../pages/LoanRequest';
 import  LoanOffer from '../pages/LoanOffer';
 import  MyLoans  from '../pages/MyLoans';
@@ -18,7 +19,8 @@ export const AppRouter = () => (
   <BrowserRouter>
     <Fragment>
       <Switch>
-        <Route path='/' component={LandingPage} exact={true} />
+        <Route path='/' component={LandingPage} exact={true}/>
+        <Route path='/home' component={HomePage} />
         <Route path='/myloans' component={MyLoans} />
         <Route path='/request' component={LoanRequest} />
         <Route path='/offer' component={LoanOffer} />

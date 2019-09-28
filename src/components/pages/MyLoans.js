@@ -409,7 +409,7 @@ class MyLoans extends Component {
               <span className="span-50"></span>
               <span className="span-100"></span>
             </div>
-                  <div className="container shape-container d-flex align-items-center">
+                  <div className="d-flex align-items-center">
                       <div className="col px-0">
                         <div className="card" >
                     <div className="card-header text-left">
