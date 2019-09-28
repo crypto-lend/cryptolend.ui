@@ -19,8 +19,8 @@ export const AppRouter = () => (
   <BrowserRouter>
     <Fragment>
       <Switch>
-        <Route path='/' component={LandingPage} exact={true}/>
-        <Route path='/home' component={HomePage} />
+        <Route path='/' component={HomePage}  exact={true}/>
+        <Route path='/home' component={LandingPage}/>
         <Route path='/myloans' component={MyLoans} />
         <Route path='/request' component={LoanRequest} />
         <Route path='/offer' component={LoanOffer} />

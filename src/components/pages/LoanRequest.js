@@ -3,6 +3,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router';
 import axios from 'axios';
 import Loader from 'react-loader';
+import Header  from '../pages/Header';
 import { LoanCreatorABI, LoanContractABI, LoanCreatorAddress, LoanContractAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
 class LoanRequest extends Component {
@@ -198,6 +199,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
     return (
       <div className="LoanRequest text-center">
       <Loader loaded={this.state.loaded}/>
+      <Header/>
         <header className="header-global">
           <nav id="navbar-main" className="navbar navbar-main navbar-expand-lg navbar-light">
             <div className="container" style={{maxWidth: '1080px'}}>
