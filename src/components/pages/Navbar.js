@@ -1,5 +1,5 @@
 import React from "react";
-import blocklendr from "../../assets/img/brand/blocklendrLogo.jpg";
+import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
 import ReactCountryFlag from "react-country-flag";
 
 export default () => (
