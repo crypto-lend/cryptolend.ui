@@ -97,7 +97,11 @@ export default function SupportedCrypto() {
             className="col-2 d-flex flex-column align-items-center p-4"
             key={index}
           >
-            <img className="avatar rounded-circle" src={img} alt="Coin Logo" />
+            <img
+              className="avatar rounded-circle p-0"
+              src={img}
+              alt="Coin Logo"
+            />
             <div className="my-3">{name}</div>
           </div>
         ))}
