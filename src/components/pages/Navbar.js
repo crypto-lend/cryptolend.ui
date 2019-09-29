@@ -39,7 +39,7 @@ export default () => (
               </div>
             </div>
           </div>
-          <ul className="navbar-nav navbar-nav-hover align-items-lg-center">
+          <ul className=" navbar-nav-hover align-items-lg-center">
             <li className="nav-item dropdown">
               <a
                 href="/home"
