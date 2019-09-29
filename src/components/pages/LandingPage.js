@@ -4,6 +4,9 @@ import {InstallMetaMask}  from '../Web3/InstallMetaMask';
 import { EthereumIcon } from '../Web3/EthereumIcon';
 import {fetchNetwork, fetchAccounts, getAccounts} from '../../services/Web3Service';
 import blocklendr from '../../assets/img/brand/blocklendrLogo.jpg';
+import P2pPoints from './landingpagecomponents/p2pworks/p2pPoints';
+import Blocklendr from './landingpagecomponents//blockLenderWorks/blockleander';
+import Clients from './landingpagecomponents/ourclients/clients'
 
 class HomePage extends Component {
   constructor(props){
@@ -143,6 +146,11 @@ class HomePage extends Component {
                       <div className="card-header bg-transparent">
                       <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">Instant Loans on blockchain  </h4>
                       </div>
+                      
+                         <div style={{margin:"60px"}}>
+                              <h4> Access Finance in minutes while retaining 100% ownesrship of your crypto </h4>
+                         </div>
+                      
                       <div className="card-body" style={{ margin: '10%'}}>
                       <ul className="list-unstyled my-4">
                       <li>
@@ -281,59 +289,8 @@ class HomePage extends Component {
                           <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">How Blocklendr p2p works  </h4>
                           </div>
                           <div className="card-body" style={{ margin: '10%'}}>
-
-                          <ul className="list-unstyled my-4">
-                          <li>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <div className="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                </div>
-                              </div>
-                              <div>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <div className="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                </div>
-                              </div>
-                              <div>
-                              </div>
-                            </div>
-                          </li><li>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <div className="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                </div>
-                              </div>
-                              <div>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <div className="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white ">
-                                </div>
-                              </div>
-                              <div>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <div className="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                </div>
-                              </div>
-                              <div>
-                                <span className="pl-2"></span>
-                              </div>
-                            </div>
-                          </li>
-                          </ul>
+                              <P2pPoints />
+                          
                           </div>
                           </div>
 
@@ -344,7 +301,8 @@ class HomePage extends Component {
           </div>
         </div>
         <div>
-
+              <Blocklendr/>
+              <Clients/>
        </div>
       </div>
     );
