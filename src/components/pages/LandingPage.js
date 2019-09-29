@@ -83,39 +83,12 @@ class HomePage extends Component {
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
                   <div className="pricing card-group flex-column flex-md-row mb-3">
-                    <div className="card card-pricing bg-gradient-success zoom-in shadow-lg rounded border-0 text-center mb-4">
-                      <div className="card-header bg-transparent">
-                        <h4 className="text-uppercase ls-1 text-white py-3 mb-0"></h4>
-                      </div>
-                      <div className="card-body px-lg-7">
-                        <div className="display-1 text-white"></div>
-                        <span className="text-white"></span>
-                        <ul className="list-unstyled my-4">
-                          <li>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <span className="pl-2 text-white"></span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex align-items-center">
-                              <div></div>
-                              <div>
-                                <span className="pl-2 text-white"></span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <span className="pl-2 text-white"></span>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="card-footer bg-transparent"></div>
+                    <div className="card card-pricing zoom-in rounded border-0 text-center mb-4 d-flex justify-content-center">
+                      <img
+                        className="card-img"
+                        src={macbookScreen}
+                        alt="App screens"
+                      />
                     </div>
                     <div className="card card-pricing border-0 text-center mb-4">
                       <div className="card-header bg-transparent">
