@@ -146,11 +146,11 @@ class HomePage extends Component {
                       <div className="card-header bg-transparent">
                       <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">Instant Loans on blockchain  </h4>
                       </div>
-                      
+
                          <div style={{margin:"60px"}}>
                               <h4> Access Finance in minutes while retaining 100% ownesrship of your crypto </h4>
                          </div>
-                      
+
                       <div className="card-body" style={{ margin: '10%'}}>
                       <ul className="list-unstyled my-4">
                       <li>
@@ -193,8 +193,7 @@ class HomePage extends Component {
                       <h4 className="text-uppercase ls-1 text-white py-3 mb-0"></h4>
                       </div>
                       <div className="card-body px-lg-7">
-                      <div className="display-1 text-white"></div>
-                      <span className="text-white"></span>
+                      <img src={require("../images/Static laptop.jpg")} style={{width : "100%"}}/>
                       <ul className="list-unstyled my-4">
                       <li>
                         <div className="d-flex align-items-center">
@@ -255,6 +254,7 @@ class HomePage extends Component {
                           <div className="card-body px-lg-7">
                           <div className="display-1 text-white"></div>
                           <span className="text-white"></span>
+                          <img src={require("../images/Static laptop.jpg")} style={{width : "100%"}}/>
                           <ul className="list-unstyled my-4">
                           <li>
                             <div className="d-flex align-items-center">
@@ -290,7 +290,7 @@ class HomePage extends Component {
                           </div>
                           <div className="card-body" style={{ margin: '10%'}}>
                               <P2pPoints />
-                          
+
                           </div>
                           </div>
 
