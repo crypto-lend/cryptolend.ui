@@ -44,10 +44,15 @@ export default class Header extends Component {
           id="navbar-main"
           className="navbar navbar-main navbar-expand-lg navbar-light"
         >
-          <img src={blocklendr} alt="Blocklendr" style={{ width: "10%" }} />
+
           <div className="container" style={{ maxWidth: "1080px" }}>
             <div className="navbar-collapse collapse" id="navbar_global">
               <ul className="navbar-nav-hover align-items-lg-center">
+              <li className="nav-item dropdown">
+              <Link to="/">
+                <img src={blocklendr} alt="Blocklendr" style={{ width: "50%" }} />
+              </Link>
+              </li>
                 <li className="nav-item dropdown">
                   <a
                     href="/myloans"
@@ -201,7 +206,7 @@ export default class Header extends Component {
                   </a>
                 </li>
                 <li className="nav-item dropdown">
-                  <ReactCountryFlag code="IN" svg />
+                  <ReactCountryFlag code="GB" svg />
                 </li>
               </ul>
             </div>
