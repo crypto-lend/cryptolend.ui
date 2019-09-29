@@ -7,6 +7,7 @@ import Clients from "./landingpagecomponents/ourclients/clients";
 import BlockLendrCash from "./landingpagecomponents/blockLenderCashWorks";
 import Navbar from "./Navbar";
 import macbookScreen from "../images/macbook.png";
+import SupportedCrypto from "./landingpagecomponents/SupportedCrypto";
 
 class HomePage extends Component {
   constructor(props) {
@@ -111,6 +112,7 @@ class HomePage extends Component {
         <div>
           <Blocklendr />
           <Clients />
+          <SupportedCrypto />
         </div>
       </div>
     );
