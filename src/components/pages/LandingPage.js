@@ -48,7 +48,7 @@ class HomePage extends Component {
                 <div className="col px-0">
                   <div className="pricing card-group flex-column flex-md-row mb-3">
                     <div className="card card-pricing border-0 text-center mb-4">
-                      <div className="card-header bg-transparent">
+                      <div className="card-header bg-transparent border-0">
                         <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">
                           Instant Loans on blockchain{" "}
                         </h4>
