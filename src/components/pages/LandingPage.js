@@ -119,7 +119,7 @@ class HomePage extends Component {
             </nav>
           </header>
 
-          <div className="position-relative">
+          <div className="position-relative mt-5 mb-5">
                     <section className="section-hero section-shaped my-0">
                       <div className="shape shape-style-1 shape-primary">
                         <span className="span-150"></span>
@@ -228,7 +228,7 @@ class HomePage extends Component {
               </div>
             </section>
           </div>
-          <div className="position-relative">
+          <div className="position-relative mt-5">
                     <section className="section-hero section-shaped my-0">
                       <div className="shape shape-style-1 shape-primary">
                         <span className="span-150"></span>
