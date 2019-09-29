@@ -54,92 +54,87 @@ export default class Header extends Component {
               </Link>
               </li>
                 <li className="nav-item dropdown">
-                  <a
-                    href="/myloans"
+                  <Link to="/myloans"
                     className="nav-link"
                     data-toggle="dropdown"
                     role="button"
                   >
                     <i className="ni ni-ui-04 d-lg-none"></i>
                     <span className="nav-link-inner--text">My Loans</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link
                     className="nav-link"
                     data-toggle="dropdown"
-                    href="/request"
+                    to="/request"
                     role="button"
                   >
                     <i className="ni ni-collection d-lg-none"></i>
                     <span className="nav-link-inner--text">
                       Create Loan Request
                     </span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link to="#"
                     className="nav-link"
                     data-toggle="dropdown"
-                    href="/offer"
+                    to="/offer"
                     role="button"
                   >
                     <i className="ni ni-ui-04 d-lg-none"></i>
                     <span className="nav-link-inner--text">
                       Create Loan Offers
                     </span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link to="#"
                     className="nav-link"
                     data-toggle="dropdown"
-                    href="/view-requests"
+                    to="/view-requests"
                     role="button"
                   >
                     <i className="ni ni-collection d-lg-none"></i>
                     <span className="nav-link-inner--text">
                       View All Request
                     </span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link to="#"
                     className="nav-link"
                     data-toggle="dropdown"
-                    href="/view-offers"
+                    to="/view-offers"
                     role="button"
                   >
                     <i className="ni ni-ui-04 d-lg-none"></i>
                     <span className="nav-link-inner--text">
                       View All Offers
                     </span>
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="nav-link"
                     data-toggle="tooltip"
                     title="Statistics"
-                    href="#"
+                    to="#"
                     role="button"
                   >
                     <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="nav-link"
                     data-toggle="dropdown"
-                    href="#"
+                    to="#"
                     role="button"
                   >
                     <span className="nav-link-inner--text">
@@ -149,28 +144,28 @@ export default class Header extends Component {
                         aria-hidden="true"
                       ></i>
                     </span>
-                  </a>
+                  </Link>
                   <div className="dropdown-menu">
-                    <a href="#" className="dropdown-item">
+                    <Link to="#" className="dropdown-item">
                       FAQ
-                    </a>
-                    <a href="#" className="dropdown-item">
+                    </Link>
+                    <Link to="#" className="dropdown-item">
                       Legal
-                    </a>
-                    <a href="#" className="dropdown-item">
+                    </Link>
+                    <Link to="#" className="dropdown-item">
                       Fees
-                    </a>
-                    <a href="#" className="dropdown-item">
+                    </Link>
+                    <Link to="#" className="dropdown-item">
                       Live Support
-                    </a>
-                    <a href="#" className="dropdown-item">
+                    </Link>
+                    <Link to="#" className="dropdown-item">
                       Submit Ticket
-                    </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="nav-link"
                     data-toggle="tooltip"
                     title="Wallet"
@@ -191,19 +186,19 @@ export default class Header extends Component {
                         ></path>
                       </g>
                     </svg>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="nav-link"
                     data-toggle="tooltip"
                     title="My account"
-                    href="#"
+                    to="#"
                     role="button"
                   >
                     <i className="ni ni-circle-08" aria-hidden="true"></i>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
                   <ReactCountryFlag code="GB" svg />

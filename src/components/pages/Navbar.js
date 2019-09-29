@@ -70,7 +70,7 @@ export default () => (
                 href="#"
                 className="nav-link"
                 data-toggle="dropdown"
-                href="/request"
+                href="/"
                 role="button"
               >
                 <i className="ni ni-collection d-lg-none"></i>
@@ -82,7 +82,7 @@ export default () => (
                 href="#"
                 className="nav-link"
                 data-toggle="dropdown"
-                href="/offer"
+                href="/"
                 role="button"
               >
                 <i className="ni ni-ui-04 d-lg-none"></i>
@@ -94,7 +94,7 @@ export default () => (
                 href="#"
                 className="nav-link"
                 data-toggle="dropdown"
-                href="/view-requests"
+                href="/"
                 role="button"
               >
                 <i className="ni ni-collection d-lg-none"></i>
@@ -106,27 +106,21 @@ export default () => (
                 href="#"
                 className="nav-link"
                 data-toggle="dropdown"
-                href="/view-offers"
+                href="/"
                 role="button"
               >
                 <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Enterprise</span>
               </a>
             </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/view-offers"
-                role="button"
-              >
+            <li className="nav-item dropdown btn btn-info">
+              <a href="/" role="button" style={{ color: "white" }}>
                 <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Login</span>
               </a>
             </li>
-            <li className="nav-item dropdown btn btn-info">
-              <a href="/view-offers" role="button" style={{ color: "white" }}>
+            <li className="nav-item dropdown btn btn-success">
+              <a href="/" role="button" style={{ color: "white" }}>
                 <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Register</span>
               </a>
