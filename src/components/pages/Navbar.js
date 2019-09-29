@@ -1,5 +1,5 @@
 import React from "react";
-import blocklendr from "../../assets/img/brand/blocklendrLogo.jpg";
+import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
 import ReactCountryFlag from "react-country-flag";
 
 export default () => (
@@ -39,7 +39,7 @@ export default () => (
               </div>
             </div>
           </div>
-          <ul className="navbar-nav navbar-nav-hover align-items-lg-center">
+          <ul className="navbar-nav-hover align-items-lg-center">
             <li className="nav-item dropdown">
               <a
                 href="/home"
@@ -125,13 +125,11 @@ export default () => (
                 <span className="nav-link-inner--text">Login</span>
               </a>
             </li>
-            <li className="nav-item dropdown">
+            <li className="nav-item dropdown btn btn-info">
               <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
                 href="/view-offers"
                 role="button"
+                style={{ color : 'white' }}
               >
                 <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Register</span>
