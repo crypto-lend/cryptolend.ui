@@ -4,6 +4,7 @@ import { fetchAccounts } from "../../services/Web3Service";
 import P2pPoints from "./landingpagecomponents/p2pworks/p2pPoints";
 import Blocklendr from "./landingpagecomponents//blockLenderWorks/blockleander";
 import Clients from "./landingpagecomponents/ourclients/clients";
+import BlockLendrCash from "./landingpagecomponents/blockLenderCashWorks";
 import Navbar from "./Navbar";
 import macbookScreen from "../images/macbook.png";
 
@@ -79,7 +80,7 @@ class HomePage extends Component {
             </section>
           </div>
           <div className="position-relative">
-            <section className="section-hero section-shaped my-0">
+            <section className=" section-shaped my-0">
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
                   <div className="pricing card-group flex-column flex-md-row mb-3">
@@ -105,6 +106,7 @@ class HomePage extends Component {
               </div>
             </section>
           </div>
+          <BlockLendrCash />
         </div>
         <div>
           <Blocklendr />
