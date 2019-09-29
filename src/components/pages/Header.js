@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactCountryFlag from 'react-country-flag';
-import {InstallMetaMask}  from '../Web3/InstallMetaMask';
 import { EthereumIcon } from '../Web3/EthereumIcon';
 import { Link } from 'react-router-dom';
 import blocklendr from '../../assets/img/brand/blocklendrLogo.jpg';
