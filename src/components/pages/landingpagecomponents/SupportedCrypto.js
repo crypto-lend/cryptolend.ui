@@ -1,77 +1,95 @@
 import React from "react";
 import EthIcon from "../../images/eth.png";
+import BTC from "../../images/coins/BTC.png";
+import ETH from "../../images/coins/ETH.png";
+import LTC from "../../images/coins/LTC.png";
+import XRP from "../../images/coins/XRP.png";
+import OMG from "../../images/coins/OMG.png";
+import BCH from "../../images/coins/BCH.png";
+import ZRX from "../../images/coins/ZRX.png";
+import BitcoinGold from "../../images/coins/Bitcoin-Gold.png";
+import ZEC from "../../images/coins/ZEC.png";
+import XLM from "../../images/coins/XLM.png";
+import DASH from "../../images/coins/DASH.png";
+import trueusd from "../../images/coins/trueusd.png";
+import gemini from "../../images/coins/gemini.png";
+import Paxos from "../../images/coins/Paxos.png";
+import USDT from "../../images/coins/USDT.png";
+import dai from "../../images/coins/dai.png";
+import orbs from "../../images/coins/orbs.png";
+import USDC from "../../images/coins/USDC.png";
 
 const DATA = [
   {
-    img: EthIcon,
+    img: BTC,
     name: "Bitcoin"
   },
   {
-    img: EthIcon,
+    img: ETH,
     name: "Ethereum"
   },
   {
-    img: EthIcon,
+    img: LTC,
     name: "Litecoin"
   },
   {
-    img: EthIcon,
+    img: XRP,
     name: "Ripple"
   },
   {
-    img: EthIcon,
+    img: OMG,
     name: "Omise GO"
   },
   {
-    img: EthIcon,
+    img: BCH,
     name: "Bitcoin Cash"
   },
   {
-    img: EthIcon,
+    img: ZRX,
     name: "Ox"
   },
   {
-    img: EthIcon,
+    img: BitcoinGold,
     name: "Bitcoin Gold"
   },
   {
-    img: EthIcon,
+    img: ZEC,
     name: "Z Cash"
   },
   {
-    img: EthIcon,
+    img: XLM,
     name: "Stellar"
   },
   {
-    img: EthIcon,
+    img: DASH,
     name: "Dash"
   },
   {
-    img: EthIcon,
+    img: trueusd,
     name: "True USD"
   },
   {
-    img: EthIcon,
+    img: gemini,
     name: "Gemini Dollar"
   },
   {
-    img: EthIcon,
+    img: Paxos,
     name: "Paxos"
   },
   {
-    img: EthIcon,
+    img: USDC,
     name: "USD Coin"
   },
   {
-    img: EthIcon,
+    img: dai,
     name: "DAI"
   },
   {
-    img: EthIcon,
+    img: orbs,
     name: "Orbs"
   },
   {
-    img: EthIcon,
+    img: USDT,
     name: "Tether"
   }
 ];
