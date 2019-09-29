@@ -126,11 +126,7 @@ export default () => (
               </a>
             </li>
             <li className="nav-item dropdown btn btn-info">
-              <a
-                href="/view-offers"
-                role="button"
-                style={{ color : 'white' }}
-              >
+              <a href="/view-offers" role="button" style={{ color: "white" }}>
                 <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Register</span>
               </a>
