@@ -10,6 +10,7 @@ import macbookScreen from "../images/macbook.png";
 import SupportedCrypto from "./landingpagecomponents/SupportedCrypto";
 import Vision from "./landingpagecomponents/Vison";
 import Events from "./landingpagecomponents/Events";
+import NewsLetter from "./landingpagecomponents/NewsLetter";
 
 class HomePage extends Component {
   constructor(props) {
@@ -115,6 +116,7 @@ class HomePage extends Component {
           <SupportedCrypto />
           <Vision />
           <Events />
+          <NewsLetter />
         </div>
       </div>
     );
