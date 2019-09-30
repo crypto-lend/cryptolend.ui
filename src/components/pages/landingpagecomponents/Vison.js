@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Vision() {
   return (
-    <div className="position-relative container mt-5">
+    <div className="position-relative container my-5">
       <div className="row">
         <div className="col-sm">
           <div

@@ -43,7 +43,7 @@ export default function Events() {
           </div>
         </div>
       </div>
-      <div className="row">
+      <div className="row mt-4">
         {DATA.map(({ img, title, date, text }, index) => (
           <div className="card col-12 my-3" key={index}>
             <div className="card-body">
@@ -59,11 +59,11 @@ export default function Events() {
                   />
                 </div>
                 <div className="col ml--2">
-                  <div className="mb-3">
+                  <div className="mb-3 text-left">
                     <span className="h4">{title}</span>
                     <small className="float-right pt-2">{date}</small>
                   </div>
-                  <p className="text-sm text-muted mb-0">{text}</p>
+                  <p className="text-sm text-muted text-left mb-0">{text}</p>
                 </div>
               </div>
             </div>
