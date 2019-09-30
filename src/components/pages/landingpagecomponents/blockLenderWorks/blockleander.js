@@ -1,8 +1,8 @@
 import React from "react";
 
-import Point1 from "../../../images/bullet-points/1.png";
-import Point2 from "../../../images/bullet-points/2.png";
-import Point3 from "../../../images/bullet-points/3.png";
+import Point1 from "../../../images/the-why/1.png";
+import Point2 from "../../../images/the-why/2.png";
+import Point3 from "../../../images/the-why/3.png";
 
 const DATA = [
   {
@@ -44,7 +44,7 @@ const BlockLender = () => {
         {DATA.map(({ title, text, img }, index) => (
           <div className="card" key={index}>
             <img
-              className="card-img-top p-0 m-auto mt-2"
+              className="card-img-top p-0 mt-4 mx-auto "
               src={img}
               alt={title}
               style={{
