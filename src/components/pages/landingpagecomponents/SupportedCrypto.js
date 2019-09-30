@@ -1,5 +1,4 @@
 import React from "react";
-import EthIcon from "../../images/eth.png";
 import BTC from "../../images/coins/BTC.png";
 import ETH from "../../images/coins/ETH.png";
 import LTC from "../../images/coins/LTC.png";
