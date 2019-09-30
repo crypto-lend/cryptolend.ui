@@ -42,8 +42,8 @@ class HomePage extends Component {
       <div>
         <div className="HomePage text-center" style={{ color: "fff" }}>
           <Navbar />
-          <div className="position-relative pt-5">
-            <section className="section-hero section-shaped my-0">
+          <div className="position-relative pt-5 mt-5">
+            <section className="section-shaped my-0">
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
                   <div className="pricing card-group flex-column flex-md-row mb-3">
@@ -54,15 +54,13 @@ class HomePage extends Component {
                         </h4>
                       </div>
 
-                      <div style={{ margin: "60px" }}>
-                        <h4>
-                          {" "}
-                          Access Finance in minutes while retaining 100%
-                          ownesrship of your crypto{" "}
-                        </h4>
-                      </div>
-
-                      <div className="card-body" style={{ margin: "10%" }}>
+                      <div className="card-body">
+                        <div className="m-5">
+                          <h4>
+                            Access Finance in minutes while retaining 100%
+                            ownesrship of your crypto{" "}
+                          </h4>
+                        </div>
                         <button type="button" className="btn btn-primary mb-3">
                           Register Now
                         </button>
