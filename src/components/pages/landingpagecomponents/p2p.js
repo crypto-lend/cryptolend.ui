@@ -49,9 +49,9 @@ export default function p2p() {
               </div>
               <div className="card card-pricing border-0 text-center mb-4">
                 <div className="card-header bg-transparent">
-                  <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">
+                  <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
                     How Blocklendr p2p works{" "}
-                  </h4>
+                  </h2>
                 </div>
                 <div className="card-body" style={{ margin: "10%" }}>
                   <ul className="list-group list-group-flush list my--3">
