@@ -39,7 +39,7 @@ const DATA = [
 
 export default function p2p() {
   return (
-    <div className="position-relative">
+    <div className="position-relative my-5">
       <section className=" section-shaped my-0">
         <div className="container shape-container d-flex align-items-center">
           <div className="col px-0">
@@ -53,7 +53,7 @@ export default function p2p() {
                     How Blocklendr p2p works{" "}
                   </h2>
                 </div>
-                <div className="card-body" style={{ margin: "10%" }}>
+                <div className="card-body">
                   <ul className="list-group list-group-flush list my--3">
                     {DATA.map(({ img, text }, index) => (
                       <li key={index} className="list-group-item px-0">

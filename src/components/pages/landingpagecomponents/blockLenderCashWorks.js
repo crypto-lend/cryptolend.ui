@@ -40,7 +40,7 @@ const Points = ({ points }) => (
 
 export default function() {
   return (
-    <div className="position-relative">
+    <div className="position-relative my-5">
       <section className="section-shaped my-0">
         <div className="container shape-container d-flex align-items-center">
           <div className="col px-0">
@@ -51,7 +51,7 @@ export default function() {
                     How Blocklendr Cash Works{" "}
                   </h2>
                 </div>
-                <div className="card-body" style={{ margin: "10%" }}>
+                <div className="card-body">
                   <Points points={DATA} />
                 </div>
               </div>
