@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 export default function NewsLetter() {
+  const [showPrompt, setPrompt] = useState(false);
   return (
     <div className="position-relative container my-5">
       <div className="row">
@@ -28,9 +30,20 @@ export default function NewsLetter() {
             className="btn btn-primary px-5 ml-5"
             type="button"
             htmlFor="news-letter-mail"
+            onClick={() => setPrompt(true)}
           >
             Submit
           </button>
+          {showPrompt && (
+            <SweetAlert
+              success
+              title="Awesome!"
+              onConfirm={() => setPrompt(false)}
+              onCancel={() => setPrompt(false)}
+            >
+              You are subscribed to our newsLetter
+            </SweetAlert>
+          )}
         </div>
       </div>
     </div>

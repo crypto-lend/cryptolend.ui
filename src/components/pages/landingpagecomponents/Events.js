@@ -48,7 +48,7 @@ export default function Events() {
           <div className="card col-12 my-3" key={index}>
             <div className="card-body">
               <div className="row align-items-start">
-                <div className="col-auto pt-2">
+                <div className="col-auto ">
                   <img
                     style={{
                       width: "12rem"
@@ -60,8 +60,8 @@ export default function Events() {
                 </div>
                 <div className="col ml--2">
                   <div className="mb-3 text-left">
-                    <span className="h4">{title}</span>
-                    <small className="float-right pt-2">{date}</small>
+                    <span className="h5">{title}</span>
+                    <small className="float-right">{date}</small>
                   </div>
                   <p className="text-sm text-muted text-left mb-0">{text}</p>
                 </div>

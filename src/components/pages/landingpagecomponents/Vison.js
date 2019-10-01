@@ -16,7 +16,7 @@ export default function Vision() {
           </div>
         </div>
       </div>
-      <div
+      <h5
         className="row"
         style={{
           margin: "2rem 5rem"
@@ -29,7 +29,7 @@ export default function Vision() {
         velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
         occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum.
-      </div>
+      </h5>
     </div>
   );
 }
