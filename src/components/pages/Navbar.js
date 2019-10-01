@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
 import ReactCountryFlag from "react-country-flag";
 
@@ -120,10 +122,10 @@ export default () => (
               </a>
             </li>
             <li className="nav-item dropdown btn btn-success">
-              <a href="/" role="button" style={{ color: "white" }}>
+              <Link to="/register" role="button" style={{ color: "white" }}>
                 <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Register</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item dropdown">
               <ReactCountryFlag code="UK" svg />
