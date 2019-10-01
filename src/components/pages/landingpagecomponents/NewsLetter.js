@@ -27,7 +27,7 @@ export default function NewsLetter() {
           <button
             className="btn btn-primary px-5 ml-5"
             type="button"
-            for="news-letter-mail"
+            htmlFor="news-letter-mail"
           >
             Submit
           </button>
