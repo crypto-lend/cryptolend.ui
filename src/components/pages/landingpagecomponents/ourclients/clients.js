@@ -17,10 +17,10 @@ const Clients = () => {
             style={{ textAlign: "center" }}
             className="card-header bg-transparent"
           >
-            <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">
+            <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
               {" "}
               Our Clients
-            </h4>
+            </h2>
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@ const Clients = () => {
             key={index}
           >
             <img
-              className="card-img-top"
+              className="card-img-top p-0"
               src="https://demos.creative-tim.com/argon-dashboard-pro/assets/img/theme/img-1-1000x600.jpg"
               alt="Card image cap"
             />

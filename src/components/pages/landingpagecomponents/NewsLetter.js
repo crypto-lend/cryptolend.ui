@@ -9,10 +9,10 @@ export default function NewsLetter() {
             style={{ textAlign: "center" }}
             className="card-header bg-transparent"
           >
-            <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">
+            <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
               {" "}
               Join Our NewsLetter
-            </h4>
+            </h2>
           </div>
         </div>
       </div>
@@ -25,9 +25,9 @@ export default function NewsLetter() {
             placeholder="Your email"
           />
           <button
-            class="btn btn-primary px-5 ml-5"
+            className="btn btn-primary px-5 ml-5"
             type="button"
-            for="news-letter-mail"
+            htmlFor="news-letter-mail"
           >
             Submit
           </button>

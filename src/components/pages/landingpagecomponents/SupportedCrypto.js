@@ -101,10 +101,10 @@ export default function SupportedCrypto() {
             style={{ textAlign: "center" }}
             className="card-header bg-transparent"
           >
-            <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">
+            <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
               {" "}
               Supported Crypto
-            </h4>
+            </h2>
           </div>
         </div>
       </div>

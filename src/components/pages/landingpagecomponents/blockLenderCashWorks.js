@@ -47,9 +47,9 @@ export default function() {
             <div className="pricing card-group flex-column flex-md-row mb-3">
               <div className="card card-pricing border-0 text-center mb-4">
                 <div className="card-header bg-transparent">
-                  <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">
+                  <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
                     How Blocklendr Cash Works{" "}
-                  </h4>
+                  </h2>
                 </div>
                 <div className="card-body" style={{ margin: "10%" }}>
                   <Points points={DATA} />
