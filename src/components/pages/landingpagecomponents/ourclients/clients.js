@@ -35,7 +35,7 @@ const Clients = () => {
             key={index}
           >
             <img
-              className="card-img-top"
+              className="card-img-top p-0"
               src="https://demos.creative-tim.com/argon-dashboard-pro/assets/img/theme/img-1-1000x600.jpg"
               alt="Card image cap"
             />
