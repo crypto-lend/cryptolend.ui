@@ -26,13 +26,13 @@ const DATA = [
   {
     img: Point4,
     text:
-      "Pay back in monthlt installments as borrower or get paid as leander by crypto-collateral"
+      "Pay back in monthly installments as borrower or get paid as leander by crypto-collateral"
   },
 
   {
     img: Point5,
     text:
-      "Borrowers can withdraw their crypto-collateral once loadn is paid back"
+      "Borrowers can withdraw their crypto-collateral once loan is paid back"
   }
 ];
 

@@ -113,7 +113,7 @@ export default () => (
                 <span className="nav-link-inner--text">Enterprise</span>
               </a>
             </li>
-            <li className="nav-item dropdown btn btn-info">
+            <li className="nav-item dropdown btn btn-primary">
               <a href="/" role="button" style={{ color: "white" }}>
                 <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Login</span>

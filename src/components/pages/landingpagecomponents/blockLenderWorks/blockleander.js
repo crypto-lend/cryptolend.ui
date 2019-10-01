@@ -8,13 +8,13 @@ const DATA = [
   {
     title: "Decentralised P2P Lending",
     text:
-      "Take control of your finacne with your own lending & borrowing rates and terms in our global crypto lending marcketplace. Accesible to anyone in the world",
+      "Take control of your finance with your own lending & borrowing rates and terms in our global crypto lending marketplace. Accessible to anyone in the world",
     img: Point1
   },
   {
     title: "Instant Cash Loans",
     text:
-      "Spend your money straight away with the baclender card or withdraw to your back account. For 8% APR on what you use.",
+      "Spend your money straight away with the blocklendr card or withdraw to your back account. For 8% APR on what you use.",
     img: Point2
   },
   {
