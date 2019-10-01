@@ -25,7 +25,7 @@ export default function NewsLetter() {
             placeholder="Your email"
           />
           <button
-            class="btn btn-primary px-5 ml-5"
+            className="btn btn-primary px-5 ml-5"
             type="button"
             for="news-letter-mail"
           >

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { fetchAccounts } from "../../services/Web3Service";
-import P2pPoints from "./landingpagecomponents/p2pworks/p2pPoints";
+import P2P from "./landingpagecomponents/p2p";
 import Blocklendr from "./landingpagecomponents//blockLenderWorks/blockleander";
 import Clients from "./landingpagecomponents/ourclients/clients";
 import BlockLendrCash from "./landingpagecomponents/blockLenderCashWorks";
@@ -82,33 +82,7 @@ class HomePage extends Component {
               </div>
             </section>
           </div>
-          <div className="position-relative">
-            <section className=" section-shaped my-0">
-              <div className="container shape-container d-flex align-items-center">
-                <div className="col px-0">
-                  <div className="pricing card-group flex-column flex-md-row mb-3">
-                    <div className="card card-pricing zoom-in rounded border-0 text-center mb-4 d-flex justify-content-center">
-                      <img
-                        className="card-img"
-                        src={macbookScreen}
-                        alt="App screens"
-                      />
-                    </div>
-                    <div className="card card-pricing border-0 text-center mb-4">
-                      <div className="card-header bg-transparent">
-                        <h4 className="text-uppercase ls-1 text-primary py-3 mb-0">
-                          How Blocklendr p2p works{" "}
-                        </h4>
-                      </div>
-                      <div className="card-body" style={{ margin: "10%" }}>
-                        <P2pPoints />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
+          <P2P />
           <BlockLendrCash />
           <Blocklendr />
           <Clients />
