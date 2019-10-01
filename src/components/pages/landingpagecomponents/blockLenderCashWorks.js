@@ -58,7 +58,7 @@ export default function() {
               <div className="card card-pricing zoom-in rounded border-0 text-center mb-4 d-flex justify-content-center">
                 <img
                   style={{
-                    height: "40rem"
+                    width: "120%"
                   }}
                   className="card-img"
                   src={cashflowScreen}
