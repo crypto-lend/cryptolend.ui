@@ -13,6 +13,7 @@ import MyLoans from "../pages/MyLoans";
 import ViewAllRequests from "../pages/ViewAllRequests";
 import ViewAllOffers from "../pages/ViewAllOffers";
 import Register from "../pages/Register";
+import Login from "../pages/Login";
 
 // COMPONENT
 
@@ -28,6 +29,7 @@ export const AppRouter = () => (
         <Route path="/view-requests" component={ViewAllRequests} />
         <Route path="/view-offers" component={ViewAllOffers} />
         <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
         <Redirect to="/" />
       </Switch>
     </Fragment>
