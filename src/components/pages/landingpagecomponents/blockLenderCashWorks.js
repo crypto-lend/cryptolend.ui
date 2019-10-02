@@ -59,7 +59,7 @@ export default function() {
                 <img
                   style={{
                     width: "110%",
-                    marginTop: "auto"
+                    marginTop: "5%"
                   }}
                   className="card-img"
                   src={cashflowScreen}
