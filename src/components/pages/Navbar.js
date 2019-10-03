@@ -37,7 +37,7 @@ export default () => (
       id="navbar-main"
       className="navbar navbar-main navbar-expand-lg navbar-light"
     >
-      <div className="container" style={{ maxWidth: "1080px" }}>
+      <div className="container">
         <button
           className="navbar-toggler"
           type="button"
@@ -134,18 +134,24 @@ export default () => (
                 { text: "ICO/ IEO/ STO Company", link: "/enterprise" }
               ]}
             />
-            <li className="nav-item dropdown btn btn-primary">
-              <a href="/" role="button" style={{ color: "white" }}>
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Login</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown btn btn-success">
-              <Link to="/register" role="button" style={{ color: "white" }}>
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Register</span>
-              </Link>
-            </li>
+            <Link
+              to="/login"
+              role="button"
+              className="text-white nav-item btn btn-primary"
+            >
+              <i className="ni ni-ui-04 d-lg-none"></i>
+              <span className="nav-link-inner--text">Login</span>
+            </Link>
+
+            <Link
+              to="/register"
+              role="button"
+              className="text-white nav-item btn btn-success"
+            >
+              <i className="ni ni-ui-04 d-lg-none"></i>
+              <span className="nav-link-inner--text">Register</span>
+            </Link>
+
             <li className="nav-item dropdown">
               <ReactCountryFlag code="UK" svg />
             </li>
