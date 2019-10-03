@@ -12,9 +12,15 @@ const MenuItem = ({ title, options }) => {
       onMouseEnter={() => setMenu(true)}
       onMouseLeave={() => setMenu(false)}
     >
-      <a href="/features" className="nav-link dropdown-toggle" role="button">
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        className="nav-link dropdown-toggle "
+        role="button"
+      >
         {title}
-      </a>
+      </span>
       <div className={`dropdown-menu ${showMenu ? "show" : ""}`}>
         {options.map(({ text, link }, index) => (
           <Link to={link} key={index} className="dropdown-item">
@@ -96,11 +102,11 @@ export default () => (
               options={[
                 {
                   text: "Earn Interest in GBP, EUR, USD, RUB",
-                  link: "/earn-interest"
+                  link: "/earn-interest/fiat"
                 },
                 {
                   text: "Earn Interest in Stable Coins",
-                  link: "/earn-interest"
+                  link: "/earn-interest/stable-coin"
                 }
               ]}
             />
