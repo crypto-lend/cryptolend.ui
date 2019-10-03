@@ -16,6 +16,9 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import EmailForm from "../pages/EmailForm";
 import InstitutionalCredit from "../pages/InstitutionalCredit";
+import Events from "../pages/landingpagecomponents/Events";
+import AboutUs from "../pages/AboutUs";
+import ContactUs from "../pages/ContactUs";
 
 // COMPONENT
 
@@ -33,6 +36,9 @@ export const AppRouter = () => (
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/enterprise/:industry" component={InstitutionalCredit} />
+        <Route path="/company/events" component={Events} />
+        <Route path="/company/about-us" component={AboutUs} />
+        <Route path="/company/connect-with-us" component={ContactUs} />
 
         <Route path="/:menuItem/:subItem" exact component={EmailForm} />
         <Redirect to="/" />

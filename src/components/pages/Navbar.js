@@ -114,9 +114,9 @@ export default () => (
             <MenuItem
               title={"Company"}
               options={[
-                { text: "Events", link: "/events" },
-                { text: "About Us", link: "/about-us" },
-                { text: "Contact Us", link: "/contact-us" }
+                { text: "Events", link: "/company/events" },
+                { text: "About Us", link: "/company/about-us" },
+                { text: "Contact Us", link: "/company/connect-with-us" }
               ]}
             />
 
