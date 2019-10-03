@@ -130,8 +130,14 @@ export default () => (
             <MenuItem
               title={"Enterprise"}
               options={[
-                { text: "Institutional Credit", link: "/enterprise" },
-                { text: "ICO/ IEO/ STO Company", link: "/enterprise" }
+                {
+                  text: "Institutional Credit",
+                  link: "/enterprise/institutional-credit"
+                },
+                {
+                  text: "ICO/ IEO/ STO Company",
+                  link: "/enterprise/ico-ieo-sto-company"
+                }
               ]}
             />
             <Link

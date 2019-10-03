@@ -168,3 +168,18 @@ export const MEMBERSHIP = [
     val: ""
   }
 ];
+
+export const FUNDING = [
+  {
+    text: "ICO",
+    val: "ico"
+  },
+  {
+    text: "IEO",
+    val: "ieo"
+  },
+  {
+    text: "STO",
+    val: "sto"
+  }
+];

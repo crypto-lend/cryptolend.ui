@@ -5,30 +5,7 @@ import {
   SERVICES,
   MEMBERSHIP
 } from "../config/form-options";
-
-const FormChoices = ({ options, title, moreThanOne, type, classes }) => (
-  <div className="form-group">
-    <label className="form-control-label font-weight-bold">
-      {title}
-      {moreThanOne && (
-        <>
-          <br />
-          <span className="text-muted text-light font-weight-light">
-            (You can choose more than 1)
-          </span>
-        </>
-      )}
-    </label>
-    <div className="row col">
-      {options.map(({ text }, index) => (
-        <div className={classes} key={index}>
-          <input type={type} className="custom-control-input" />
-          <label className="custom-control-label">{text}</label>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+import FormChoices from "./forms/FormChoices";
 
 export default function Register() {
   return (
@@ -38,7 +15,7 @@ export default function Register() {
           <div className="header-body text-center">
             <div className="row justify-content-center">
               <div className=" col-lg-6 col-md-8 px-5">
-                <h1 className="text-white">Register</h1>
+                <h2 className="text-white">Register</h2>
                 <p className="text-lead text-white">
                   Register your interest with Blocklendr. Be the first to join
                   our revolutionary platform.
@@ -81,7 +58,7 @@ export default function Register() {
                       />
                     </div>
                   </div>
-                  <div className="form-group"></div>
+
                   <div className="form-group d-flex align-items-center position-relative">
                     <span
                       className="text-muted position-absolute"
@@ -94,13 +71,28 @@ export default function Register() {
                     <div className="input-group input-group-merge input-group-alternative">
                       <div className="input-group-prepend">
                         <span className="input-group-text">
-                          <i className="ni ni-lock-circle-open"></i>
+                          <i className="ni ni-shop"></i>
                         </span>
                       </div>
                       <input
                         className="form-control"
                         placeholder="Company Name"
                         type="text"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group d-flex align-items-center position-relative">
+                    <div className="input-group input-group-merge input-group-alternative">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text">
+                          <i className="ni ni-lock-circle-open"></i>
+                        </span>
+                      </div>
+                      <input
+                        className="form-control"
+                        placeholder="Password"
+                        type="password"
                       />
                     </div>
                   </div>

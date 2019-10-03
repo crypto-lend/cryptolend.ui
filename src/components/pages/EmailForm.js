@@ -24,12 +24,13 @@ export default function GenricForm(props) {
     }
   } = props;
 
-  const text = FormConfig[menuItem][subItem];
-
   // If no text exists then redirect to home
-  if (!text) {
+  if (!FormConfig[menuItem] || !FormConfig[menuItem][subItem]) {
     return <Redirect to="/" />;
   }
+
+  const text = FormConfig[menuItem][subItem];
+
   return (
     <div className="container mt-5 pt-5">
       <div className="row  justify-content-center text-center">

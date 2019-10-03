@@ -15,6 +15,7 @@ import ViewAllOffers from "../pages/ViewAllOffers";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import EmailForm from "../pages/EmailForm";
+import InstitutionalCredit from "../pages/InstitutionalCredit";
 
 // COMPONENT
 
@@ -31,6 +32,8 @@ export const AppRouter = () => (
         <Route path="/view-offers" component={ViewAllOffers} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
+        <Route path="/enterprise/:industry" component={InstitutionalCredit} />
+
         <Route path="/:menuItem/:subItem" exact component={EmailForm} />
         <Redirect to="/" />
       </Switch>
