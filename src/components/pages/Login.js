@@ -49,13 +49,13 @@ export default class Login extends Component {
                 <div className="col-lg-6 col-md-10" style={{ margin: "10%" }}>
                   <div className="card bg-secondary border-0 mb-0">
                     <div className="card-header bg-transparent">
-                      <div className="text-muted text-center mt-2 mb-3">
-                        <small>Sign In</small>
-                      </div>
+                      <h4 className="text-muted text-center mt-2 mb-3">
+                        Sign In
+                      </h4>
                     </div>
                     <div className="card-body px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
-                        <small>Enter your login details.</small>
+                        Enter your login details.
                       </div>
                       <form>
                         <div className="form-group mb-3">
@@ -112,7 +112,7 @@ export default class Login extends Component {
                         <div className="text-center">
                           <button
                             type="button"
-                            className="btn btn-primary my-4"
+                            className="btn btn-success my-4 w-50"
                             onClick={this.handleLogin}
                           >
                             Sign in
