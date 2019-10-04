@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
 
+function validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
 export default function NewsLetter() {
   const [showPrompt, setPrompt] = useState(false);
+  const [email, setEmail] = useState("");
+
   return (
     <div className="position-relative container my-5">
       <div className="row">
@@ -25,9 +31,13 @@ export default function NewsLetter() {
             type="text"
             id="news-letter-mail"
             placeholder="Your email"
+            required
+            onChange={e => setEmail(e.target.value)}
           />
           <button
-            className="btn btn-primary px-5 ml-5"
+            className={`btn btn-primary px-5 ml-5 ${
+              validateEmail(email) ? "" : "disabled"
+            }`}
             type="button"
             htmlFor="news-letter-mail"
             onClick={() => setPrompt(true)}
