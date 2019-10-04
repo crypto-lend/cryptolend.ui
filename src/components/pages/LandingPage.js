@@ -82,14 +82,14 @@ class HomePage extends Component {
               </div>
             </section>
           </div>
-          <P2P />
+          {/* <P2P />
           <BlockLendrCash />
           <Blocklendr />
           <Clients />
           <SupportedCrypto />
           <Vision />
           <Events background={"bg-secondary"} />
-          <NewsLetter />
+          <NewsLetter /> */}
           <Footer />
         </div>
       </div>
