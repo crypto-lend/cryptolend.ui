@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
 import ReactCountryFlag from "react-country-flag";
 
+const MenuItem = ({ title, options }) => {
+  const [showMenu, setMenu] = useState(false);
+  return (
+    <li
+      className="nav-item dropdown "
+      onMouseEnter={() => setMenu(true)}
+      onMouseLeave={() => setMenu(false)}
+    >
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        className="nav-link dropdown-toggle "
+        role="button"
+      >
+        {title}
+      </span>
+      <div className={`dropdown-menu ${showMenu ? "show" : ""}`}>
+        {options.map(({ text, link }, index) => (
+          <Link to={link} key={index} className="dropdown-item">
+            {text}
+          </Link>
+        ))}
+      </div>
+    </li>
+  );
+};
 export default () => (
   <header className="header-global">
     <nav
       id="navbar-main"
       className="navbar navbar-main navbar-expand-lg navbar-light"
     >
-      <div className="container" style={{ maxWidth: "1080px" }}>
+      <div className="container">
         <button
           className="navbar-toggler"
           type="button"
@@ -56,77 +83,81 @@ export default () => (
                 />
               </a>
             </li>
+            <MenuItem
+              title={"Features"}
+              options={[
+                {
+                  text: "Instant Crypto Credit",
+                  link: "/features/instant-crypto-credit"
+                },
+                {
+                  text: "Peer-to-peer Lending",
+                  link: "/features/peer-to-peer-lending"
+                },
+                { text: "White-Label", link: "/features/white-label" }
+              ]}
+            />
+            <MenuItem
+              title={"Earn Interest"}
+              options={[
+                {
+                  text: "Earn Interest in GBP, EUR, USD, RUB",
+                  link: "/earn-interest/fiat"
+                },
+                {
+                  text: "Earn Interest in Stable Coins",
+                  link: "/earn-interest/stable-coin"
+                }
+              ]}
+            />
+
+            <MenuItem
+              title={"Company"}
+              options={[
+                { text: "Events", link: "/company/events" },
+                { text: "About Us", link: "/company/about-us" },
+                { text: "Contact Us", link: "/company/connect-with-us" }
+              ]}
+            />
+
             <li className="nav-item dropdown">
-              <a
-                href="/features"
-                className="nav-link"
-                data-toggle="dropdown"
-                role="button"
-              >
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Features</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/"
-                role="button"
-              >
-                <i className="ni ni-collection d-lg-none"></i>
-                <span className="nav-link-inner--text">Earn Interest</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/"
-                role="button"
-              >
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Company</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/"
-                role="button"
-              >
+              <a className="nav-link" href="/" role="button">
                 <i className="ni ni-collection d-lg-none"></i>
                 <span className="nav-link-inner--text">Support</span>
               </a>
             </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/"
-                role="button"
-              >
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Enterprise</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown btn btn-primary">
-              <a href="/" role="button" style={{ color: "white" }}>
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Login</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown btn btn-success">
-              <Link to="/register" role="button" style={{ color: "white" }}>
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Register</span>
-              </Link>
-            </li>
+
+            <MenuItem
+              title={"Enterprise"}
+              options={[
+                {
+                  text: "Institutional Credit",
+                  link: "/enterprise/institutional-credit"
+                },
+                {
+                  text: "ICO/ IEO/ STO Company",
+                  link: "/enterprise/ico-ieo-sto-company"
+                }
+              ]}
+            />
+            <Link
+              to="/login"
+              role="button"
+              className="text-white nav-item btn btn-primary"
+            >
+              <i className="ni ni-ui-04 d-lg-none"></i>
+              <span className="nav-link-inner--text">Login</span>
+            </Link>
+
+            <Link
+              to="/register"
+              role="button"
+              className="text-white nav-item btn btn-success"
+            >
+              <i className="ni ni-ui-04 d-lg-none"></i>
+              <span className="nav-link-inner--text">Register</span>
+            </Link>
+
             <li className="nav-item dropdown">
               <ReactCountryFlag code="UK" svg />
             </li>

@@ -1,175 +1,11 @@
 import React from "react";
-
-const MEMBERSHIP = [
-  {
-    text: "Personal",
-    val: ""
-  },
-
-  {
-    text: "White Label",
-    val: ""
-  },
-
-  {
-    text: "ICO/STO/IEO",
-    val: ""
-  },
-  {
-    text: "Investor",
-    val: ""
-  },
-  {
-    text: "Hedge Fund",
-    val: ""
-  },
-  {
-    text: "Enterprise",
-    val: ""
-  },
-  {
-    text: "Tokenized Asset Holder",
-    val: ""
-  },
-  {
-    text: "Miner",
-    val: ""
-  },
-  {
-    text: "Cryto Exchange",
-    val: ""
-  }
-];
-
-const LOOKING = [
-  {
-    text: "Borrow",
-    val: ""
-  },
-  {
-    text: "Lending",
-    val: ""
-  },
-  {
-    text: "Both",
-    val: ""
-  }
-];
-
-const CURRENCIES = [
-  {
-    text: "Bitcoin",
-    val: ""
-  },
-  {
-    text: "Ethereum",
-    val: ""
-  },
-
-  {
-    text: "Litecoin",
-    val: ""
-  },
-  {
-    text: "Ripple",
-    val: ""
-  },
-  {
-    text: "Omise Go",
-    val: ""
-  },
-  {
-    text: "Bitcoin Cash",
-    val: ""
-  },
-  {
-    text: "Ox",
-    val: ""
-  },
-  {
-    text: "Bitcoin Gold",
-    val: ""
-  },
-  {
-    text: "Z Cash",
-    val: ""
-  },
-  {
-    text: "Stellar",
-    val: ""
-  },
-  {
-    text: "Dash",
-    val: ""
-  },
-  {
-    text: "Binaxe Coin",
-    val: ""
-  },
-  {
-    text: "Orbs",
-    val: ""
-  },
-  {
-    text: "TUSD",
-    val: ""
-  },
-  {
-    text: "Gemini Dollar",
-    val: ""
-  },
-  {
-    text: "Paxos",
-    val: ""
-  },
-  {
-    text: "USD Coin",
-    val: ""
-  },
-  {
-    text: "DAI",
-    val: ""
-  },
-  {
-    text: "Tether",
-    val: ""
-  }
-];
-
-const SERVICES = [
-  {
-    text: "Instant cash loan",
-    val: ""
-  },
-
-  {
-    text: "Peer-to-peer lending",
-    val: ""
-  },
-
-  {
-    text: "Earn interest on Fiat",
-    val: ""
-  },
-
-  {
-    text: "Earn interest on Stale coins",
-    val: ""
-  },
-  {
-    text: "Earn crypto interest",
-    val: ""
-  },
-
-  {
-    text: "Insured custodial wallet",
-    val: ""
-  },
-  {
-    text: "While-label partnership",
-    val: ""
-  }
-];
+import {
+  CURRENCIES,
+  LOOKING,
+  SERVICES,
+  MEMBERSHIP
+} from "../config/form-options";
+import FormChoices from "./forms/FormChoices";
 
 export default function Register() {
   return (
@@ -179,7 +15,7 @@ export default function Register() {
           <div className="header-body text-center">
             <div className="row justify-content-center">
               <div className=" col-lg-6 col-md-8 px-5">
-                <h1 className="text-white">Register</h1>
+                <h2 className="text-white">Register</h2>
                 <p className="text-lead text-white">
                   Register your interest with Blocklendr. Be the first to join
                   our revolutionary platform.
@@ -222,7 +58,7 @@ export default function Register() {
                       />
                     </div>
                   </div>
-                  <div className="form-group"></div>
+
                   <div className="form-group d-flex align-items-center position-relative">
                     <span
                       className="text-muted position-absolute"
@@ -235,7 +71,7 @@ export default function Register() {
                     <div className="input-group input-group-merge input-group-alternative">
                       <div className="input-group-prepend">
                         <span className="input-group-text">
-                          <i className="ni ni-lock-circle-open"></i>
+                          <i className="ni ni-shop"></i>
                         </span>
                       </div>
                       <input
@@ -245,50 +81,34 @@ export default function Register() {
                       />
                     </div>
                   </div>
-                  <div className="form-group">
-                    <label className="form-control-label font-weight-bold">
-                      Membership Type:
-                    </label>
 
-                    <div className="col row">
-                      {MEMBERSHIP.map(({ text }, index) => (
-                        <div
-                          key={index}
-                          className="custom-control custom-radio col-4 mb-3"
-                        >
-                          <input
-                            type="radio"
-                            name="customRadioInline1"
-                            className="custom-control-input"
-                          />
-                          <label className="custom-control-label">{text}</label>
-                        </div>
-                      ))}
+                  <div className="form-group d-flex align-items-center position-relative">
+                    <div className="input-group input-group-merge input-group-alternative">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text">
+                          <i className="ni ni-lock-circle-open"></i>
+                        </span>
+                      </div>
+                      <input
+                        className="form-control"
+                        placeholder="Password"
+                        type="password"
+                      />
                     </div>
                   </div>
 
-                  <div className="form-group">
-                    <label className="form-control-label font-weight-bold">
-                      Are you looking to borrow or lend:
-                    </label>
-
-                    <div className="col row">
-                      {LOOKING.map(({ text }, index) => (
-                        <div
-                          key={index}
-                          className="custom-control custom-radio col-4 mb-3"
-                        >
-                          <input
-                            type="radio"
-                            name="customRadioInline1"
-                            className="custom-control-input"
-                          />
-                          <label className="custom-control-label">{text}</label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
+                  <FormChoices
+                    options={MEMBERSHIP}
+                    type={"radio"}
+                    title={"Membership Type:"}
+                    classes={"custom-control custom-radio col-4 mb-3"}
+                  />
+                  <FormChoices
+                    options={LOOKING}
+                    type={"radio"}
+                    title={"Are you looking to borrow or lend:"}
+                    classes={"custom-control custom-radio col-4 mb-3"}
+                  />
                   <div className="form-group">
                     <label className="form-control-label font-weight-bold">
                       How much would you like to borrow or lend?
@@ -318,56 +138,28 @@ export default function Register() {
                           type="text"
                         />
                       </div>
-                    </div>{" "}
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-control-label font-weight-bold">
-                      Which other currencies would you like to use?
-                      <br />{" "}
-                      <span className="text-muted text-light font-weight-light">
-                        (You can choose more than 1)
-                      </span>
-                    </label>
-                    <div className="row col">
-                      {CURRENCIES.map(({ text }, index) => (
-                        <div
-                          className="custom-control custom-control-alternative custom-checkbox col-4 mb-3"
-                          key={index}
-                        >
-                          <input
-                            type="checkbox"
-                            className="custom-control-input"
-                          />
-                          <label className="custom-control-label">{text}</label>
-                        </div>
-                      ))}{" "}
                     </div>
                   </div>
 
-                  <div className="form-group">
-                    <label className="form-control-label font-weight-bold">
-                      Which service interest you the most?
-                      <br />{" "}
-                      <span className="text-muted text-light font-weight-light">
-                        (You can choose more than 1)
-                      </span>
-                    </label>
-                    <div className="row col">
-                      {SERVICES.map(({ text }, index) => (
-                        <div
-                          className="custom-control custom-control-alternative custom-checkbox col-6 mb-3"
-                          key={index}
-                        >
-                          <input
-                            type="checkbox"
-                            className="custom-control-input"
-                          />
-                          <label className="custom-control-label">{text}</label>
-                        </div>
-                      ))}{" "}
-                    </div>
-                  </div>
+                  <FormChoices
+                    options={CURRENCIES}
+                    type={"checkbox"}
+                    title={"Which other currencies would you like to use?"}
+                    moreThanOne
+                    classes={
+                      "custom-control custom-control-alternative custom-checkbox col-4 mb-3"
+                    }
+                  />
+
+                  <FormChoices
+                    options={SERVICES}
+                    type={"checkbox"}
+                    title={"Which service interests you the most?"}
+                    moreThanOne
+                    classes={
+                      "custom-control custom-control-alternative custom-checkbox col-6 mb-3"
+                    }
+                  />
 
                   <div className="text-center">
                     <button type="button" className="btn btn-primary mt-4">
