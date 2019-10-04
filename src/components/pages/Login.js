@@ -14,7 +14,7 @@ export default class Login extends Component {
   handleLogin = () => {
     // Request API.
     axios
-      .post("http://157.230.189.100:1337/auth/local", {
+      .post("http://18.237.85.135:1337/auth/local", {
         identifier: this.state.email,
         password: this.state.password
       })
@@ -27,7 +27,7 @@ export default class Login extends Component {
           "companyName",
           response.data.user.companyNameI
         );
-        window.location = `/dashboard`;
+        window.location = `/myloans`;
       })
       .catch(error => {
         // Handle error.
