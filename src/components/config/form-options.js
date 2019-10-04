@@ -183,3 +183,31 @@ export const FUNDING = [
     val: "sto"
   }
 ];
+
+export const INSTITUITIONSERVICES = [
+  {
+    text: "Borrowing Fiat",
+    key: "borrowingFiat",
+    placeholder: "Which fiat?"
+  },
+  {
+    text: "Borrowing Crypto",
+    key: "borrowingCrypto",
+    placeholder: "Which crypto?"
+  },
+  {
+    text: "Lending Fiat",
+    key: "lendingFiat",
+    placeholder: "Which fiat?"
+  },
+  {
+    text: "Lending Crypto",
+    key: "lendingCrypto",
+    placeholder: "Which crypto?"
+  },
+  {
+    text: "Other",
+    key: "other",
+    placeholder: "Please State"
+  }
+];
