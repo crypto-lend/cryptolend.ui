@@ -72,8 +72,8 @@ export default () => (
           </div>
           <ul className="navbar-nav-hover text-center align-items-center">
             <li className="nav-item dropdown">
-              <a
-                href="/home"
+              <Link
+                to="/"
                 className="nav-link"
                 data-toggle="dropdown"
                 role="button"
@@ -81,9 +81,9 @@ export default () => (
                 <img
                   src={blocklendr}
                   alt="Blocklendr"
-                  style={{ width: "50%" }}
+                  style={{ width: "40%" }}
                 />
-              </a>
+              </Link>
             </li>
             <MenuItem title={"Features"} options={FEATURES} />
             <MenuItem title={"Earn Interest"} options={INTEREST} />
