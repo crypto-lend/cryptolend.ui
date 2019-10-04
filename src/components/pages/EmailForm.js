@@ -20,7 +20,7 @@ const FormConfig = {
     redirect: "/register"
   }
 };
-export default function GenricForm(props) {
+export default function EmailForm(props) {
   const {
     match: {
       params: { menuItem, subItem }
@@ -35,12 +35,12 @@ export default function GenricForm(props) {
     return <Redirect to="/" />;
   }
 
-  const { redirect } = FormConfig[menuItem];
   // If no text exists then redirect to home
   if (!FormConfig[menuItem] || !FormConfig[menuItem][subItem]) {
     return <Redirect to="/" />;
   }
 
+  const { redirect } = FormConfig[menuItem];
   const text = FormConfig[menuItem][subItem];
 
   return (
