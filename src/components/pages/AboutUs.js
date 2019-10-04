@@ -15,15 +15,16 @@ export default function AboutUs() {
             borderRadius: "1rem"
           }}
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
-          mollis aliquam ut porttitor leo. Pretium aenean pharetra magna ac
-          placerat vestibulum lectus mauris. Auctor eu augue ut lectus arcu
-          bibendum at varius. Eros in cursus turpis massa tincidunt dui ut
-          ornare lectus. Pulvinar mattis nunc sed blandit libero volutpat sed
-          cras. Lectus magna fringilla urna porttitor. Ut diam quam nulla
-          porttitor massa id neque aliquam vestibulum. Leo vel fringilla est
-          ullamcorper eget.
+          At Blocklendr, we stand for financial equality without boarders or
+          prejudice. We believe that everybody around the world should have the
+          opportunity to access a fair banking system, credit and financial
+          support no matter where they’re from or what their history is. We are
+          building the tools that empower people to take control of their money
+          and take part in the global revolution of personal finances and the
+          new banking sector. We are open to forming strong partnerships to
+          relentlessly improve our capacity to do this. We are proud to be a
+          part of this change and we have made it our mission to ensure that
+          people are respected and treated fairly.
         </div>
       </div>
     </div>

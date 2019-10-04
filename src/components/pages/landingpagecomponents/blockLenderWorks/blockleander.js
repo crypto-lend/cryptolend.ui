@@ -26,40 +26,42 @@ const DATA = [
 ];
 const BlockLender = () => {
   return (
-    <div className="position-relative container">
-      <div className="row">
-        <div className="col-sm">
-          <div
-            style={{ textAlign: "center" }}
-            className="card-header bg-transparent"
-          >
-            <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
-              Why Blocklender{" "}
-            </h2>
-          </div>
-        </div>
-      </div>
-
-      <div className="card-deck mt-5">
-        {DATA.map(({ title, text, img }, index) => (
-          <div className="card" key={index}>
-            <img
-              className="card-img-top p-0 mt-4 mx-auto "
-              src={img}
-              alt={title}
-              style={{
-                height: "10rem",
-                width: "10rem"
-              }}
-            />
-            <div className="card-body">
-              <h5 style={{ textAlign: "center" }} className="card-title">
-                {title}
-              </h5>
-              <p className="card-text">{text}</p>
+    <div className="bg-secondary pb-5">
+      <div className="position-relative container ">
+        <div className="row">
+          <div className="col-sm">
+            <div
+              style={{ textAlign: "center" }}
+              className="card-header bg-transparent"
+            >
+              <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
+                Why Blocklender{" "}
+              </h2>
             </div>
           </div>
-        ))}
+        </div>
+
+        <div className="card-deck  mt-5">
+          {DATA.map(({ title, text, img }, index) => (
+            <div className="card bg-secondary" key={index}>
+              <img
+                className="card-img-top p-0 mt-4 mx-auto "
+                src={img}
+                alt={title}
+                style={{
+                  height: "10rem",
+                  width: "10rem"
+                }}
+              />
+              <div className="card-body">
+                <h5 style={{ textAlign: "center" }} className="card-title">
+                  {title}
+                </h5>
+                <p className="card-text">{text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

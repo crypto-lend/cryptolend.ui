@@ -94,34 +94,36 @@ const DATA = [
 ];
 export default function SupportedCrypto() {
   return (
-    <div className="position-relative container mt-5">
-      <div className="row">
-        <div className="col-sm">
-          <div
-            style={{ textAlign: "center" }}
-            className="card-header bg-transparent"
-          >
-            <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
-              {" "}
-              Supported Crypto
-            </h2>
+    <div className="bg-secondary">
+      <div className="position-relative container mt-5">
+        <div className="row">
+          <div className="col-sm">
+            <div
+              style={{ textAlign: "center" }}
+              className="card-header bg-transparent"
+            >
+              <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
+                {" "}
+                Supported Crypto
+              </h2>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="row mt-5">
-        {DATA.map(({ name, img }, index) => (
-          <div
-            className="col-2 d-flex flex-column align-items-center p-4"
-            key={index}
-          >
-            <img
-              className="avatar rounded-circle p-0"
-              src={img}
-              alt="Coin Logo"
-            />
-            <div className="my-3">{name}</div>
-          </div>
-        ))}
+        <div className="row mt-5">
+          {DATA.map(({ name, img }, index) => (
+            <div
+              className="col-2 d-flex flex-column align-items-center p-4"
+              key={index}
+            >
+              <img
+                className="avatar rounded-circle p-0"
+                src={img}
+                alt="Coin Logo"
+              />
+              <div className="my-3">{name}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

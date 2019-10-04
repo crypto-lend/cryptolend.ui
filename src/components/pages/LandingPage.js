@@ -88,7 +88,7 @@ class HomePage extends Component {
           <Clients />
           <SupportedCrypto />
           <Vision />
-          <Events />
+          <Events background={"bg-secondary"} />
           <NewsLetter />
           <Footer />
         </div>

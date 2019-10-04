@@ -39,16 +39,16 @@ const DATA = [
 
 export default function p2p() {
   return (
-    <div className="position-relative my-5">
+    <div className="position-relative my-5 bg-secondary">
       <section className=" section-shaped my-0">
         <div className="container shape-container d-flex align-items-center">
           <div className="col px-0">
             <div className="pricing card-group flex-column flex-md-row mb-3">
-              <div className="card card-pricing zoom-in rounded border-0 text-center mb-4 d-flex justify-content-center">
+              <div className="card bg-secondary card-pricing zoom-in rounded border-0 text-center mb-4 d-flex justify-content-center">
                 <img className="card-img" src={iphone} alt="App screens" />
               </div>
-              <div className="card card-pricing border-0 text-center mb-4">
-                <div className="card-header bg-transparent">
+              <div className="card bg-secondary card-pricing border-0 text-center mb-4">
+                <div className="card-header bg-secondary">
                   <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
                     How Blocklendr p2p works{" "}
                   </h2>
@@ -56,7 +56,10 @@ export default function p2p() {
                 <div className="card-body">
                   <ul className="list-group list-group-flush list my--3">
                     {DATA.map(({ img, text }, index) => (
-                      <li key={index} className="list-group-item px-0">
+                      <li
+                        key={index}
+                        className="list-group-item px-0 bg-secondary"
+                      >
                         <div className="row align-items-center">
                           <div className="col-auto">
                             <img
