@@ -1,3 +1,7 @@
+import facebookIcon from "../images/social/facebook.svg";
+import twitterIcon from "../images/social/twitter.svg";
+import linkedInIcon from "../images/social/linkedin.svg";
+
 export const FEATURES = [
   {
     text: "Instant Crypto Credit",
@@ -35,5 +39,20 @@ export const ENTERPRISE = [
   {
     text: "ICO/ IEO/ STO Company",
     link: "/enterprise/ico-ieo-sto-company"
+  }
+];
+
+export const SOCIALLINKS = [
+  {
+    icon: facebookIcon,
+    link: "https://facebook.com"
+  },
+  {
+    icon: twitterIcon,
+    link: "https://facebook.com"
+  },
+  {
+    icon: linkedInIcon,
+    link: "https://facebook.com"
   }
 ];

@@ -1,25 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import facebookIcon from "../images/social/facebook.svg";
-import twitterIcon from "../images/social/twitter.svg";
-import linkedInIcon from "../images/social/linkedin.svg";
 
-import { FEATURES, INTEREST, COMPANY, ENTERPRISE } from "../config/navigation";
-
-const SOCIALLINKS = [
-  {
-    icon: facebookIcon,
-    link: "https://facebook.com"
-  },
-  {
-    icon: twitterIcon,
-    link: "https://facebook.com"
-  },
-  {
-    icon: linkedInIcon,
-    link: "https://facebook.com"
-  }
-];
+import {
+  FEATURES,
+  INTEREST,
+  COMPANY,
+  ENTERPRISE,
+  SOCIALLINKS
+} from "../config/navigation";
 
 export default () => (
   <footer className="footer font-small blue-grey lighten-5">
