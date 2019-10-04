@@ -91,10 +91,10 @@ export default () => (
             <MenuItem title={"Company"} options={COMPANY} />
 
             <li className="nav-item dropdown">
-              <a className="nav-link" href="/" role="button">
+              <Link className="nav-link" to="/support" role="button">
                 <i className="ni ni-collection d-lg-none"></i>
                 <span className="nav-link-inner--text">Support</span>
-              </a>
+              </Link>
             </li>
 
             <MenuItem title={"Enterprise"} options={ENTERPRISE} />
@@ -108,7 +108,7 @@ export default () => (
             </Link>
 
             <Link
-              to="/register"
+              to="/register-form"
               role="button"
               className="text-white nav-item btn btn-success"
             >
