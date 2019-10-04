@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import axios from "axios";
 import {
   CURRENCIES,
   LOOKING,
@@ -7,7 +8,37 @@ import {
 } from "../config/form-options";
 import FormChoices from "./forms/FormChoices";
 
-export default function Register() {
+export default class Register extends Component {
+  constructor() {
+    super();
+    this.state = {
+      username: '',
+      email: '',
+      password: ''
+    }
+  }
+  handleRegisterClick =  () => {
+    axios
+      .post('http://18.237.85.135:1337/auth/local/register', {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password
+      })
+      .then(response => {
+        // Handle success.
+        console.log('Well done!');
+        console.log('User profile', response.data.user);
+        console.log('User token', response.data.jwt);
+        window.localStorage.setItem('user', response.data.user.username);
+        window.localStorage.setItem('user_id', response.data.user.id);
+      })
+      .catch(error => {
+        // Handle error.
+        console.log('An error occurred:', error);
+      });
+  }
+  render(){
+    let { username, email, password } = this.state;
   return (
     <div className="main-content">
       <div className="header bg-gradient-primary py-5">
@@ -43,6 +74,10 @@ export default function Register() {
                         className="form-control"
                         placeholder="Name"
                         type="text"
+                        value={username}
+                        onChange={(e)=>{
+                          this.setState({username:e.target.value});
+                        }}
                       />
                     </div>
                     <div className="input-group input-group-merge input-group-alternative mb-3">
@@ -55,6 +90,10 @@ export default function Register() {
                         className="form-control"
                         placeholder="Email"
                         type="email"
+                        value={email}
+                        onChange={(e)=>{
+                          this.setState({email:e.target.value});
+                        }}
                       />
                     </div>
                   </div>
@@ -93,6 +132,10 @@ export default function Register() {
                         className="form-control"
                         placeholder="Password"
                         type="password"
+                        value={password}
+                        onChange={(e)=>{
+                          this.setState({password:e.target.value});
+                        }}
                       />
                     </div>
                   </div>
@@ -162,7 +205,7 @@ export default function Register() {
                   />
 
                   <div className="text-center">
-                    <button type="button" className="btn btn-primary mt-4">
+                    <button type="button" className="btn btn-primary mt-4" onClick={this.handleRegisterClick}>
                       Submit
                     </button>
                   </div>
@@ -174,4 +217,5 @@ export default function Register() {
       </div>
     </div>
   );
+}
 }
