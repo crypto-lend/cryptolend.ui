@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { Redirect } from "react-router-dom";
 
 import { INSTITUITIONSERVICES } from "../config/form-options";
 
@@ -49,19 +48,6 @@ const FormComplexOptions = ({
   );
 };
 
-const RouteConfig = {
-  "institutional-credit": {
-    title: "Institutional Credit",
-    text:
-      "We provide customized lending opportunities for institutions looking to leverage their crypto holdings or earn interest on their fiat holdings. Please complete our form to register your interest and we will be in touch with you as soon as possible."
-  },
-  "ico-ieo-sto-company": {
-    title: "ICO/ IEO/ STO Company",
-    text:
-      "We provide customized lending opportunities to companies planning to launch or have completed their ICO/IEO/STO funding. Please complete our form to register your interest and we will be in touch with you as soon as possible."
-  }
-};
-
 const defaultForm = {
   companyName: "",
   name: "",
@@ -74,13 +60,7 @@ const defaultForm = {
   startDate: "",
   other: ""
 };
-export default function Register(props) {
-  const {
-    match: {
-      params: { industry }
-    }
-  } = props;
-
+export default function Register() {
   const [showPopup, setPopup] = useState(false);
   const [form, setForm] = useState(defaultForm);
 
@@ -105,7 +85,7 @@ export default function Register(props) {
       }
     }
 
-    // return true;
+    return true;
   };
 
   const updateServices = key => {
@@ -120,12 +100,6 @@ export default function Register(props) {
     updateForm(formKeys.services, services);
   };
 
-  const { title, text } = RouteConfig[industry];
-
-  if (!title) {
-    return <Redirect to="/" />;
-  }
-
   return (
     <div className="main-content">
       <div className="header bg-gradient-primary py-5">
@@ -133,8 +107,13 @@ export default function Register(props) {
           <div className="header-body text-center">
             <div className="row justify-content-center">
               <div className=" col-lg-6 col-md-8 px-5">
-                <h1 className="text-white">{title}</h1>
-                <p className="text-lead text-white">{text}</p>
+                <h1 className="text-white">Institutional Credit</h1>
+                <p className="text-lead text-white">
+                  We provide customized lending opportunities for institutions
+                  looking to leverage their crypto holdings or earn interest on
+                  their fiat holdings. Please complete our form to register your
+                  interest and we will be in touch with you as soon as possible.
+                </p>
               </div>
             </div>
           </div>
