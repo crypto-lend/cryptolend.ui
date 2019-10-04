@@ -12,6 +12,7 @@ const MenuItem = ({ title, options }) => {
       className="nav-item dropdown "
       onMouseEnter={() => setMenu(true)}
       onMouseLeave={() => setMenu(false)}
+      onClick={() => setMenu(false)}
     >
       <span
         style={{
@@ -69,7 +70,7 @@ export default () => (
               </div>
             </div>
           </div>
-          <ul className="navbar-nav-hover align-items-lg-center">
+          <ul className="navbar-nav-hover text-center align-items-center">
             <li className="nav-item dropdown">
               <a
                 href="/home"

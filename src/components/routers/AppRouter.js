@@ -20,11 +20,14 @@ import Events from "../pages/landingpagecomponents/Events";
 import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
 
+import Navbar from "../pages/Navbar";
 // COMPONENT
 
 export const AppRouter = () => (
   <BrowserRouter>
     <Fragment>
+      <Navbar />
+
       <Switch>
         <Route path="/" component={LandingPage} exact={true} />
         <Route path="/home" component={HomePage} />
