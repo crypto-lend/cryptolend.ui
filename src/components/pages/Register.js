@@ -19,7 +19,7 @@ export default class Register extends Component {
   }
   handleRegisterClick = () => {
     axios
-      .post("http://18.237.85.135:1337/auth/local/register", {
+      .post("https://www.cipherfit.com/auth/local/register", {
         username: this.state.username,
         email: this.state.email,
         password: this.state.password

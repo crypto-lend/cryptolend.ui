@@ -14,7 +14,7 @@ export default class Login extends Component {
   handleLogin = () => {
     // Request API.
     axios
-      .post("http://18.237.85.135:1337/auth/local", {
+      .post("https://www.cipherfit.com//auth/local", {
         identifier: this.state.email,
         password: this.state.password
       })
