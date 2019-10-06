@@ -59,7 +59,7 @@ export default class Register extends Component {
 
         <div className="container mt-5 pb-5">
           <div className="row justify-content-center">
-            <div className="col-md-8 col-10">
+            <div className="col-md-8 col-12">
               <div className="card bg-secondary border-0">
                 <div className="card-body px-lg-5 py-lg-5">
                   <form>
@@ -136,13 +136,17 @@ export default class Register extends Component {
                       options={MEMBERSHIP}
                       type={"radio"}
                       title={"Membership Type:"}
-                      classes={"custom-control custom-radio col-4 mb-3"}
+                      classes={
+                        "custom-control custom-radio col-md-4 col-6 mb-3"
+                      }
                     />
                     <FormChoices
                       options={LOOKING}
                       type={"radio"}
                       title={"Are you looking to borrow or lend:"}
-                      classes={"custom-control custom-radio col-4 mb-3"}
+                      classes={
+                        "custom-control custom-radio col-md-4 col-6 mb-3"
+                      }
                     />
                     <div className="form-group">
                       <label className="form-control-label font-weight-bold">
@@ -182,7 +186,7 @@ export default class Register extends Component {
                       title={"Which other currencies would you like to use?"}
                       moreThanOne
                       classes={
-                        "custom-control custom-control-alternative custom-checkbox col-4 mb-3"
+                        "custom-control custom-control-alternative custom-checkbox col-md-4 col-6 mb-3"
                       }
                     />
 
@@ -192,7 +196,7 @@ export default class Register extends Component {
                       title={"Which service interests you the most?"}
                       moreThanOne
                       classes={
-                        "custom-control custom-control-alternative custom-checkbox col-6 mb-3"
+                        "custom-control custom-control-alternative custom-checkbox col-md-6 col-10 mb-3"
                       }
                     />
 

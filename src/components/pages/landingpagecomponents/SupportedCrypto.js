@@ -112,7 +112,7 @@ export default function SupportedCrypto() {
         <div className="row mt-5">
           {DATA.map(({ name, img }, index) => (
             <div
-              className="col-2 d-flex flex-column align-items-center p-4"
+              className="col-md-2 col-4 d-flex flex-column align-items-center p-4"
               key={index}
             >
               <img
