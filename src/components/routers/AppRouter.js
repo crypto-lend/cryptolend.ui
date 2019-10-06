@@ -22,6 +22,7 @@ import ContactUs from "../pages/ContactUs";
 import RegisterForm from "../pages/RegisterForm";
 import Navbar from "../pages/Navbar";
 import CompanyRegister from "../pages/CompanyRegister";
+import WhiteLabelRegister from "../pages/WhiteLabelRegister";
 // COMPONENT
 
 export const AppRouter = () => (
@@ -48,6 +49,8 @@ export const AppRouter = () => (
           path="/enterprise/ico-ieo-sto-company"
           component={CompanyRegister}
         />
+        <Route path="/enterprise/white-label" component={WhiteLabelRegister} />
+
         <Route path="/company/events" component={Events} />
         <Route path="/company/about-us" component={AboutUs} />
         <Route path="/company/connect-with-us" component={ContactUs} />

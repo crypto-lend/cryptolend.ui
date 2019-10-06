@@ -211,3 +211,31 @@ export const INSTITUITIONSERVICES = [
     placeholder: "Please State"
   }
 ];
+
+export const WHITE_LABEL_SERVICES = [
+  {
+    text: "Interest on crypto deposits",
+    key: "cryptoDeposits",
+    placeholder: "Which crypto?"
+  },
+  {
+    text: "Interest on fiat deposits",
+    key: "fiatDeposits",
+    placeholder: "Which fiat?"
+  },
+  {
+    text: "Crypto Lending",
+    key: "cryptoLending",
+    placeholder: "Which crypto?"
+  },
+  {
+    text: "Crypto borrowing",
+    key: "cryptoBorrowing",
+    placeholder: "Which crypto?"
+  },
+  {
+    text: "Other",
+    key: "other",
+    placeholder: ""
+  }
+];
