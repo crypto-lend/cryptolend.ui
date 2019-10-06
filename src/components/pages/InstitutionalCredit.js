@@ -1,39 +1,30 @@
 import React, { useState } from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { Redirect } from "react-router-dom";
 
-const SERVICES = [
-  {
-    text: "Borrowing Fiat",
-    placeholder: "Which fiat?"
-  },
-  {
-    text: "Borrowing Crypto",
-    placeholder: "Which crypto?"
-  },
-  {
-    text: "Lending Fiat",
-    placeholder: "Which fiat?"
-  },
-  {
-    text: "Lending Fiat",
-    placeholder: "Which crypto?"
-  },
-  {
-    text: "Other",
-    placeholder: "Please State"
-  }
-];
+import { INSTITUITIONSERVICES } from "../config/form-options";
 
-const FormComplexOptions = ({ title, options }) => {
+const FormComplexOptions = ({
+  title,
+  options,
+  selected,
+  updateServices,
+  updateSelectedText
+}) => {
   return (
     <div className="form-group">
       <label className="form-control-label font-weight-bold">{title}</label>
       <div className="row">
-        {options.map(({ text, placeholder }, index) => (
+        {options.map(({ text, key, placeholder }, index) => (
           <div key={index} className="col-6 d-flex flex-column mb-3">
-            <div className="custom-control custom-checkbox mb-1">
-              <input type="checkbox" className="custom-control-input" />
+            <div
+              className="custom-control custom-checkbox mb-1"
+              onClick={e => updateServices(key)}
+            >
+              <input
+                type="checkbox"
+                checked={selected.hasOwnProperty(key)}
+                className="custom-control-input"
+              />
               <label
                 className="custom-control-label"
                 style={{ lineHeight: 1.9 }}
@@ -45,7 +36,9 @@ const FormComplexOptions = ({ title, options }) => {
               <input
                 type="text"
                 className="form-control w-75 form-control-sm"
+                value={selected[key]}
                 placeholder={placeholder}
+                onChange={e => updateSelectedText(key, e.target.value)}
               />
             </div>
           </div>
@@ -55,33 +48,57 @@ const FormComplexOptions = ({ title, options }) => {
   );
 };
 
-const RouteConfig = {
-  "institutional-credit": {
-    title: "Institutional Credit",
-    text:
-      "We provide customized lending opportunities for institutions looking to leverage their crypto holdings or earn interest on their fiat holdings. Please complete our form to register your interest and we will be in touch with you as soon as possible."
-  },
-  "ico-ieo-sto-company": {
-    title: "ICO/ IEO/ STO Company",
-    text:
-      "We provide customized lending opportunities to companies planning to launch or have completed their ICO/IEO/STO funding. Please complete our form to register your interest and we will be in touch with you as soon as possible."
-  }
+const defaultForm = {
+  companyName: "",
+  name: "",
+  position: "",
+  contact: "",
+  country: "",
+  services: {},
+  amount: "",
+  duration: "",
+  startDate: "",
+  other: ""
 };
-export default function Register(props) {
+export default function Register() {
   const [showPopup, setPopup] = useState(false);
+  const [form, setForm] = useState(defaultForm);
 
-  const {
-    match: {
-      params: { industry }
+  const updateForm = (key, value) => setForm({ ...form, [key]: value });
+
+  const formKeys = Object.keys(form)
+    .map(key => key)
+    .reduce((acc, val) => {
+      acc[val] = val;
+      return acc;
+    }, {});
+
+  const checkValidity = () => {
+    for (const key in form) {
+      const val = form[key];
+      if (typeof val === "string") {
+        if (!val || val === "" || val.length === 0) return false;
+      }
+
+      if (typeof val === "object") {
+        if (Object.keys(val).length > 0) return false;
+      }
     }
-  } = props;
-  console.log(industry);
 
-  const { title, text } = RouteConfig[industry];
+    return true;
+  };
 
-  if (!title) {
-    return <Redirect to="/" />;
-  }
+  const updateServices = key => {
+    const services = form.services;
+    services.hasOwnProperty(key) ? delete services[key] : (services[key] = "");
+    updateForm(formKeys.services, services);
+  };
+
+  const updateSelectedText = (key, text) => {
+    const services = { ...form.services };
+    services[key] = text;
+    updateForm(formKeys.services, services);
+  };
 
   return (
     <div className="main-content">
@@ -90,8 +107,13 @@ export default function Register(props) {
           <div className="header-body text-center">
             <div className="row justify-content-center">
               <div className=" col-lg-6 col-md-8 px-5">
-                <h1 className="text-white">{title}</h1>
-                <p className="text-lead text-white">{text}</p>
+                <h1 className="text-white">Institutional Credit</h1>
+                <p className="text-lead text-white">
+                  We provide customized lending opportunities for institutions
+                  looking to leverage their crypto holdings or earn interest on
+                  their fiat holdings. Please complete our form to register your
+                  interest and we will be in touch with you as soon as possible.
+                </p>
               </div>
             </div>
           </div>
@@ -103,7 +125,12 @@ export default function Register(props) {
           <div className="col-md-8 col-10">
             <div className="card bg-secondary border-0">
               <div className="card-body px-lg-5 py-lg-5">
-                <form>
+                <form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    checkValidity() && setPopup(true);
+                  }}
+                >
                   <div className="form-group d-flex align-items-center position-relative">
                     <div className="input-group input-group-merge input-group-alternative">
                       <div className="input-group-prepend">
@@ -115,6 +142,11 @@ export default function Register(props) {
                         className="form-control"
                         placeholder="Company Name"
                         type="text"
+                        value={form.companyName}
+                        onChange={e =>
+                          updateForm(formKeys.companyName, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -129,6 +161,11 @@ export default function Register(props) {
                         className="form-control"
                         placeholder="Name"
                         type="text"
+                        value={form.name}
+                        onChange={e =>
+                          updateForm(formKeys.name, e.target.value)
+                        }
+                        required
                       />
                     </div>
                     <div className="input-group input-group-merge input-group-alternative mb-3">
@@ -141,6 +178,11 @@ export default function Register(props) {
                         className="form-control"
                         placeholder="Position in company"
                         type="text"
+                        value={form.position}
+                        onChange={e =>
+                          updateForm(formKeys.position, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -155,6 +197,11 @@ export default function Register(props) {
                         className="form-control"
                         placeholder="Contact"
                         type="text"
+                        value={form.contact}
+                        onChange={e =>
+                          updateForm(formKeys.contact, e.target.value)
+                        }
+                        required
                       />
                     </div>
                     <div className="input-group input-group-merge input-group-alternative mb-3">
@@ -167,13 +214,21 @@ export default function Register(props) {
                         className="form-control"
                         placeholder="Country of Residence"
                         type="text"
+                        value={form.country}
+                        onChange={e =>
+                          updateForm(formKeys.country, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
 
                   <FormComplexOptions
                     title={"Which services are you interested in?"}
-                    options={SERVICES}
+                    options={INSTITUITIONSERVICES}
+                    selected={form.services}
+                    updateServices={updateServices}
+                    updateSelectedText={updateSelectedText}
                   />
                   <div className="form-group">
                     <label className="form-control-label font-weight-bold">
@@ -188,8 +243,13 @@ export default function Register(props) {
                       </div>
                       <input
                         className="form-control"
-                        placeholder=""
+                        placeholder="Amount"
                         type="text"
+                        value={form.amount}
+                        onChange={e =>
+                          updateForm(formKeys.amount, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -206,8 +266,13 @@ export default function Register(props) {
                       </div>
                       <input
                         className="form-control"
-                        placeholder=""
+                        placeholder="Duration"
                         type="text"
+                        value={form.duration}
+                        onChange={e =>
+                          updateForm(formKeys.duration, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -225,46 +290,12 @@ export default function Register(props) {
                         className="form-control"
                         placeholder="Date"
                         type="date"
+                        value={form.startDate}
+                        onChange={e =>
+                          updateForm(formKeys.startDate, e.target.value)
+                        }
+                        required
                       />
-                    </div>
-                  </div>
-
-                  <div className="form-group align-items-center position-relative">
-                    <label className="form-control-label font-weight-bold">
-                      When would you like to start?
-                    </label>
-
-                    <div className="custom-control custom-checkbox mb-1">
-                      <input type="checkbox" className="custom-control-input" />
-                      <label
-                        className="custom-control-label"
-                        style={{ lineHeight: 1.9 }}
-                      >
-                        As soon as possible
-                      </label>
-                    </div>
-
-                    <div>
-                      <div className="custom-control custom-checkbox mb-1">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                        />
-                        <label
-                          className="custom-control-label"
-                          style={{ lineHeight: 1.9 }}
-                        >
-                          Other
-                        </label>
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-control w-50 form-control-sm"
-                          placeholder="Please state"
-                          disabled
-                        />
-                      </div>
                     </div>
                   </div>
 
@@ -273,14 +304,24 @@ export default function Register(props) {
                       Any other details you would like us to consider?
                     </label>
                     <div className="input-group input-group-merge input-group-alternative">
-                      <textarea className="form-control" rows="3" />
+                      <textarea
+                        className="form-control"
+                        rows="3"
+                        value={form.other}
+                        onChange={e =>
+                          updateForm(formKeys.other, e.target.value)
+                        }
+                        required
+                      />
                     </div>
                   </div>
                   <div className="text-center">
                     <button
-                      type="button"
-                      className="btn btn-primary mt-4"
-                      onClick={() => setPopup(true)}
+                      type="submit"
+                      className={`btn btn-primary mt-5 w-50 ${
+                        checkValidity() ? "" : "disabled"
+                      }`}
+                      onClick={() => checkValidity() && setPopup(true)}
                     >
                       Submit
                     </button>

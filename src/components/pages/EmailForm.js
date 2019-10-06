@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { validateEmail } from "../utils";
 
 const FormConfig = {
   features: {
@@ -8,27 +9,38 @@ const FormConfig = {
     "peer-to-peer-lending":
       "Borrow or lend on your own terms in our global peer-to-peer crypto lending marketplace",
     "white-label":
-      "Partner with Blocklendr and our APIs for insured crypto interest-bearing accounts. Wallet provides , exchanges and custodians can work with Blocklendr to provide their customers with the ability  to earn Interest on their crypto deposits. "
+      "Partner with Blocklendr and our APIs for insured crypto interest-bearing accounts. Wallet provides , exchanges and custodians can work with Blocklendr to provide their customers with the ability  to earn Interest on their crypto deposits. ",
+    redirect: "/register"
   },
   "earn-interest": {
     "stable-coin":
       "Make your crypto work for you with up to 8% interest on symbol stable coins 100% Asset backed guarantee",
     fiat:
-      "Start earning up to 8% interest on EUR, GBP, USD and RUB 100% asset backed guarantee"
+      "Start earning up to 8% interest on EUR, GBP, USD and RUB 100% asset backed guarantee",
+    redirect: "/register"
   }
 };
-export default function GenricForm(props) {
+export default function EmailForm(props) {
   const {
     match: {
       params: { menuItem, subItem }
-    }
+    },
+    history: { push }
   } = props;
+
+  const [email, setEmail] = useState("");
+
+  // Some basic checks for bad config
+  if (!menuItem || !subItem) {
+    return <Redirect to="/" />;
+  }
 
   // If no text exists then redirect to home
   if (!FormConfig[menuItem] || !FormConfig[menuItem][subItem]) {
     return <Redirect to="/" />;
   }
 
+  const { redirect } = FormConfig[menuItem];
   const text = FormConfig[menuItem][subItem];
 
   return (
@@ -45,7 +57,7 @@ export default function GenricForm(props) {
             borderRadius: "1rem"
           }}
         >
-          <form>
+          <form onSubmit={() => redirect && push(redirect)}>
             <div className="form-group">
               <label
                 className="h5 font-weight-normal"
@@ -57,10 +69,19 @@ export default function GenricForm(props) {
                 type="email"
                 className="form-control mt-3"
                 placeholder="your@email.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className="text-center">
-              <button type="button" className="btn btn-primary mt-3 w-50">
+              <button
+                type="button"
+                className={`btn btn-primary mt-3 w-50 ${
+                  validateEmail(email) ? "" : "disabled"
+                }`}
+                onClick={() => redirect && push(redirect)}
+              >
                 <span className="btn-inner--text">Register Now</span>
                 <span className="btn-inner--icon ml-3">
                   <i className="ni ni-bold-right"></i>

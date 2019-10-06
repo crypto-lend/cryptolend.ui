@@ -5,7 +5,6 @@ import P2P from "./landingpagecomponents/p2p";
 import Blocklendr from "./landingpagecomponents//blockLenderWorks/blockleander";
 import Clients from "./landingpagecomponents/ourclients/clients";
 import BlockLendrCash from "./landingpagecomponents/blockLenderCashWorks";
-import Navbar from "./Navbar";
 import macbookScreen from "../images/macbook.png";
 import SupportedCrypto from "./landingpagecomponents/SupportedCrypto";
 import Vision from "./landingpagecomponents/Vison";
@@ -45,7 +44,6 @@ class HomePage extends Component {
     return (
       <div>
         <div className="HomePage text-center" style={{ color: "fff" }}>
-          <Navbar />
           <div className="position-relative pt-5 mt-5">
             <section className="section-shaped my-0">
               <div className="container shape-container d-flex align-items-center">

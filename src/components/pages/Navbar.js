@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
 import ReactCountryFlag from "react-country-flag";
+import { FEATURES, INTEREST, COMPANY, ENTERPRISE } from "../config/navigation";
 
 const MenuItem = ({ title, options }) => {
   const [showMenu, setMenu] = useState(false);
@@ -11,6 +12,7 @@ const MenuItem = ({ title, options }) => {
       className="nav-item dropdown "
       onMouseEnter={() => setMenu(true)}
       onMouseLeave={() => setMenu(false)}
+      onClick={() => setMenu(false)}
     >
       <span
         style={{
@@ -68,10 +70,10 @@ export default () => (
               </div>
             </div>
           </div>
-          <ul className="navbar-nav-hover align-items-lg-center">
+          <ul className="navbar-nav-hover text-center align-items-center">
             <li className="nav-item dropdown">
-              <a
-                href="/home"
+              <Link
+                to="/"
                 className="nav-link"
                 data-toggle="dropdown"
                 role="button"
@@ -79,67 +81,23 @@ export default () => (
                 <img
                   src={blocklendr}
                   alt="Blocklendr"
-                  style={{ width: "50%" }}
+                  style={{ width: "40%" }}
                 />
-              </a>
+              </Link>
             </li>
-            <MenuItem
-              title={"Features"}
-              options={[
-                {
-                  text: "Instant Crypto Credit",
-                  link: "/features/instant-crypto-credit"
-                },
-                {
-                  text: "Peer-to-peer Lending",
-                  link: "/features/peer-to-peer-lending"
-                },
-                { text: "White-Label", link: "/features/white-label" }
-              ]}
-            />
-            <MenuItem
-              title={"Earn Interest"}
-              options={[
-                {
-                  text: "Earn Interest in GBP, EUR, USD, RUB",
-                  link: "/earn-interest/fiat"
-                },
-                {
-                  text: "Earn Interest in Stable Coins",
-                  link: "/earn-interest/stable-coin"
-                }
-              ]}
-            />
+            <MenuItem title={"Features"} options={FEATURES} />
+            <MenuItem title={"Earn Interest"} options={INTEREST} />
 
-            <MenuItem
-              title={"Company"}
-              options={[
-                { text: "Events", link: "/company/events" },
-                { text: "About Us", link: "/company/about-us" },
-                { text: "Contact Us", link: "/company/connect-with-us" }
-              ]}
-            />
+            <MenuItem title={"Company"} options={COMPANY} />
 
             <li className="nav-item dropdown">
-              <a className="nav-link" href="/" role="button">
+              <Link className="nav-link" to="/support" role="button">
                 <i className="ni ni-collection d-lg-none"></i>
                 <span className="nav-link-inner--text">Support</span>
-              </a>
+              </Link>
             </li>
 
-            <MenuItem
-              title={"Enterprise"}
-              options={[
-                {
-                  text: "Institutional Credit",
-                  link: "/enterprise/institutional-credit"
-                },
-                {
-                  text: "ICO/ IEO/ STO Company",
-                  link: "/enterprise/ico-ieo-sto-company"
-                }
-              ]}
-            />
+            <MenuItem title={"Enterprise"} options={ENTERPRISE} />
             <Link
               to="/login"
               role="button"
@@ -150,7 +108,7 @@ export default () => (
             </Link>
 
             <Link
-              to="/register"
+              to="/register-form"
               role="button"
               className="text-white nav-item btn btn-success"
             >

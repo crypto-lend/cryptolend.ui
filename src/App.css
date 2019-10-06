@@ -37,6 +37,10 @@ body {
     sans-serif
 }
 
+.disabled {
+  pointer-events: none
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
