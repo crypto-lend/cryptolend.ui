@@ -256,7 +256,7 @@ export default function Register() {
 
                   <div className="form-group align-items-center position-relative">
                     <label className="form-control-label font-weight-bold">
-                      When is the estimated duration?
+                      What is the estimated loan duration?
                     </label>
                     <div className="input-group input-group-merge input-group-alternative">
                       <div className="input-group-prepend">
