@@ -81,7 +81,7 @@ export default function Register() {
       }
 
       if (typeof val === "object") {
-        if (Object.keys(val).length > 0) return false;
+        if (Object.keys(val).length < 0) return false;
       }
     }
 

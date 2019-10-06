@@ -1,9 +1,70 @@
-import React from "react";
-import { FUNDING } from "../config/form-options";
+import React, { useState } from "react";
+import SweetAlert from "react-bootstrap-sweetalert";
 
+import { FUNDING } from "../config/form-options";
 import FormChoices from "./forms/FormChoices";
 
-export default function Register() {
+const defaultForm = {
+  companyName: "",
+  contact: "",
+  country: "",
+  description: "",
+  launching: [],
+  launchDate: "",
+  goal: "",
+  fundingRounds: "",
+  fundingDuration: "",
+  endDate: "",
+  loanDate: "",
+  loadDuration: "",
+  others: ""
+};
+
+export default function CompanyRegister() {
+  const [showPopup, setPopup] = useState(false);
+  const [form, setForm] = useState(defaultForm);
+
+  const updateForm = (key, value) => {
+    if (!key) {
+      throw new Error("Invalid form key set");
+    }
+    setForm({ ...form, [key]: value });
+  };
+
+  const formKeys = Object.keys(form)
+    .map(key => key)
+    .reduce((acc, val) => {
+      acc[val] = val;
+      return acc;
+    }, {});
+
+  const checkValidity = () => {
+    for (const key in form) {
+      const val = form[key];
+      if (typeof val === "string") {
+        if (!val || val === "" || val.length === 0) return false;
+      }
+
+      if (typeof val === "object") {
+        if (Object.keys(val).length < 0) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const updateLaunching = val => {
+    const selected = [...form.launching];
+    const index = selected.indexOf(val);
+    if (index === -1) {
+      selected.push(val);
+    } else {
+      selected.splice(index, 1);
+    }
+
+    updateForm(formKeys.launching, selected);
+  };
+
   return (
     <div className="main-content">
       <div className="header bg-gradient-primary py-5">
@@ -29,7 +90,12 @@ export default function Register() {
           <div className="col-md-8 col-10">
             <div className="card bg-secondary border-0">
               <div className="card-body px-lg-5 py-lg-5">
-                <form>
+                <form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    checkValidity() && setPopup(true);
+                  }}
+                >
                   <div className="form-group d-flex align-items-center position-relative">
                     <div className="input-group input-group-merge input-group-alternative">
                       <div className="input-group-prepend">
@@ -41,6 +107,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="Company Name"
                         type="text"
+                        value={form.companyName}
+                        onChange={e =>
+                          updateForm(formKeys.companyName, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -55,6 +126,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="Contact"
                         type="text"
+                        value={form.contact}
+                        onChange={e =>
+                          updateForm(formKeys.contact, e.target.value)
+                        }
+                        required
                       />
                     </div>
                     <div className="input-group input-group-merge input-group-alternative mb-3">
@@ -67,6 +143,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="Country of Residence"
                         type="text"
+                        value={form.country}
+                        onChange={e =>
+                          updateForm(formKeys.country, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -77,6 +158,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="Company Description"
                         rows="3"
+                        value={form.description}
+                        onChange={e =>
+                          updateForm(formKeys.description, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -89,6 +175,8 @@ export default function Register() {
                     classes={
                       "custom-control custom-control-alternative custom-checkbox col-4 mb-3"
                     }
+                    selected={form.launching}
+                    onChange={updateLaunching}
                   />
 
                   <div className="form-group align-items-center position-relative">
@@ -101,7 +189,15 @@ export default function Register() {
                           <i className="ni ni-calendar-grid-58"></i>
                         </span>
                       </div>
-                      <input className="form-control" type="date" />
+                      <input
+                        className="form-control"
+                        type="date"
+                        value={form.launchDate}
+                        onChange={e =>
+                          updateForm(formKeys.launchDate, e.target.value)
+                        }
+                        required
+                      />
                     </div>
                   </div>
 
@@ -116,6 +212,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="Funding Goal"
                         type="text"
+                        value={form.goal}
+                        onChange={e =>
+                          updateForm(formKeys.goal, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -131,6 +232,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="Number of Funding Rounds"
                         type="text"
+                        value={form.fundingRounds}
+                        onChange={e =>
+                          updateForm(formKeys.fundingRounds, e.target.value)
+                        }
+                        required
                       />
                     </div>
                     <div className="input-group input-group-merge input-group-alternative mb-3">
@@ -143,6 +249,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="Total Duration"
                         type="text"
+                        value={form.fundingDuration}
+                        onChange={e =>
+                          updateForm(formKeys.fundingDuration, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -157,7 +268,15 @@ export default function Register() {
                           <i className="ni ni-calendar-grid-58"></i>
                         </span>
                       </div>
-                      <input className="form-control" type="date" />
+                      <input
+                        className="form-control"
+                        type="date"
+                        value={form.endDate}
+                        onChange={e =>
+                          updateForm(formKeys.endDate, e.target.value)
+                        }
+                        required
+                      />
                     </div>
                   </div>
 
@@ -172,6 +291,11 @@ export default function Register() {
                         className="form-control"
                         placeholder="When do you want to take a loan?"
                         type="text"
+                        value={form.loanDate}
+                        onChange={e =>
+                          updateForm(formKeys.loanDate, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -187,16 +311,55 @@ export default function Register() {
                         className="form-control"
                         placeholder="Loan Duration"
                         type="text"
+                        value={form.loadDuration}
+                        onChange={e =>
+                          updateForm(formKeys.loadDuration, e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group align-items-center position-relative">
+                    <div className="input-group input-group-merge input-group-alternative">
+                      <textarea
+                        className="form-control"
+                        placeholder="Any other requirements"
+                        rows="3"
+                        value={form.others}
+                        onChange={e =>
+                          updateForm(formKeys.others, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="text-center">
-                    <button type="button" className="btn btn-primary mt-4">
+                    <button
+                      type="submit"
+                      className={`btn btn-primary mt-5 w-50 ${
+                        checkValidity() ? "" : "disabled"
+                      }`}
+                      onClick={() => checkValidity() && setPopup(true)}
+                    >
                       Submit
                     </button>
                   </div>
                 </form>
+                {showPopup && (
+                  <SweetAlert
+                    success
+                    title="Awesome!"
+                    onConfirm={() => setPopup(false)}
+                    onCancel={() => setPopup(false)}
+                  >
+                    Thank you for taking the time to register your interest. We
+                    want to serve you as best as we can and offer you absolute
+                    best rates on the market. A member of our management team
+                    will get back to you shortly to discuss your query.
+                  </SweetAlert>
+                )}
               </div>
             </div>
           </div>

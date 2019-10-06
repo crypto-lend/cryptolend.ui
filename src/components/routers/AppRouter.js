@@ -21,6 +21,7 @@ import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
 import RegisterForm from "../pages/RegisterForm";
 import Navbar from "../pages/Navbar";
+import CompanyRegister from "../pages/CompanyRegister";
 // COMPONENT
 
 export const AppRouter = () => (
@@ -42,6 +43,10 @@ export const AppRouter = () => (
         <Route
           path="/enterprise/institutional-credit"
           component={InstitutionalCredit}
+        />
+        <Route
+          path="/enterprise/ico-ieo-sto-company"
+          component={CompanyRegister}
         />
         <Route path="/company/events" component={Events} />
         <Route path="/company/about-us" component={AboutUs} />
