@@ -1,12 +1,18 @@
 import React from "react";
+import Icon1 from "../../../images/clients/1.png";
+import Icon2 from "../../../images/clients/2.png";
+import Icon3 from "../../../images/clients/3.png";
+import Icon4 from "../../../images/clients/4.png";
+import Icon5 from "../../../images/clients/5.png";
+import Icon6 from "../../../images/clients/6.png";
 
 const DATA = [
-  "Crypto Investors",
-  "Crypto Mines",
-  "Hedge Funds",
-  "Crypto Companies",
-  "Crypto Exchanges",
-  "Owners of tokenized assets"
+  { label: "Crypto Investors", img: Icon1 },
+  { label: "Crypto Mines", img: Icon2 },
+  { label: "Hedge Funds", img: Icon3 },
+  { label: "Crypto Companies", img: Icon4 },
+  { label: "Crypto Exchanges", img: Icon5 },
+  { label: "Owners of tokenized assets", img: Icon6 }
 ];
 const Clients = () => {
   return (
@@ -26,22 +32,25 @@ const Clients = () => {
       </div>
 
       <div className="card-deck mt-5">
-        {DATA.map((investor, index) => (
+        {DATA.map(({ label, img }, index) => (
           <div
-            className="card mb-5 mx-5"
+            className="card mb-5 mx-5 p-1"
             style={{
               flex: "1 0 22%"
             }}
             key={index}
           >
             <img
-              className="card-img-top p-0"
-              src="https://demos.creative-tim.com/argon-dashboard-pro/assets/img/theme/img-1-1000x600.jpg"
-              alt="Card image cap"
+              className="card-img-top p-0 mt-4 mx-auto"
+              src={img}
+              style={{
+                width: "50%"
+              }}
+              alt={label + "logo"}
             />
             <div className="card-body">
               <h5 style={{ textAlign: "center" }} className="card-title">
-                {investor}
+                {label}
               </h5>
             </div>
           </div>

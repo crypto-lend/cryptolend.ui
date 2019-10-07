@@ -2,22 +2,36 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { validateEmail } from "../utils";
 
+const REGISTER_LINK = "/register";
 const FormConfig = {
   features: {
-    "instant-crypto-credit":
-      "Get cash instantly with your instant crypto-backed loans . Keep your crypto secure with our $100 million USD insured custodial wallets",
-    "peer-to-peer-lending":
-      "Borrow or lend on your own terms in our global peer-to-peer crypto lending marketplace",
-    "white-label":
-      "Partner with Blocklendr and our APIs for insured crypto interest-bearing accounts. Wallet provides , exchanges and custodians can work with Blocklendr to provide their customers with the ability  to earn Interest on their crypto deposits. ",
-    redirect: "/register"
+    "instant-crypto-credit": {
+      text:
+        "Get cash instantly with your instant crypto-backed loans . Keep your crypto secure with our $100 million USD insured custodial wallets",
+      redirect: REGISTER_LINK
+    },
+    "peer-to-peer-lending": {
+      text:
+        "Borrow or lend on your own terms in our global peer-to-peer crypto lending marketplace",
+      redirect: "/redirect"
+    },
+    "white-label": {
+      text:
+        "Partner with Blocklendr and our APIs for insured crypto interest-bearing accounts. Wallet provides , exchanges and custodians can work with Blocklendr to provide their customers with the ability  to earn Interest on their crypto deposits. ",
+      redirect: "/enterprise/white-label"
+    }
   },
   "earn-interest": {
-    "stable-coin":
-      "Make your crypto work for you with up to 8% interest on symbol stable coins 100% Asset backed guarantee",
-    fiat:
-      "Start earning up to 8% interest on EUR, GBP, USD and RUB 100% asset backed guarantee",
-    redirect: "/register"
+    "stable-coin": {
+      text:
+        "Make your crypto work for you with up to 8% interest on symbol stable coins 100% Asset backed guarantee",
+      redirect: REGISTER_LINK
+    },
+    fiat: {
+      text:
+        "Start earning up to 8% interest on EUR, GBP, USD and RUB 100% asset backed guarantee",
+      redirect: REGISTER_LINK
+    }
   }
 };
 export default function EmailForm(props) {
@@ -40,8 +54,7 @@ export default function EmailForm(props) {
     return <Redirect to="/" />;
   }
 
-  const { redirect } = FormConfig[menuItem];
-  const text = FormConfig[menuItem][subItem];
+  const { text, redirect } = FormConfig[menuItem][subItem];
 
   return (
     <div className="container mt-5 pt-5">
