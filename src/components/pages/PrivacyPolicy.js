@@ -83,7 +83,7 @@ export default function PrivacyPolicy() {
         </div>
         <div className="row mt-5">
           {DATA.map(({ title, text }, index) => (
-            <span key={index}>
+            <span className="col-12" key={index}>
               <h6 className="mt-4">{title}</h6>
               <p>
                 {text.map((point, index) => (
