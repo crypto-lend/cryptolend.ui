@@ -19,7 +19,8 @@ export default function Vision() {
       <h5
         className="row"
         style={{
-          margin: "2rem 5rem"
+          margin: "2rem 5rem",
+          lineHeight: "1.75"
         }}
       >
         At Blocklendr, we stand for financial equality without boarders or

@@ -1,171 +1,171 @@
 export const CURRENCIES = [
   {
     text: "Bitcoin",
-    val: ""
+    val: "bitcoin"
   },
   {
     text: "Ethereum",
-    val: ""
+    val: "ethereum"
   },
 
   {
     text: "Litecoin",
-    val: ""
+    val: "litecoin"
   },
   {
     text: "Ripple",
-    val: ""
+    val: "ripple"
   },
   {
     text: "Omise Go",
-    val: ""
+    val: "omise-go"
   },
   {
     text: "Bitcoin Cash",
-    val: ""
+    val: "bitcoin-cash"
   },
   {
     text: "Ox",
-    val: ""
+    val: "ox"
   },
   {
     text: "Bitcoin Gold",
-    val: ""
+    val: "bitcoin-gold"
   },
   {
     text: "Z Cash",
-    val: ""
+    val: "z-cash"
   },
   {
     text: "Stellar",
-    val: ""
+    val: "stellar"
   },
   {
     text: "Dash",
-    val: ""
+    val: "dash"
   },
   {
     text: "Binaxe Coin",
-    val: ""
+    val: "binaxe-coin"
   },
   {
     text: "Orbs",
-    val: ""
+    val: "orbs"
   },
   {
     text: "TUSD",
-    val: ""
+    val: "tusd"
   },
   {
     text: "Gemini Dollar",
-    val: ""
+    val: "gemini-dollar"
   },
   {
     text: "Paxos",
-    val: ""
+    val: "paxos"
   },
   {
     text: "USD Coin",
-    val: ""
+    val: "usd-coin"
   },
   {
     text: "DAI",
-    val: ""
+    val: "dai"
   },
   {
     text: "Tether",
-    val: ""
+    val: "tether"
   }
 ];
 
 export const LOOKING = [
   {
     text: "Borrow",
-    val: ""
+    val: "borrow"
   },
   {
     text: "Lending",
-    val: ""
+    val: "lending"
   },
   {
     text: "Both",
-    val: ""
+    val: "both"
   }
 ];
 
 export const SERVICES = [
   {
     text: "Instant cash loan",
-    val: ""
+    val: "instant-cash-load"
   },
 
   {
     text: "Peer-to-peer lending",
-    val: ""
+    val: "peer-to-peer-lending"
   },
 
   {
     text: "Earn interest on Fiat",
-    val: ""
+    val: "earn-interest-on-fiat"
   },
 
   {
     text: "Earn interest on Stale coins",
-    val: ""
+    val: "earn-interest-on-stale-coins"
   },
   {
     text: "Earn crypto interest",
-    val: ""
+    val: "earn-crypto-interest"
   },
 
   {
     text: "Insured custodial wallet",
-    val: ""
+    val: "insured-custodial-wallet"
   },
   {
     text: "While-label partnership",
-    val: ""
+    val: "white-label-partnership"
   }
 ];
 
 export const MEMBERSHIP = [
   {
     text: "Personal",
-    val: ""
+    val: "personal"
   },
 
   {
     text: "White Label",
-    val: ""
+    val: "white-label"
   },
 
   {
     text: "ICO/STO/IEO",
-    val: ""
+    val: "ico-sto-ieo"
   },
   {
     text: "Investor",
-    val: ""
+    val: "investor"
   },
   {
     text: "Hedge Fund",
-    val: ""
+    val: "hedge-fund"
   },
   {
     text: "Enterprise",
-    val: ""
+    val: "enterprise"
   },
   {
     text: "Tokenized Asset Holder",
-    val: ""
+    val: "tokenized-asset-holder"
   },
   {
     text: "Miner",
-    val: ""
+    val: "miner"
   },
   {
     text: "Cryto Exchange",
-    val: ""
+    val: "crypto-exchange"
   }
 ];
 

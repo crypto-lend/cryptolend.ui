@@ -1,5 +1,5 @@
 import React from "react";
-import cashflowScreen from "../../images/blocklendr-cash.png";
+import cashflowScreen from "../../images/blocklendr-cash.jpg";
 import Point1 from "../../images/cashflow/1.png";
 import Point2 from "../../images/cashflow/2.png";
 import Point3 from "../../images/cashflow/3.png";
@@ -44,10 +44,10 @@ export default function() {
       <section className="section-shaped my-0">
         <div className="container shape-container d-flex align-items-center">
           <div className="col px-0">
-            <div className="pricing card-group flex-column flex-md-row mb-3">
-              <div className="card card-pricing border-0 text-center mb-4">
+            <div className="pricing card-group flex-column flex-md-row mb-5 py-3">
+              <div className="card card-pricing border-0 text-center">
                 <div className="card-header bg-transparent">
-                  <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
+                  <h2 className="text-uppercase ls-1 text-primary py-3">
                     How Blocklendr Cash Works{" "}
                   </h2>
                 </div>
@@ -55,11 +55,10 @@ export default function() {
                   <Points points={DATA} />
                 </div>
               </div>
-              <div className="card card-pricing zoom-in rounded border-0 text-center mb-4 d-flex justify-content-center">
+              <div className="card card-pricing zoom-in rounded border-0 text-center d-flex justify-content-center">
                 <img
                   style={{
-                    width: "110%",
-                    marginTop: "5%"
+                    width: "120%"
                   }}
                   className="card-img"
                   src={cashflowScreen}

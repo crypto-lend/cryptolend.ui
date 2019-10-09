@@ -38,7 +38,10 @@ export default () => (
           </div>
           <div className="col-12 mt-3 p-0 text-left">
             <div>support@blocklendr.com</div>
-            <div>+44 208 556 789</div>
+            <div>+44 2920 099 360</div>
+            <div>
+              1 Despenser Gardens <br /> Cardiff <br /> CF11 6AY
+            </div>
           </div>
         </div>
 
@@ -88,7 +91,7 @@ export default () => (
       © {new Date().getFullYear()} Copyright:
       <Link className="dark-grey-text" to="/">
         {" "}
-        Blocklendr
+        Blocklendr Global Ltd.
       </Link>
     </div>
   </footer>

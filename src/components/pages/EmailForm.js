@@ -13,7 +13,7 @@ const FormConfig = {
     "peer-to-peer-lending": {
       text:
         "Borrow or lend on your own terms in our global peer-to-peer crypto lending marketplace",
-      redirect: "/redirect"
+      redirect: REGISTER_LINK
     },
     "white-label": {
       text:

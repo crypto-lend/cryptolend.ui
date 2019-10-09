@@ -26,7 +26,6 @@ export default ({
         <div className={classes} key={index} onClick={() => onChange(val)}>
           <input
             type={type}
-            onChange={onChange}
             className="custom-control-input"
             checked={selected.indexOf(val) !== -1}
           />
