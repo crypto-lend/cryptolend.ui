@@ -23,6 +23,7 @@ import RegisterForm from "../pages/RegisterForm";
 import Navbar from "../pages/Navbar";
 import CompanyRegister from "../pages/CompanyRegister";
 import WhiteLabelRegister from "../pages/WhiteLabelRegister";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 // COMPONENT
 
 export const AppRouter = () => (
@@ -55,6 +56,7 @@ export const AppRouter = () => (
         <Route path="/company/about-us" component={AboutUs} />
         <Route path="/company/connect-with-us" component={ContactUs} />
         <Route path="/support" component={ContactUs} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/:menuItem/:subItem" exact component={EmailForm} />
         <Redirect to="/" />
       </Switch>

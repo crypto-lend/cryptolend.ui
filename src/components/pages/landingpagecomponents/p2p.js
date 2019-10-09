@@ -43,13 +43,13 @@ export default function p2p() {
       <section className=" section-shaped my-0">
         <div className="container shape-container d-flex align-items-center">
           <div className="col px-0">
-            <div className="pricing card-group flex-column flex-md-row mb-3">
-              <div className="card bg-secondary card-pricing zoom-in rounded border-0 text-center mb-4 d-flex justify-content-center">
+            <div className="pricing card-group flex-column flex-md-row mb-5">
+              <div className="card bg-secondary card-pricing zoom-in position-relative rounded border-0 text-center mb-4 d-flex justify-content-center">
                 <img
-                  className="card-img pt-5"
+                  className="card-img px-0 w-50 position-absolute"
                   style={{
-                    width: "50%",
-                    margin: "1rem auto"
+                    left: "20%",
+                    top: "6%"
                   }}
                   src={iphone}
                   alt="App screens"
