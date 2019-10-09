@@ -93,6 +93,13 @@ export default () => (
         {" "}
         Blocklendr Global Ltd.
       </Link>
+      <ul className="navbar-nav-hover text-center mt-2 align-items-center">
+        <li className="nav-item dropdown mx-2">
+          <Link className="nav-link" to="/privacy-policy" role="button">
+            <span className="nav-link-inner--text">Privacy Policy</span>
+          </Link>
+        </li>
+      </ul>
     </div>
   </footer>
 );
