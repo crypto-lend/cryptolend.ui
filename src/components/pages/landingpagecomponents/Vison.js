@@ -17,10 +17,11 @@ export default function Vision() {
         </div>
       </div>
       <h5
-        className="row"
+        className="row mx-lg-5 px-lg-4"
         style={{
-          margin: "2rem 5rem",
-          lineHeight: "1.75"
+          marginTop: "2rem",
+          lineHeight: "1.75",
+          marginBottom: "8rem"
         }}
       >
         At Blocklendr, we stand for financial equality without boarders or

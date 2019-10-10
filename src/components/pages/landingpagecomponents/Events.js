@@ -4,26 +4,10 @@ const DATA = [
   {
     img:
       "https://media.shellypalmer.com/wp-content/images/2018/02/04064458/Webp.net-compress-image-1.jpg",
-    title: "Sample Event",
+    title: "Malta AI & Blockchain Summit",
     date: "7-8th Nov",
     text:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  },
-  {
-    img:
-      "https://media.shellypalmer.com/wp-content/images/2018/02/04064458/Webp.net-compress-image-1.jpg",
-    title: "Sample Event",
-    date: "7-8th Nov",
-    text:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  },
-  {
-    img:
-      "https://media.shellypalmer.com/wp-content/images/2018/02/04064458/Webp.net-compress-image-1.jpg",
-    title: "Sample Event",
-    date: "7-8th Nov",
-    text:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      "Blocklendr’s team are pleased to be attending the Malta AI & Blockchain Summit from 7-8th November. The summit will be showcasing the future of artificial intelligence, blockchain, big data, IoT and quantum technologies."
   }
 ];
 
