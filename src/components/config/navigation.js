@@ -1,6 +1,7 @@
 import facebookIcon from "../images/social/facebook.svg";
 import twitterIcon from "../images/social/twitter.svg";
 import linkedInIcon from "../images/social/linkedin.svg";
+import telegramIcon from "../images/social/telegram.svg";
 
 export const FEATURES = [
   {
@@ -51,8 +52,12 @@ export const SOCIALLINKS = [
     icon: twitterIcon,
     link: "https://twitter.com/blocklendr"
   },
+  // {
+  //   icon: linkedInIcon,
+  //   link: " https://www.linkedin.com/company/15833323/"
+  // },
   {
-    icon: linkedInIcon,
-    link: " https://www.linkedin.com/company/15833323/"
+    icon: telegramIcon,
+    link: "https://t.me/joinchat/AAAAAEh8p9gBRsz1mHuiww"
   }
 ];
