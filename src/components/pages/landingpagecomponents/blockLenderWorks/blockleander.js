@@ -14,13 +14,13 @@ const DATA = [
   {
     title: "Instant Cash Loans",
     text:
-      "Spend your money straight away with the Blocklendr card or withdraw to your back account. For 8% APR on what you use.",
+      "Spend your money straight away with the Blocklendr card or withdraw to your back account. From 8% APR on what you use.",
     img: Point2
   },
   {
     title: "Insured custodial wallets",
     text:
-      "Keep your crypto safe with our secure custodial wallets, insured with leading insurer Lloyds of London for upto $100 million USD",
+      "Keep your crypto safe with our secure custodial wallets, insured with leading insurer Lloyds of London for up to $100 million USD",
     img: Point3
   }
 ];

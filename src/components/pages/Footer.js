@@ -20,11 +20,11 @@ export default () => (
         <div className="col-md-3 col-lg-4 col-xl-3 mb-4">
           <h6 className="text-uppercase font-weight-bold">Blocklendr</h6>
           <hr className="w-100 accent-3 mb-4 mt-0 d-inline-block mx-auto" />
-          <div className="col-12 text-left p-0 mb-4 mb-md-0">
+          <div className="col-12 text-md-left p-0 mb-4 mb-md-0">
             <h6 className="mb-0">Get connected with us on social networks!</h6>
           </div>
 
-          <div className="col-6 mt-3 p-0 text-left d-flex justify-content-between">
+          <div className="col-12 col-md-6 mt-3 p-0 text-md-left d-flex justify-content-around justify-content-md-between">
             {SOCIALLINKS.map(({ icon, link }, index) => (
               <a key={index} href={link}>
                 <img
@@ -36,11 +36,12 @@ export default () => (
               </a>
             ))}
           </div>
-          <div className="col-12 mt-3 p-0 text-left">
-            <div>support@blocklendr.com</div>
+          <div className="col-12 mt-3 p-0 text-md-left">
             <div>+44 2920 099 360</div>
             <div>
               1 Despenser Gardens <br /> Cardiff <br /> CF11 6AY
+              <br />
+              United Kindgom
             </div>
           </div>
         </div>

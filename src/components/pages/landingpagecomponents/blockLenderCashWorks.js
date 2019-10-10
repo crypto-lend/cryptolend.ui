@@ -15,7 +15,7 @@ const DATA = [
       "Spend money instantly with Blocklendr card or withdraw to Bank Account",
     img: Point4
   },
-  { text: "No minimum payments or hidden fee", img: Point5 }
+  { text: "No minimum repayments or hidden fees", img: Point5 }
 ];
 const Points = ({ points }) => (
   <ul className="list-group list-group-flush list my--3">
@@ -58,7 +58,9 @@ export default function() {
               <div className="card card-pricing zoom-in rounded border-0 text-center d-flex justify-content-center">
                 <img
                   style={{
-                    width: "120%"
+                    width: "120%",
+                    flex: "1",
+                    margin: "3rem 0 -4rem"
                   }}
                   className="card-img"
                   src={cashflowScreen}

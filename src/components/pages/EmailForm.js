@@ -7,7 +7,7 @@ const FormConfig = {
   features: {
     "instant-crypto-credit": {
       text:
-        "Get cash instantly with your instant crypto-backed loans . Keep your crypto secure with our $100 million USD insured custodial wallets",
+        "Get cash instantly with our instant crypto-backed loans . Keep your crypto secure with our $100 million USD insured custodial wallets",
       redirect: REGISTER_LINK
     },
     "peer-to-peer-lending": {
@@ -24,12 +24,12 @@ const FormConfig = {
   "earn-interest": {
     "stable-coin": {
       text:
-        "Make your crypto work for you with up to 8% interest on symbol stable coins 100% Asset backed guarantee",
+        "Make your crypto work for you with up to 8% interest on symbol stable coins. 100% Asset backed guarantee",
       redirect: REGISTER_LINK
     },
     fiat: {
       text:
-        "Start earning up to 8% interest on EUR, GBP, USD and RUB 100% asset backed guarantee",
+        "Start earning up to 8% interest on EUR, GBP, USD and RUB. 100% asset backed guarantee",
       redirect: REGISTER_LINK
     }
   }

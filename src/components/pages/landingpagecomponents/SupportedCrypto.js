@@ -95,7 +95,7 @@ const DATA = [
 export default function SupportedCrypto() {
   return (
     <div className="bg-secondary">
-      <div className="position-relative container mt-5">
+      <div className="position-relative container my-5 py-5">
         <div className="row">
           <div className="col-sm">
             <div
