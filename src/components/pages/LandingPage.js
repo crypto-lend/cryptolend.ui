@@ -43,8 +43,8 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <div className="HomePage text-center" style={{ color: "fff" }}>
-          <div className="position-relative py-5 mt-5">
+        <div className="HomePage text-center">
+          <div className="position-relative py-5">
             <section className="section-shaped my-0">
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">

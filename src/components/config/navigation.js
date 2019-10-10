@@ -45,14 +45,14 @@ export const ENTERPRISE = [
 export const SOCIALLINKS = [
   {
     icon: facebookIcon,
-    link: "https://facebook.com"
+    link: "https://www.facebook.com/Blocklendr-102494831167711/"
   },
   {
     icon: twitterIcon,
-    link: "https://facebook.com"
+    link: "https://twitter.com/blocklendr"
   },
   {
     icon: linkedInIcon,
-    link: "https://facebook.com"
+    link: " https://www.linkedin.com/company/15833323/"
   }
 ];

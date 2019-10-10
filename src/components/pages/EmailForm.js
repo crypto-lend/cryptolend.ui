@@ -17,19 +17,19 @@ const FormConfig = {
     },
     "white-label": {
       text:
-        "Partner with Blocklendr and our APIs for insured crypto interest-bearing accounts. Wallet provides , exchanges and custodians can work with Blocklendr to provide their customers with the ability  to earn Interest on their crypto deposits. ",
+        "Partner with Blocklendr and use our API's for insured, crypto-interest bearing accounts. Wallet providers, exchanges and custodians can work with Blocklendr to provide their customers with the ability to earn interest on their crypto deposits. ",
       redirect: "/enterprise/white-label"
     }
   },
   "earn-interest": {
     "stable-coin": {
       text:
-        "Make your crypto work for you with up to 8% interest on symbol stable coins. 100% Asset backed guarantee",
+        "Make your crypto work for you with up to 8% interest on supported stable coins. 100% asset-backed guarantee",
       redirect: REGISTER_LINK
     },
     fiat: {
       text:
-        "Start earning up to 8% interest on EUR, GBP, USD and RUB. 100% asset backed guarantee",
+        "Start earning up to 8% interest on EUR, GBP, USD and RUB. 100% asset-backed guarantee",
       redirect: REGISTER_LINK
     }
   }

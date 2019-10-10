@@ -58,8 +58,7 @@ export default function() {
               <div className="card card-pricing zoom-in rounded border-0 text-center d-flex justify-content-center">
                 <img
                   style={{
-                    width: "120%",
-                    flex: "1",
+                    width: "110%",
                     margin: "3rem 0 -4rem"
                   }}
                   className="card-img"
