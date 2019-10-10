@@ -33,7 +33,7 @@ export default function Events({ background }) {
             <div className={`card col-12 my-3 ${background}`} key={index}>
               <div className="card-body">
                 <div className="row align-items-start">
-                  <div className="col-auto ">
+                  <div className="col-12 col-md-auto">
                     <img
                       style={{
                         width: "12rem"
@@ -43,7 +43,7 @@ export default function Events({ background }) {
                       src={img}
                     />
                   </div>
-                  <div className="col ml--2">
+                  <div className="col-12 col-md mt-4 mt-md-0">
                     <div className="mb-3 text-left">
                       <span className="h5">{title}</span>
                       <small className="float-right">{date}</small>

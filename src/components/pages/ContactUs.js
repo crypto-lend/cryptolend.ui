@@ -35,13 +35,13 @@ export default function ContactUs() {
           <h2>Connect with us</h2>
         </div>
       </div>
-      <div className="row justify-content-center text-center mt-3">
+      <div className="row justify-content-center text-center mt-4">
         <div className="col-lg-6 col-10">
           At Blocklendr we always love hearing back from our users, you can
           connect with us on social media or by email or over the phone.
         </div>
       </div>
-      <div className="row text-center justify-content-center mt-3">
+      <div className="row text-center justify-content-center mt-4">
         <div className="col-lg-6 col-10 d-flex justify-content-around">
           {SOCIALLINKS.map(({ icon, link }, index) => (
             <a key={index} href={link}>
@@ -55,12 +55,14 @@ export default function ContactUs() {
           ))}
         </div>
       </div>
-      <div className="row text-center justify-content-center mt-3">
+      <div className="row text-center justify-content-center mt-4">
         <div className="col-lg-6 col-10 ">
           <div>support@blocklendr.com</div>
           <div>+44 2920 099 360</div>
           <div>
             1 Despenser Gardens <br /> Cardiff <br /> CF11 6AY
+            <br />
+            United Kingdom
           </div>
         </div>
       </div>
