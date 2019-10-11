@@ -15,7 +15,7 @@ export default () => (
       <div className="container"></div>
     </div>
 
-    <div className="container text-center text-md-left mt-5">
+    <div className="container text-center text-md-left mt-4">
       <div className="row mt-3 dark-grey-text">
         <div className="col-md-3 col-lg-4 col-xl-3 mb-4">
           <h6 className="text-uppercase font-weight-bold">Blocklendr</h6>
@@ -26,7 +26,12 @@ export default () => (
 
           <div className="col-12 col-md-6 mt-3 p-0 text-md-left d-flex justify-content-around justify-content-md-between">
             {SOCIALLINKS.map(({ icon, link }, index) => (
-              <a key={index} href={link}>
+              <a
+                key={index}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={link}
+              >
                 <img
                   className="p-0"
                   style={{ height: "1.25rem" }}
@@ -37,12 +42,12 @@ export default () => (
             ))}
           </div>
           <div className="col-12 mt-3 p-0 text-md-left">
-            <div>+44 2920 099 360</div>
             <div>
               1 Despenser Gardens <br /> Cardiff <br /> CF11 6AY
               <br />
               United Kindgom
             </div>
+            <div>+44 2920 099 360</div>
           </div>
         </div>
 

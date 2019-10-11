@@ -46,8 +46,10 @@ export default function p2p() {
             <div className="pricing card-group flex-column flex-md-row my-5">
               <div className="card bg-secondary card-pricing zoom-in rounded border-0 text-center d-flex justify-content-center align-items-center">
                 <img
-                  className="card-img px-0 w-50 col-12"
+                  className="card-img px-0 col-12"
                   style={{
+                    objectFit: "contain",
+                    width: "50%",
                     marginLeft: "-20%"
                   }}
                   src={iphone}

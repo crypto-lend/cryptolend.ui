@@ -63,8 +63,8 @@ const Clients = () => {
 
       <div className="mt-5 row justify-content-around">
         {DATA.map(({ label, img, text }, index) => (
-          <div className="col-12 col-lg-4 col-sm-6" key={index}>
-            <div className="card mb-5 p-1 m-1">
+          <div className="col-12 mb-5 col-lg-4 col-sm-6" key={index}>
+            <div className="card p-1 m-1 h-100">
               <img
                 className="card-img-top p-0 mt-4 mx-auto"
                 src={img}
@@ -86,8 +86,8 @@ const Clients = () => {
       <div style={{ justifyContent: "center" }} className="row">
         <div className="col-12 col-md-8">
           <h4 style={{ padding: "2em", textAlign: "center" }}>
-            Blocklender caters to a wide range of clients from investors with
-            our individuals cash lending service as well as our global
+            Blocklendr caters to a wide range of clients from institutions to
+            individuals with our cash lending service as well as our global
             peer-to-peer marketplace
           </h4>
         </div>

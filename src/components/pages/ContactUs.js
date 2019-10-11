@@ -58,12 +58,12 @@ export default function ContactUs() {
       <div className="row text-center justify-content-center mt-4">
         <div className="col-lg-6 col-10 ">
           <div>support@blocklendr.com</div>
-          <div>+44 2920 099 360</div>
           <div>
             1 Despenser Gardens <br /> Cardiff <br /> CF11 6AY
             <br />
             United Kingdom
           </div>
+          <div>+44 2920 099 360</div>
         </div>
       </div>
       <div className="row justify-content-center mt-5">
