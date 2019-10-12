@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
-import Header  from '../pages/Header';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
@@ -171,7 +169,6 @@ class LoanOffer extends Component {
 
     return (
       <div className="LoanOffer text-center">
-      <Header />
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">

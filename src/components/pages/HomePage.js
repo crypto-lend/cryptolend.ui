@@ -1,13 +1,7 @@
 import React, { Component } from "react";
-import ReactCountryFlag from "react-country-flag";
-import { EthereumIcon } from "../Web3/EthereumIcon";
-import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
 import {
-  fetchNetwork,
   fetchAccounts,
-  getAccounts
 } from "../../services/Web3Service";
-import Header from "../pages/Header";
 
 class LandingPage extends Component {
   constructor(props) {
@@ -42,7 +36,6 @@ class LandingPage extends Component {
     return (
       <div>
         <div className="LandingPage text-center" style={{ color: "fff" }}>
-          <Header />
           <div className="position-relative">
             <section className="section-hero section-shaped my-0">
               <div className="shape shape-style-1 shape-primary">
