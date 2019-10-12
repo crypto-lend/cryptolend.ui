@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import { fetchAccounts } from "../../services/Web3Service";
 import P2P from "./landingpagecomponents/p2p";
 import Blocklendr from "./landingpagecomponents//blockLenderWorks/blockleander";
 import Clients from "./landingpagecomponents/ourclients/clients";
 import BlockLendrCash from "./landingpagecomponents/blockLenderCashWorks";
-import Navbar from "./Navbar";
 import macbookScreen from "../images/macbook.png";
 import SupportedCrypto from "./landingpagecomponents/SupportedCrypto";
 import Vision from "./landingpagecomponents/Vison";
@@ -44,14 +44,13 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <div className="HomePage text-center" style={{ color: "fff" }}>
-          <Navbar />
-          <div className="position-relative pt-5 mt-5">
+        <div className="HomePage text-center">
+          <div className="position-relative py-5">
             <section className="section-shaped my-0">
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
-                  <div className="pricing card-group flex-column flex-md-row mb-3">
-                    <div className="card card-pricing border-0 text-center mt-3 justify-content-center">
+                  <div className="pricing card-group flex-column flex-md-row mb-2">
+                    <div className="card card-pricing border-0 text-center mt-3 align-items-center justify-content-center">
                       <div className="card-header bg-transparent border-0">
                         <h2 className="text-uppercase ls-1 text-primary pt-1 mb-0">
                           Instant Loans on blockchain{" "}
@@ -59,24 +58,30 @@ class HomePage extends Component {
                       </div>
 
                       <div className="card-body">
-                        <h4 className="mb-5">
+                        <h4 className="my-4">
                           Be your own bank and let your crypto work for you, or
                           get cash in minutes with our instant crypto-backed
                           loans, all while retaining 100% ownership of your
                           digital assets
                         </h4>
-                        <button type="button" className="btn btn-primary mb-3">
-                          Register Now
-                        </button>
                       </div>
                     </div>
-                    <div className="card card-pricing justify-content-center zoom-in rounded border-0 text-center mb-4">
+                    <div className="card card-pricing align-items-center justify-content-center zoom-in rounded border-0 text-center">
                       <img
                         className="card-img"
                         src={macbookScreen}
                         alt="Show Screen"
                       />
                     </div>
+                  </div>
+                  <div className="w-50">
+                    <Link
+                      to="/register-form"
+                      role="button"
+                      className="btn btn-primary"
+                    >
+                      Register Now
+                    </Link>
                   </div>
                 </div>
               </div>

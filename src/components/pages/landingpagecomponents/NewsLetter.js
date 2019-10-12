@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { validateEmail } from "../../utils";
 
 export default function NewsLetter() {
   const [showPrompt, setPrompt] = useState(false);
+  const [email, setEmail] = useState("");
+
   return (
     <div className="position-relative container my-5">
       <div className="row">
@@ -18,34 +21,45 @@ export default function NewsLetter() {
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="d-flex m-5 px-5 w-100 justify-content-center">
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          validateEmail(email) && setPrompt(true);
+        }}
+        className="row"
+      >
+        <div className="d-flex m-5 px-5 w-100 justify-content-center form-group">
           <input
             className="form-control w-50"
             type="text"
             id="news-letter-mail"
             placeholder="Your email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
           />
           <button
-            className="btn btn-primary px-5 ml-5"
+            className={`btn btn-primary px-5 ml-5 ${
+              validateEmail(email) ? "" : "disabled"
+            }`}
             type="button"
             htmlFor="news-letter-mail"
             onClick={() => setPrompt(true)}
           >
             Submit
           </button>
-          {showPrompt && (
-            <SweetAlert
-              success
-              title="Awesome!"
-              onConfirm={() => setPrompt(false)}
-              onCancel={() => setPrompt(false)}
-            >
-              You are subscribed to our newsLetter
-            </SweetAlert>
-          )}
         </div>
-      </div>
+      </form>
+      {showPrompt && (
+        <SweetAlert
+          success
+          title="Awesome!"
+          onConfirm={() => setPrompt(false)}
+          onCancel={() => setPrompt(false)}
+        >
+          You are subscribed to our news letter
+        </SweetAlert>
+      )}
     </div>
   );
 }

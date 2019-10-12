@@ -1,6 +1,14 @@
 import React from "react";
 
-export default ({ options, title, moreThanOne, type, classes }) => (
+export default ({
+  options,
+  title,
+  moreThanOne,
+  type,
+  classes,
+  selected = [],
+  onChange
+}) => (
   <div className="form-group">
     <label className="form-control-label font-weight-bold">
       {title}
@@ -14,9 +22,13 @@ export default ({ options, title, moreThanOne, type, classes }) => (
       )}
     </label>
     <div className="row col">
-      {options.map(({ text }, index) => (
-        <div className={classes} key={index}>
-          <input type={type} className="custom-control-input" />
+      {options.map(({ text, val }, index) => (
+        <div className={classes} key={index} onClick={() => onChange(val)}>
+          <input
+            type={type}
+            className="custom-control-input"
+            checked={selected.indexOf(val) !== -1}
+          />
           <label className="custom-control-label">{text}</label>
         </div>
       ))}

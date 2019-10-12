@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   CURRENCIES,
@@ -7,38 +7,86 @@ import {
   MEMBERSHIP
 } from "../config/form-options";
 import FormChoices from "./forms/FormChoices";
+import SweetAlert from "react-bootstrap-sweetalert";
 
-export default class Register extends Component {
-  constructor() {
-    super();
-    this.state = {
-      username: '',
-      email: '',
-      password: ''
+const defaultForm = {
+  name: "",
+  companyName: "",
+  password: "",
+  memberShip: [],
+  lookingFor: [],
+  currency: "",
+  amount: "",
+  currencies: [],
+  services: []
+};
+
+export default function Register() {
+  const [showPopup, setPopup] = useState(false);
+  const [form, setForm] = useState(defaultForm);
+
+  const updateForm = (key, value) => {
+    if (!key || !formKeys[key]) {
+      throw new Error("Invalid form key set");
     }
-  }
-  handleRegisterClick =  () => {
+    setForm({ ...form, [key]: value });
+  };
+
+  const formKeys = Object.keys(form)
+    .map(key => key)
+    .reduce((acc, val) => {
+      acc[val] = val;
+      return acc;
+    }, {});
+
+  const checkValidity = () => {
+    for (const key in form) {
+      const val = form[key];
+      if (typeof val === "string") {
+        if (!val || val === "" || val.length === 0) return false;
+      }
+
+      if (typeof val === "object") {
+        if (Object.keys(val).length < 0) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const selectOne = key => val => {
+    updateForm(key, [val]);
+  };
+
+  const selectMultiple = key => val => {
+    const selected = [...form[key]];
+    const index = selected.indexOf(val);
+    if (index === -1) {
+      selected.push(val);
+    } else {
+      selected.splice(index, 1);
+    }
+    updateForm(key, selected);
+  };
+
+  const onSubmit = () => {
     axios
-      .post('http://18.237.85.135:1337/auth/local/register', {
-        username: this.state.username,
-        email: this.state.email,
-        password: this.state.password
-      })
+      .post("https://www.cipherfit.com/auth/local/register", form)
       .then(response => {
         // Handle success.
-        console.log('Well done!');
-        console.log('User profile', response.data.user);
-        console.log('User token', response.data.jwt);
-        window.localStorage.setItem('user', response.data.user.username);
-        window.localStorage.setItem('user_id', response.data.user.id);
+        console.log("Well done!");
+        console.log("User profile", response.data.user);
+        console.log("User token", response.data.jwt);
+        window.localStorage.setItem("user", response.data.user.username);
+        window.localStorage.setItem("user_id", response.data.user.id);
+
+        showPopup(true);
       })
       .catch(error => {
         // Handle error.
-        console.log('An error occurred:', error);
+        console.log("An error occurred:", error);
       });
-  }
-  render(){
-    let { username, email, password } = this.state;
+  };
   return (
     <div className="main-content">
       <div className="header bg-gradient-primary py-5">
@@ -59,12 +107,17 @@ export default class Register extends Component {
 
       <div className="container mt-5 pb-5">
         <div className="row justify-content-center">
-          <div className="col-md-8 col-10">
+          <div className="col-md-8 col-12">
             <div className="card bg-secondary border-0">
               <div className="card-body px-lg-5 py-lg-5">
-                <form>
-                  <div className="form-group d-flex">
-                    <div className="input-group input-group-merge input-group-alternative mb-3 mr-3">
+                <form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    checkValidity() && onSubmit();
+                  }}
+                >
+                  <div className="form-group d-flex align-items-center position-relative">
+                    <div className="input-group input-group-merge input-group-alternative">
                       <div className="input-group-prepend">
                         <span className="input-group-text">
                           <i className="ni ni-hat-3"></i>
@@ -74,39 +127,16 @@ export default class Register extends Component {
                         className="form-control"
                         placeholder="Name"
                         type="text"
-                        value={username}
-                        onChange={(e)=>{
-                          this.setState({username:e.target.value});
-                        }}
-                      />
-                    </div>
-                    <div className="input-group input-group-merge input-group-alternative mb-3">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="ni ni-email-83"></i>
-                        </span>
-                      </div>
-                      <input
-                        className="form-control"
-                        placeholder="Email"
-                        type="email"
-                        value={email}
-                        onChange={(e)=>{
-                          this.setState({email:e.target.value});
-                        }}
+                        value={form.name}
+                        onChange={e =>
+                          updateForm(formKeys.name, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="form-group d-flex align-items-center position-relative">
-                    <span
-                      className="text-muted position-absolute"
-                      style={{
-                        left: "-32px"
-                      }}
-                    >
-                      Or
-                    </span>
                     <div className="input-group input-group-merge input-group-alternative">
                       <div className="input-group-prepend">
                         <span className="input-group-text">
@@ -117,6 +147,11 @@ export default class Register extends Component {
                         className="form-control"
                         placeholder="Company Name"
                         type="text"
+                        value={form.companyName}
+                        onChange={e =>
+                          updateForm(formKeys.companyName, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -132,10 +167,11 @@ export default class Register extends Component {
                         className="form-control"
                         placeholder="Password"
                         type="password"
-                        value={password}
-                        onChange={(e)=>{
-                          this.setState({password:e.target.value});
-                        }}
+                        value={form.password}
+                        onChange={e =>
+                          updateForm(formKeys.password, e.target.value)
+                        }
+                        required
                       />
                     </div>
                   </div>
@@ -144,13 +180,17 @@ export default class Register extends Component {
                     options={MEMBERSHIP}
                     type={"radio"}
                     title={"Membership Type:"}
-                    classes={"custom-control custom-radio col-4 mb-3"}
+                    classes={"custom-control custom-radio col-md-4 col-6 mb-3"}
+                    selected={form.memberShip}
+                    onChange={selectOne(formKeys.memberShip)}
                   />
                   <FormChoices
                     options={LOOKING}
                     type={"radio"}
                     title={"Are you looking to borrow or lend:"}
-                    classes={"custom-control custom-radio col-4 mb-3"}
+                    classes={"custom-control custom-radio col-md-4 col-6 mb-3"}
+                    selected={form.lookingFor}
+                    onChange={selectOne(formKeys.lookingFor)}
                   />
                   <div className="form-group">
                     <label className="form-control-label font-weight-bold">
@@ -167,6 +207,11 @@ export default class Register extends Component {
                           className="form-control"
                           placeholder="Currency"
                           type="text"
+                          value={form.currency}
+                          onChange={e =>
+                            updateForm(formKeys.currency, e.target.value)
+                          }
+                          required
                         />
                       </div>
                       <div className="input-group input-group-merge input-group-alternative mb-3">
@@ -179,6 +224,11 @@ export default class Register extends Component {
                           className="form-control"
                           placeholder="Amount"
                           type="text"
+                          value={form.amount}
+                          onChange={e =>
+                            updateForm(formKeys.amount, e.target.value)
+                          }
+                          required
                         />
                       </div>
                     </div>
@@ -190,8 +240,10 @@ export default class Register extends Component {
                     title={"Which other currencies would you like to use?"}
                     moreThanOne
                     classes={
-                      "custom-control custom-control-alternative custom-checkbox col-4 mb-3"
+                      "custom-control custom-control-alternative custom-checkbox col-md-4 col-6 mb-3"
                     }
+                    selected={form.currencies}
+                    onChange={selectMultiple(formKeys.currencies)}
                   />
 
                   <FormChoices
@@ -200,16 +252,37 @@ export default class Register extends Component {
                     title={"Which service interests you the most?"}
                     moreThanOne
                     classes={
-                      "custom-control custom-control-alternative custom-checkbox col-6 mb-3"
+                      "custom-control custom-control-alternative custom-checkbox col-md-6 col-10 mb-3"
                     }
+                    selected={form.services}
+                    onChange={selectMultiple(formKeys.services)}
                   />
 
                   <div className="text-center">
-                    <button type="button" className="btn btn-primary mt-4" onClick={this.handleRegisterClick}>
+                    <button
+                      type="submit"
+                      className={`btn btn-primary mt-5 w-50 ${
+                        checkValidity() ? "" : "disabled"
+                      }`}
+                      onClick={() => checkValidity() && onSubmit()}
+                    >
                       Submit
                     </button>
                   </div>
                 </form>
+                {showPopup && (
+                  <SweetAlert
+                    success
+                    title="Awesome!"
+                    onConfirm={() => setPopup(false)}
+                    onCancel={() => setPopup(false)}
+                  >
+                    Thank you for taking the time to register your interest. We
+                    want to serve you as best as we can and offer you absolute
+                    best rates on the market. A member of our management team
+                    will get back to you shortly to discuss your query.
+                  </SweetAlert>
+                )}
               </div>
             </div>
           </div>
@@ -217,5 +290,4 @@ export default class Register extends Component {
       </div>
     </div>
   );
-}
 }
