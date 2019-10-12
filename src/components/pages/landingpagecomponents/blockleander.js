@@ -1,8 +1,8 @@
 import React from "react";
 
-import Point1 from "../../../images/the-why/1.png";
-import Point2 from "../../../images/the-why/2.png";
-import Point3 from "../../../images/the-why/3.png";
+import Point1 from "../../images/the-why/1.png";
+import Point2 from "../../images/the-why/2.png";
+import Point3 from "../../images/the-why/3.png";
 
 const DATA = [
   {
