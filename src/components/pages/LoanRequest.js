@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router';
 import axios from 'axios';
 import Loader from 'react-loader';
-import Header  from '../pages/Header';
 import { LoanCreatorABI, LoanContractABI, LoanCreatorAddress, LoanContractAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
 
 class LoanRequest extends Component {
@@ -199,7 +197,6 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
     return (
       <div className="LoanRequest text-center">
       <Loader loaded={this.state.loaded}/>
-      <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">

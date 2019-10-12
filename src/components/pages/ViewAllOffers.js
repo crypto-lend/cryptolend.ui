@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import ReactCountryFlag from 'react-country-flag';
-import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import Header  from '../pages/Header';
 import './ViewAllOffers.css';
 
 class ViewAllOffers extends Component {
@@ -123,7 +120,6 @@ class ViewAllOffers extends Component {
     const { erc20_tokens,duration,minDuration,maxDuration, collateralMetadataAlert, collateral_tokens, transferCollateralAlert, acceptCollateralAlert, collateralCurrencyToken } = this.state;
     return (
       <div className="ViewAllOffers text-center">
-        <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">

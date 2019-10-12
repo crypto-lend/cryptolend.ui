@@ -1,10 +1,10 @@
 import React from "react";
-import Icon1 from "../../../images/clients/1.png";
-import Icon2 from "../../../images/clients/2.png";
-import Icon3 from "../../../images/clients/3.png";
-import Icon4 from "../../../images/clients/4.png";
-import Icon5 from "../../../images/clients/5.png";
-import Icon6 from "../../../images/clients/6.png";
+import Icon1 from "../../images/clients/1.png";
+import Icon2 from "../../images/clients/2.png";
+import Icon3 from "../../images/clients/3.png";
+import Icon4 from "../../images/clients/4.png";
+import Icon5 from "../../images/clients/5.png";
+import Icon6 from "../../images/clients/6.png";
 
 const DATA = [
   {

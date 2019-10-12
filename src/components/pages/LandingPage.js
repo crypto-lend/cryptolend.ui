@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import { fetchAccounts } from "../../services/Web3Service";
 import P2P from "./landingpagecomponents/p2p";
-import Blocklendr from "./landingpagecomponents//blockLenderWorks/blockleander";
-import Clients from "./landingpagecomponents/ourclients/clients";
+import Blocklendr from "./landingpagecomponents/blockleander";
+import Clients from "./landingpagecomponents/clients";
 import BlockLendrCash from "./landingpagecomponents/blockLenderCashWorks";
 import macbookScreen from "../images/macbook.png";
 import SupportedCrypto from "./landingpagecomponents/SupportedCrypto";

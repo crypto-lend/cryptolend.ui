@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import ReactCountryFlag from 'react-country-flag';
-import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
-import Header  from '../pages/Header';
 import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
@@ -125,7 +122,6 @@ class ViewAllRequests extends Component {
     collateralMetadata } = this.state;
     return (
       <div className="ViewAllRequests text-center">
-        <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">

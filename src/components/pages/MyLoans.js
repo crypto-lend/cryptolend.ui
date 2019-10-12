@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import ReactCountryFlag from 'react-country-flag';
 import { LoanCreatorABI, LoanCreatorAddress,  LoanContractABI, StandardTokenABI, ERC20TokenABI } from '../Web3/abi';
-import Loader from 'react-loader';
-import Header  from '../pages/Header';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './MyLoans.css';
@@ -305,7 +302,6 @@ class MyLoans extends Component {
     return (
       <div className="MyLoans text-center">
       {/*<Loader loaded={loaded}/>*/}
-      <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">
