@@ -14,7 +14,7 @@ export default class Login extends Component {
   handleLogin = () => {
     // Request API.
     axios
-      .post("https://www.cipherfit.com//auth/local", {
+      .post("https://www.cipherfit.com/auth/local", {
         identifier: this.state.email,
         password: this.state.password
       })
@@ -25,7 +25,7 @@ export default class Login extends Component {
         window.localStorage.setItem("jwt", response.data.jwt);
         window.localStorage.setItem(
           "companyName",
-          response.data.user.companyNameI
+          response.data.user.companyName
         );
         window.location = `/myloans`;
       })
