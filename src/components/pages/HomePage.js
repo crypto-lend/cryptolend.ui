@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {
   fetchAccounts,
 } from "../../services/Web3Service";
+import Header from "./Header";
 
 class LandingPage extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class LandingPage extends Component {
     const web3 = window.web3;
     return (
       <div>
+        <Header/>
         <div className="LandingPage text-center" style={{ color: "fff" }}>
           <div className="position-relative">
             <section className="section-hero section-shaped my-0">

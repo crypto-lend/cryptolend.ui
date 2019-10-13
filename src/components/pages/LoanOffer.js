@@ -4,6 +4,7 @@ import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
 import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI, LoanContractAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+import Header from './Header';
 
 class LoanOffer extends Component {
   constructor(){
@@ -169,6 +170,7 @@ class LoanOffer extends Component {
 
     return (
       <div className="LoanOffer text-center">
+        <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">

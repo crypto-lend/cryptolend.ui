@@ -12,6 +12,7 @@ import Vision from "./landingpagecomponents/Vison";
 import Events from "./landingpagecomponents/Events";
 import NewsLetter from "./landingpagecomponents/NewsLetter";
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 class HomePage extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class HomePage extends Component {
   render() {
     return (
       <div>
+        <Navbar/>
         <div className="HomePage text-center">
           <div className="position-relative py-5">
             <section className="section-shaped my-0">

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 
 export default class Login extends Component {
   constructor() {
@@ -36,6 +37,8 @@ export default class Login extends Component {
   };
   render() {
     return (
+      <>
+      <Navbar/>
       <div
         className="header bg-gradient-primary py-7 py-lg-8 pt-lg-9 "
         style={{
@@ -139,6 +142,7 @@ export default class Login extends Component {
           </div>
         </div>
       </div>
+      </>
     );
   }
 }

@@ -3,6 +3,7 @@ import { LoanCreatorABI, LoanCreatorAddress,  LoanContractABI, StandardTokenABI,
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './MyLoans.css';
+import Header from './Header';
 
 class MyLoans extends Component {
   constructor(){
@@ -302,6 +303,7 @@ class MyLoans extends Component {
     return (
       <div className="MyLoans text-center">
       {/*<Loader loaded={loaded}/>*/}
+      <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">

@@ -1,5 +1,6 @@
 import React from "react";
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 const DATA = [
   {
@@ -73,6 +74,7 @@ const DATA = [
 export default function PrivacyPolicy() {
   return (
     <>
+    <Navbar/>
       <div className="container my-4">
         <div className="row text-center">
           <h2 className="col-12">Welcome to our Privacy Policy</h2>

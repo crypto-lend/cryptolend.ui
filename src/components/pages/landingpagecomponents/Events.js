@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../Navbar";
 
 const DATA = [
   {
@@ -13,6 +14,8 @@ const DATA = [
 
 export default function Events({ background }) {
   return (
+    <>
+    <Navbar/>
     <div className={`${background} pb-5`}>
       <div className="position-relative container mt-5">
         <div className="row">
@@ -57,5 +60,6 @@ export default function Events({ background }) {
         </div>
       </div>
     </div>
+    </>
   );
 }

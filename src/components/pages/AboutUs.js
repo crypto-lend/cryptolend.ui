@@ -1,5 +1,6 @@
 import React from "react";
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 const DATA = [
   {
@@ -22,6 +23,7 @@ const DATA = [
 export default function AboutUs() {
   return (
     <>
+    <Navbar/>
       <div className="container mt-5 pt-5">
         <div className="row  justify-content-center text-center">
           <div className="col-12">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { SOCIALLINKS } from "../config/navigation";
 import SweetAlert from "react-bootstrap-sweetalert";
+import Navbar from "./Navbar";
 
 const defaultForm = {
   name: "",
@@ -29,6 +30,8 @@ export default function ContactUs() {
     return true;
   };
   return (
+    <>
+    <Navbar/>
     <div className="container mt-5">
       <div className="row justify-content-center text-center">
         <div className="col-lg-6 col-10">
@@ -152,5 +155,6 @@ export default function ContactUs() {
         </SweetAlert>
       )}
     </div>
+    </>
   );
 }
