@@ -73,7 +73,7 @@ export default function EmailForm(props) {
             borderRadius: "1rem"
           }}
         >
-          <form onSubmit={() => redirect && push(redirect)}>
+          <form onSubmit={() => redirect && push(redirect, {email})}>
             <div className="form-group">
               <label
                 className="h5 font-weight-normal"
