@@ -92,7 +92,7 @@ export default function Register(props) {
         window.localStorage.setItem("user", response.data.user.username);
         window.localStorage.setItem("user_id", response.data.user.id);
 
-        showPopup(true);
+        setPopup(true);
       })
       .catch(error => {
         // Handle error.
