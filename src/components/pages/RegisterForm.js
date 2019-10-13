@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { validateEmail } from "../utils";
+import Navbar from "./Navbar";
 
 const defaultForm = {
   firstName: "",
@@ -36,6 +37,8 @@ export default function Register(props) {
     return true;
   };
   return (
+    <>
+    <Navbar/>
     <div className="container mt-5">
       <div className="row justify-content-center text-center">
         <div className="col-lg-6 col-10">
@@ -143,5 +146,6 @@ export default function Register(props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { WHITE_LABEL_SERVICES } from "../config/form-options";
 import FormComplexOptions from "./forms/FormComplexOptions";
+import Navbar from "./Navbar";
 
 const defaultForm = {
   name: "",
@@ -58,6 +59,8 @@ export default function WhiteLabelRegister() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="main-content">
       <div className="header bg-gradient-primary py-5">
         <div className="container">
@@ -215,5 +218,6 @@ export default function WhiteLabelRegister() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 
 import { FUNDING } from "../config/form-options";
 import FormChoices from "./forms/FormChoices";
+import Navbar from "./Navbar";
 
 const defaultForm = {
   companyName: "",
@@ -66,6 +67,8 @@ export default function CompanyRegister() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="main-content">
       <div className="header bg-gradient-primary py-5">
         <div className="container">
@@ -366,5 +369,6 @@ export default function CompanyRegister() {
         </div>
       </div>
     </div>
+    </>
   );
 }

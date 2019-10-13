@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { validateEmail } from "../utils";
+import Navbar from "./Navbar";
 
 const REGISTER_LINK = "/register";
 const FormConfig = {
@@ -57,6 +58,8 @@ export default function EmailForm(props) {
   const { text, redirect } = FormConfig[menuItem][subItem];
 
   return (
+    <>
+    <Navbar/>
     <div className="container mt-5 pt-5">
       <div className="row  justify-content-center text-center">
         <div className="col-lg-6 col-10">
@@ -105,5 +108,6 @@ export default function EmailForm(props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

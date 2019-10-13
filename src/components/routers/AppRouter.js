@@ -20,7 +20,6 @@ import Events from "../pages/landingpagecomponents/Events";
 import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
 import RegisterForm from "../pages/RegisterForm";
-import Navbar from "../pages/Navbar";
 import CompanyRegister from "../pages/CompanyRegister";
 import WhiteLabelRegister from "../pages/WhiteLabelRegister";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
@@ -29,8 +28,6 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 export const AppRouter = () => (
   <BrowserRouter>
     <Fragment>
-      <Navbar />
-
       <Switch>
         <Route path="/" component={LandingPage} exact={true} />
         <Route path="/home" component={HomePage} />

@@ -4,6 +4,7 @@ import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './ViewAllOffers.css';
+import Header from './Header';
 
 class ViewAllRequests extends Component {
   constructor(){
@@ -122,6 +123,7 @@ class ViewAllRequests extends Component {
     collateralMetadata } = this.state;
     return (
       <div className="ViewAllRequests text-center">
+        <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">

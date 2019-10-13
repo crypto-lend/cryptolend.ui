@@ -8,6 +8,7 @@ import {
 } from "../config/form-options";
 import FormChoices from "./forms/FormChoices";
 import SweetAlert from "react-bootstrap-sweetalert";
+import Navbar from "./Navbar";
 
 const defaultForm = {
   name: "",
@@ -88,6 +89,8 @@ export default function Register() {
       });
   };
   return (
+    <>
+    <Navbar/>
     <div className="main-content">
       <div className="header bg-gradient-primary py-5">
         <div className="container">
@@ -289,5 +292,6 @@ export default function Register() {
         </div>
       </div>
     </div>
+    </>
   );
 }
