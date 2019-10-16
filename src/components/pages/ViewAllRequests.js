@@ -3,7 +3,8 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import Header  from '../pages/Header';
-import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI } from '../Web3/abi';
+import { GetLoans } from '../../services/loanbook';
+import { GetLoanDetails, ApproveAndFundLoanRequest } from '../../services/loanContract';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './ViewAllOffers.css';
@@ -13,6 +14,7 @@ class ViewAllRequests extends Component {
     super();
     this.viewAllRequest();
     this.state = {
+      loanRequests: [],
       loanAmount:[],
       collateralValue: [],
       earnings:[],
@@ -49,56 +51,46 @@ class ViewAllRequests extends Component {
   }
 
   //Get All Loans
-  viewAllRequest = () => {
-    const Instance = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+  viewAllRequest = async () => {
 
-    Instance.getAllLoans((err, loanContractAddress) => {
-      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status} = this.state;
-      // console.log("LOAN ADDRESSES : ", loanContractAddress)
-      if(!err){
-        // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
-        loanContractAddress.map((loanAddress)=>{
-                const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
-                LoanInstance.getLoanData((err, res)=>{
+    try {
 
-                if(res){
-                  if(res[5].toNumber()>1){
+        const loans = await GetLoans();
 
-                  // console.log('Loan :', res);
-                  let startedOn = res[4].toNumber();
-                  let date = startedOn;
-                  date = this.convertDate(date, -1);
-                  // console.log('startedOn:', date);
-                  console.log('loanAmount', window.web3.fromWei(res[0]).toFixed(7));
-                  console.log("loanAddress ", loanAddress);
+        let  { loanRequests } = this.state;
 
-                  }
-                  loanAmount.push(window.web3.fromWei(res[0]).toFixed(7));
-                  collateralValue.push(res[7].toNumber());
-                  duration.push(res[1].toNumber());
-                  earnings.push(res[2].toFixed(2));
-                  status.push(res[5].toNumber());
-                  collateralAddress.push(res[6]);
-                  loanAddresses.push(loanAddress);
+        loans.map(async(loanAddress) => {
+          const loan = await GetLoanDetails(loanAddress);
+          
+          if(loan[5].toNumber() === 2){
+            
+            loanRequests.push({
+              loanAddress: loanAddress,
+              loanAmount: window.web3.fromWei(loan[0].toNumber()),
+              duration: loan[1].toNumber(),
+              interest: (loan[2].toNumber() / 100),
+              collateral: {
+                address: loan[6],
+                amount: loan[7].toNumber()
+              },
+              status: loan[5].toNumber(),
 
+            });
 
+           // let date = startedOn;
+            //               date = this.convertDate(date, -1);
+            //               // console.log('startedOn:', date);
 
-                   this.setState({
-                     loanAmount: loanAmount,
-                     collateralValue: collateralValue,
-                     duration: duration,
-                     earnings: earnings,
-                     status: status,
-                     collateralAddress: collateralAddress,
-                     loanAddresses: loanAddresses
-                   })
-                  //  console.log('collateralAddress', this.state.collateralAddress);
-                 }
-                });
-              });
-      }
+            this.setState({
+              loanRequests: loanRequests,
+            });
+          }
+        });
+    } catch (e) {
+        console.log(e);
+    } finally {
 
-    });
+    }
   }
 
   convertDate = (currentDueDate,i) =>{
@@ -108,16 +100,22 @@ class ViewAllRequests extends Component {
        return date;
   }
 
-  approveLoanRequest = (loanAmount,loanContractAddress) => {
-    const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
-    LoanInstance.approveLoanRequest({
-      from: window.web3.eth.accounts[0],
-      value: window.web3.toWei(loanAmount),
-      gas: 300000
-    },(err, res) => {
-        if(!err)
-           console.log('loanContractAddress', loanContractAddress);
-        });
+  approveAndFundLoanRequest = async(loanAmount,loanContractAddress) => {
+
+    try {
+      await ApproveAndFundLoanRequest(loanContractAddress, loanAmount);
+    } catch (error) {
+      console.log(error);
+    }
+    // const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
+    // LoanInstance.approveLoanRequest({
+    //   from: window.web3.eth.accounts[0],
+    //   value: window.web3.toWei(loanAmount),
+    //   gas: 300000
+    // },(err, res) => {
+    //     if(!err)
+    //        console.log('loanContractAddress', loanContractAddress);
+    //     });
   }
 
   render() {
@@ -253,36 +251,36 @@ class ViewAllRequests extends Component {
           </div>
             <div className="ml-4 row">
               {
-                this.state.loanAmount.map((loanAmount,i)=>{
-                return this.state.waitingForLender && status[i]>1 && status[i]<3 && collateralCurrency==='TTT' && duration[i]/30>minDuration && duration[i]/30<=maxDuration && earnings[i]/100>minMonthlyInt && earnings[i]/100<=maxMonthlyInt && <div className="col">
+                this.state.loanRequests.map((loanRequest)=>{
+                return  <div className="col">
                  <div className="card">
                    <div className="card-header">
 
                    <div className="row row-example">
                  <div className="col-sm">
                    <span><p>Amount  </p></span>
-                   <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {loanAmount} ETH </span>
+                   <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {loanRequest.loanAmount} ETH </span>
                  </div>
                  <div className="col-sm">
                    <span><p>Collateral </p></span>
-                   <span className="btn-inner--text"> {this.state.collateralValue[i]} TTT</span>
+                    <span className="btn-inner--text"> {loanRequest.collateral.amount} TTT</span>
                  </div>
                </div>
                    </div>
                    <div className="card-body text-left">
-                   <p>Earnings : {this.state.earnings[i]/100} %</p>
-                   <p>Duration  : {this.state.duration[i]} days</p>
-                   <p>Safeness : {this.state.safeness}</p>
-                   <p>Expires in : {this.state.expireIn}</p>
+                   <p>Earnings : { loanRequest.interest } %</p>
+                   <p>Duration  : {loanRequest.duration} days</p>
+                   {/* <p>Safeness : {this.state.safeness}</p>
+                   <p>Expires in : {this.state.expireIn}</p> */}
                    </div>
-                  {status[i]==2 &&
-                  <div className="btn-wrapper text-center" onClick={()=>this.approveLoanRequest(loanAmount, loanAddresses[i])}>
+                  {/* {status[i]==2 && */}
+                  <div className="btn-wrapper text-center" onClick={()=>this.approveAndFundLoanRequest(loanRequest.loanAmount, loanRequest.loanAddress)}>
                    <a href="#" className="btn btn-primary btn-icon m-1">
                      <span className="btn-inner--text">Fund Now</span>
                    </a>
-                 </div>}
                  </div>
-                 {status[i]==3 && <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                 </div>
+                 {/* {status[i]==3 && <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                    <span className="alert-text">Already Funded</span>
                  </div>
                 }
@@ -291,7 +289,7 @@ class ViewAllRequests extends Component {
                    <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
                      <span className="alert-text">Waiting for lender</span>
                    </div>
-               }
+               } */}
                </div>;
                 })
             }

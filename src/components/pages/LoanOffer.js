@@ -5,7 +5,10 @@ import Header  from '../pages/Header';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
-import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI, LoanContractAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+import { CreateNewLoanOffer, FetchCollateralPrice } from '../../services/loanbook';
+import { CollateralAddress } from '../Web3/abi';
+import { TransferFundsToLoanContract } from '../../services/loanContract';
+import { supported_erc20_token } from '../Web3/erc20';
 
 class LoanOffer extends Component {
   constructor(){
@@ -35,24 +38,14 @@ class LoanOffer extends Component {
       createOfferAlert:false,
       approveOfferAlert:false,
       acceptLoanAlert:false,
-      loanOfferContractAddress:'',
+      loanContractAddress:'',
       ropstenTransactionhash:'',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:1,
       durationEnd:360,
       stableCoins :  ['STABLE COINS','DAI', 'PAX', 'TUSD'],
-      erc20_tokens :  ['BNB', 'GTO', 'QKC', 'NEXO',
-          'PAX','EGT',  'MANA','POWR',
-          'TUSD','LAMB','CTXC','ENJ',
-          'CELR','HTB','ICX',  'WTC',
-          'USD', 'BTM','EDO', 'SXDT',
-          'OMG','CRO','TOP','SXUT',
-          'MEDX','ITC','REP','STO',
-          'LINK','CMT','WAX',
-          'MATIC','ELF', 'COSM',
-          'HT','BZ','NAS',
-          'FET','PPT','MCO'],
-          collateralCount : 0
+      erc20_tokens :  supported_erc20_token,
+      collateralCount : 0
     };
   }
 
@@ -66,97 +59,77 @@ class LoanOffer extends Component {
 
 
   createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
-    const res = await window.ethereum.enable();
-    let collateralItem1 = {}, collateralItem2 = {}, collateralItem3 = {};
-    let collateralMetadata = [];
+   
+    let collateralMetadata = [];    
 
-    collateralItem1.collateralCurrency1 = collateralCurrency1;
-    collateralItem1.ltv1 = ltv1;
-    collateralItem1.mpr1 = mpr1;
-    collateralMetadata.push({collateralItem1:collateralItem1})
+    collateralMetadata.push({
+      collateral: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      ltv: ltv1,
+      mpr: mpr1
+    });
 
-    collateralItem2.collateralCurrency2 = collateralCurrency2;
-    collateralItem2.ltv2 = ltv2;
-    collateralItem2.mpr2 = mpr2;
-    collateralMetadata.push({collateralItem2:collateralItem2})
+    collateralMetadata.push({
+      collateral: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      ltv: ltv2,
+      mpr: mpr2
+    });
 
-    collateralItem3.collateralCurrency3 = collateralCurrency3;
-    collateralItem3.ltv3 = ltv3;
-    collateralItem3.mpr3 = mpr3;
-    collateralMetadata.push({collateralItem3:collateralItem3})
+    collateralMetadata.push({
+      collateral: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      ltv: ltv3,
+      mpr: mpr3
+    })
 
-        console.log("collateralMetadata", collateralMetadata);
-        // expected output: "Success!"
-        const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
-          LoanCreator.createNewLoanOffer( window.web3.toWei(principal), duration, window.web3.toHex(JSON.stringify(collateralMetadata)), {
-          from: window.web3.eth.accounts[0]
-        }, async (err, res) => {
-          if(!err){
-            console.log("Transaction in process", res)
-            const receipt = await this.getTransactionReceipt(res)
-            // console.log('receipt.logs[0].data',receipt.logs[0].data);
-            let address = receipt.logs[0].data;
-            address = address.split("000000000000000000000000");
-            address = "0x" + address[2];
-            // console.log("Data Address: ",address);
-            console.log("window.web3.toWei(principal) : ",  window.web3.toWei(principal),"duration : ", duration, "window.web3.toHex(JSON.stringify(collateralMetadata)) : ", window.web3.toHex(JSON.stringify(collateralMetadata)), "from: window.web3.eth.accounts[0]",  window.web3.eth.accounts[0]);
-            this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:address, ropstenTransactionhash:receipt.transactionHash})
-
-
-          }
-        });
-    }
-
-  getTransactionReceipt = async (hash) => {
-      let receipt = null;
-      while (receipt === null) {
-        // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
-        receipt = await this.getTransactionReceiptPromise(hash);
-        setTimeout(function(){ console.log('Every second'); }, 1000);
-      }
-      return receipt;
-    };
-
-  getTransactionReceiptPromise = (hash) => {
-      // here we just promisify getTransactionReceipt function for convenience
-      return new Promise(((resolve, reject) => {
-          window.web3.eth.getTransactionReceipt(hash, function(err, data) {
-              if (err !== null) reject(err);
-              else resolve(data);
+        try {
+          const loanContractAddress = await CreateNewLoanOffer({
+            principal: principal,
+            duration: duration,
+            collaterals: collateralMetadata
           });
-      }));
+
+          this.setState({
+            createOfferAlert:true, 
+            approveOfferAlert:true, 
+            loanContractAddress: loanContractAddress 
+          });
+          
+        } catch (error) {
+          
+        }
     }
 
-  fundLoanOffer = async (loanAmount, loanOfferContractAddress) => {
-    let self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanOfferContractAddress);
 
-     LoanContract.transferFundsToLoan({
-      from: window.web3.eth.accounts[0],
-      value: window.web3.toWei(loanAmount),
-      gas: 30000
-    },
-    (err, res) => {
-      if (!err) {
-        console.log(res);
-        // window.location="/myloans";
-        self.setState({approveOfferAlert:false, acceptLoanAlert:true})
-      } else {}
-  });
+
+  fundLoanOffer = async (loanAmount, loanContractAddress) => {
+
+    try {
+      await TransferFundsToLoanContract(loanContractAddress, loanAmount);
+
+      //window.location="/myloans";
+
+      this.setState({
+        createOfferAlert:false,
+        approveOfferAlert:false, 
+        acceptLoanAlert:true
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  acceptLoanOffer = async (interest, collateralAddress, loanOfferContractAddress, collateralAmount, collateralPrice, ltv) => {
+  acceptLoanOffer = async (interest, collateralAddress, loanContractAddress, collateralAmount, collateralPrice, ltv) => {
 
-    var self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanOfferContractAddress);
-    const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
-      from: window.web3.eth.accounts[0],
-      gas: 300000
-    }, (err, transactionHash) => {
-      if (!err)
-        console.log(transactionHash);
-    })
-    console.log("ACCEPT LOAN :", acceptLoan);
+    // var self = this;
+    // const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
+    // const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
+    //   from: window.web3.eth.accounts[0],
+    //   gas: 300000
+    // }, (err, transactionHash) => {
+    //   if (!err)
+    //     console.log(transactionHash);
+    // })
+    // console.log("ACCEPT LOAN :", acceptLoan);
 
   }
 
@@ -167,7 +140,7 @@ class LoanOffer extends Component {
 
   render() {
     const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency1, collateralCurrency2, collateralCurrency3, collateralCount, collateralValue,
-    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanOfferContractAddress, ropstenTransactionhash } = this.state;
+    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanContractAddress, ropstenTransactionhash } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -262,7 +235,7 @@ class LoanOffer extends Component {
                                     }}>
                                     {
                                       erc20_tokens.map((item) => {
-                                        return <option>{item}</option>;
+                                        return <option>{ item.symbol }</option>;
                                     })
                                     }
                                     </select>
@@ -281,7 +254,7 @@ class LoanOffer extends Component {
                                         }}>
                                         {
                                           erc20_tokens.map((item) => {
-                                            return <option>{item}</option>;
+                                            return <option>{item.symbol}</option>;
                                         })
                                         }
                                         </select>
@@ -300,7 +273,7 @@ class LoanOffer extends Component {
                                             }}>
                                             {
                                               erc20_tokens.map((item) => {
-                                                return <option>{item}</option>;
+                                                return <option>{item.symbol}</option>;
                                             })
                                             }
                                             </select>
@@ -392,7 +365,7 @@ class LoanOffer extends Component {
                     {approveOfferAlert &&
                     <div className="btn-wrapper text-center mt-3">
                       <button className="btn btn-primary" type="button" onClick={()=>{
-                        this.fundLoanOffer(loanAmount, loanOfferContractAddress);
+                        this.fundLoanOffer(loanAmount, loanContractAddress);
                         }}>
                         Fund Loan
                       </button>
@@ -400,7 +373,7 @@ class LoanOffer extends Component {
                   {acceptLoanAlert &&
                   <div className="btn-wrapper text-center mt-3">
                     <button className="btn btn-primary" type="button" onClick={()=>{
-                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), loanOfferContractAddress, window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
+                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), loanContractAddress, window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
                       }}>
                       Accept Loan
                     </button>
