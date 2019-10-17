@@ -15,13 +15,6 @@ class ViewAllRequests extends Component {
     this.viewAllRequest();
     this.state = {
       loanRequests: [],
-      loanAmount:[],
-      collateralValue: [],
-      earnings:[],
-      loanAddresses:[],
-      duration: [],
-      collateralAddress: [],
-      status:[],
       collateralMetadata:true,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
@@ -61,9 +54,9 @@ class ViewAllRequests extends Component {
 
         loans.map(async(loanAddress) => {
           const loan = await GetLoanDetails(loanAddress);
-          
+
           if(loan[5].toNumber() === 2){
-            
+
             loanRequests.push({
               loanAddress: loanAddress,
               loanAmount: window.web3.fromWei(loan[0].toNumber()),

@@ -3,7 +3,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import { GetLoans } from '../../services/loanbook';
-import { GetLoanDetails } from '../../services/loanContract';
+import { GetLoanDetails, AcceptLoanOffer, FinalizeCollateralTransfer } from '../../services/loanContract';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import Header  from '../pages/Header';
 import './ViewAllOffers.css';
@@ -14,13 +14,6 @@ class ViewAllOffers extends Component {
     this.viewAllOffers();
     this.state = {
       loanOffers: [],
-      loanAmount:[],
-      collateralValue: [],
-      earnings:[],
-      loanAddresses:[],
-      duration: [],
-      collateralAddress: [],
-      status:[],
       collateralMetadataAlert:false,
       transferCollateralAlert:false,
       acceptCollateralAlert:false,
@@ -62,7 +55,7 @@ class ViewAllOffers extends Component {
 
       loans.map(async(loanAddress) => {
         const loan = await GetLoanDetails(loanAddress);
-        
+
         if(loan[5].toNumber() === 1){
           let collaterals = [];
           for( var i in loan[13]){
@@ -72,7 +65,7 @@ class ViewAllOffers extends Component {
               mpr: (window.web3.toBigNumber(loan[13][i][1])).toNumber()
             });
           }
-            
+
           loanOffers.push({
             loanAddress: loanAddress,
             loanAmount: window.web3.fromWei(loan[0].toNumber()),
@@ -93,6 +86,29 @@ class ViewAllOffers extends Component {
   } finally {
 
   }
+  }
+
+  handleAcceptLoanOffer = async(loanContractAddress) => {
+
+    try {
+      await AcceptLoanOffer(loanContractAddress);
+
+    } catch (e) {
+      console.log(e);
+    } finally {
+
+    }
+  }
+
+  handleCollateralTransfer = async(loanContractAddress, collateralAddress) => {
+
+    try {
+      await FinalizeCollateralTransfer(loanContractAddress, collateralAddress);
+    } catch (e) {
+        console.log(e);
+    } finally {
+
+    }
   }
 
   hideAlertCancel  = () => {

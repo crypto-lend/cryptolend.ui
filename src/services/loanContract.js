@@ -42,6 +42,29 @@ export const FinalizeCollateralTransfer = (loanContractAddress, collateralAddres
 }
 
 
+export const AcceptLoanOffer = (loanContractAddress) => {
+
+    return new Promise((resolve, reject) => {
+
+        const { web3 } = window;
+
+        const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
+
+        LoanContract.acceptLoanOffer({
+            from: web3.eth.accounts[0]
+            }, async (err, transactionHash) => {
+                if(!err){
+                    console.log(transactionHash);
+                    const receipt = await fetchMinedTransactionReceipt(transactionHash);
+                    resolve(receipt);
+                } else {
+                    reject(err);
+                }
+            });
+    })
+}
+
+
 export const TransferFundsToLoanContract = (loanContractAddress, loanAmount) => {
 
     return new Promise((resolve, reject) => {
@@ -210,7 +233,3 @@ export const ClaimCollateralByLender = (loanContractAddress, repaymentNumber) =>
             });
     })
 }
-
-
-
-
