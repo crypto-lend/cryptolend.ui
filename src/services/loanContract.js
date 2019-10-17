@@ -105,8 +105,7 @@ export const GetRepaymentData = (loanContractAddress, repaymentNumber) => {
                             repaymentNumber: repaymentNumber,
                             repayee: repayee,
                             totalRepaymentAmount: web3.fromWei(repaymentData[0].toNumber()),
-                            monthlyInterest: web3.fromWei(repaymentData[1].toNumber()),
-                            fees: web3.fromWei(repaymentData[2].toNumber())
+                            monthlyInterest: web3.fromWei(repaymentData[1].toNumber())
                         });
                     } else {
                         reject(err);
@@ -119,6 +118,99 @@ export const GetRepaymentData = (loanContractAddress, repaymentNumber) => {
 
     })
 }
+
+
+export const RepayLoan = (loanContractAddress, repaymentAmount) => {
+
+    return new Promise((resolve, reject) => {
+
+        const { web3 } = window;
+
+        const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
+
+        LoanContract.repayLoan({
+            from: web3.eth.accounts[0],
+            value: web3.toWei(repaymentAmount)
+            }, async (err, transactionHash) => {
+                if(!err){
+                    console.log(transactionHash);
+                    const receipt = await fetchMinedTransactionReceipt(transactionHash);
+                    resolve(receipt);
+                } else {
+                    reject(err);
+                }
+            });
+    })
+}
+
+export const LiquidateLoanCollateral = (loanContractAddress) => {
+
+    return new Promise((resolve, reject) => {
+
+        const { web3 } = window;
+
+        const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
+
+        LoanContract.liquidateCollateral({
+            from: web3.eth.accounts[0]
+            }, async (err, transactionHash) => {
+                if(!err){
+                    console.log(transactionHash);
+                    const receipt = await fetchMinedTransactionReceipt(transactionHash);
+                    resolve(receipt);
+                } else {
+                    reject(err);
+                }
+            });
+    })
+}
+
+
+export const ClaimCollateralByBorrower = (loanContractAddress) => {
+
+    return new Promise((resolve, reject) => {
+
+        const { web3 } = window;
+
+        const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
+
+        LoanContract.returnCollateralToBorrower({
+            from: web3.eth.accounts[0]
+            }, async (err, transactionHash) => {
+                if(!err){
+                    console.log(transactionHash);
+                    const receipt = await fetchMinedTransactionReceipt(transactionHash);
+                    resolve(receipt);
+                } else {
+                    reject(err);
+                }
+            });
+    })
+}
+
+
+export const ClaimCollateralByLender = (loanContractAddress, repaymentNumber) => {
+
+    return new Promise((resolve, reject) => {
+
+        const { web3 } = window;
+
+        const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
+
+        LoanContract.claimCollateralOnDefault(repaymentNumber, {
+            from: web3.eth.accounts[0]
+            }, async (err, transactionHash) => {
+                if(!err){
+                    console.log(transactionHash);
+                    const receipt = await fetchMinedTransactionReceipt(transactionHash);
+                    resolve(receipt);
+                } else {
+                    reject(err);
+                }
+            });
+    })
+}
+
 
 
 

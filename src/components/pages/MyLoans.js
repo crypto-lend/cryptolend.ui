@@ -4,7 +4,7 @@ import { LoanBookABI, LoanBookAddress,  LoanContractABI, StandardTokenABI, ERC20
 import Loader from 'react-loader';
 import Header  from '../pages/Header';
 import { GetLoans } from '../../services/loanbook';
-import { GetLoanDetails, ApproveAndFundLoanRequest, GetRepaymentData } from '../../services/loanContract';
+import { GetLoanDetails, ApproveAndFundLoanRequest, GetRepaymentData, RepayLoan } from '../../services/loanContract';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './MyLoans.css';
@@ -63,11 +63,19 @@ class MyLoans extends Component {
               interest: (loan[2].toNumber() / 100),
               createOn: loan[3].toNumber(),
               startedOn: loan[4].toNumber(),
-              collateral: {
-                address: loan[6],
-                amount: loan[7].toNumber()
-              },
               status: loan[5].toNumber(),
+              collateralAddress: loan[6],
+              collateralAmount: loan[7].toNumber(),
+              collateralPrice: loan[8].toNumber(),
+              collateralStatus: loan[9].toNumber(),
+              borrower: loan[10],
+              lender: loan[11],
+              liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
+              collaterals: {
+                address: loan[13][0][0],
+                ltv: loan[13][0][1],
+                mpr: loan[13][0][2]
+              }
 
             });
               this.setState({
@@ -82,17 +90,26 @@ class MyLoans extends Component {
               interest: (loan[2].toNumber() / 100),
               createOn: loan[3].toNumber(),
               startedOn: loan[4].toNumber(),
-              collateral: {
-                address: loan[6],
-                amount: loan[7].toNumber()
-              },
               status: loan[5].toNumber(),
+              collateralAddress: loan[6],
+              collateralAmount: loan[7].toNumber(),
+              collateralPrice: loan[8].toNumber(),
+              collateralStatus: loan[9].toNumber(),
+              borrower: loan[10],
+              lender: loan[11],
+              liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
+              collaterals: {
+                address: loan[13][0][0],
+                ltv: loan[13][0][1],
+                mpr: loan[13][0][2]
+              }
 
             });
 
-              this.setState({
-                myFundedLoans: myFundedLoans,
-              });
+            console.log(myFundedLoans);
+            this.setState({
+              myFundedLoans: myFundedLoans,
+            });
           }
         });
     } catch (e) {
@@ -125,45 +142,16 @@ class MyLoans extends Component {
 
   }
 
-        getRepayments = (loanAddress) => {
-        let {repaymentAmount, repaymentNumber,duration, loaded} = this.state;
-
-        this.setState({loaded:!loaded})
-          // Get repayment Amount to paid for a particular repayment duration
-        const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
-        for (var i = 0; i < 12; i++) {
-        LoanInstance.getRepaymentAmount(i+1, (err, repayResponse) => {
-          if (!err){
-            repayResponse.map((repay,i) => {
-              if(i==0)
-                repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
-            })
-
-            this.setState({repaymentAmount:repaymentAmount})
-          }
-        })}
-        }
-
-        getPaidRepaymentsCount = (loanAddress) => {
-          const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
-          LoanInstance.getPaidRepaymentsCount((err, res)=>{
-            if(!err)
-               this.setState({activeRepayment: res.toNumber()});
-          });
-        }
 
 
-        handleRepayment = (loanContractAddress, repaymentAmount) => {
-          // Repay Loan
-          const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
-          LoanInstance.repayLoan({
-          from: window.web3.eth.accounts[0],
-          value: window.web3.toWei(repaymentAmount)
-           },function(err, res){
-           if(!err)
-              console.log(res);
-           });
-        }
+handleLoanRepayment = async (loanContractAddress, repaymentAmount) => {
+// Repay Loan
+  try {
+    await RepayLoan(loanContractAddress, repaymentAmount);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
         handleRepaymentRows = (currentLoanAddress,duration, currentDueDate, currentCollateralValue) => {
           let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate, repaymentIndex, activeRepayment} = this.state;
@@ -411,12 +399,6 @@ class MyLoans extends Component {
                                   <td> 
                                     <button className="btn btn-info" type="button" onClick={()=>{
                                     this.getActiveLoanRepayments(loan.loanAddress, loan.duration);
-                                    // this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
-                                    //    repaymentDuration:loan.duration, currentLoanAddress:loan.loanAddress, currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
-                                    //  })
-                                    // if(display1 === true)
-                                    //   window.location="/myloans";
-                                      // this.getPaidRepaymentsCount(currentLoanAddress)
                                     }}> Details</button>
                                   </td>}
                                 </tr>;})
