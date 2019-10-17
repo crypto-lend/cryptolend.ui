@@ -13,13 +13,6 @@ class ViewAllRequests extends Component {
     this.viewAllRequest();
     this.state = {
       loanRequests: [],
-      loanAmount:[],
-      collateralValue: [],
-      earnings:[],
-      loanAddresses:[],
-      duration: [],
-      collateralAddress: [],
-      status:[],
       collateralMetadata:true,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
