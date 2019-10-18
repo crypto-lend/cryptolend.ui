@@ -39,7 +39,7 @@ class ViewAllOffers extends Component {
           'FET','PPT','MCO'],
       collateral_tokens: ['BNB', 'GTO', 'QKC'],
       collateralCurrencyToken:'',
-      collateralAddress:'',
+      collateralAddress:"0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
       loanAddress:''
     };
   }
@@ -125,8 +125,8 @@ class ViewAllOffers extends Component {
 
   hideAlertAcceptCollateralConfirm = () => {
     const { loanAddress } = this.state;
-    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
     this.handleAcceptLoanOffer(loanAddress);
+    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
   }
 
   hideAlertTransferCollateralCancel = () => {
@@ -134,9 +134,11 @@ class ViewAllOffers extends Component {
   }
 
   hideAlertTransferCollateralConfirm = () => {
-    const { loanAddress, collateralAddress } = this.state;
+    let { loanAddress, collateralAddress } = this.state;
     this.setState({transferCollateralAlert:false});
-    this.handleCollateralTransfer(loanAddress, collateralAddress);
+    collateralAddress = collateralAddress.split('00000000000000000000000');
+    console.log("collateralAddress : ", collateralAddress[0]);
+    this.handleCollateralTransfer(loanAddress, collateralAddress[0]);
   }
 
 
