@@ -1,66 +1,100 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Nouislider from "nouislider-react";
-import { GetLoans } from '../../services/loanbook';
-import { GetLoanDetails, AcceptLoanOffer, FinalizeCollateralTransfer } from '../../services/loanContract';
-import SweetAlert from 'react-bootstrap-sweetalert';
-import './ViewAllOffers.css';
-import Header from './Header';
+import { GetLoans } from "../../services/loanbook";
+import {
+  GetLoanDetails,
+  AcceptLoanOffer,
+  FinalizeCollateralTransfer
+} from "../../services/loanContract";
+import SweetAlert from "react-bootstrap-sweetalert";
+import "./ViewAllOffers.css";
+import Header from "./Header";
 
 class ViewAllOffers extends Component {
-  constructor(){
+  constructor() {
     super();
     this.viewAllOffers();
     this.state = {
       loanOffers: [],
-      collateralMetadataAlert:false,
-      transferCollateralAlert:false,
-      acceptCollateralAlert:false,
-      safeness: 'SAFE',
-      expireIn: '5D 15H 30M',
-      waitingForBorrower:true,
-      waitingForCollateral:true,
-      waitingForPayback:true,
-      finished:true,
-      minMonthlyInt:'0',
-      maxMonthlyInt:'5',
-      minDuration:'0',
-      maxDuration:'12',
-      defaulted:true,
-      erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
-          'PAX','EGT',  'MANA','POWR',
-          'TUSD','LAMB','CTXC','ENJ',
-          'CELR','HTB','ICX',  'WTC',
-          'USD', 'BTM','EDO', 'SXDT',
-          'OMG','CRO','TOP','SXUT',
-          'MEDX','ITC','REP','STO',
-          'LINK','CMT','WAX',
-          'MATIC','ELF', 'COSM',
-          'HT','BZ','NAS',
-          'FET','PPT','MCO'],
-      collateral_tokens: ['BNB', 'GTO', 'QKC'],
-      collateralCurrencyToken:''
+      collateralMetadataAlert: false,
+      transferCollateralAlert: false,
+      acceptCollateralAlert: false,
+      safeness: "SAFE",
+      expireIn: "5D 15H 30M",
+      waitingForBorrower: true,
+      waitingForCollateral: true,
+      waitingForPayback: true,
+      finished: true,
+      minMonthlyInt: "0",
+      maxMonthlyInt: "5",
+      minDuration: "0",
+      maxDuration: "12",
+      defaulted: true,
+      erc20_tokens: [
+        "ERC20 TOKENS",
+        "BNB",
+        "GTO",
+        "QKC",
+        "NEXO",
+        "PAX",
+        "EGT",
+        "MANA",
+        "POWR",
+        "TUSD",
+        "LAMB",
+        "CTXC",
+        "ENJ",
+        "CELR",
+        "HTB",
+        "ICX",
+        "WTC",
+        "USD",
+        "BTM",
+        "EDO",
+        "SXDT",
+        "OMG",
+        "CRO",
+        "TOP",
+        "SXUT",
+        "MEDX",
+        "ITC",
+        "REP",
+        "STO",
+        "LINK",
+        "CMT",
+        "WAX",
+        "MATIC",
+        "ELF",
+        "COSM",
+        "HT",
+        "BZ",
+        "NAS",
+        "FET",
+        "PPT",
+        "MCO"
+      ],
+      collateral_tokens: ["BNB", "GTO", "QKC"],
+      collateralCurrencyToken: ""
     };
   }
 
   //Get All Loans
   viewAllOffers = async () => {
-
     try {
-
       const loans = await GetLoans();
 
-      let  { loanOffers } = this.state;
+      const loanOffers = [...this.state.loanOffers];
 
-      loans.map(async(loanAddress) => {
+      for (const loanAddress of loans) {
         const loan = await GetLoanDetails(loanAddress);
 
-        if(loan[5].toNumber() === 1){
+        if (loan[5].toNumber() === 1) {
           let collaterals = [];
-          for( var i in loan[13]){
+          for (var i in loan[13]) {
             collaterals.push({
               address: loan[13][i][0],
-              ltv: (window.web3.toBigNumber(loan[13][i][2])).toNumber(),
-              mpr: (window.web3.toBigNumber(loan[13][i][1])).toNumber()
+              ltv: window.web3.toBigNumber(loan[13][i][2]).toNumber(),
+              mpr: window.web3.toBigNumber(loan[13][i][1]).toNumber()
             });
           }
 
@@ -68,79 +102,82 @@ class ViewAllOffers extends Component {
             loanAddress: loanAddress,
             loanAmount: window.web3.fromWei(loan[0].toNumber()),
             duration: loan[1].toNumber(),
-            interest: (loan[2].toNumber() / 100),
+            interest: loan[2].toNumber() / 100,
             collaterals: collaterals,
-            status: loan[5].toNumber(),
-          });
-
-          console.log(loanOffers);
-          this.setState({
-            loanOffers: loanOffers,
+            status: loan[5].toNumber()
           });
         }
-      });
-  } catch (e) {
-      console.log(e);
-  } finally {
+      }
 
-  }
-  }
+      this.setState({ loanOffers });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-  handleAcceptLoanOffer = async(loanContractAddress) => {
-
+  handleAcceptLoanOffer = async loanContractAddress => {
     try {
       await AcceptLoanOffer(loanContractAddress);
-
     } catch (e) {
       console.log(e);
     } finally {
-
     }
-  }
+  };
 
-  handleCollateralTransfer = async(loanContractAddress, collateralAddress) => {
-
+  handleCollateralTransfer = async (loanContractAddress, collateralAddress) => {
     try {
       await FinalizeCollateralTransfer(loanContractAddress, collateralAddress);
     } catch (e) {
-        console.log(e);
+      console.log(e);
     } finally {
-
     }
-  }
+  };
 
-  hideAlertCancel  = () => {
-    this.setState({collateralMetadataAlert:false});
-  }
+  hideAlertCancel = () => {
+    this.setState({ collateralMetadataAlert: false });
+  };
 
   hideAlertConfirm = () => {
-    this.setState({collateralMetadataAlert:false, acceptCollateralAlert:true});
-  }
+    this.setState({
+      collateralMetadataAlert: false,
+      acceptCollateralAlert: true
+    });
+  };
 
   hideAlertAcceptCollateralCancel = () => {
-    this.setState({acceptCollateralAlert:false});
-  }
+    this.setState({ acceptCollateralAlert: false });
+  };
 
   hideAlertAcceptCollateralConfirm = () => {
-    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
-  }
+    this.setState({
+      acceptCollateralAlert: false,
+      transferCollateralAlert: true
+    });
+  };
 
   hideAlertTransferCollateralCancel = () => {
-    this.setState({transferCollateralAlert:false});
-  }
+    this.setState({ transferCollateralAlert: false });
+  };
 
   hideAlertTransferCollateralConfirm = () => {
-    this.setState({transferCollateralAlert:false});
-  }
-
-
-
+    this.setState({ transferCollateralAlert: false });
+  };
 
   render() {
-    const { erc20_tokens,duration,minDuration,maxDuration, collateralMetadataAlert, collateral_tokens, transferCollateralAlert, acceptCollateralAlert, collateralCurrencyToken } = this.state;
+    const {
+      erc20_tokens,
+      duration,
+      minDuration,
+      maxDuration,
+      collateralMetadataAlert,
+      collateral_tokens,
+      transferCollateralAlert,
+      acceptCollateralAlert,
+      collateralCurrencyToken
+    } = this.state;
     return (
       <div className="ViewAllOffers text-center">
-        <Header/>
+        <Header />
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="shape shape-style-1 shape-primary">
@@ -156,165 +193,331 @@ class ViewAllOffers extends Component {
               <span className="span-100"></span>
             </div>
 
-            <div className="container d-flex align-items-left" style={{marginLeft:'-15px'}}>
-
-
-
+            <div
+              className="container d-flex align-items-left"
+              style={{ marginLeft: "-15px" }}
+            >
               <div className="card card-pricing border-0 col-md-4">
                 <div className="card-header bg-transparent">
                   <i className="fa fa-filter" aria-hidden="true"></i>
-                  <a className="ls-1 text-primary py-3 mb-0 ml-2">View All Requests</a>
+                  <a className="ls-1 text-primary py-3 mb-0 ml-2">
+                    View All Requests
+                  </a>
                 </div>
                 <div className="card-body">
                   <ul className="list-unstyled my-4">
                     <li>
                       <div className="form-group">
-                          <label for="exampleFormControlSelect1">Loan Currency</label>
-                          <select className="form-control" id="exampleFormControlSelect1" onClick={ (e)=>{
-                            this.setState({collateralCurrency:e.target.value});
-                          }}>
+                        <label for="exampleFormControlSelect1">
+                          Loan Currency
+                        </label>
+                        <select
+                          className="form-control"
+                          id="exampleFormControlSelect1"
+                          onClick={e => {
+                            this.setState({
+                              collateralCurrency: e.target.value
+                            });
+                          }}
+                        >
                           <option>ETH</option>;
-                          </select>
+                        </select>
                       </div>
                     </li>
                     <li>
-                    <div className="form-group">
-                        <label for="exampleFormControlSelect1">Collateral Currency</label>
-                        <select className="form-control" id="exampleFormControlSelect1" onClick={ (e)=>{
-                          this.setState({collateralCurrency:e.target.value});
-                        }}>
-                        {
-                          erc20_tokens.map((item,i) => {
+                      <div className="form-group">
+                        <label for="exampleFormControlSelect1">
+                          Collateral Currency
+                        </label>
+                        <select
+                          className="form-control"
+                          id="exampleFormControlSelect1"
+                          onClick={e => {
+                            this.setState({
+                              collateralCurrency: e.target.value
+                            });
+                          }}
+                        >
+                          {erc20_tokens.map((item, i) => {
                             return <option>{item}</option>;
-                        })
-                        }
+                          })}
                         </select>
-                    </div>
+                      </div>
                     </li>
                     <li>
-                    <div className="card">
-                      <label for="">Loan state</label>
+                      <div className="card">
+                        <label for="">Loan state</label>
                         <div className="card-body">
-                        <form>
-                          <div className="row">
-                            <div className="col text-left">
-                              <div className="custom-control custom-checkbox mb-3 ">
-                                <input className="custom-control-input" id="customCheck1" type="checkbox" checked={this.state.waitingForBorrower} onClick={()=>{this.setState({waitingForBorrower:!this.state.waitingForBorrower})}}/>
-                                <label className="custom-control-label" for="customCheck1">Waiting for Borrowers</label>
-                              </div>
-                              <div className="custom-control custom-checkbox mb-3 ">
-                                <input className="custom-control-input" id="customCheck2" type="checkbox" checked={this.state.waitingForCollateral} onClick={()=>{this.setState({waitingForCollateral:!this.state.waitingForCollateral})}}/>
-                                <label className="custom-control-label" for="customCheck2">Waiting for collateral</label>
-                              </div>
-                              <div className="custom-control custom-checkbox mb-3 ">
-                                <input className="custom-control-input" id="customCheck3" type="checkbox" checked={this.state.waitingForPayback} onClick={()=>{this.setState({waitingForPayback:!this.state.waitingForPayback})}}/>
-                                <label className="custom-control-label" for="customCheck3">Waiting for Payback</label>
-                              </div>
-                              <div className="custom-control custom-checkbox mb-3 ">
-                                <input className="custom-control-input" id="customCheck4" type="checkbox" checked={this.state.finished} onClick={()=>{this.setState({finished:!this.state.finished})}}/>
-                                <label className="custom-control-label" for="customCheck4">Finished</label>
-                              </div>  <div className="custom-control custom-checkbox mb-3 ">
-                                  <input className="custom-control-input" id="customCheck5" type="checkbox" checked={this.state.defaulted} onClick={()=>{this.setState({defaulted:!this.state.defaulted})}}/>
-                                  <label className="custom-control-label" for="customCheck5">Defaulted</label>
+                          <form>
+                            <div className="row">
+                              <div className="col text-left">
+                                <div className="custom-control custom-checkbox mb-3 ">
+                                  <input
+                                    className="custom-control-input"
+                                    id="customCheck1"
+                                    type="checkbox"
+                                    checked={this.state.waitingForBorrower}
+                                    onClick={() => {
+                                      this.setState({
+                                        waitingForBorrower: !this.state
+                                          .waitingForBorrower
+                                      });
+                                    }}
+                                  />
+                                  <label
+                                    className="custom-control-label"
+                                    for="customCheck1"
+                                  >
+                                    Waiting for Borrowers
+                                  </label>
+                                </div>
+                                <div className="custom-control custom-checkbox mb-3 ">
+                                  <input
+                                    className="custom-control-input"
+                                    id="customCheck2"
+                                    type="checkbox"
+                                    checked={this.state.waitingForCollateral}
+                                    onClick={() => {
+                                      this.setState({
+                                        waitingForCollateral: !this.state
+                                          .waitingForCollateral
+                                      });
+                                    }}
+                                  />
+                                  <label
+                                    className="custom-control-label"
+                                    for="customCheck2"
+                                  >
+                                    Waiting for collateral
+                                  </label>
+                                </div>
+                                <div className="custom-control custom-checkbox mb-3 ">
+                                  <input
+                                    className="custom-control-input"
+                                    id="customCheck3"
+                                    type="checkbox"
+                                    checked={this.state.waitingForPayback}
+                                    onClick={() => {
+                                      this.setState({
+                                        waitingForPayback: !this.state
+                                          .waitingForPayback
+                                      });
+                                    }}
+                                  />
+                                  <label
+                                    className="custom-control-label"
+                                    for="customCheck3"
+                                  >
+                                    Waiting for Payback
+                                  </label>
+                                </div>
+                                <div className="custom-control custom-checkbox mb-3 ">
+                                  <input
+                                    className="custom-control-input"
+                                    id="customCheck4"
+                                    type="checkbox"
+                                    checked={this.state.finished}
+                                    onClick={() => {
+                                      this.setState({
+                                        finished: !this.state.finished
+                                      });
+                                    }}
+                                  />
+                                  <label
+                                    className="custom-control-label"
+                                    for="customCheck4"
+                                  >
+                                    Finished
+                                  </label>
+                                </div>{" "}
+                                <div className="custom-control custom-checkbox mb-3 ">
+                                  <input
+                                    className="custom-control-input"
+                                    id="customCheck5"
+                                    type="checkbox"
+                                    checked={this.state.defaulted}
+                                    onClick={() => {
+                                      this.setState({
+                                        defaulted: !this.state.defaulted
+                                      });
+                                    }}
+                                  />
+                                  <label
+                                    className="custom-control-label"
+                                    for="customCheck5"
+                                  >
+                                    Defaulted
+                                  </label>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </form>
+                          </form>
                         </div>
                       </div>
                     </li>
                     <li>
-                    <div className="mt-3">
-                      <label for="">Monthly Interest</label>
-                      <div className="">
-                      <label style={{marginLeft:'-180px'}}> ({this.state.minMonthlyInt} %) </label>
+                      <div className="mt-3">
+                        <label for="">Monthly Interest</label>
+                        <div className="">
+                          <label style={{ marginLeft: "-180px" }}>
+                            {" "}
+                            ({this.state.minMonthlyInt} %){" "}
+                          </label>
+                        </div>
+                        <div
+                          className=""
+                          style={{ marginRight: "-180px", marginTop: "-30px" }}
+                        >
+                          <label> ({this.state.maxMonthlyInt} %)</label>
+                        </div>
+                        <Nouislider
+                          range={{ min: 0, max: 5 }}
+                          start={[0, 5]}
+                          connect
+                          onChange={e => {
+                            this.setState({
+                              minMonthlyInt: e[0],
+                              maxMonthlyInt: e[1]
+                            });
+                            console.log(this.state.maxMonthlyInt);
+                          }}
+                        />
                       </div>
-                      <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
-                      <label> ({this.state.maxMonthlyInt} %)</label>
-                      </div>
-                      <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]}); console.log(this.state.maxMonthlyInt);}} />
-                    </div>
                     </li>
                     <li>
-                    <div className="mt-3">
-                      <label for="">Duration</label>
-                      <div className="">
-                      <label style={{marginLeft:'-180px'}}> ({this.state.minDuration} Month) </label>
-                      </div>
-                      <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
-                      <label> ({this.state.maxDuration} Month)</label>
-                      </div>
-                      <Nouislider range={{ min: 0, max: 12 }} start={[0, 12]} connect onChange={(e)=>{this.setState({minDuration:e[0],maxDuration:e[1]}); console.log(this.state.maxDuration);}} />
+                      <div className="mt-3">
+                        <label for="">Duration</label>
+                        <div className="">
+                          <label style={{ marginLeft: "-180px" }}>
+                            {" "}
+                            ({this.state.minDuration} Month){" "}
+                          </label>
+                        </div>
+                        <div
+                          className=""
+                          style={{ marginRight: "-180px", marginTop: "-30px" }}
+                        >
+                          <label> ({this.state.maxDuration} Month)</label>
+                        </div>
+                        <Nouislider
+                          range={{ min: 0, max: 12 }}
+                          start={[0, 12]}
+                          connect
+                          onChange={e => {
+                            this.setState({
+                              minDuration: e[0],
+                              maxDuration: e[1]
+                            });
+                            console.log(this.state.maxDuration);
+                          }}
+                        />
                       </div>
                     </li>
                   </ul>
                 </div>
                 <div className="card-footer">
-                  <a href="#!" className=" text-muted">Reset Filters</a>
+                  <a href="#!" className=" text-muted">
+                    Reset Filters
+                  </a>
                 </div>
               </div>
               <div className="ml-4 row">
-                { this.state.loanOffers.map((loanOffer)=>{
-                  return <div className="col">
-                      <div className="card">
-                        <div className="card-header">
-                          <div className="row row-example">
-
-                          <div className="ml-5">
-                            <img src='/assets/img/32/color/btc.png'/>
-                            <img src='/assets/img/32/color/bnb.png'/>
-                            <img src='/assets/img/32/color/mana.png'/>
+                {this.state.loanOffers.map((loanOffer, index) => (
+                  <div key={index} className="col">
+                    <div className="card">
+                      <div className="card-header">
+                        <div className="row row-example">
+                          <div className="mx-auto mb-2">
+                            <img src="/assets/img/32/color/btc.png" />
+                            <img src="/assets/img/32/color/bnb.png" />
+                            <img src="/assets/img/32/color/mana.png" />
                           </div>
                         </div>
-                        <div className="text-left ml-3" style={{fontSize:'.875rem'}}>MPR { loanOffer.collaterals[0].mpr }% {loanOffer.collaterals[1].mpr} % {loanOffer.collaterals[2].mpr}% </div>
-                        <div className="text-left ml-3" style={{fontSize:'.875rem'}}>LTV { loanOffer.collaterals[0].ltv }% { loanOffer.collaterals[2].ltv }% {loanOffer.collaterals[2].ltv}%</div>
+                        <div
+                          className="text-left ml-3"
+                          style={{ fontSize: ".875rem" }}
+                        >
+                          MPR {loanOffer.collaterals[0].mpr}%{" "}
+                          {loanOffer.collaterals[1].mpr} %{" "}
+                          {loanOffer.collaterals[2].mpr}%{" "}
+                        </div>
+                        <div
+                          className="text-left ml-3"
+                          style={{ fontSize: ".875rem" }}
+                        >
+                          LTV {loanOffer.collaterals[0].ltv}%{" "}
+                          {loanOffer.collaterals[2].ltv}%{" "}
+                          {loanOffer.collaterals[2].ltv}%
+                        </div>
                       </div>
                       <div className="card-body text-left">
-                        <p>Duration  : { loanOffer.duration } days</p>
-                        <p>Amount  : { loanOffer.loanAmount } ETH</p>
+                        <p>Duration : {loanOffer.duration} days</p>
+                        <p>Amount : {loanOffer.loanAmount} ETH</p>
 
-                        <div className="btn-wrapper text-center" onClick={()=>{this.setState({collateralMetadataAlert:true})}}>
+                        <div
+                          className="btn-wrapper text-center"
+                          onClick={() => {
+                            this.setState({ collateralMetadataAlert: true });
+                          }}
+                        >
                           <a href="#" className="btn btn-primary btn-icon mt-2">
-                            <span className="btn-inner--text">Take this loan</span>
+                            <span className="btn-inner--text">
+                              Take this loan
+                            </span>
                           </a>
                         </div>
                       </div>
                     </div>
-                    <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                    <div
+                      className="alert alert-primary alert-dismissible fade show text-center"
+                      role="alert"
+                    >
                       <span className="alert-text">Waiting for borrower</span>
                     </div>
-                  </div>})}
-               { collateralMetadataAlert &&
-              <SweetAlert
-                  info
-                  showCancel
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  confirmBtnBsStyle="info"
-                  cancelBtnBsStyle="default"
-                  customIcon="thumbs-up.jpg"
-                  title="Take this loan?"
-                  onConfirm={this.hideAlertConfirm}
-                  onCancel={this.hideAlertCancel}
-              >
-              <div className="col-md-5 form-group mt-5" style={{ marginLeft: '27%'}}>
-                <label for="exampleFormControlSelect1">Select collateral</label>
-                  <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                    this.setState({collateralCurrencyToken:e.target.value});
-
-                  }}>
-                  {
-                    collateral_tokens.map((item) => {
-                      return <option>{item}</option>;
-                  })
-                  }
-                  </select>
-                  <label for="exampleFormControlSelect1">MPR : 0.5% &nbsp; &nbsp; LTV : 50%</label>
-                </div>
-              </SweetAlert>
-              }
-              {acceptCollateralAlert &&
-                <SweetAlert
+                  </div>
+                ))}
+                {collateralMetadataAlert && (
+                  <SweetAlert
+                    info
+                    showCancel
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    confirmBtnBsStyle="info"
+                    cancelBtnBsStyle="default"
+                    customIcon="thumbs-up.jpg"
+                    title="Take this loan?"
+                    onConfirm={this.hideAlertConfirm}
+                    onCancel={this.hideAlertCancel}
+                  >
+                    <div
+                      className="col-md-5 form-group mt-5"
+                      style={{ marginLeft: "27%" }}
+                    >
+                      <label for="exampleFormControlSelect1">
+                        Select collateral
+                      </label>
+                      <select
+                        className="form-control"
+                        id="exampleFormControlSelect1"
+                        style={{ width: "80px", display: "inline" }}
+                        onClick={e => {
+                          this.setState({
+                            collateralCurrencyToken: e.target.value
+                          });
+                        }}
+                      >
+                        {collateral_tokens.map(item => {
+                          return <option>{item}</option>;
+                        })}
+                      </select>
+                      <label for="exampleFormControlSelect1">
+                        MPR : 0.5% &nbsp; &nbsp; LTV : 50%
+                      </label>
+                    </div>
+                  </SweetAlert>
+                )}
+                {acceptCollateralAlert && (
+                  <SweetAlert
                     warning
                     showCancel
                     confirmBtnText="Approve"
@@ -323,11 +526,13 @@ class ViewAllOffers extends Component {
                     title="Accept Loan Offer"
                     onConfirm={this.hideAlertAcceptCollateralConfirm}
                     onCancel={this.hideAlertAcceptCollateralCancel}
-                >
-                    Approve Transfer collateral of 1000 {collateralCurrencyToken} tokens
-                </SweetAlert>}
-              {transferCollateralAlert &&
-                <SweetAlert
+                  >
+                    Approve Transfer collateral of 1000{" "}
+                    {collateralCurrencyToken} tokens
+                  </SweetAlert>
+                )}
+                {transferCollateralAlert && (
+                  <SweetAlert
                     info
                     showCancel
                     confirmBtnText="Transfer"
@@ -336,12 +541,12 @@ class ViewAllOffers extends Component {
                     title="Transfer Collateral"
                     onConfirm={this.hideAlertTransferCollateralConfirm}
                     onCancel={this.hideAlertTransferCollateralCancel}
-                >
+                  >
                     Transfer collateral of 1000 {collateralCurrencyToken} tokens
-                </SweetAlert>
-            }
+                  </SweetAlert>
+                )}
               </div>
-              </div>
+            </div>
           </section>
         </div>
       </div>
