@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import axios from 'axios';
 import Loader from 'react-loader';
-import { LoanCreatorABI, LoanContractABI, LoanCreatorAddress, LoanContractAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
-import Header from './Header';
+import Header  from '../pages/Header';
+import { CreateNewLoanRequest, FetchCollateralPrice } from '../../services/loanbook';
+import { ExecuteTokenApproval } from '../../services/token';
+import { CollateralAddress } from '../Web3/abi';
+import { FinalizeCollateralTransfer } from '../../services/loanContract';
 
 class LoanRequest extends Component {
   constructor(){
@@ -24,7 +26,7 @@ class LoanRequest extends Component {
       transferCollateralAlert:false,
       transferCollateralSuccessAlert:false,
       transferCollateralFailAlert:false,
-      loanRequestContractAddress:'',
+      loanContractAddress:'',
       ropstenTransactionhash:'',
       collateralValue: 0,
       loanAmount: null,
@@ -54,94 +56,67 @@ class LoanRequest extends Component {
     };
   }
 
-
 createLoanRequest = async (principal, duration, interest, collateralAddress, collateralAmount) => {
-  const res = await window.ethereum.enable();
-      console.log(res);
-      // expected output: "Success!"
-      const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
-        LoanCreator.createNewLoanRequest( window.web3.toWei(principal), duration, interest, collateralAddress, collateralAmount, window.web3.toWei(0.1), {
-        from: window.web3.eth.accounts[0]
-      }, async (err, res) => {
-        if(!err){
-          // console.log("Transaction in process", res)
-          const receipt = await this.getTransactionReceipt(res)
-          console.log('receipt.logs[0].data',receipt.logs[0].data);
-          let address = receipt.logs[0].data;
-          address = address.split("000000000000000000000000");
-          address = "0x" + address[2];
-          console.log("Data Address: ",address);
 
-          this.setState({createRequestAlert:true, monthlyInt:0, approveRequestAlert:true, loanRequestContractAddress:address,ropstenTransactionhash:receipt.transactionHash})
+      try {
+        const loanContractAddress = await CreateNewLoanRequest({
+          principal: principal,
+          duration: duration,
+          interest: interest,
+          collateralAddress: collateralAddress,
+          collateralAmount: collateralAmount
+        });
 
+        this.setState({
+          createRequestAlert: true,
+          approveRequestAlert: true,
+          loanContractAddress: loanContractAddress
+        })
 
-        }
-      });
-  }
+      } catch (e) {
+        console.log(e);
+      } finally {
 
-  getTransactionReceipt = async (hash) => {
-        let receipt = null;
-        while (receipt === null) {
-          // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
-          receipt = await this.getTransactionReceiptPromise(hash);
-          setTimeout(function(){ console.log('Every second'); }, 1000);
-        }
-        return receipt;
-      };
-
-  getTransactionReceiptPromise = (hash) => {
-
-        // here we just promisify getTransactionReceipt function for convenience
-
-        return new Promise(((resolve, reject) => {
-            window.web3.eth.getTransactionReceipt(hash, function(err, data) {
-                if (err !== null) reject(err);
-                else resolve(data);
-            });
-        }));
       }
-
-
-  approveRequest = (collateralAddress, loanContractAddress, collateralAmount) => {
-
-    // Transaction 1 Approval
-
-    var self = this;
-    const tokenContractInstance = window.web3.eth.contract(StandardTokenABI).at(collateralAddress);
-    tokenContractInstance.approve(loanContractAddress, collateralAmount, {
-          from: window.web3.eth.accounts[0]
-        },
-        async (err, res) => {
-          if (!err) {
-            console.log(res);
-            const receipt = await this.getTransactionReceipt(res)
-            // console.log("Receipt : ",receipt);
-            self.setState({approveRequestAlert:false, transferCollateralAlert:true})
-          } else {}
-    });
   }
 
-  handleTransferCollateral = (loanContractAddress) => {
-    // Transfer Collateral to Loan Contract
-      console.log("loanContractAddress",loanContractAddress);
+  handleERC20TokenApproval = async(collateralAddress, loanContractAddress, collateralValue) => {
 
-      var self = this;
-      // Transaction 2 Transfer to Loan Contract
+    try {
 
-      const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
-      LoanInstance.transferCollateralToLoan({
-        from: window.web3.eth.accounts[0]
-          }, async (err, res) => {
-          if(!err)
-              console.log(res);
-              const receipt = await this.getTransactionReceipt(res)
-              console.log("Receipt : ",receipt);
-              if(receipt)
-                self.setState({transferCollateralAlert:false, transferCollateralSuccessAlert:true})
-              else
-                self.setState({transferCollateralAlert:false, transferCollateralFailAlert:true})
+      await ExecuteTokenApproval({
+        ERC20Token: collateralAddress,
+        loanContractAddress: loanContractAddress,
+        tokenAmount: collateralValue
+      });
 
-          });
+      this.setState({
+        approveRequestAlert:false,
+        createRequestAlert: false,
+        transferCollateralAlert:true
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  handleTransferCollateral = async(loanContractAddress, collateralAddress) => {
+
+    try {
+
+      await FinalizeCollateralTransfer(loanContractAddress, collateralAddress);
+
+      this.setState({
+        transferCollateralAlert:false,
+        transferCollateralSuccessAlert:true
+      });
+
+    } catch (error) {
+      this.setState({
+        transferCollateralAlert:false,
+        transferCollateralFailAlert:true
+      });
+    }
   }
 
 
@@ -166,25 +141,24 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
     }
   }
 
-  handleCollateralConversion = () => {
-    let { collateralCurrency,collateralValue,loanAmount } = this.state;
-    var self = this;
-    if(collateralCurrency==='CHIG'){
-      axios.get(`https://min-api.cryptocompare.com/data/price?fsym=TTT&tsyms=ETH`).then(function (response) {
-        self.setState({loanAmount:response.data.ETH * collateralValue * 0.6});
-      })
-      .catch(function (error) {
-        console.log(error);
+  handleCollateralConversion = async (collateralAddress) => {
+
+    let {collateralValue} = this.state;
+
+    try {
+      const collateralPrice = await FetchCollateralPrice({
+        collateralAddress: CollateralAddress
       });
+
+      this.setState({
+        loanAmount: (collateralValue * collateralPrice / 2),
+        currency:false,
+        borrow:true
+      })
+
+    } catch (error) {
+
     }
-    else
-      axios.get(`https://min-api.cryptocompare.com/data/price?fsym=${collateralCurrency}&tsyms=ETH`).then(function (response) {
-        self.setState({loanAmount:response.data.ETH * collateralValue * 0.6});
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    this.setState({currency:false, borrow:true});
 }
 
   render() {
@@ -192,7 +166,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
 
     const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow,
       durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, alertLoanAmount,
-      loanAmountInput, createRequestAlert, loanRequestContractAddress, ropstenTransactionhash, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
+      loanAmountInput, createRequestAlert, loanContractAddress, ropstenTransactionhash, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
 
 
     return (
@@ -427,7 +401,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                       this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralAddress,collateralValue);
                       }}>
                       <br/>
-                      <a href="#" className="btn btn-primary btn-icon ">
+                      <a className="btn btn-primary btn-icon ">
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>
@@ -441,7 +415,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                   { approveRequestAlert &&
 
                   <button className="btn btn-primary" type="button" onClick={()=>{
-                    this.approveRequest(collateralAddress, loanRequestContractAddress, collateralValue)
+                    this.handleERC20TokenApproval(collateralAddress, loanContractAddress, collateralValue)
                     }}>
                     Approve
                   </button>}
@@ -453,7 +427,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                   }
                   {transferCollateralAlert &&
                   <button className="btn btn-primary" type="button" onClick={()=>{
-                    this.handleTransferCollateral(loanRequestContractAddress)
+                    this.handleTransferCollateral(loanContractAddress, collateralAddress)
                     }}>
                     Transfer
                   </button>}

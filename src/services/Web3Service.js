@@ -42,3 +42,23 @@ export function getAccounts() {
     return [];
   }
 }
+
+export const fetchMinedTransactionReceipt = (transactionHash) => {
+
+  return new Promise((resolve, reject) => {
+    
+    const { web3 } = window;
+
+    var timer = setInterval(()=> {
+      web3.eth.getTransactionReceipt(transactionHash, (err, receipt)=> {
+        if(!err && receipt){
+          clearInterval(timer);
+          resolve(receipt);
+        }
+      });
+    }, 2000)
+   
+  })
+}
+
+

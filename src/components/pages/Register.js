@@ -10,8 +10,9 @@ import FormChoices from "./forms/FormChoices";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Navbar from "./Navbar";
 
-const defaultForm = {
-  name: "",
+const defaultForm = email => ({
+  email,
+  username: "",
   companyName: "",
   password: "",
   memberShip: [],
@@ -20,11 +21,19 @@ const defaultForm = {
   amount: "",
   currencies: [],
   services: []
-};
+});
 
-export default function Register() {
+export default function Register(props) {
+  const {
+    history: {
+      location: {
+        state: { email }
+      }
+    }
+  } = props;
+
   const [showPopup, setPopup] = useState(false);
-  const [form, setForm] = useState(defaultForm);
+  const [form, setForm] = useState(defaultForm(email));
 
   const updateForm = (key, value) => {
     if (!key || !formKeys[key]) {
@@ -71,8 +80,10 @@ export default function Register() {
   };
 
   const onSubmit = () => {
+    // FIXME: Currencies doesn't work. Adding it fails the request
+    const { currencies, ...others } = form;
     axios
-      .post("https://www.cipherfit.com/auth/local/register", form)
+      .post("https://www.cipherfit.com/auth/local/register", others)
       .then(response => {
         // Handle success.
         console.log("Well done!");
@@ -81,7 +92,7 @@ export default function Register() {
         window.localStorage.setItem("user", response.data.user.username);
         window.localStorage.setItem("user_id", response.data.user.id);
 
-        showPopup(true);
+        setPopup(true);
       })
       .catch(error => {
         // Handle error.
@@ -90,117 +101,37 @@ export default function Register() {
   };
   return (
     <>
-    <Navbar/>
-    <div className="main-content">
-      <div className="header bg-gradient-primary py-5">
-        <div className="container">
-          <div className="header-body text-center">
-            <div className="row justify-content-center">
-              <div className=" col-lg-6 col-md-8 px-5">
-                <h2 className="text-white">Register</h2>
-                <p className="text-lead text-white">
-                  Register your interest with Blocklendr. Be the first to join
-                  our revolutionary platform.
-                </p>
+      <Navbar />
+      <div className="main-content">
+        <div className="header bg-gradient-primary py-5">
+          <div className="container">
+            <div className="header-body text-center">
+              <div className="row justify-content-center">
+                <div className=" col-lg-6 col-md-8 px-5">
+                  <h2 className="text-white">Register</h2>
+                  <p className="text-lead text-white">
+                    Register your interest with Blocklendr. Be the first to join
+                    our revolutionary platform.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mt-5 pb-5">
-        <div className="row justify-content-center">
-          <div className="col-md-8 col-12">
-            <div className="card bg-secondary border-0">
-              <div className="card-body px-lg-5 py-lg-5">
-                <form
-                  onSubmit={e => {
-                    e.preventDefault();
-                    checkValidity() && onSubmit();
-                  }}
-                >
-                  <div className="form-group d-flex align-items-center position-relative">
-                    <div className="input-group input-group-merge input-group-alternative">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="ni ni-hat-3"></i>
-                        </span>
-                      </div>
-                      <input
-                        className="form-control"
-                        placeholder="Name"
-                        type="text"
-                        value={form.name}
-                        onChange={e =>
-                          updateForm(formKeys.name, e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group d-flex align-items-center position-relative">
-                    <div className="input-group input-group-merge input-group-alternative">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="ni ni-shop"></i>
-                        </span>
-                      </div>
-                      <input
-                        className="form-control"
-                        placeholder="Company Name"
-                        type="text"
-                        value={form.companyName}
-                        onChange={e =>
-                          updateForm(formKeys.companyName, e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group d-flex align-items-center position-relative">
-                    <div className="input-group input-group-merge input-group-alternative">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="ni ni-lock-circle-open"></i>
-                        </span>
-                      </div>
-                      <input
-                        className="form-control"
-                        placeholder="Password"
-                        type="password"
-                        value={form.password}
-                        onChange={e =>
-                          updateForm(formKeys.password, e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <FormChoices
-                    options={MEMBERSHIP}
-                    type={"radio"}
-                    title={"Membership Type:"}
-                    classes={"custom-control custom-radio col-md-4 col-6 mb-3"}
-                    selected={form.memberShip}
-                    onChange={selectOne(formKeys.memberShip)}
-                  />
-                  <FormChoices
-                    options={LOOKING}
-                    type={"radio"}
-                    title={"Are you looking to borrow or lend:"}
-                    classes={"custom-control custom-radio col-md-4 col-6 mb-3"}
-                    selected={form.lookingFor}
-                    onChange={selectOne(formKeys.lookingFor)}
-                  />
-                  <div className="form-group">
-                    <label className="form-control-label font-weight-bold">
-                      How much would you like to borrow or lend?
-                    </label>
-                    <div className="d-flex">
-                      <div className="input-group input-group-merge input-group-alternative mb-3 mr-3">
+        <div className="container mt-5 pb-5">
+          <div className="row justify-content-center">
+            <div className="col-md-10 col-lg-8 col-12">
+              <div className="card bg-secondary border-0">
+                <div className="card-body px-lg-5 py-lg-5">
+                  <form
+                    onSubmit={e => {
+                      e.preventDefault();
+                      checkValidity() && onSubmit();
+                    }}
+                  >
+                    <div className="form-group d-flex align-items-center position-relative">
+                      <div className="input-group input-group-merge input-group-alternative">
                         <div className="input-group-prepend">
                           <span className="input-group-text">
                             <i className="ni ni-hat-3"></i>
@@ -208,90 +139,174 @@ export default function Register() {
                         </div>
                         <input
                           className="form-control"
-                          placeholder="Currency"
+                          placeholder="User Name (unique)"
                           type="text"
-                          value={form.currency}
+                          value={form.username}
                           onChange={e =>
-                            updateForm(formKeys.currency, e.target.value)
-                          }
-                          required
-                        />
-                      </div>
-                      <div className="input-group input-group-merge input-group-alternative mb-3">
-                        <div className="input-group-prepend">
-                          <span className="input-group-text">
-                            <i className="ni ni-email-83"></i>
-                          </span>
-                        </div>
-                        <input
-                          className="form-control"
-                          placeholder="Amount"
-                          type="text"
-                          value={form.amount}
-                          onChange={e =>
-                            updateForm(formKeys.amount, e.target.value)
+                            updateForm(formKeys.username, e.target.value)
                           }
                           required
                         />
                       </div>
                     </div>
-                  </div>
 
-                  <FormChoices
-                    options={CURRENCIES}
-                    type={"checkbox"}
-                    title={"Which other currencies would you like to use?"}
-                    moreThanOne
-                    classes={
-                      "custom-control custom-control-alternative custom-checkbox col-md-4 col-6 mb-3"
-                    }
-                    selected={form.currencies}
-                    onChange={selectMultiple(formKeys.currencies)}
-                  />
+                    <div className="form-group d-flex align-items-center position-relative">
+                      <div className="input-group input-group-merge input-group-alternative">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text">
+                            <i className="ni ni-shop"></i>
+                          </span>
+                        </div>
+                        <input
+                          className="form-control"
+                          placeholder="Company Name"
+                          type="text"
+                          value={form.companyName}
+                          onChange={e =>
+                            updateForm(formKeys.companyName, e.target.value)
+                          }
+                          required
+                        />
+                      </div>
+                    </div>
 
-                  <FormChoices
-                    options={SERVICES}
-                    type={"checkbox"}
-                    title={"Which service interests you the most?"}
-                    moreThanOne
-                    classes={
-                      "custom-control custom-control-alternative custom-checkbox col-md-6 col-10 mb-3"
-                    }
-                    selected={form.services}
-                    onChange={selectMultiple(formKeys.services)}
-                  />
+                    <div className="form-group d-flex align-items-center position-relative">
+                      <div className="input-group input-group-merge input-group-alternative">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text">
+                            <i className="ni ni-lock-circle-open"></i>
+                          </span>
+                        </div>
+                        <input
+                          className="form-control"
+                          placeholder="Password"
+                          type="password"
+                          value={form.password}
+                          onChange={e =>
+                            updateForm(formKeys.password, e.target.value)
+                          }
+                          required
+                        />
+                      </div>
+                    </div>
 
-                  <div className="text-center">
-                    <button
-                      type="submit"
-                      className={`btn btn-primary mt-5 w-50 ${
-                        checkValidity() ? "" : "disabled"
-                      }`}
-                      onClick={() => checkValidity() && onSubmit()}
+                    <FormChoices
+                      options={MEMBERSHIP}
+                      type={"radio"}
+                      title={"Membership Type:"}
+                      classes={
+                        "custom-control custom-radio col-md-4 col-6 mb-3"
+                      }
+                      selected={form.memberShip}
+                      onChange={selectOne(formKeys.memberShip)}
+                    />
+                    <FormChoices
+                      options={LOOKING}
+                      type={"radio"}
+                      title={"Are you looking to borrow or lend:"}
+                      classes={
+                        "custom-control custom-radio col-md-4 col-6 mb-3"
+                      }
+                      selected={form.lookingFor}
+                      onChange={selectOne(formKeys.lookingFor)}
+                    />
+                    <div className="form-group">
+                      <label className="form-control-label font-weight-bold">
+                        How much would you like to borrow or lend?
+                      </label>
+                      <div className="d-flex">
+                        <div className="input-group input-group-merge input-group-alternative mb-3 mr-3">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="ni ni-hat-3"></i>
+                            </span>
+                          </div>
+                          <input
+                            className="form-control"
+                            placeholder="Currency"
+                            type="text"
+                            value={form.currency}
+                            onChange={e =>
+                              updateForm(formKeys.currency, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        <div className="input-group input-group-merge input-group-alternative mb-3">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="ni ni-email-83"></i>
+                            </span>
+                          </div>
+                          <input
+                            className="form-control"
+                            placeholder="Amount"
+                            type="text"
+                            value={form.amount}
+                            onChange={e =>
+                              updateForm(formKeys.amount, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <FormChoices
+                      options={CURRENCIES}
+                      type={"checkbox"}
+                      title={"Which other currencies would you like to use?"}
+                      moreThanOne
+                      classes={
+                        "custom-control custom-control-alternative custom-checkbox col-md-4 col-6 mb-3"
+                      }
+                      selected={form.currencies}
+                      onChange={selectMultiple(formKeys.currencies)}
+                    />
+
+                    <FormChoices
+                      options={SERVICES}
+                      type={"checkbox"}
+                      title={"Which service interests you the most?"}
+                      moreThanOne
+                      classes={
+                        "custom-control custom-control-alternative custom-checkbox col-md-6 col-10 mb-3"
+                      }
+                      selected={form.services}
+                      onChange={selectMultiple(formKeys.services)}
+                    />
+
+                    <div className="text-center">
+                      <button
+                        type="submit"
+                        className={`btn btn-primary mt-5 w-50 ${
+                          checkValidity() ? "" : "disabled"
+                        }`}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </form>
+                  {showPopup && (
+                    <SweetAlert
+                      success
+                      title="Awesome!"
+                      onConfirm={() => setPopup(false)}
+                      onCancel={() => setPopup(false)}
                     >
-                      Submit
-                    </button>
-                  </div>
-                </form>
-                {showPopup && (
-                  <SweetAlert
-                    success
-                    title="Awesome!"
-                    onConfirm={() => setPopup(false)}
-                    onCancel={() => setPopup(false)}
-                  >
-                    Thank you for taking the time to register your interest. We
-                    want to serve you as best as we can and offer you absolute
-                    best rates on the market. A member of our management team
-                    will get back to you shortly to discuss your query.
-                  </SweetAlert>
-                )}
+                      Thank you for taking the time to register your interest.
+                      We want to serve you as best as we can and offer you
+                      absolute best rates on the market. A member of our
+                      management team will get back to you shortly to discuss
+                      your query.
+                    </SweetAlert>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }

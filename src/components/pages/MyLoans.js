@@ -1,37 +1,32 @@
 import React, { Component } from 'react';
-import { LoanCreatorABI, LoanCreatorAddress,  LoanContractABI, StandardTokenABI, ERC20TokenABI } from '../Web3/abi';
+import ReactCountryFlag from 'react-country-flag';
+import { LoanBookABI, LoanBookAddress,  LoanContractABI, StandardTokenABI, ERC20TokenABI } from '../Web3/abi';
+import Loader from 'react-loader';
+import Header  from '../pages/Header';
+import { GetLoans } from '../../services/loanbook';
+import { GetLoanDetails, ApproveAndFundLoanRequest, GetRepaymentData, RepayLoan } from '../../services/loanContract';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './MyLoans.css';
-import Header from './Header';
 
 class MyLoans extends Component {
   constructor(){
     super();
-    this.viewAllRequest();
+    this.viewMyLoans();
 
     this.state = {
-      loanAmount:[],
-      collateralValue: [],
-      earnings:[],
-      loanAddresses:[],
-      duration: [],
-      collateralAddress: [],
-      status:[],
-      loanStatuses:['OFFER',
+      myBorrowedLoans: [],
+      myFundedLoans: [],
+      repayments: [],
+      loanStatuses:['INACTIVE',
+        'OFFER',
         'REQUEST',
         'ACTIVE',
         'FUNDED',
         'REPAID',
         'DEFAULT'],
-      repaymentAmount:[],
-      dueDate:[],
       currentDate:null,
       currentDueDate:null,
-      fees:[],
-      repaymentNumber:[],
-      tokenSymbol:[],
-      repaymentRows:[],
       repaymentDuration:0,
       activeRepayment:0,
       currentLoanAddress:'',
@@ -47,106 +42,116 @@ class MyLoans extends Component {
   }
 
   //Get All Loans
-  viewAllRequest = async () => {
-    const Instance = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
+  viewMyLoans = async () => {
 
-    Instance.getAllLoans((err, loanContractAddress) => {
-      this.setState({loaded:false})
-      console.log("LOAN CONTRACT ADDRESS : ", loanContractAddress);
+    try {
 
-      let {loanAmount, collateralValue, duration, earnings,loanAddresses, collateralAddress, status, repaymentAmount, repaymentNumber, tokenSymbol, dueDate, currentDate, currentDueDate} = this.state;
+        const loans = await GetLoans();
 
-      if(!err){
-        // res will be array of loanContractAddresses, iterate over these addresses using the function below to get loan data for each loan.
-        loanContractAddress.map((loanAddress)=>{
+        let  { myBorrowedLoans, myFundedLoans } = this.state;
 
-                const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
+        loans.map(async(loanAddress) => {
+          const loan = await GetLoanDetails(loanAddress);
+          const  user = window.web3.eth.accounts[0];
 
-                  LoanInstance.getLoanData((err, res)=>{
-                    if(res) {
-                      console.log("LOAN DATA : res", res);
+          if(loan[10] === user){
 
-                  let startedOn = res[4].toNumber();
-                  let date = startedOn;
+            myBorrowedLoans.push({
+              loanAddress: loanAddress,
+              loanAmount: window.web3.fromWei(loan[0].toNumber()),
+              duration: loan[1].toNumber(),
+              interest: (loan[2].toNumber() / 100),
+              createOn: loan[3].toNumber(),
+              startedOn: loan[4].toNumber(),
+              status: loan[5].toNumber(),
+              collateralAddress: loan[6],
+              collateralAmount: loan[7].toNumber(),
+              collateralPrice: loan[8].toNumber(),
+              collateralStatus: loan[9].toNumber(),
+              borrower: loan[10],
+              lender: loan[11],
+              liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
+              collaterals: {
+                address: loan[13][0][0],
+                ltv: loan[13][0][1],
+                mpr: loan[13][0][2]
+              }
 
-                  currentDate = new Date();
-
-                if(!err && window.web3.eth.defaultAccount===res[12]){
-                  loanAmount.push(window.web3.fromWei(res[0].toFixed(7)));
-                  collateralValue.push(res[7].toNumber());
-                  duration.push(res[1].toNumber());
-                  earnings.push(res[2].toFixed(2));
-                  status.push(res[5].toNumber());
-                  collateralAddress.push(res[6]);
-                  loanAddresses.push(loanAddress);
-                  dueDate.push(date);
-
-                  const tokenContract = window.web3.eth.contract(ERC20TokenABI).at(res[5])
-                  // console.log("tokenContract :",res[5].toString());
-
-                  // tokenContract.symbol((err,res)=>{
-                  //   tokenSymbol.push(res);
-                  // })
-                   this.setState({
-                     loanAmount: loanAmount,
-                     collateralValue: collateralValue,
-                     duration: duration,
-                     earnings: earnings,
-                     status: status,
-                     collateralAddress: collateralAddress,
-                     loanAddresses: loanAddresses,
-                     tokenSymbol:tokenSymbol,
-                     dueDate:dueDate
-                   })
-
-                 }
-                }
-                });
-
+            });
+              this.setState({
+                myBorrowedLoans: myBorrowedLoans,
               });
-            }
-          });
-        }
+          } else if(loan[11] === user) {
 
-        getRepayments = (loanAddress) => {
-        let {repaymentAmount, repaymentNumber,duration, loaded} = this.state;
+            myFundedLoans.push({
+              loanAddress: loanAddress,
+              loanAmount: window.web3.fromWei(loan[0].toNumber()),
+              duration: loan[1].toNumber(),
+              interest: (loan[2].toNumber() / 100),
+              createOn: loan[3].toNumber(),
+              startedOn: loan[4].toNumber(),
+              status: loan[5].toNumber(),
+              collateralAddress: loan[6],
+              collateralAmount: loan[7].toNumber(),
+              collateralPrice: loan[8].toNumber(),
+              collateralStatus: loan[9].toNumber(),
+              borrower: loan[10],
+              lender: loan[11],
+              liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
+              collaterals: {
+                address: loan[13][0][0],
+                ltv: loan[13][0][1],
+                mpr: loan[13][0][2]
+              }
 
-        this.setState({loaded:!loaded})
-          // Get repayment Amount to paid for a particular repayment duration
-        const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
-        for (var i = 0; i < 12; i++) {
-        LoanInstance.getRepaymentAmount(i+1, (err, repayResponse) => {
-          if (!err){
-            repayResponse.map((repay,i) => {
-              if(i==0)
-                repaymentAmount.push(window.web3.fromWei(repay.toNumber()));
-            })
+            });
 
-            this.setState({repaymentAmount:repaymentAmount})
+            console.log(myFundedLoans);
+            this.setState({
+              myFundedLoans: myFundedLoans,
+            });
           }
-        })}
-        }
+        });
+    } catch (e) {
+        console.log(e);
+    } finally {
 
-        getPaidRepaymentsCount = (loanAddress) => {
-          const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanAddress);
-          LoanInstance.getPaidRepaymentsCount((err, res)=>{
-            if(!err)
-               this.setState({activeRepayment: res.toNumber()});
-          });
-        }
+    }
+  }
+
+  getActiveLoanRepayments =  async (loanAddress, duration) => {
+
+    let {repayments} = this.state;
+
+    repayments = new Array();
+    try {
+      let totalNumberOfRepayments = duration/30;
+
+      for(var i=1; i<=totalNumberOfRepayments; i++){
+        const repaymentData = await GetRepaymentData(loanAddress, i);
+        repayments.push(repaymentData);
+      }
+
+      console.log(repayments);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getInActiveLoanRepayments = (loanAddress) => {
+
+  }
 
 
-        handleRepayment = (loanContractAddress, repaymentAmount) => {
-          // Repay Loan
-          const LoanInstance = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
-          LoanInstance.repayLoan({
-          from: window.web3.eth.accounts[0],
-          value: window.web3.toWei(repaymentAmount)
-           },function(err, res){
-           if(!err)
-              console.log(res);
-           });
-        }
+
+handleLoanRepayment = async (loanContractAddress, repaymentAmount) => {
+// Repay Loan
+  try {
+    await RepayLoan(loanContractAddress, repaymentAmount);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
         handleRepaymentRows = (currentLoanAddress,duration, currentDueDate, currentCollateralValue) => {
           let {repaymentRows, repaymentAmount, repaymentNumber, loanAddresses, dueDate, currentDate, repaymentIndex, activeRepayment} = this.state;
@@ -296,10 +301,8 @@ class MyLoans extends Component {
       }
 
   render() {
-    const {
-      borrowedLoans, fundedLoans, display1, display2, display3, display4, display5, display6, display7, display8, loanAmount, collateralValue, earnings, loanAddresses, duration, collateralAddress, status, repaymentAmount,
-       repaymentNumber, tokenSymbol, loanStatuses, repaymentRows, repaymentDuration, currentLoanAddress, loaded, currentLoanNumber, dueDate, currentDueDate, currentCollateralValue, approveRequestAlert, transferCollateralAlert
-    } = this.state;
+    const { myBorrowedLoans, myFundedLoans, repayments,
+      borrowedLoans, fundedLoans, display1, loanStatuses, loaded, approveRequestAlert, transferCollateralAlert } = this.state;
     return (
       <div className="MyLoans text-center">
       {/*<Loader loaded={loaded}/>*/}
@@ -318,7 +321,7 @@ class MyLoans extends Component {
               <span className="span-50"></span>
               <span className="span-100"></span>
             </div>
-                  <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center">
                       <div className="col px-0">
                         <div className="card" >
                     <div className="card-header text-left">
@@ -332,7 +335,7 @@ class MyLoans extends Component {
                         <table className="table align-items-center table-flush">
                           <thead className="thead">
                             <tr>
-                              <th scope="col">Loan Id</th>
+                              <th scope="col">Loan Address</th>
                               <th scope="col">Loan Amount</th>
                               <th scope="col">Collateral Currency</th>
                               <th scope="col">Duration</th>
@@ -344,70 +347,62 @@ class MyLoans extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {loanAmount.map((amount,i)=>{
-                              return status[i]>1 && <tr key={i}>
-                              <th scope="row mt-3">
-                                <div className="media align-items-center">
-                                  <div className="media-body">
-                                    <span className="mb-0 text-sm">{i+1}</span>
-                                  </div>
-                                </div>
-                              </th>
-                              <td>
-                                <span className="badge-dot">
-                                  <i className="bg-info"></i> {amount} ETH
-                                </span>
-                              </td>
-                              <td>
-                                <div className="text-center">
-                                  <span className="">{tokenSymbol[i]}</span>
-                                  <div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="text-center">
-                                  <span className="">{duration[i]}</span>
-                                  <div>
-                                  </div>
-                                </div>
-                              </td>
+                            {
+                                myBorrowedLoans.map((loan)=>{
+                                  return <tr key={loan.loanAddress}>
+                                  <th scope="row mt-3">
+                                    <div className="media align-items-center">
+                                      <div className="media-body">
+                                        <span className="mb-0 text-sm">{loan.loanAddress}</span>
+                                      </div>
+                                    </div>
+                                  </th>
+                                  <td>
+                                    <span className="badge-dot">
+                                      <i className="bg-info"></i> {loan.loanAmount} ETH
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="text-center">
+                                      <span className="">TTTT</span>
+                                      <div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="text-center">
+                                      <span className="">{loan.duration}</span>
+                                      <div>
+                                      </div>
+                                    </div>
+                                  </td>
 
-                              <td>
-                                <div className="text-center">
-                                  <span className="">{earnings[i]/100}%</span>
-                                  <div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="text-center">
-                                  <span className=""> {loanStatuses[status[i]]}</span>
-                                  <div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                <span className="">{this.convertDate(dueDate[i],-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
-                              </td>
+                                  <td>
+                                    <div className="text-center">
+                                      <span className="">{loan.interest/100}%</span>
+                                      <div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="text-center">
+                                      <span className=""> {loanStatuses[loan.status]}</span>
+                                      <div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <span className="">{this.convertDate(loan.startedOn,-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
+                                  </td>
 
-                              {status[i]>1 && <td>
-                              <button className="btn btn-info" type="button" onClick={()=>{
-                                this.getRepayments(loanAddresses[i]);
-                                this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
-                                   repaymentDuration:duration[i], currentLoanAddress:loanAddresses[i], currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
-                                 })
-                                if(display1==true)
-                                  window.location="/myloans";
-                                  // this.getPaidRepaymentsCount(currentLoanAddress)
-                              }}>
-                                +
-                              </button>
-                              </td>}
-                            </tr>;
-                            })
+                                  {loan.status>0 &&
+                                  <td>
+                                    <button className="btn btn-info" type="button" onClick={()=>{
+                                    this.getActiveLoanRepayments(loan.loanAddress, loan.duration);
+                                    }}> Details</button>
+                                  </td>}
+                                </tr>;})
                             }
-                            { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate, currentCollateralValue)}
                           </tbody>
                         </table>
                       </div>
@@ -428,52 +423,75 @@ class MyLoans extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{cursor:'pointer'}} onClick={()=>{this.setState({display5:!display5, display2:false, display3:false, display4:false, display1:false, display6:false, display7:false, display8:false})}}>
-                    <th scope="row mt-3">
-                      <div className="media align-items-center">
-                        <div className="media-body">
-                          <span className="mb-0 text-sm">1</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> 1.6 ETH
-                      </span>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">DAI</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">90 days</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
+                <tr style={{cursor:'pointer'}} onClick={()=>{this.setState({display1:false})}} />
+                {myFundedLoans.map((loan)=>{
+                              return <tr key={loan.loanAddress}>
 
-                    <td>
-                      <div className="text-center">
-                        <span className="">2%</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">Waiting for lender</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="">January 10, 2020</span>
-                    </td>
-                  </tr>
+                              <th scope="row mt-3">
+                                <div className="media align-items-center">
+                                  <div className="media-body">
+                                    <span className="mb-0 text-sm">{loan.loanAddress}</span>
+                                  </div>
+                                </div>
+                              </th>
+                              <td>
+                                <span className="badge-dot">
+                                  <i className="bg-info"></i> {loan.loanAmount} ETH
+                                </span>
+                              </td>
+                              <td>
+                                <div className="text-center">
+                                  <span className="">TTTT</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="text-center">
+                                  <span className="">{loan.duration}</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
+
+                              <td>
+                                <div className="text-center">
+                                  <span className="">{loan.interest/100}%</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="text-center">
+                                  <span className=""> {loanStatuses[loan.status]}</span>
+                                  <div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <span className="">{this.convertDate(loan.startedOn,-1).split(' GMT+0530 (India Standard Time)')[0]}</span>
+                              </td>
+
+                              {loan.status>2 && <td>
+                              <button className="btn btn-info" type="button" onClick={()=>{
+                                this.getRepayments(loan.loanAddress);
+                                // this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
+                                //    repaymentDuration:loan.duration, currentLoanAddress:loan.loanAddress, currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
+                                //  })
+                                if(display1 === true)
+                                console.log('jere');
+                                  window.location="/myloans";
+                                  // this.getPaidRepaymentsCount(currentLoanAddress)
+                              }}>
+                                +
+                              </button>
+                              </td>}
+                            </tr>;
+                            })
+                            }
+                            {/* { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate, currentCollateralValue)}
+
+
                   { display5 && <tr id="repay">
                     <td>
                     <div className="media-body">
@@ -1013,8 +1031,7 @@ class MyLoans extends Component {
                         </div>
                     </td>
 
-                    </tr>
-                  }
+                    </tr> */}
                 </tbody>
               </table>
             </div>
