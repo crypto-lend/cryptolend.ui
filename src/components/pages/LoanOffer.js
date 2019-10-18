@@ -357,7 +357,7 @@ class LoanOffer extends Component {
                       this.createLoanOffer(loanAmount, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3);
                     }}>
                       <br/>
-                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                      <a className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>}
