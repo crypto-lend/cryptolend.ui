@@ -38,7 +38,9 @@ class ViewAllOffers extends Component {
           'HT','BZ','NAS',
           'FET','PPT','MCO'],
       collateral_tokens: ['BNB', 'GTO', 'QKC'],
-      collateralCurrencyToken:''
+      collateralCurrencyToken:'',
+      collateralAddress:'',
+      loanAddress:''
     };
   }
 
@@ -122,8 +124,9 @@ class ViewAllOffers extends Component {
   }
 
   hideAlertAcceptCollateralConfirm = () => {
+    const { loanAddress } = this.state;
     this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
-    this.handleAcceptLoanOffer();
+    this.handleAcceptLoanOffer(loanAddress);
   }
 
   hideAlertTransferCollateralCancel = () => {
@@ -131,8 +134,9 @@ class ViewAllOffers extends Component {
   }
 
   hideAlertTransferCollateralConfirm = () => {
+    const { loanAddress, collateralAddress } = this.state;
     this.setState({transferCollateralAlert:false});
-    this.handleCollateralTransfer();
+    this.handleCollateralTransfer(loanAddress, collateralAddress);
   }
 
 
@@ -276,7 +280,7 @@ class ViewAllOffers extends Component {
                         <p>Amount  : { loanOffer.loanAmount } ETH</p>
 
                         <div className="btn-wrapper text-center" onClick={()=>{
-                          this.setState({collateralMetadataAlert:true});
+                          this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address});
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
                             <span className="btn-inner--text">Take this loan</span>
