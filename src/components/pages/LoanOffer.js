@@ -46,8 +46,6 @@ class LoanOffer extends Component {
       erc20_tokens :  supported_erc20_token,
       collateralCount : 0
     };
-
-    console.log();
   }
 
   arrayRemove = (arr, value) => {
@@ -76,6 +74,7 @@ class LoanOffer extends Component {
     });
 
     collateralMetadata.push({
+      collateral: getTokenBySymbol[collateralCurrency1].address,
       collateral: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
       ltv: ltv3,
       mpr: mpr3

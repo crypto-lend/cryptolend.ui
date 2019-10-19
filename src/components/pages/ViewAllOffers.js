@@ -6,6 +6,7 @@ import {
   AcceptLoanOffer,
   FinalizeCollateralTransfer
 } from "../../services/loanContract";
+import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 import SweetAlert from "react-bootstrap-sweetalert";
 import "./ViewAllOffers.css";
 import Header from "./Header";
@@ -63,11 +64,13 @@ class ViewAllOffers extends Component {
           let collaterals = [];
           for (var i in loan[13]) {
             collaterals.push({
-              address: loan[13][i][0],
+              address: loan[13][i][0].split('000000000000000000000000')[0],
               ltv: window.web3.toBigNumber(loan[13][i][2]).toNumber(),
-              mpr: window.web3.toBigNumber(loan[13][i][1]).toNumber()
+              mpr: window.web3.toBigNumber(loan[13][i][1]).toNumber(),
+              collateralCurrency: loan[13][i][3],
             });
           }
+          console.log('loan', loan);
 
           loanOffers.push({
             loanAddress: loanAddress,
@@ -132,7 +135,7 @@ class ViewAllOffers extends Component {
   hideAlertTransferCollateralConfirm = () => {
     let { loanAddress, collateralAddress } = this.state;
     this.setState({transferCollateralAlert:false});
-    collateralAddress = collateralAddress.split('00000000000000000000000');
+    // collateralAddress = collateralAddress.split('00000000000000000000000');
     console.log("collateralAddress : ", collateralAddress[0]);
     this.handleCollateralTransfer(loanAddress, collateralAddress[0]);
   }
@@ -434,6 +437,7 @@ class ViewAllOffers extends Component {
 
                         <div className="btn-wrapper text-center" onClick={()=>{
                           this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address, activeCollaterals:loanOffer.collaterals});
+                          console.log(loanOffer.collaterals[0].address)
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
                             <span className="btn-inner--text">
@@ -481,15 +485,16 @@ class ViewAllOffers extends Component {
                           });
                         }}
                       >
-                        {collateral_tokens.map(item => {
-                          return <option>{item}</option>;
+                        {activeCollaterals.map(item => {
+                          return <option>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
                         })}
                       </select>
-                      {activeCollaterals.map(item => {
-                      return <label for="exampleFormControlSelect1">
-                        MPR : {item.mpr} &nbsp; &nbsp; LTV : {item.ltv}%
+                      {collateralCurrencyToken==="BNB"?
+                         <label for="exampleFormControlSelect1">
+                        MPR : {activeCollaterals[0].mpr} &nbsp; LTV : {activeCollaterals[0].ltv}%
                       </label>
-                    })}
+                      :''
+                    }
                     </div>
                   </SweetAlert>
                 )}
