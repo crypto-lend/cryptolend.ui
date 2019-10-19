@@ -135,9 +135,8 @@ class ViewAllOffers extends Component {
   hideAlertTransferCollateralConfirm = () => {
     let { loanAddress, collateralAddress } = this.state;
     this.setState({transferCollateralAlert:false});
-    // collateralAddress = collateralAddress.split('00000000000000000000000');
-    console.log("collateralAddress : ", collateralAddress[0]);
-    this.handleCollateralTransfer(loanAddress, collateralAddress[0]);
+    console.log("collateralAddress : ", collateralAddress);
+    this.handleCollateralTransfer(loanAddress, collateralAddress);
   }
 
 
