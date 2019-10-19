@@ -44,7 +44,8 @@ class ViewAllOffers extends Component {
       collateral_tokens: ['BNB', 'GTO', 'QKC'],
       collateralCurrencyToken:'',
       collateralAddress:"0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
-      loanAddress:''
+      loanAddress:'',
+      activeCollaterals:[],
     };
   }
 
@@ -149,7 +150,8 @@ class ViewAllOffers extends Component {
       collateral_tokens,
       transferCollateralAlert,
       acceptCollateralAlert,
-      collateralCurrencyToken
+      collateralCurrencyToken,
+      activeCollaterals
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -431,7 +433,7 @@ class ViewAllOffers extends Component {
                         <p>Amount  : { loanOffer.loanAmount } ETH</p>
 
                         <div className="btn-wrapper text-center" onClick={()=>{
-                          this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address});
+                          this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address, activeCollaterals:loanOffer.collaterals});
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
                             <span className="btn-inner--text">
@@ -483,9 +485,11 @@ class ViewAllOffers extends Component {
                           return <option>{item}</option>;
                         })}
                       </select>
-                      <label for="exampleFormControlSelect1">
-                        MPR : 0.5% &nbsp; &nbsp; LTV : 50%
+                      {activeCollaterals.map(item => {
+                      return <label for="exampleFormControlSelect1">
+                        MPR : {item.mpr} &nbsp; &nbsp; LTV : {item.ltv}%
                       </label>
+                    })}
                     </div>
                   </SweetAlert>
                 )}
