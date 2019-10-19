@@ -2,10 +2,21 @@ export const supported_erc20_token = [
     {
         name: "Test Token",
         symbol: "BNB",
-        address: "0x3638495a985BdAab6Ea9e134eea9cE7B71f21d3a"
+        address: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815"
     }
 ]
 
-export const getTokenByAddress = (tokenAddress) => {
-    
+export const getTokenByAddress = {
+    "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815": {
+        name: "Test Token",
+        symbol: "BNB",
+    }
+}
+
+export const getTokenBySymbol = {
+
+    "BNB": {
+        name: "Test Token",
+        address: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815"
+    }
 }

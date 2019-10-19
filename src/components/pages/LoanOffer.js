@@ -7,7 +7,7 @@ import Header from './Header';
 import { CreateNewLoanOffer, FetchCollateralPrice } from '../../services/loanbook';
 import { CollateralAddress } from '../Web3/abi';
 import { TransferFundsToLoanContract } from '../../services/loanContract';
-import { supported_erc20_token } from '../Web3/erc20';
+import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
 class LoanOffer extends Component {
   constructor(){
@@ -46,6 +46,8 @@ class LoanOffer extends Component {
       erc20_tokens :  supported_erc20_token,
       collateralCount : 0
     };
+
+    console.log();
   }
 
   arrayRemove = (arr, value) => {
@@ -60,9 +62,9 @@ class LoanOffer extends Component {
   createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
 
     let collateralMetadata = [];
-
+    console.log(collateralCurrency1);
     collateralMetadata.push({
-      collateral: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      collateral: getTokenBySymbol[collateralCurrency1].address,
       ltv: ltv1,
       mpr: mpr1
     });
