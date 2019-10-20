@@ -10,8 +10,7 @@ import FormChoices from "./forms/FormChoices";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Navbar from "./Navbar";
 
-const defaultForm = email => ({
-  email,
+const defaultForm = state => ({
   username: "",
   companyName: "",
   password: "",
@@ -20,20 +19,19 @@ const defaultForm = email => ({
   currency: "",
   amount: "",
   currencies: [],
-  services: []
+  services: [],
+  ...state
 });
 
 export default function Register(props) {
   const {
     history: {
-      location: {
-        state: { email }
-      }
+      location: { state }
     }
   } = props;
 
   const [showPopup, setPopup] = useState(false);
-  const [form, setForm] = useState(defaultForm(email));
+  const [form, setForm] = useState(defaultForm(state));
 
   const updateForm = (key, value) => {
     if (!key || !formKeys[key]) {
