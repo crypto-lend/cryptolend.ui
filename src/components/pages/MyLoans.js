@@ -14,7 +14,8 @@ import {
   GetLoanDetails,
   ApproveAndFundLoanRequest,
   GetRepaymentData,
-  RepayLoan
+  RepayLoan,
+  ClaimCollateralByBorrower
 } from "../../services/loanContract";
 import "../../assets/vendor/font-awesome/css/font-awesome.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
@@ -592,6 +593,11 @@ class MyLoans extends Component {
                               )})}
                             </tbody>
                           </table>
+                          <button className="btn btn-primary" type="button" onClick={()=>{
+                           this.ClaimCollateralByBorrower(repayments[0].loanContractAddress);
+                           }}>
+                           Claim
+                          </button>
                         </div>
                       ) : (
                         <div
