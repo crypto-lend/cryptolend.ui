@@ -5,7 +5,6 @@ import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
 import Header from './Header';
 import { CreateNewLoanOffer, FetchCollateralPrice } from '../../services/loanbook';
-import { CollateralAddress } from '../Web3/abi';
 import { TransferFundsToLoanContract } from '../../services/loanContract';
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
@@ -361,22 +360,6 @@ class LoanOffer extends Component {
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>}
-                    {approveOfferAlert &&
-                    <div className="btn-wrapper text-center mt-3">
-                      <button className="btn btn-primary" type="button" onClick={()=>{
-                        this.fundLoanOffer(loanAmount, loanContractAddress);
-                        }}>
-                        Fund Loan
-                      </button>
-                    </div>}
-                  {acceptLoanAlert &&
-                  <div className="btn-wrapper text-center mt-3">
-                    <button className="btn btn-primary" type="button" onClick={()=>{
-                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), loanContractAddress, window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
-                      }}>
-                      Accept Loan
-                    </button>
-                  </div>}
 
                   {acceptLoanAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%', marginTop:'-7%'}} role="alert">
                       Your loan is funded successfully!

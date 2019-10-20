@@ -46,8 +46,7 @@ export const getTokenByAddress = {
   },
   "0xeA426bA6FE3fE260fBaf837c259EA56866125144": {
       name: "Tetrahydrocannabinol",
-      symbol: "THC",
-      address:
+      symbol: "THC"
   },
   "0xd043Ca951A95466de0371eea7A7376528c843AFb": {
       name: "Recreational Cannabis",

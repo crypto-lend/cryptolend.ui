@@ -4,7 +4,6 @@ import Loader from 'react-loader';
 import Header  from '../pages/Header';
 import { CreateNewLoanRequest, FetchCollateralPrice } from '../../services/loanbook';
 import { ExecuteTokenApproval } from '../../services/token';
-import { CollateralAddress } from '../Web3/abi';
 import { FinalizeCollateralTransfer } from '../../services/loanContract';
 
 class LoanRequest extends Component {
@@ -51,8 +50,7 @@ class LoanRequest extends Component {
           'LINK','CMT','WAX',
           'MATIC','ELF', 'COSM',
           'HT','BZ','NAS',
-          'FET','PPT','MCO'],
-           collateralAddress : CollateralAddress
+          'FET','PPT','MCO']
     };
   }
 
@@ -147,7 +145,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
 
     try {
       const collateralPrice = await FetchCollateralPrice({
-        collateralAddress: CollateralAddress
+        collateralAddress: collateralAddress
       });
 
       this.setState({
