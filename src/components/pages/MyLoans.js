@@ -147,10 +147,10 @@ class MyLoans extends Component {
       for (var i = 1; i <= totalNumberOfRepayments; i++) {
         const repaymentData = await GetRepaymentData(loanAddress, i);
         repayments.push(repaymentData);
-        return repayments;
       }
 
-      console.log(repayments);
+      console.log("repayments - ",repayments);
+      return repayments;
     } catch (error) {
       console.log(error);
     }
@@ -374,7 +374,7 @@ class MyLoans extends Component {
         <Header />
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
-            <div className="shape shape-style-1 shape-primary">
+            <div className="">
               <span className="span-150"></span>
               <span className="span-50"></span>
               <span className="span-50"></span>
@@ -526,7 +526,8 @@ class MyLoans extends Component {
                                 );
                               })}
                               {repayments.map((repayment,i)=>{
-                                return <tr id="repay" key={i}>
+                                console.log(i);
+                                return ( <tr id="repay" key={i}>
                                   <td>
                                     <div className="media-body">
                                       <span className="mb-0 text-sm">Repayments
@@ -588,7 +589,7 @@ class MyLoans extends Component {
                                     </button>
                                   </td>
                                 </tr>
-                              })}
+                              )})}
                             </tbody>
                           </table>
                         </div>
@@ -764,7 +765,7 @@ function DropDown(props) {
         onClick={async () =>{
           onClick(id);
           repayments = await self.getActiveLoanRepayments(loanAddress, duration);
-          console.log("repayments", repayments);
+          console.log("repayments :", repayments);
           self.setState({repayments:repayments});
         }}
         aria-haspopup="true"
