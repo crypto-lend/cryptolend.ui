@@ -738,7 +738,7 @@ function DropDown(props) {
             <span>{repayment && repayment.totalRepaymentAmount}</span>
             </td>
             <td className="">
-            <button className="btn btn-info" style={{marginTop:'-10%'}} onClick={()=>{}}>Repay</button>
+            <button className="btn btn-info" style={{marginTop:'-10%'}} onClick={()=>{self.handleLoanRepayment(repayment.loanContractAddress,repayment.totalRepaymentAmount)}}>Repay</button>
             </td>
             </tr>
           })
