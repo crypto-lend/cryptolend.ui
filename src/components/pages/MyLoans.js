@@ -147,6 +147,7 @@ class MyLoans extends Component {
       for (var i = 1; i <= totalNumberOfRepayments; i++) {
         const repaymentData = await GetRepaymentData(loanAddress, i);
         repayments.push(repaymentData);
+        return repayments;
       }
 
       console.log(repayments);
@@ -508,17 +509,17 @@ class MyLoans extends Component {
 
                                     {loan.status > 0 && (
                                       <td>
-                                        {/* <button className="btn btn-info" type="button" onClick={()=>{
-                                    this.getActiveLoanRepayments(loan.loanAddress, loan.duration);
-                                    }}> Details</button> */}
-                                        {/* Added by jashan */}
-                                        <DropDown
+                                          <DropDown
                                           id={loan.loanAddress}
                                           onClick={this.toggleMenu}
                                           show={
                                             showDropDown === loan.loanAddress
                                           }
+                                          loanAddress={loan.loanAddress}
+                                          duration={loan.duration}
+                                          self={this}
                                         />
+
                                       </td>
                                     )}
                                   </tr>
@@ -642,549 +643,7 @@ class MyLoans extends Component {
                                   </tr>
                                 );
                               })}
-                              {/* { display1 && this.handleRepaymentRows(currentLoanAddress,repaymentDuration, currentDueDate, currentCollateralValue)}
 
-
-                  { display5 && <tr id="repay">
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Repayments</span>
-                    </div>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> R1</span>
-
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R2</span>
-                        </div>
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R3</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Amount</span>
-                    </div>
-                      <span>
-                        1.7 ETH
-                        </span>
-
-                        <div>
-                          <span>  1.6 ETH</span>
-                        </div>
-                        <div>
-                          <span> 1.6 ETH</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Due Date</span>
-                    </div>
-                      <span>
-                        Oct 10, 2019
-                        </span>
-
-                        <div>
-                          <span>  Nov 10, 2019</span>
-                        </div>
-                        <div>
-                          <span> Dec 10, 2019</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Status</span>
-                    </div>
-                      <span>
-                        Paid
-                        </span>
-
-                        <div>
-                          <span>  Unpaid</span>
-                        </div>
-                        <div>
-                          <span> Defaulted/ Overdue</span>
-                        </div>
-                    </td>
-
-
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Comments</span>
-                    </div>
-                      <span>
-                      --
-                        </span>
-
-                        <div>
-                          <span>
-                          --
-                          </span>
-                        </div>
-                        <div>
-                          <span> Paid from collateral</span>
-                        </div>
-                    </td>
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Collateral</span>
-                    </div>
-                      <span>
-                      Value : 4 ETH
-                        </span>
-
-                        <div>
-                          <span>
-                          Remain : 2 ETH
-                          </span>
-                        </div>
-                        <div>
-                          <span>30% Loan Repaid</span>
-                        </div>
-                    </td>
-
-                    </tr>
-                  }
-
-                  <tr style={{cursor:'pointer'}} onClick={()=>{this.setState({display6:!display6, display1:false, display3:false, display4:false, display5:false, display2:false, display7:false, display8:false})}}>
-                    <th scope="row mt-3">
-                      <div className="media align-items-center">
-                        <div className="media-body">
-                          <span className="mb-0 text-sm">2</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> 1.0  ETH
-                      </span>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">DAI</span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">60 Days</span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">2.5%</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">Waiting for lender</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="">January 10, 2020</span>
-                    </td>
-
-                  </tr>
-                  { display6 && <tr id="repay">
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Repayments</span>
-                    </div>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> R1</span>
-
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R2</span>
-                        </div>
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R3</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Amount</span>
-                    </div>
-                      <span>
-                        1.7 ETH
-                        </span>
-
-                        <div>
-                          <span>  1.6 ETH</span>
-                        </div>
-                        <div>
-                          <span> 1.6 ETH</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Due Date</span>
-                    </div>
-                      <span>
-                        Oct 10, 2019
-                        </span>
-
-                        <div>
-                          <span>  Nov 10, 2019</span>
-                        </div>
-                        <div>
-                          <span> Dec 10, 2019</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Status</span>
-                    </div>
-                      <span>
-                        Paid
-                        </span>
-
-                        <div>
-                          <span>  Unpaid</span>
-                        </div>
-                        <div>
-                          <span> Defaulted/ Overdue</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Comments</span>
-                    </div>
-                      <span>
-                      --
-                        </span>
-
-                        <div>
-                          <span>
-                          --
-                          </span>
-                        </div>
-                        <div>
-                          <span> Paid from collateral</span>
-                        </div>
-                    </td>
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Collateral</span>
-                    </div>
-                      <span>
-                      Value : 4 ETH
-                        </span>
-
-                        <div>
-                          <span>
-                          Remain : 2 ETH
-                          </span>
-                        </div>
-                        <div>
-                          <span>30% Loan Repaid</span>
-                        </div>
-                    </td>
-
-                    </tr>
-                  }
-
-                  <tr style={{cursor:'pointer'}} onClick={()=>{this.setState({display7:!display7, display1:false,display2:false, display4:false, display5:false, display6:false, display3:false, display8:false})}}>
-                    <th scope="row mt-3">
-                      <div className="media align-items-center">
-
-                        <div className="media-body">
-                          <span className="mb-0 text-sm">3</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> 3.2 ETH
-                      </span>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">DAI</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">360 days</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">3.5%</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">Waiting for lender</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="">January 10, 2020</span>
-                    </td>
-
-                  </tr>
-                  { display7 && <tr id="repay">
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Repayments</span>
-                    </div>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> R1</span>
-
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R2</span>
-                        </div>
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R3</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Amount</span>
-                    </div>
-                      <span>
-                        1.7 ETH
-                        </span>
-
-                        <div>
-                          <span>  1.6 ETH</span>
-                        </div>
-                        <div>
-                          <span> 1.6 ETH</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Due Date</span>
-                    </div>
-                      <span>
-                        Oct 10, 2019
-                        </span>
-
-                        <div>
-                          <span>  Nov 10, 2019</span>
-                        </div>
-                        <div>
-                          <span> Dec 10, 2019</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Status</span>
-                    </div>
-                      <span>
-                        Paid
-                        </span>
-
-                        <div>
-                          <span>  Unpaid</span>
-                        </div>
-                        <div>
-                          <span> Defaulted/ Overdue</span>
-                        </div>
-                    </td>
-
-
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Comments</span>
-                    </div>
-                      <span>
-                      --
-                        </span>
-
-                        <div>
-                          <span>
-                          --
-                          </span>
-                        </div>
-                        <div>
-                          <span> Paid from collateral</span>
-                        </div>
-                    </td>
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Collateral</span>
-                    </div>
-                      <span>
-                      Value : 4 ETH
-                        </span>
-
-                        <div>
-                          <span>
-                          Remain : 2 ETH
-                          </span>
-                        </div>
-                        <div>
-                          <span>30% Loan Repaid</span>
-                        </div>
-                    </td>
-
-                    </tr>
-                  }
-
-                  <tr style={{cursor:'pointer'}} onClick={()=>{this.setState({display8:!display8, display1:false,display2:false, display3:false, display5:false, display6:false, display7:false, display4:false})}}>
-                    <th scope="row mt-3">
-                      <div className="media align-items-center">
-
-                        <div className="media-body">
-                          <span className="mb-0 text-sm">4</span>
-                        </div>
-                      </div>
-                    </th>
-
-                    <td>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> 5.0 ETH
-                      </span>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">DAI</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">90 days</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">1%</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="text-center">
-                        <span className="">Waiting for lender</span>
-                        <div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="">January 10, 2020</span>
-                    </td>
-
-                  </tr>
-                  { display8 && <tr id="repay">
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Repayments</span>
-                    </div>
-                      <span className="badge-dot">
-                        <i className="bg-info"></i> R1</span>
-
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R2</span>
-                        </div>
-                        <div className=" badge-dot">
-                          <span className=""> <i className="bg-info"></i> R3</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Amount</span>
-                    </div>
-                      <span>
-                        1.7 ETH
-                        </span>
-
-                        <div>
-                          <span>  1.6 ETH</span>
-                        </div>
-                        <div>
-                          <span> 1.6 ETH</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Due Date</span>
-                    </div>
-                      <span>
-                        Oct 10, 2019
-                        </span>
-
-                        <div>
-                          <span>  Nov 10, 2019</span>
-                        </div>
-                        <div>
-                          <span> Dec 10, 2019</span>
-                        </div>
-                    </td>
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Status</span>
-                    </div>
-                      <span>
-                        Paid
-                        </span>
-
-                        <div>
-                          <span>  Unpaid</span>
-                        </div>
-                        <div>
-                          <span> Defaulted/ Overdue</span>
-                        </div>
-                    </td>
-
-
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Comments</span>
-                    </div>
-                      <span>
-                      --
-                        </span>
-
-                        <div>
-                          <span>
-                          --
-                          </span>
-                        </div>
-                        <div>
-                          <span> Paid from collateral</span>
-                        </div>
-                    </td>
-
-                    <td>
-                    <div className="media-body">
-                      <span className="mb-0 text-sm">Collateral</span>
-                    </div>
-                      <span>
-                      Value : 4 ETH
-                        </span>
-
-                        <div>
-                          <span>
-                          Remain : 2 ETH
-                          </span>
-                        </div>
-                        <div>
-                          <span>30% Loan Repaid</span>
-                        </div>
-                    </td>
-
-                    </tr> */}
                             </tbody>
                           </table>
                         </div>
@@ -1232,12 +691,18 @@ class MyLoans extends Component {
 }
 
 function DropDown(props) {
-  const { onClick, id, show } = props;
+  const { onClick, id, show, loanAddress, duration, self } = props;
+  let {repayments} = self.state;
   return (
     <div className="dropdown">
       <button
         className="btn btn-info"
-        onClick={() => onClick(id)}
+        onClick={async () =>{
+          onClick(id);
+          repayments = await self.getActiveLoanRepayments(loanAddress, duration);
+          console.log("repayments", repayments);
+          self.setState({repayments:repayments});
+        }}
         aria-haspopup="true"
         aria-expanded="true"
       >
@@ -1256,15 +721,31 @@ function DropDown(props) {
           transform: "translate3d(-160px, 31px, 0px)"
         }}
       >
-        <a className="dropdown-item" href="#">
-          Action
-        </a>
-        <a className="dropdown-item" href="#">
-          Another action
-        </a>
-        <a className="dropdown-item" href="#">
-          Something else here
-        </a>
+      <table className="table align-items-center table-flush">
+        <thead className="thead">
+          <tr>
+            <th scope="col">Repayment</th>
+          </tr>
+        </thead>
+        <tbody>
+        {
+          repayments.map((repayment,i)=>{
+            return <tr className="dropdown-item" key={i}>
+            <td className="text-center">
+            <span>{repayment && repayment.repaymentNumber}</span>
+            </td>
+            <td className="text-center">
+            <span>{repayment && repayment.totalRepaymentAmount}</span>
+            </td>
+            <td className="">
+            <button className="btn btn-info" style={{marginTop:'-10%'}} onClick={()=>{}}>Repay</button>
+            </td>
+            </tr>
+          })
+        }
+        </tbody>
+        </table>
+
       </div>
     </div>
   );
