@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Nouislider from "nouislider-react";
-import { GetLoans } from "../../services/loanbook";
+import { GetLoans, FetchCollateralPrice } from "../../services/loanbook";
 import {
   GetLoanDetails,
   AcceptLoanOffer,
@@ -46,7 +46,8 @@ class ViewAllOffers extends Component {
       collateralCurrencyToken:'',
       collateralAddress:"0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
       loanAddress:'',
-      activeCollaterals:[],
+      activeLoanOffer:[],
+      activeCollateralValue:0
     };
   }
 
@@ -107,6 +108,25 @@ class ViewAllOffers extends Component {
     }
   };
 
+ handleCollateralConversion = async (collateralAddress, loanAmount) => {
+
+    let {activeCollateralValue} = this.state;
+
+    try {
+      const collateralPrice = await FetchCollateralPrice({
+        collateralAddress: collateralAddress
+      });
+
+      console.log("collateralPrice",collateralPrice);
+
+      this.setState({
+        activeCollateralValue: (loanAmount / collateralPrice * 2),
+      })
+
+    } catch (error) {
+
+    }
+}
   hideAlertCancel = () => {
     this.setState({ collateralMetadataAlert: false });
   };
@@ -153,7 +173,8 @@ class ViewAllOffers extends Component {
       transferCollateralAlert,
       acceptCollateralAlert,
       collateralCurrencyToken,
-      activeCollaterals
+      activeLoanOffer,
+      activeCollateralValue
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -435,8 +456,7 @@ class ViewAllOffers extends Component {
                         <p>Amount  : { loanOffer.loanAmount } ETH</p>
 
                         <div className="btn-wrapper text-center" onClick={()=>{
-                          this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address, activeCollaterals:loanOffer.collaterals});
-                          console.log(loanOffer.collaterals[0].address)
+                          this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address, activeLoanOffer:loanOffer});
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
                             <span className="btn-inner--text">
@@ -482,15 +502,16 @@ class ViewAllOffers extends Component {
                           this.setState({
                             collateralCurrencyToken: e.target.value
                           });
+                          this.handleCollateralConversion(activeLoanOffer.collaterals[0].address, activeLoanOffer.loanAmount);
                         }}
                       >
-                        {activeCollaterals.map(item => {
+                        {activeLoanOffer.collaterals.map(item => {
                           return <option>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
                         })}
                       </select>
                       {collateralCurrencyToken==="BNB"?
                          <label for="exampleFormControlSelect1">
-                        MPR : {activeCollaterals[0].mpr} &nbsp; LTV : {activeCollaterals[0].ltv}%
+                        MPR : {activeLoanOffer.collaterals[0].mpr} &nbsp; LTV : {activeLoanOffer.collaterals[0].ltv}%
                       </label>
                       :''
                     }
@@ -508,7 +529,7 @@ class ViewAllOffers extends Component {
                     onConfirm={this.hideAlertAcceptCollateralConfirm}
                     onCancel={this.hideAlertAcceptCollateralCancel}
                   >
-                    Approve Transfer collateral of 1000{" "}
+                    Approve Transfer collateral of {activeCollateralValue}{" "}
                     {collateralCurrencyToken} tokens
                   </SweetAlert>
                 )}
@@ -523,7 +544,7 @@ class ViewAllOffers extends Component {
                     onConfirm={this.hideAlertTransferCollateralConfirm}
                     onCancel={this.hideAlertTransferCollateralCancel}
                   >
-                    Transfer collateral of 1000 {collateralCurrencyToken} tokens
+                    Transfer collateral of {activeCollateralValue} {collateralCurrencyToken} tokens
                   </SweetAlert>
                 )}
               </div>
