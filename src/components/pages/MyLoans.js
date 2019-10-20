@@ -525,6 +525,70 @@ class MyLoans extends Component {
                                   </tr>
                                 );
                               })}
+                              {repayments.map((repayment,i)=>{
+                                return <tr id="repay" key={i}>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Repayments
+                                      </span>
+                                    </div>
+
+                                    <span className="badge-dot">
+                                      <i className="bg-info"></i> {repayment && repayment.repaymentNumber}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Amount
+                                      </span>
+                                    </div>
+                                    <span>
+                                      {repayment && repayment.totalRepaymentAmount} ETH
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Due Date
+                                      </span>
+                                    </div>
+                                    <span>
+                                      Oct 10, 2019
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Status
+                                      </span>
+                                    </div>
+                                    <span>
+                                      Paid
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Comments
+                                      </span>
+                                    </div>
+                                    <span>
+                                      --
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Collateral
+                                      </span>
+                                    </div>
+                                    <span>
+                                      4 ETH
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <button className="btn btn-info"
+                                      onClick={()=>{this.handleLoanRepayment(repayment && repayment.loanContractAddress,repayment && repayment.totalRepaymentAmount)}}>Repay
+                                    </button>
+                                  </td>
+                                </tr>
+                              })}
                             </tbody>
                           </table>
                         </div>
@@ -708,45 +772,6 @@ function DropDown(props) {
       >
         Details
       </button>
-      <div
-        className={`dropdown-menu dropdown-menu-right dropdown-menu-arrow ${
-          show ? "show" : ""
-        }`}
-        x-placement="bottom-end"
-        style={{
-          position: "absolute",
-          willChange: "transform",
-          top: "0px",
-          left: "0px",
-          transform: "translate3d(-160px, 31px, 0px)"
-        }}
-      >
-      <table className="table align-items-center table-flush">
-        <thead className="thead">
-          <tr>
-            <th scope="col">Repayment</th>
-          </tr>
-        </thead>
-        <tbody>
-        {
-          repayments.map((repayment,i)=>{
-            return <tr className="dropdown-item" key={i}>
-            <td className="text-center">
-            <span>{repayment && repayment.repaymentNumber}</span>
-            </td>
-            <td className="text-center">
-            <span>{repayment && repayment.totalRepaymentAmount}</span>
-            </td>
-            <td className="">
-            <button className="btn btn-info" style={{marginTop:'-10%'}} onClick={()=>{self.handleLoanRepayment(repayment.loanContractAddress,repayment.totalRepaymentAmount)}}>Repay</button>
-            </td>
-            </tr>
-          })
-        }
-        </tbody>
-        </table>
-
-      </div>
     </div>
   );
 }
