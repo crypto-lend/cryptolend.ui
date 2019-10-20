@@ -401,7 +401,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                       this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralAddress,collateralValue);
                       }}>
                       <br/>
-                      <a className="btn btn-primary btn-icon ">
+                      <a className="btn btn-primary btn-icon " style={{color:'white'}}>
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>
