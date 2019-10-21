@@ -593,8 +593,8 @@ class MyLoans extends Component {
                               )})}
                             </tbody>
                           </table>
-                          <button className="btn btn-primary" type="button" onClick={()=>{
-                           this.ClaimCollateralByBorrower(repayments[0].loanContractAddress);
+                          <button className="btn btn-primary m-3" type="button" onClick={()=>{
+                           ClaimCollateralByBorrower(repayments[0].loanContractAddress);
                            }}>
                            Claim
                           </button>
