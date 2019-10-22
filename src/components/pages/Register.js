@@ -294,7 +294,6 @@ export default function Register(props) {
                     <div className="text-center">
                       <button
                         type="submit"
-                        onClick={() => onSubmit()}
                         className={`btn btn-primary mt-5 w-50 ${
                           checkValidity() ? "" : "disabled"
                         }`}

@@ -1,44 +1,83 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
-export default class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: ""
-    };
-  }
+const defaultForm = {
+  email: "",
+  password: ""
+};
+export default function(props) {
+  const {
+    history: { push }
+  } = props;
 
-  handleLogin = () => {
-    // Request API.
-    axios
-      .post("https://www.cipherfit.com/auth/local", {
-        identifier: this.state.email,
-        password: this.state.password
-      })
-      .then(response => {
-        // Handle success.
-        console.log("Well done!");
-        window.localStorage.setItem("user", response.data.user.username);
-        window.localStorage.setItem("jwt", response.data.jwt);
-        window.localStorage.setItem(
-          "companyName",
-          response.data.user.companyName
-        );
-        window.location = `/myloans`;
-      })
-      .catch(error => {
-        // Handle error.
-        console.log("An error occurred:", error);
-      });
+  const [error, setError] = useState(null);
+  const [form, setForm] = useState(defaultForm);
+
+  const updateForm = (key, value) => {
+    if (!key || !formKeys[key]) {
+      throw new Error("Invalid form key set");
+    }
+    // Reset the error
+    error && setError(null);
+    setForm({ ...form, [key]: value });
   };
-  render() {
-    return (
-      <>
-      <Navbar/>
+
+  const formKeys = Object.keys(form)
+    .map(key => key)
+    .reduce((acc, val) => {
+      acc[val] = val;
+      return acc;
+    }, {});
+
+  const checkValidity = () => {
+    for (const key in form) {
+      const val = form[key];
+      if (typeof val === "string") {
+        if (!val || val === "" || val.length === 0) return false;
+      }
+
+      if (typeof val === "object") {
+        if (Object.keys(val).length < 0) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const handleLogin = async () => {
+    // Request API.
+    try {
+      const response = await axios.post(
+        "https://www.cipherfit.com/auth/local",
+        {
+          identifier: form.email,
+          password: form.password
+        }
+      );
+
+      console.log("Well done!");
+      window.localStorage.setItem("user", response.data.user.username);
+      window.localStorage.setItem("jwt", response.data.jwt);
+      window.localStorage.setItem(
+        "companyName",
+        response.data.user.companyName
+      );
+      push("/myloans");
+    } catch (err) {
+      if (typeof err.response.data.message === "string") {
+        setError(err.response.data.message);
+      } else {
+        setError(
+          "Sorry we couldn't complete your registration. Please contact us!"
+        );
+      }
+    }
+  };
+  return (
+    <>
+      <Navbar />
       <div
         className="header bg-gradient-primary py-7 py-lg-8 pt-lg-9 "
         style={{
@@ -60,7 +99,12 @@ export default class Login extends Component {
                       <div className="text-center text-muted mb-4">
                         Enter your login details.
                       </div>
-                      <form>
+                      <form
+                        onSubmit={e => {
+                          e.preventDefault();
+                          checkValidity() && handleLogin();
+                        }}
+                      >
                         <div className="form-group mb-3">
                           <div className="input-group input-group-merge input-group-alternative">
                             <div className="input-group-prepend">
@@ -73,10 +117,11 @@ export default class Login extends Component {
                               style={{ marginTop: 0 }}
                               placeholder="Email"
                               type="email"
-                              value={this.state.email}
+                              value={form.email}
                               onChange={e => {
-                                this.setState({ email: e.target.value });
+                                updateForm(formKeys.email, e.target.value);
                               }}
+                              required
                             />
                           </div>
                         </div>
@@ -92,10 +137,11 @@ export default class Login extends Component {
                               style={{ marginTop: 0 }}
                               placeholder="Password"
                               type="password"
-                              value={this.state.password}
+                              value={form.password}
                               onChange={e => {
-                                this.setState({ password: e.target.value });
+                                updateForm(formKeys.password, e.target.value);
                               }}
+                              required
                             />
                           </div>
                         </div>
@@ -112,11 +158,18 @@ export default class Login extends Component {
                             <span className="text-muted">Remember me</span>
                           </label>
                         </div>
+                        {error && (
+                          <small className="text-danger d-block mt-4 text-center">
+                            {error}
+                          </small>
+                        )}
+
                         <div className="text-center">
                           <button
-                            type="button"
-                            className="btn btn-success my-4 w-50"
-                            onClick={this.handleLogin}
+                            type="submit"
+                            className={`btn btn-primary mt-5 w-50 ${
+                              checkValidity() ? "" : "disabled"
+                            }`}
                           >
                             Sign in
                           </button>
@@ -142,7 +195,6 @@ export default class Login extends Component {
           </div>
         </div>
       </div>
-      </>
-    );
-  }
+    </>
+  );
 }
