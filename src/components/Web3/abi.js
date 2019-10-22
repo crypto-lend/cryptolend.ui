@@ -302,66 +302,6 @@ export const StandardTokenABI = [
     }
   ];
 
-export const ERC20TokenABI = [
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "decimals",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "payable": false,
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "type": "function"
-  }
-];
-
 export const LoanBookABI = [
   {
     "constant": false,
@@ -673,13 +613,13 @@ export const LoanBookABI = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "name": "",
+        "indexed": true,
+        "name": "lender",
         "type": "address"
       },
       {
-        "indexed": false,
-        "name": "",
+        "indexed": true,
+        "name": "loanContractAddres",
         "type": "address"
       }
     ],
@@ -691,13 +631,13 @@ export const LoanBookABI = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "name": "",
+        "indexed": true,
+        "name": "borrower",
         "type": "address"
       },
       {
-        "indexed": false,
-        "name": "",
+        "indexed": true,
+        "name": "loanContractAddress",
         "type": "address"
       }
     ],
@@ -794,7 +734,7 @@ export const LoanBookABI = [
     "name": "createNewLoanOffer",
     "outputs": [
       {
-        "name": "",
+        "name": "_loanContractAddress",
         "type": "address"
       }
     ],
@@ -1252,10 +1192,6 @@ export const LoanContractABI = [
       {
         "name": "monthlyInterest",
         "type": "uint256"
-      },
-      {
-        "name": "fees",
-        "type": "uint256"
       }
     ],
     "payable": false,
@@ -1305,8 +1241,6 @@ export const LoanContractABI = [
   }
 ];
 
-export const LoanBookAddress = "0xA399289942aEe0d0C35C503C32842f01C260247F";
-
-export const CollateralAddress = "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815";
+export const LoanBookAddress = "0xb6da23d5E1C85aEc94ba8BE1513d31A2fD7a36ba";
 
 export default abi;

@@ -5,7 +5,6 @@ import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
 import Header from './Header';
 import { CreateNewLoanOffer, FetchCollateralPrice } from '../../services/loanbook';
-import { CollateralAddress } from '../Web3/abi';
 import { TransferFundsToLoanContract } from '../../services/loanContract';
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
@@ -68,14 +67,13 @@ class LoanOffer extends Component {
     });
 
     collateralMetadata.push({
-      collateral: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      collateral: getTokenBySymbol[collateralCurrency2].address,
       ltv: ltv2,
       mpr: mpr2
     });
 
     collateralMetadata.push({
-      collateral: getTokenBySymbol[collateralCurrency1].address,
-      collateral: "0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      collateral: getTokenBySymbol[collateralCurrency3].address,
       ltv: ltv3,
       mpr: mpr3
     })
