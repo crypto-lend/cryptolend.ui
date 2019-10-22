@@ -26,11 +26,12 @@ const defaultForm = state => ({
 export default function Register(props) {
   const {
     history: {
-      location: { state }
+      location: { state },
+      push
     }
   } = props;
 
-  const [showPopup, setPopup] = useState(false);
+  const [showPopup, setPopup] = useState(true);
   const [form, setForm] = useState(defaultForm(state));
 
   const updateForm = (key, value) => {
@@ -289,8 +290,16 @@ export default function Register(props) {
                     <SweetAlert
                       success
                       title="Awesome!"
-                      onConfirm={() => setPopup(false)}
-                      onCancel={() => setPopup(false)}
+                      onConfirm={() =>
+                        setPopup(false) ||
+                        push("/") ||
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      }
+                      onCancel={() =>
+                        setPopup(false) ||
+                        push("/") ||
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      }
                     >
                       Thank you for taking the time to register your interest.
                       We want to serve you as best as we can and offer you
