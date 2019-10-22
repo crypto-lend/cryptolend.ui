@@ -30,6 +30,7 @@ class MyLoans extends Component {
       myBorrowedLoans: [],
       myFundedLoans: [],
       repayments: [],
+      activeLoan:[],
       loanStatuses: [
         "INACTIVE",
         "OFFER",
@@ -360,6 +361,7 @@ class MyLoans extends Component {
       myBorrowedLoans,
       myFundedLoans,
       repayments,
+      activeLoan,
       borrowedLoans,
       fundedLoans,
       display1,
@@ -516,6 +518,7 @@ class MyLoans extends Component {
                                           show={
                                             showDropDown === loan.loanAddress
                                           }
+                                          activeLoan = {loan}
                                           loanAddress={loan.loanAddress}
                                           duration={loan.duration}
                                           self={this}
@@ -554,7 +557,11 @@ class MyLoans extends Component {
                                       </span>
                                     </div>
                                     <span>
-                                      Oct 10, 2019
+                                    {
+                                      this.convertDate(activeLoan.startedOn, repayment.repaymentNumber).split(
+                                        " GMT+0530 (India Standard Time)"
+                                      )[0]
+                                    }
                                     </span>
                                   </td>
                                   <td>
@@ -563,7 +570,7 @@ class MyLoans extends Component {
                                       </span>
                                     </div>
                                     <span>
-                                      Paid
+                                      {activeLoan.borrower===repayment.repayee?'Paid':'Unpaid'}
                                     </span>
                                   </td>
                                   <td>
@@ -577,11 +584,11 @@ class MyLoans extends Component {
                                   </td>
                                   <td>
                                     <div className="media-body">
-                                      <span className="mb-0 text-sm">Collateral
+                                      <span className="mb-0 text-sm"> Collateral
                                       </span>
                                     </div>
                                     <span>
-                                      4 ETH
+                                      {activeLoan.collateralAmount} TTTT
                                     </span>
                                   </td>
                                   <td>
@@ -762,7 +769,7 @@ class MyLoans extends Component {
 }
 
 function DropDown(props) {
-  const { onClick, id, show, loanAddress, duration, self } = props;
+  const { onClick, id, show, loanAddress, duration, self, activeLoan } = props;
   let {repayments} = self.state;
   return (
     <div className="dropdown">
@@ -771,8 +778,8 @@ function DropDown(props) {
         onClick={async () =>{
           onClick(id);
           repayments = await self.getActiveLoanRepayments(loanAddress, duration);
-          console.log("repayments :", repayments);
-          self.setState({repayments:repayments});
+          console.log("activeLoan :", activeLoan);
+          self.setState({repayments:repayments, activeLoan:activeLoan});
         }}
         aria-haspopup="true"
         aria-expanded="true"
