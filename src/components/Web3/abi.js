@@ -1241,6 +1241,6 @@ export const LoanContractABI = [
   }
 ];
 
-export const LoanBookAddress = "0xb6da23d5E1C85aEc94ba8BE1513d31A2fD7a36ba";
+export const LoanBookAddress = "0xf117355DC0393b1968169c2957CB845C94A6e940";
 
 export default abi;
