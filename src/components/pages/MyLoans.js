@@ -619,14 +619,14 @@ class MyLoans extends Component {
                                                 </span>
                                               </div>
                                               <span>
-                                                {activeLoan.collateralAmount+ " TTTT "}
+                                                {activeLoan.collateralAmount + " TTTT"}
 
                                               </span>
                                               <span>
-                                                 {/*((100/activeLoan.duration)*repayment.repaymentNumber).toFixed(2)*/0.00 + " % "}
+                                                 {/*((100/activeLoan.duration)*repayment.repaymentNumber).toFixed(2)*/" 0.00% "}
                                               </span>
                                               <span>
-                                                {activeLoan.collateralPrice/activeLoan.collateralAmount + " USD "}
+                                                {/*activeLoan.collateralPrice/activeLoan.collateralAmount + " USD "*/}
                                               </span>
                                             </td>
                                             <td>
