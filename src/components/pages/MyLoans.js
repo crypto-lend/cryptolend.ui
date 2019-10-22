@@ -47,7 +47,6 @@ class MyLoans extends Component {
       currentLoanAddress: "",
       currentLoanNumber: 0,
       repaymentIndex: 0,
-      currentDueDate: "",
       currentCollateralValue: "",
       loaded: true,
       approveRequestAlert: false,
@@ -71,13 +70,16 @@ class MyLoans extends Component {
     try {
       const loans = await GetLoans();
 
+      let currentDate = new Date();
+      this.setState({currentDate:currentDate});
+
       let { myBorrowedLoans, myFundedLoans } = this.state;
 
       loans.map(async loanAddress => {
         const loan = await GetLoanDetails(loanAddress);
         const user = window.web3.eth.accounts[0];
 
-        // if(loan[10] === user){
+        if(loan[10] === user){
 
         myBorrowedLoans.push({
           loanAddress: loanAddress,
@@ -103,7 +105,7 @@ class MyLoans extends Component {
         this.setState({
           myBorrowedLoans: myBorrowedLoans
         });
-        // } else if(loan[11] === user) {
+        } else if(loan[11] === user) {
 
         myFundedLoans.push({
           loanAddress: loanAddress,
@@ -131,7 +133,7 @@ class MyLoans extends Component {
         this.setState({
           myFundedLoans: myFundedLoans
         });
-        // }
+        }
       });
     } catch (e) {
       console.log(e);
@@ -350,6 +352,15 @@ class MyLoans extends Component {
     return date;
   };
 
+  convertDateEpoc = (currentDueDate, i) => {
+    let date = new Date(currentDueDate * 1000);
+    date.setMinutes(date.getMinutes() + (i + 1) * 30);
+    console.log("epoc date: ", date);
+    console.log("currentDate date: ", this.state.currentDate);
+
+    return date;
+  };
+
   toggleMenu = id => {
     this.setState({
       showDropDown: id
@@ -362,6 +373,7 @@ class MyLoans extends Component {
       myFundedLoans,
       repayments,
       activeLoan,
+      currentDate,
       borrowedLoans,
       fundedLoans,
       display1,
@@ -570,7 +582,8 @@ class MyLoans extends Component {
                                       </span>
                                     </div>
                                     <span>
-                                      {activeLoan.borrower===repayment.repayee?'Paid':'Unpaid'}
+                                      {currentDate>this.convertDateEpoc(activeLoan.startedOn, repayment.repaymentNumber)?'Expired':
+                                        activeLoan.borrower===repayment.repayee?'Paid':'Due'}
                                     </span>
                                   </td>
                                   <td>
