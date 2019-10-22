@@ -709,32 +709,95 @@ class MyLoans extends Component {
                                       </span>
                                     </td>
 
-                                    {loan.status > 2 && (
+                                    {loan.status > 0 && (
                                       <td>
-                                        <button
-                                          className="btn btn-info"
-                                          type="button"
-                                          onClick={() => {
-                                            this.getRepayments(
-                                              loan.loanAddress
-                                            );
-                                            // this.setState({display1:!display1, display2:false, display3:false, display4:false, display5:false, display6:false, display7:false, display8:false,
-                                            //    repaymentDuration:loan.duration, currentLoanAddress:loan.loanAddress, currentLoanNumber:i+1, currentDueDate:dueDate[i], currentCollateralValue:collateralValue[i]
-                                            //  })
-                                            if (display1 === true)
-                                              console.log("jere");
-                                            window.location = "/myloans";
-                                            // this.getPaidRepaymentsCount(currentLoanAddress)
-                                          }}
-                                        >
-                                          +
-                                        </button>
+                                          <DropDown
+                                          id={loan.loanAddress}
+                                          onClick={this.toggleMenu}
+                                          show={
+                                            showDropDown === loan.loanAddress
+                                          }
+                                          activeLoan = {loan}
+                                          loanAddress={loan.loanAddress}
+                                          duration={loan.duration}
+                                          self={this}
+                                        />
+
                                       </td>
                                     )}
                                   </tr>
                                 );
                               })}
+                              {repayments.map((repayment,i)=>{
+                                console.log(i);
+                                return ( <tr id="repay" key={i}>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Repayments
+                                      </span>
+                                    </div>
 
+                                    <span className="badge-dot">
+                                      <i className="bg-info"></i> {repayment && repayment.repaymentNumber}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Amount
+                                      </span>
+                                    </div>
+                                    <span>
+                                      {repayment && repayment.totalRepaymentAmount} ETH
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Due Date
+                                      </span>
+                                    </div>
+                                    <span>
+                                    {
+                                      this.convertDate(activeLoan.startedOn, repayment.repaymentNumber).split(
+                                        " GMT+0530 (India Standard Time)"
+                                      )[0]
+                                    }
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Status
+                                      </span>
+                                    </div>
+                                    <span>
+                                      {currentDate>this.convertDateEpoc(activeLoan.startedOn, repayment.repaymentNumber)?'Expired':
+                                        activeLoan.borrower===repayment.repayee?'Paid':'Due'}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm">Comments
+                                      </span>
+                                    </div>
+                                    <span>
+                                      --
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div className="media-body">
+                                      <span className="mb-0 text-sm"> Collateral
+                                      </span>
+                                    </div>
+                                    <span>
+                                      {activeLoan.collateralAmount} TTTT
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <button className="btn btn-info"
+                                      onClick={()=>{this.handleLoanRepayment(repayment && repayment.loanContractAddress,repayment && repayment.totalRepaymentAmount)}}>Repay
+                                    </button>
+                                  </td>
+                                </tr>
+                              )})}
                             </tbody>
                           </table>
                         </div>
