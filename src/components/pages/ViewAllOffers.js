@@ -509,11 +509,9 @@ class ViewAllOffers extends Component {
                           return <option>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
                         })}
                       </select>
-                      {collateralCurrencyToken==="BNB"?
-                         <label for="exampleFormControlSelect1">
+                      {<label for="exampleFormControlSelect1">
                         MPR : {activeLoanOffer.collaterals[0].mpr} &nbsp; LTV : {activeLoanOffer.collaterals[0].ltv}%
                       </label>
-                      :''
                     }
                     </div>
                   </SweetAlert>

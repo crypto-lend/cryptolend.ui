@@ -851,7 +851,7 @@ class MyLoans extends Component {
                                                 TTTT
                                               </span>
                                             </td>
-                                            <td>
+                                            {/*<td>
                                               <button
                                                 className="btn btn-info"
                                                 onClick={() => {
@@ -865,7 +865,7 @@ class MyLoans extends Component {
                                               >
                                                 Repay
                                               </button>
-                                            </td>
+                                            </td>*/}
                                           </tr>
                                         );
                                       })}
