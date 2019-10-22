@@ -45,14 +45,14 @@ class LoanRequest extends Component {
     };
   }
 
-createLoanRequest = async (principal, duration, interest, collateralAddress, collateralAmount) => {
+createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount) => {
 
       try {
         const loanContractAddress = await CreateNewLoanRequest({
           principal: principal,
           duration: duration,
           interest: interest,
-          collateralAddress: collateralAddress,
+          collateralAddress: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address,
           collateralAmount: collateralAmount
         });
 
@@ -237,7 +237,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your loan currency.</span>
                     </div>
-                    <div className="btn-wrapper" style={{marginTop:'25px', marginBottom:'247px', cursor:'pointer'}}  onClick={this.handleCollateralConversion}>
+                    <div className="btn-wrapper" style={{marginTop:'25px', marginBottom:'247px', cursor:'pointer'}}  onClick={() => this.handleCollateralConversion(getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address)}>
                       <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/></span>
                       <br/>
                       <p>Ethereum</p>
@@ -387,7 +387,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                   </div>
                   { monthlyInt?
                     <div className="btn-wrapper text-center mb-5 mt-5" onClick={()=>{
-                      this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralAddress,collateralValue);
+                      this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralCurrency,collateralValue);
                       }}>
                       <br/>
                       <a className="btn btn-primary btn-icon " style={{color:'white'}}>
