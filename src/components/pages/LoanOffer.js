@@ -145,7 +145,7 @@ class LoanOffer extends Component {
         <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
-            <div className="shape shape-style-1 shape-primary">
+            <div className="">
               <span className="span-150"></span>
               <span className="span-50"></span>
               <span className="span-50"></span>
