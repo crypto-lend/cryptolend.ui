@@ -30,7 +30,7 @@ class MyLoans extends Component {
       myBorrowedLoans: [],
       myFundedLoans: [],
       repayments: [],
-      activeLoan:[],
+      activeLoan: [],
       loanStatuses: [
         "INACTIVE",
         "OFFER",
@@ -71,7 +71,7 @@ class MyLoans extends Component {
       const loans = await GetLoans();
 
       let currentDate = new Date();
-      this.setState({currentDate:currentDate});
+      this.setState({ currentDate: currentDate });
 
       let { myBorrowedLoans, myFundedLoans } = this.state;
 
@@ -79,60 +79,58 @@ class MyLoans extends Component {
         const loan = await GetLoanDetails(loanAddress);
         const user = window.web3.eth.accounts[0];
 
-        if(loan[10] === user){
+        if (loan[10] === user) {
+          myBorrowedLoans.push({
+            loanAddress: loanAddress,
+            loanAmount: window.web3.fromWei(loan[0].toNumber()),
+            duration: loan[1].toNumber(),
+            interest: loan[2].toNumber() / 100,
+            createOn: loan[3].toNumber(),
+            startedOn: loan[4].toNumber(),
+            status: loan[5].toNumber(),
+            collateralAddress: loan[6],
+            collateralAmount: loan[7].toNumber(),
+            collateralPrice: loan[8].toNumber(),
+            collateralStatus: loan[9].toNumber(),
+            borrower: loan[10],
+            lender: loan[11],
+            liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
+            collaterals: {
+              address: loan[13][0][0],
+              ltv: loan[13][0][1],
+              mpr: loan[13][0][2]
+            }
+          });
+          this.setState({
+            myBorrowedLoans: myBorrowedLoans
+          });
+        } else if (loan[11] === user) {
+          myFundedLoans.push({
+            loanAddress: loanAddress,
+            loanAmount: window.web3.fromWei(loan[0].toNumber()),
+            duration: loan[1].toNumber(),
+            interest: loan[2].toNumber() / 100,
+            createOn: loan[3].toNumber(),
+            startedOn: loan[4].toNumber(),
+            status: loan[5].toNumber(),
+            collateralAddress: loan[6],
+            collateralAmount: loan[7].toNumber(),
+            collateralPrice: loan[8].toNumber(),
+            collateralStatus: loan[9].toNumber(),
+            borrower: loan[10],
+            lender: loan[11],
+            liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
+            collaterals: {
+              address: loan[13][0][0],
+              ltv: loan[13][0][1],
+              mpr: loan[13][0][2]
+            }
+          });
 
-        myBorrowedLoans.push({
-          loanAddress: loanAddress,
-          loanAmount: window.web3.fromWei(loan[0].toNumber()),
-          duration: loan[1].toNumber(),
-          interest: loan[2].toNumber() / 100,
-          createOn: loan[3].toNumber(),
-          startedOn: loan[4].toNumber(),
-          status: loan[5].toNumber(),
-          collateralAddress: loan[6],
-          collateralAmount: loan[7].toNumber(),
-          collateralPrice: loan[8].toNumber(),
-          collateralStatus: loan[9].toNumber(),
-          borrower: loan[10],
-          lender: loan[11],
-          liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
-          collaterals: {
-            address: loan[13][0][0],
-            ltv: loan[13][0][1],
-            mpr: loan[13][0][2]
-          }
-        });
-        this.setState({
-          myBorrowedLoans: myBorrowedLoans
-        });
-        } else if(loan[11] === user) {
-
-        myFundedLoans.push({
-          loanAddress: loanAddress,
-          loanAmount: window.web3.fromWei(loan[0].toNumber()),
-          duration: loan[1].toNumber(),
-          interest: loan[2].toNumber() / 100,
-          createOn: loan[3].toNumber(),
-          startedOn: loan[4].toNumber(),
-          status: loan[5].toNumber(),
-          collateralAddress: loan[6],
-          collateralAmount: loan[7].toNumber(),
-          collateralPrice: loan[8].toNumber(),
-          collateralStatus: loan[9].toNumber(),
-          borrower: loan[10],
-          lender: loan[11],
-          liquidatedAmount: window.web3.fromWei(loan[12].toNumber()),
-          collaterals: {
-            address: loan[13][0][0],
-            ltv: loan[13][0][1],
-            mpr: loan[13][0][2]
-          }
-        });
-
-        console.log(myFundedLoans);
-        this.setState({
-          myFundedLoans: myFundedLoans
-        });
+          console.log(myFundedLoans);
+          this.setState({
+            myFundedLoans: myFundedLoans
+          });
         }
       });
     } catch (e) {
@@ -153,7 +151,7 @@ class MyLoans extends Component {
         repayments.push(repaymentData);
       }
 
-      console.log("repayments - ",repayments);
+      console.log("repayments - ", repayments);
       return repayments;
     } catch (error) {
       console.log(error);
@@ -461,162 +459,203 @@ class MyLoans extends Component {
                             <tbody>
                               {myBorrowedLoans.map(loan => {
                                 return (
-                                  <tr key={loan.loanAddress}>
-                                    <th scope="row mt-3">
-                                      <div className="media align-items-center">
-                                        <div className="media-body">
-                                          <span className="mb-0 text-sm">
-                                            {loan.loanAddress}
-                                          </span>
+                                  <>
+                                    <tr key={loan.loanAddress}>
+                                      <th scope="row mt-3">
+                                        <div className="media align-items-center">
+                                          <div className="media-body">
+                                            <span className="mb-0 text-sm">
+                                              {loan.loanAddress}
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </th>
-                                    <td>
-                                      <span className="badge-dot">
-                                        <i className="bg-info"></i>{" "}
-                                        {loan.loanAmount} ETH
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">TTTT</span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">
-                                          {loan.duration}
-                                        </span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">
-                                          {loan.interest / 100}%
-                                        </span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">
-                                          {" "}
-                                          {loanStatuses[loan.status]}
-                                        </span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <span className="">
-                                        {
-                                          this.convertDate(
-                                            loan.startedOn,
-                                            -1
-                                          ).split(
-                                            " GMT+0530 (India Standard Time)"
-                                          )[0]
-                                        }
-                                      </span>
-                                    </td>
-
-                                    {loan.status > 0 && (
+                                      </th>
                                       <td>
-                                          <DropDown
-                                          id={loan.loanAddress}
-                                          onClick={this.toggleMenu}
-                                          show={
-                                            showDropDown === loan.loanAddress
-                                          }
-                                          activeLoan = {loan}
-                                          loanAddress={loan.loanAddress}
-                                          duration={loan.duration}
-                                          self={this}
-                                        />
-
+                                        <span className="badge-dot">
+                                          <i className="bg-info"></i>{" "}
+                                          {loan.loanAmount} ETH
+                                        </span>
                                       </td>
-                                    )}
-                                  </tr>
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">TTTT</span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">
+                                            {loan.duration}
+                                          </span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">
+                                            {loan.interest / 100}%
+                                          </span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">
+                                            {" "}
+                                            {loanStatuses[loan.status]}
+                                          </span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <span className="">
+                                          {
+                                            this.convertDate(
+                                              loan.startedOn,
+                                              -1
+                                            ).split(
+                                              " GMT+0530 (India Standard Time)"
+                                            )[0]
+                                          }
+                                        </span>
+                                      </td>
+
+                                      {loan.status > 0 && (
+                                        <td>
+                                          <DropDown
+                                            id={loan.loanAddress}
+                                            onClick={this.toggleMenu}
+                                            show={
+                                              showDropDown === loan.loanAddress
+                                            }
+                                            activeLoan={loan}
+                                            loanAddress={loan.loanAddress}
+                                            duration={loan.duration}
+                                            self={this}
+                                          />
+                                        </td>
+                                      )}
+                                    </tr>
+                                    {showDropDown === loan.loanAddress &&
+                                      repayments.map((repayment, i) => {
+                                        console.log(i);
+                                        return (
+                                          <tr id="repay" key={i}>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Repayments
+                                                </span>
+                                              </div>
+
+                                              <span className="badge-dot">
+                                                <i className="bg-info"></i>{" "}
+                                                {repayment &&
+                                                  repayment.repaymentNumber}
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Amount
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {repayment &&
+                                                  repayment.totalRepaymentAmount}{" "}
+                                                ETH
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Due Date
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {
+                                                  this.convertDate(
+                                                    activeLoan.startedOn,
+                                                    repayment.repaymentNumber
+                                                  ).split(
+                                                    " GMT+0530 (India Standard Time)"
+                                                  )[0]
+                                                }
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Status
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {currentDate >
+                                                this.convertDateEpoc(
+                                                  activeLoan.startedOn,
+                                                  repayment.repaymentNumber
+                                                )
+                                                  ? "Expired"
+                                                  : activeLoan.borrower ===
+                                                    repayment.repayee
+                                                  ? "Paid"
+                                                  : "Due"}
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Comments
+                                                </span>
+                                              </div>
+                                              <span>--</span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  {" "}
+                                                  Collateral
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {activeLoan.collateralAmount}{" "}
+                                                TTTT
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <button
+                                                className="btn btn-info"
+                                                onClick={() => {
+                                                  this.handleLoanRepayment(
+                                                    repayment &&
+                                                      repayment.loanContractAddress,
+                                                    repayment &&
+                                                      repayment.totalRepaymentAmount
+                                                  );
+                                                }}
+                                              >
+                                                Repay
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                  </>
                                 );
                               })}
-                              {repayments.map((repayment,i)=>{
-                                console.log(i);
-                                return ( <tr id="repay" key={i}>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Repayments
-                                      </span>
-                                    </div>
-
-                                    <span className="badge-dot">
-                                      <i className="bg-info"></i> {repayment && repayment.repaymentNumber}
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Amount
-                                      </span>
-                                    </div>
-                                    <span>
-                                      {repayment && repayment.totalRepaymentAmount} ETH
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Due Date
-                                      </span>
-                                    </div>
-                                    <span>
-                                    {
-                                      this.convertDate(activeLoan.startedOn, repayment.repaymentNumber).split(
-                                        " GMT+0530 (India Standard Time)"
-                                      )[0]
-                                    }
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Status
-                                      </span>
-                                    </div>
-                                    <span>
-                                      {currentDate>this.convertDateEpoc(activeLoan.startedOn, repayment.repaymentNumber)?'Expired':
-                                        activeLoan.borrower===repayment.repayee?'Paid':'Due'}
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Comments
-                                      </span>
-                                    </div>
-                                    <span>
-                                      --
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm"> Collateral
-                                      </span>
-                                    </div>
-                                    <span>
-                                      {activeLoan.collateralAmount} TTTT
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <button className="btn btn-info"
-                                      onClick={()=>{this.handleLoanRepayment(repayment && repayment.loanContractAddress,repayment && repayment.totalRepaymentAmount)}}>Repay
-                                    </button>
-                                  </td>
-                                </tr>
-                              )})}
                             </tbody>
                           </table>
-                          <button className="btn btn-primary m-3" type="button" onClick={()=>{
-                           ClaimCollateralByBorrower(repayments[0].loanContractAddress);
-                           }}>
-                           Claim
+                          <button
+                            className="btn btn-primary m-3"
+                            type="button"
+                            onClick={() => {
+                              ClaimCollateralByBorrower(
+                                repayments[0].loanContractAddress
+                              );
+                            }}
+                          >
+                            Claim
                           </button>
                         </div>
                       ) : (
@@ -648,156 +687,191 @@ class MyLoans extends Component {
                               />
                               {myFundedLoans.map(loan => {
                                 return (
-                                  <tr key={loan.loanAddress}>
-                                    <th scope="row mt-3">
-                                      <div className="media align-items-center">
-                                        <div className="media-body">
-                                          <span className="mb-0 text-sm">
-                                            {loan.loanAddress}
-                                          </span>
+                                  <>
+                                    <tr key={loan.loanAddress}>
+                                      <th scope="row mt-3">
+                                        <div className="media align-items-center">
+                                          <div className="media-body">
+                                            <span className="mb-0 text-sm">
+                                              {loan.loanAddress}
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </th>
-                                    <td>
-                                      <span className="badge-dot">
-                                        <i className="bg-info"></i>{" "}
-                                        {loan.loanAmount} ETH
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">TTTT</span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">
-                                          {loan.duration}
-                                        </span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">
-                                          {loan.interest / 100}%
-                                        </span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className="text-center">
-                                        <span className="">
-                                          {" "}
-                                          {loanStatuses[loan.status]}
-                                        </span>
-                                        <div></div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <span className="">
-                                        {
-                                          this.convertDate(
-                                            loan.startedOn,
-                                            -1
-                                          ).split(
-                                            " GMT+0530 (India Standard Time)"
-                                          )[0]
-                                        }
-                                      </span>
-                                    </td>
-
-                                    {loan.status > 0 && (
+                                      </th>
                                       <td>
-                                          <DropDown
-                                          id={loan.loanAddress}
-                                          onClick={this.toggleMenu}
-                                          show={
-                                            showDropDown === loan.loanAddress
-                                          }
-                                          activeLoan = {loan}
-                                          loanAddress={loan.loanAddress}
-                                          duration={loan.duration}
-                                          self={this}
-                                        />
-
+                                        <span className="badge-dot">
+                                          <i className="bg-info"></i>{" "}
+                                          {loan.loanAmount} ETH
+                                        </span>
                                       </td>
-                                    )}
-                                  </tr>
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">TTTT</span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">
+                                            {loan.duration}
+                                          </span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">
+                                            {loan.interest / 100}%
+                                          </span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="text-center">
+                                          <span className="">
+                                            {" "}
+                                            {loanStatuses[loan.status]}
+                                          </span>
+                                          <div></div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <span className="">
+                                          {
+                                            this.convertDate(
+                                              loan.startedOn,
+                                              -1
+                                            ).split(
+                                              " GMT+0530 (India Standard Time)"
+                                            )[0]
+                                          }
+                                        </span>
+                                      </td>
+
+                                      {loan.status > 0 && (
+                                        <td>
+                                          <DropDown
+                                            id={loan.loanAddress}
+                                            onClick={this.toggleMenu}
+                                            show={
+                                              showDropDown === loan.loanAddress
+                                            }
+                                            activeLoan={loan}
+                                            loanAddress={loan.loanAddress}
+                                            duration={loan.duration}
+                                            self={this}
+                                          />
+                                        </td>
+                                      )}
+                                    </tr>
+                                    {showDropDown === loan.loanAddress &&
+                                      repayments.map((repayment, i) => {
+                                        console.log(i);
+                                        return (
+                                          <tr id="repay" key={i}>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Repayments
+                                                </span>
+                                              </div>
+
+                                              <span className="badge-dot">
+                                                <i className="bg-info"></i>{" "}
+                                                {repayment &&
+                                                  repayment.repaymentNumber}
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Amount
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {repayment &&
+                                                  repayment.totalRepaymentAmount}{" "}
+                                                ETH
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Due Date
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {
+                                                  this.convertDate(
+                                                    activeLoan.startedOn,
+                                                    repayment.repaymentNumber
+                                                  ).split(
+                                                    " GMT+0530 (India Standard Time)"
+                                                  )[0]
+                                                }
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Status
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {currentDate >
+                                                this.convertDateEpoc(
+                                                  activeLoan.startedOn,
+                                                  repayment.repaymentNumber
+                                                )
+                                                  ? "Expired"
+                                                  : activeLoan.borrower ===
+                                                    repayment.repayee
+                                                  ? "Paid"
+                                                  : "Due"}
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  Comments
+                                                </span>
+                                              </div>
+                                              <span>--</span>
+                                            </td>
+                                            <td>
+                                              <div className="media-body">
+                                                <span className="mb-0 text-sm">
+                                                  {" "}
+                                                  Collateral
+                                                </span>
+                                              </div>
+                                              <span>
+                                                {activeLoan.collateralAmount}{" "}
+                                                TTTT
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <button
+                                                className="btn btn-info"
+                                                onClick={() => {
+                                                  this.handleLoanRepayment(
+                                                    repayment &&
+                                                      repayment.loanContractAddress,
+                                                    repayment &&
+                                                      repayment.totalRepaymentAmount
+                                                  );
+                                                }}
+                                              >
+                                                Repay
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                  </>
                                 );
                               })}
-                              {repayments.map((repayment,i)=>{
-                                console.log(i);
-                                return ( <tr id="repay" key={i}>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Repayments
-                                      </span>
-                                    </div>
-
-                                    <span className="badge-dot">
-                                      <i className="bg-info"></i> {repayment && repayment.repaymentNumber}
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Amount
-                                      </span>
-                                    </div>
-                                    <span>
-                                      {repayment && repayment.totalRepaymentAmount} ETH
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Due Date
-                                      </span>
-                                    </div>
-                                    <span>
-                                    {
-                                      this.convertDate(activeLoan.startedOn, repayment.repaymentNumber).split(
-                                        " GMT+0530 (India Standard Time)"
-                                      )[0]
-                                    }
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Status
-                                      </span>
-                                    </div>
-                                    <span>
-                                      {currentDate>this.convertDateEpoc(activeLoan.startedOn, repayment.repaymentNumber)?'Expired':
-                                        activeLoan.borrower===repayment.repayee?'Paid':'Due'}
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm">Comments
-                                      </span>
-                                    </div>
-                                    <span>
-                                      --
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <div className="media-body">
-                                      <span className="mb-0 text-sm"> Collateral
-                                      </span>
-                                    </div>
-                                    <span>
-                                      {activeLoan.collateralAmount} TTTT
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <button className="btn btn-info"
-                                      onClick={()=>{this.handleLoanRepayment(repayment && repayment.loanContractAddress,repayment && repayment.totalRepaymentAmount)}}>Repay
-                                    </button>
-                                  </td>
-                                </tr>
-                              )})}
                             </tbody>
                           </table>
                         </div>
@@ -846,16 +920,20 @@ class MyLoans extends Component {
 
 function DropDown(props) {
   const { onClick, id, show, loanAddress, duration, self, activeLoan } = props;
-  let {repayments} = self.state;
+  let { repayments } = self.state;
   return (
     <div className="dropdown">
       <button
         className="btn btn-info"
-        onClick={async () =>{
+        onClick={async () => {
           onClick(id);
-          repayments = await self.getActiveLoanRepayments(loanAddress, duration);
+          self.setState({ repayments: [] });
+          repayments = await self.getActiveLoanRepayments(
+            loanAddress,
+            duration
+          );
           console.log("activeLoan :", activeLoan);
-          self.setState({repayments:repayments, activeLoan:activeLoan});
+          self.setState({ repayments: repayments, activeLoan: activeLoan });
         }}
         aria-haspopup="true"
         aria-expanded="true"
