@@ -31,13 +31,16 @@ export default function Register(props) {
     }
   } = props;
 
-  const [showPopup, setPopup] = useState(true);
+  const [showPopup, setPopup] = useState(false);
+  const [error, setError] = useState(null);
   const [form, setForm] = useState(defaultForm(state));
 
   const updateForm = (key, value) => {
     if (!key || !formKeys[key]) {
       throw new Error("Invalid form key set");
     }
+    // Reset the error
+    error && setError(null);
     setForm({ ...form, [key]: value });
   };
 
@@ -78,25 +81,33 @@ export default function Register(props) {
     updateForm(key, selected);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // FIXME: Currencies doesn't work. Adding it fails the request
     const { currencies, ...others } = form;
-    axios
-      .post("https://www.cipherfit.com/auth/local/register", others)
-      .then(response => {
-        // Handle success.
-        console.log("Well done!");
-        console.log("User profile", response.data.user);
-        console.log("User token", response.data.jwt);
-        window.localStorage.setItem("user", response.data.user.username);
-        window.localStorage.setItem("user_id", response.data.user.id);
 
-        setPopup(true);
-      })
-      .catch(error => {
-        // Handle error.
-        console.log("An error occurred:", error);
-      });
+    try {
+      const response = await axios.post(
+        "https://www.cipherfit.com/auth/local/register",
+        others
+      );
+
+      console.log("Well done!");
+      console.log("User profile", response.data.user);
+      console.log("User token", response.data.jwt);
+      window.localStorage.setItem("user", response.data.user.username);
+      window.localStorage.setItem("user_id", response.data.user.id);
+
+      setPopup(true);
+    } catch (error) {
+      // Handle error.
+      if (typeof error.response.data.message === "string") {
+        setError(error.response.data.message);
+      } else {
+        setError(
+          "Sorry we couldn't complete your registration. Please contact us!"
+        );
+      }
+    }
   };
   return (
     <>
@@ -274,10 +285,16 @@ export default function Register(props) {
                       selected={form.services}
                       onChange={selectMultiple(formKeys.services)}
                     />
+                    {error && (
+                      <small className="position-absolute text-danger text-center">
+                        {error}
+                      </small>
+                    )}
 
                     <div className="text-center">
                       <button
                         type="submit"
+                        onClick={() => onSubmit()}
                         className={`btn btn-primary mt-5 w-50 ${
                           checkValidity() ? "" : "disabled"
                         }`}
