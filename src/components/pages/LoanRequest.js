@@ -5,6 +5,7 @@ import Header  from '../pages/Header';
 import { CreateNewLoanRequest, FetchCollateralPrice } from '../../services/loanbook';
 import { ExecuteTokenApproval } from '../../services/token';
 import { FinalizeCollateralTransfer } from '../../services/loanContract';
+import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
 class LoanRequest extends Component {
   constructor(){
@@ -40,17 +41,7 @@ class LoanRequest extends Component {
       apr:0,
       originationFee:1,
       collateralCurrency:'ETH',
-      erc20_tokens :  ['TTT', 'CHIG', 'BNB', 'GTO', 'QKC', 'NEXO',
-          'PAX','EGT',  'MANA','POWR',
-          'TUSD','LAMB','CTXC','ENJ',
-          'CELR','HTB','ICX',  'WTC',
-          'USD', 'BTM','EDO', 'SXDT',
-          'OMG','CRO','TOP','SXUT',
-          'MEDX','ITC','REP','STO',
-          'LINK','CMT','WAX',
-          'MATIC','ELF', 'COSM',
-          'HT','BZ','NAS',
-          'FET','PPT','MCO']
+      erc20_tokens :  supported_erc20_token
     };
   }
 
@@ -208,7 +199,7 @@ createLoanRequest = async (principal, duration, interest, collateralAddress, col
                       }}>
                       {
                         erc20_tokens.map((item,i) => {
-                          return <option>{item}</option>;
+                          return <option>{item.symbol}</option>;
                       })
                       }
                       </select>
