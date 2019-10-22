@@ -59,7 +59,8 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
         this.setState({
           createRequestAlert: true,
           approveRequestAlert: true,
-          loanContractAddress: loanContractAddress
+          loanContractAddress: loanContractAddress,
+          collateralAddress: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address
         })
 
       } catch (e) {
