@@ -424,7 +424,7 @@ class ViewAllOffers extends Component {
               </div>
               <div className="ml-4 row">
                 {this.state.loanOffers.map((loanOffer, index) => (
-                  <div key={index} className="col-md-4">
+                  <div key={index} className={this.state.loanOffers.length<3?"col":"col-md-4"}>
                     <div className="card">
                       <div className="card-header">
                         <div className="row row-example">
