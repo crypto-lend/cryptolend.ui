@@ -630,6 +630,12 @@ class MyLoans extends Component {
                                                 {/*activeLoan.collateralPrice/activeLoan.collateralAmount + " USD "*/}
                                               </span>
                                             </td>
+                                            {currentDate <
+                                            this.convertDateEpoc(
+                                              activeLoan.startedOn,
+                                              repayment.repaymentNumber
+                                            )
+                                            && activeLoan.borrower === repayment.repayee &&
                                             <td>
                                               <button
                                                 className="btn btn-info"
@@ -644,7 +650,7 @@ class MyLoans extends Component {
                                               >
                                                 Repay
                                               </button>
-                                            </td>
+                                            </td>}
                                           </tr>
                                         );
                                       })}
