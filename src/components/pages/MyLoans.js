@@ -9,6 +9,7 @@ import {
 } from "../Web3/abi";
 import Loader from "react-loader";
 import Header from "../pages/Header";
+import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 import { GetLoans } from "../../services/loanbook";
 import {
   GetLoanDetails,
@@ -267,7 +268,7 @@ class MyLoans extends Component {
             <div className="media-body">
               <span className="mb-0 text-sm">Collateral</span>
             </div>
-            <span>Value : {currentCollateralValue} TTT</span>
+            <span>Value : {currentCollateralValue} {/*getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol*/}</span>
           </td>
           {/*repaymentIndex==duration/30 && <td>
                <button className="btn btn-primary" type="button" onClick={()=>{
@@ -457,10 +458,10 @@ class MyLoans extends Component {
                               </tr>
                             </thead>
                             <tbody>
-                              {myBorrowedLoans.map(loan => {
+                              {myBorrowedLoans.map((loan,i) => {
                                 return (
                                   <>
-                                    <tr key={loan.loanAddress}>
+                                    <tr key={i}>
                                       <th scope="row mt-3">
                                         <div className="media align-items-center">
                                           <div className="media-body">
@@ -478,7 +479,7 @@ class MyLoans extends Component {
                                       </td>
                                       <td>
                                         <div className="text-center">
-                                          <span className="">TTTT</span>
+                                          <span className="">{getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol}</span>
                                           <div></div>
                                         </div>
                                       </td>
@@ -619,7 +620,7 @@ class MyLoans extends Component {
                                                 </span>
                                               </div>
                                               <span>
-                                                {activeLoan.collateralAmount + " TTTT"}
+                                                {activeLoan.collateralAmount} {getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol}
 
                                               </span>
                                               <span>
@@ -712,7 +713,7 @@ class MyLoans extends Component {
                                       </td>
                                       <td>
                                         <div className="text-center">
-                                          <span className="">TTTT</span>
+                                          <span className="">{getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol}</span>
                                           <div></div>
                                         </div>
                                       </td>
@@ -854,8 +855,8 @@ class MyLoans extends Component {
                                               </div>
                                               <span>
                                                 {activeLoan.collateralAmount}{" "}
-                                                TTTT
-                                                Loan Repaid {((100/activeLoan.duration)*repayment.repaymentNumber).toFixed(2)}%
+                                                {activeLoan.collateralAmount} {getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol}
+                                                {((100/activeLoan.duration)*repayment.repaymentNumber).toFixed(2)}%
                                               </span>
                                             </td>
                                             {/*<td>

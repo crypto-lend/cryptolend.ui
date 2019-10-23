@@ -50,7 +50,7 @@ export default class Header extends Component {
               <ul className="navbar-nav-hover align-items-lg-center">
               <li className="nav-item dropdown text-center">
               <Link to="/">
-                <img src={blocklendr} alt="Blocklendr" style={{ width: "50%" }} />
+                <img src={blocklendr} alt="Blocklendr" style={{ width: "20%" }} />
               </Link>
               </li>
                 <li className="nav-item dropdown">

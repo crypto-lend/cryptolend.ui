@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Nouislider from "nouislider-react";
 import Header  from '../pages/Header';
 import { GetLoans } from '../../services/loanbook';
+import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 import { GetLoanDetails, ApproveAndFundLoanRequest } from '../../services/loanContract';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
@@ -254,7 +255,7 @@ class ViewAllRequests extends Component {
                  </div>
                  <div className="col-sm">
                    <span><p>Collateral </p></span>
-                    <span className="btn-inner--text"> {loanRequest.collateral.amount} TTT</span>
+                    <span className="btn-inner--text"> {loanRequest.collateral.amount} {getTokenByAddress[loanRequest.collateral.address].symbol}</span>
                  </div>
                </div>
                    </div>
