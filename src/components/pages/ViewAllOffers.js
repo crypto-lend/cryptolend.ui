@@ -519,7 +519,7 @@ class ViewAllOffers extends Component {
                     </div>
                   </SweetAlert>
                 )}
-                {acceptCollateralAlert && (
+                {/*acceptCollateralAlert && (
                   <SweetAlert
                     warning
                     showCancel
@@ -531,6 +531,21 @@ class ViewAllOffers extends Component {
                     onCancel={this.hideAlertAcceptCollateralCancel}
                   >
                     Approve Transfer collateral of {activeCollateralValue}{" "}
+                    {collateralCurrencyToken} tokens
+                  </SweetAlert>
+                )*/}
+                {acceptCollateralAlert && (
+                  <SweetAlert
+                    warning
+                    showCancel
+                    confirmBtnText="Accept"
+                    confirmBtnBsStyle="info"
+                    cancelBtnBsStyle="default"
+                    title="Accept Loan Offer"
+                    onConfirm={this.hideAlertAcceptCollateralConfirm}
+                    onCancel={this.hideAlertAcceptCollateralCancel}
+                  >
+                    Accept Transfer collateral of {activeCollateralValue}{" "}
                     {collateralCurrencyToken} tokens
                   </SweetAlert>
                 )}
