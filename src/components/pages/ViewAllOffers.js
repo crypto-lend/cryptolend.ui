@@ -510,7 +510,7 @@ class ViewAllOffers extends Component {
                         })}
                       </select>
                       {activeLoanOffer.collaterals.map((item,i) => {
-                        return <label for="exampleFormControlSelect1" key={i}>
+                        return (getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken) && <label for="exampleFormControlSelect1" key={i}>
                           MPR : {item.mpr} &nbsp; LTV : {item.ltv}%
                         </label>;
                       })}
