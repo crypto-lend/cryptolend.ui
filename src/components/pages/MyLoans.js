@@ -640,34 +640,53 @@ class MyLoans extends Component {
                                   </>
                                 );
                               })}
+                              {showDropDown === activeLoan.loanAddress && <tr>
+                              <td>
+                                <div className="media-body">
+                                  <span className="mb-0 text-sm">
+                                    {" "}
+                                    Collateral Amount
+                                  </span>
+                                </div>
+                                <span>
+                                  {activeLoan && activeLoan.collateralAmount}
+                                  {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                                </span>
+                              </td>
+                              <td>
+                                <span>
+                                  Loan Repaid
+                                </span>
+                                <span>
+                                   {activeLoan && " 0.00% "}
+                                </span>
+                              </td>
+                              <td>
+                                <span>
+                                  Collateral Left {" "}
+                                </span>
+                                <span>
+                                  {activeLoan && activeLoan.collateralAmount}
+                                  {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                                </span>
+                              </td>
+                              <td>
+                                <button
+                                  className="btn btn-primary"
+                                  type="button"
+                                  onClick={() => {
+                                    ClaimCollateralByBorrower(
+                                      repayments[0].loanContractAddress
+                                    );
+                                  }}
+                                >
+                                  Claim
+                                </button>
+                              </td>
+                              </tr>}
                             </tbody>
                           </table>
-                          <button
-                            className="btn btn-primary m-3"
-                            type="button"
-                            onClick={() => {
-                              ClaimCollateralByBorrower(
-                                repayments[0].loanContractAddress
-                              );
-                            }}
-                          >
-                            Claim
-                          </button>
-                          <>
-                            <div className="media-body">
-                              <span className="mb-0 text-sm">
-                                {" "}
-                                Collateral
-                              </span>
-                            </div>
-                            <span>
-                              {activeLoan && activeLoan.collateralAmount}
-                              {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
-                            </span>
-                            <span>
-                               {activeLoan && " 0.00% "}
-                            </span>
-                          </>
+
                         </div>
                       ) : (
                         <div
