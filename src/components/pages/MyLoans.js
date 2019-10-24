@@ -16,7 +16,8 @@ import {
   ApproveAndFundLoanRequest,
   GetRepaymentData,
   RepayLoan,
-  ClaimCollateralByBorrower
+  ClaimCollateralByBorrower,
+  LiquidateLoanCollateral
 } from "../../services/loanContract";
 import "../../assets/vendor/font-awesome/css/font-awesome.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
@@ -882,57 +883,59 @@ class MyLoans extends Component {
                                               </div>
                                               <span>--</span>
                                             </td>
-                                            {/*<td>
-                                              <div className="media-body">
-                                                <span className="mb-0 text-sm">
-                                                  {" "}
-                                                  Collateral
-                                                </span>
-                                              </div>
-                                              <span>
-                                                {activeLoan.collateralAmount}{" "}
-                                                {activeLoan.collateralAmount} {getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol}
-                                                {((100/activeLoan.duration)*repayment.repaymentNumber).toFixed(2)}%
-                                              </span>
-                                            </td>*/}
-                                            {/*<td>
-                                              <button
-                                                className="btn btn-info"
-                                                onClick={() => {
-                                                  this.handleLoanRepayment(
-                                                    repayment &&
-                                                      repayment.loanContractAddress,
-                                                    repayment &&
-                                                      repayment.totalRepaymentAmount
-                                                  );
-                                                }}
-                                              >
-                                                Repay
-                                              </button>
-                                            </td>*/}
                                           </tr>
                                         );
                                       })}
+
                                   </>
                                 );
                               })}
+                              {showDropDown === activeLoan.loanAddress && <tr>
+                              <td>
+                                <div className="media-body">
+                                  <span className="mb-0 text-sm">
+                                    {" "}
+                                    Collateral Amount
+                                  </span>
+                                </div>
+                                <span>
+                                  {activeLoan && activeLoan.collateralAmount}
+                                  {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                                </span>
+                              </td>
+                              <td>
+                                <span>
+                                  Loan Repaid {" "}
+                                </span>
+                                <span>
+                                   { loanRepaid }
+                                </span>
+                              </td>
+                              <td>
+                                <span>
+                                  Collateral Left {"   "}
+                                </span>
+                                <span>
+                                  {activeLoan && activeLoan.collateralAmount}
+                                  {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                                </span>
+                              </td>
+                              <td>
+                                <button
+                                  className="btn btn-primary"
+                                  type="button"
+                                  onClick={() => {
+                                    LiquidateLoanCollateral(
+                                      repayments[0].loanContractAddress
+                                    );
+                                  }}
+                                >
+                                  Liquidate
+                                </button>
+                              </td>
+                              </tr>}
                             </tbody>
                           </table>
-                          <>
-                            <div className="media-body">
-                              <span className="mb-0 text-sm">
-                                {" "}
-                                Collateral
-                              </span>
-                            </div>
-                            <span>
-                              {activeLoan && activeLoan.collateralAmount}
-                              {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
-                            </span>
-                            <span>
-                               {activeLoan && " 0.00% "}
-                            </span>
-                          </>
                         </div>
                       )}
                       {/*<span className="alert-text">You haven't lent yet. Check the available loan request below!</span>*/}
