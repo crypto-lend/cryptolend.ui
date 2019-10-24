@@ -626,11 +626,11 @@ class MyLoans extends Component {
                                               <span>--</span>
                                             </td>
 
-                                            {/*currentDate <
+                                            {(currentDate <
                                             this.convertDateEpoc(
                                               activeLoan.startedOn,
                                               repayment.repaymentNumber
-                                            )*/
+                                            )) &&
                                             activeLoan.borrower != repayment.repayee &&
                                             <td>
                                               <button
