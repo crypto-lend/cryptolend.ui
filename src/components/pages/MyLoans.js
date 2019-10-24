@@ -612,24 +612,7 @@ class MyLoans extends Component {
                                               </div>
                                               <span>--</span>
                                             </td>
-                                            <td>
-                                              <div className="media-body">
-                                                <span className="mb-0 text-sm">
-                                                  {" "}
-                                                  Collateral
-                                                </span>
-                                              </div>
-                                              <span>
-                                                {activeLoan.collateralAmount} {getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol}
 
-                                              </span>
-                                              <span>
-                                                 {/*((100/activeLoan.duration)*repayment.repaymentNumber).toFixed(2)*/" 0.00% "}
-                                              </span>
-                                              <span>
-                                                {/*activeLoan.collateralPrice/activeLoan.collateralAmount + " USD "*/}
-                                              </span>
-                                            </td>
                                             {currentDate <
                                             this.convertDateEpoc(
                                               activeLoan.startedOn,
@@ -670,6 +653,21 @@ class MyLoans extends Component {
                           >
                             Claim
                           </button>
+                          <>
+                            <div className="media-body">
+                              <span className="mb-0 text-sm">
+                                {" "}
+                                Collateral
+                              </span>
+                            </div>
+                            <span>
+                              {activeLoan && activeLoan.collateralAmount}
+                              {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                            </span>
+                            <span>
+                               {activeLoan && " 0.00% "}
+                            </span>
+                          </>
                         </div>
                       ) : (
                         <div
@@ -852,7 +850,7 @@ class MyLoans extends Component {
                                               </div>
                                               <span>--</span>
                                             </td>
-                                            <td>
+                                            {/*<td>
                                               <div className="media-body">
                                                 <span className="mb-0 text-sm">
                                                   {" "}
@@ -864,7 +862,7 @@ class MyLoans extends Component {
                                                 {activeLoan.collateralAmount} {getTokenByAddress[loan.collateralAddress] && getTokenByAddress[loan.collateralAddress].symbol}
                                                 {((100/activeLoan.duration)*repayment.repaymentNumber).toFixed(2)}%
                                               </span>
-                                            </td>
+                                            </td>*/}
                                             {/*<td>
                                               <button
                                                 className="btn btn-info"
@@ -888,6 +886,21 @@ class MyLoans extends Component {
                               })}
                             </tbody>
                           </table>
+                          <>
+                            <div className="media-body">
+                              <span className="mb-0 text-sm">
+                                {" "}
+                                Collateral
+                              </span>
+                            </div>
+                            <span>
+                              {activeLoan && activeLoan.collateralAmount}
+                              {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                            </span>
+                            <span>
+                               {activeLoan && " 0.00% "}
+                            </span>
+                          </>
                         </div>
                       )}
                       {/*<span className="alert-text">You haven't lent yet. Check the available loan request below!</span>*/}
