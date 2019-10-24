@@ -592,7 +592,7 @@ class MyLoans extends Component {
                                                 {
                                                   this.convertDate(
                                                     activeLoan.startedOn,
-                                                    repayment.repaymentNumber
+                                                    repayment.repaymentNumber-1
                                                   ).split(
                                                     " GMT+0530 (India Standard Time)"
                                                   )[0]
@@ -609,7 +609,7 @@ class MyLoans extends Component {
                                                 {currentDate >
                                                 this.convertDateEpoc(
                                                   activeLoan.startedOn,
-                                                  repayment.repaymentNumber
+                                                  repayment.repaymentNumber-1
                                                 )
                                                   ? "Expired"
                                                   : activeLoan.borrower === repayment.repayee
