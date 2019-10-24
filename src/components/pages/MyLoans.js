@@ -54,15 +54,8 @@ class MyLoans extends Component {
       transferCollateralAlert: false,
       borrowedLoans: true,
       fundedLoans: false,
-      display1: false,
-      display2: false,
-      display3: false,
-      display4: false,
-      display5: false,
-      display6: false,
-      display7: false,
-      display8: false,
-      showDropDown: null
+      showDropDown: null,
+      loanRepaid:0
     };
   }
 
@@ -169,6 +162,27 @@ class MyLoans extends Component {
       console.log(error);
     }
   };
+
+  handleLoanRepaid = async (repayments, activeLoan, currentDate) => {
+    try {
+      let {loanRepaid} = this.state;
+      repayments.map((repayment,i)=>{
+        if(/*(currentDate <
+          this.convertDateEpoc(
+            activeLoan.startedOn,
+            repayment.repaymentNumber
+          ))*/
+          activeLoan.borrower === repayment.repayee){
+            this.setState({loanRepaid:loanRepaid + repayment.totalRepaymentAmount});
+            console.log("loanRepaid", loanRepaid);
+        }
+      })
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 
   handleRepaymentRows = (
     currentLoanAddress,
@@ -354,9 +368,6 @@ class MyLoans extends Component {
   convertDateEpoc = (currentDueDate, i) => {
     let date = new Date(currentDueDate * 1000);
     date.setMinutes(date.getMinutes() + (i + 1) * 30);
-    console.log("epoc date: ", date);
-    console.log("currentDate date: ", this.state.currentDate);
-
     return date;
   };
 
@@ -372,6 +383,7 @@ class MyLoans extends Component {
       myFundedLoans,
       repayments,
       activeLoan,
+      loanRepaid,
       currentDate,
       borrowedLoans,
       fundedLoans,
@@ -533,6 +545,7 @@ class MyLoans extends Component {
                                             activeLoan={loan}
                                             loanAddress={loan.loanAddress}
                                             duration={loan.duration}
+                                            currentDate = {currentDate}
                                             self={this}
                                           />
                                         </td>
@@ -598,8 +611,7 @@ class MyLoans extends Component {
                                                   repayment.repaymentNumber
                                                 )
                                                   ? "Expired"
-                                                  : activeLoan.borrower ===
-                                                    repayment.repayee
+                                                  : activeLoan.borrower === repayment.repayee
                                                   ? "Paid"
                                                   : "Due"}
                                               </span>
@@ -613,12 +625,12 @@ class MyLoans extends Component {
                                               <span>--</span>
                                             </td>
 
-                                            {currentDate <
+                                            {/*currentDate <
                                             this.convertDateEpoc(
                                               activeLoan.startedOn,
                                               repayment.repaymentNumber
-                                            )
-                                            && activeLoan.borrower === repayment.repayee &&
+                                            )*/
+                                            activeLoan.borrower != repayment.repayee &&
                                             <td>
                                               <button
                                                 className="btn btn-info"
@@ -629,6 +641,7 @@ class MyLoans extends Component {
                                                     repayment &&
                                                       repayment.totalRepaymentAmount
                                                   );
+
                                                 }}
                                               >
                                                 Repay
@@ -655,10 +668,10 @@ class MyLoans extends Component {
                               </td>
                               <td>
                                 <span>
-                                  Loan Repaid
+                                  Loan Repaid{" "}
                                 </span>
                                 <span>
-                                   {activeLoan && " 0.00% "}
+                                   { loanRepaid }
                                 </span>
                               </td>
                               <td>
@@ -965,7 +978,7 @@ class MyLoans extends Component {
 }
 
 function DropDown(props) {
-  const { onClick, id, show, loanAddress, duration, self, activeLoan } = props;
+  const { onClick, id, show, loanAddress, duration, self, activeLoan, currentDate } = props;
   let { repayments } = self.state;
   return (
     <div className="dropdown">
@@ -978,8 +991,12 @@ function DropDown(props) {
             loanAddress,
             duration
           );
-          console.log("activeLoan :", activeLoan);
-          self.setState({ repayments: repayments, activeLoan: activeLoan });
+          self.setState({
+            repayments: repayments, activeLoan: activeLoan
+          });
+          self.handleLoanRepaid(
+            repayments, activeLoan, currentDate
+          );
         }}
         aria-haspopup="true"
         aria-expanded="true"
