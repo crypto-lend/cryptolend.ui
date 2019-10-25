@@ -43,7 +43,9 @@ class LoanOffer extends Component {
       durationEnd:360,
       stableCoins :  ['STABLE COINS','DAI', 'PAX', 'TUSD'],
       erc20_tokens :  supported_erc20_token,
-      collateralCount : 0
+      collateralCount : 0,
+      collateralCurrencies:[],
+      collateralMetadata:[]
     };
   }
 
@@ -56,28 +58,7 @@ class LoanOffer extends Component {
   }
 
 
-  createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
-
-    let collateralMetadata = [];
-    console.log(collateralCurrency1);
-    collateralMetadata.push({
-      collateral: getTokenBySymbol[collateralCurrency1].address,
-      ltv: ltv1,
-      mpr: mpr1
-    });
-
-    collateralMetadata.push({
-      collateral: getTokenBySymbol[collateralCurrency2].address,
-      ltv: ltv2,
-      mpr: mpr2
-    });
-
-    collateralMetadata.push({
-      collateral: getTokenBySymbol[collateralCurrency3].address,
-      ltv: ltv3,
-      mpr: mpr3
-    })
-
+  createLoanOffer = async (principal, duration, collateralMetadata) => {
         try {
           const loanContractAddress = await CreateNewLoanOffer({
             principal: principal,
@@ -136,9 +117,34 @@ class LoanOffer extends Component {
     console.log(this.state.collateralCount);
   }
 
+  handleAddCollateralCurrency = (collateralCurrency) => {
+    let {collateralCurrencies} = this.state;
+    collateralCurrencies.push(collateralCurrency);
+    this.setState({collateralCurrencies:collateralCurrencies});
+    // this.setState({erc20_tokens:this.arrayRemove(erc20_tokens, e.target.value)});
+  }
+
+  handleAddMetadata = () => {
+    const { ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrencies } = this.state;
+    let collateralMetadata = [];
+    let ltv = [];
+    let mpr = [];
+    ltv.push(ltv1, ltv2, ltv3);
+    mpr.push(mpr1, mpr2, mpr3);
+    collateralCurrencies.map((collateralCurrency,i) => {
+      collateralMetadata.push({
+        collateral: getTokenBySymbol[collateralCurrency].address,
+        ltv: ltv[i],
+        mpr: mpr[i]
+      });
+    });
+
+    this.setState({collateralMetadata:collateralMetadata, durationView:true, collateral:false});
+  }
+
   render() {
-    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency1, collateralCurrency2, collateralCurrency3, collateralCount, collateralValue,
-    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanContractAddress, ropstenTransactionhash } = this.state;
+    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrencies, collateralMetadata, collateralCount, collateralValue,
+          ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanContractAddress, ropstenTransactionhash } = this.state;
 
     return (
       <div className="LoanOffer text-center">
@@ -228,8 +234,7 @@ class LoanOffer extends Component {
                            {!!collateralCount && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                                      this.setState({collateralCurrency1:e.target.value});
-                                       // this.setState({erc20_tokens:this.arrayRemove(erc20_tokens, e.target.value)});
+                                      this.handleAddCollateralCurrency(e.target.value);
                                     }}>
                                     {
                                       erc20_tokens.map((item) => {
@@ -248,7 +253,7 @@ class LoanOffer extends Component {
                                {!!(collateralCount>1) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                     <div className="col-md-12 form-group mt-5">
                                         <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                                          this.setState({collateralCurrency2:e.target.value});
+                                          this.handleAddCollateralCurrency(e.target.value);
                                         }}>
                                         {
                                           erc20_tokens.map((item) => {
@@ -266,8 +271,7 @@ class LoanOffer extends Component {
                                    {!!(collateralCount>2) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                         <div className="col-md-12 form-group mt-5">
                                             <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-
-                                              this.setState({collateralCurrency3:e.target.value});
+                                              this.handleAddCollateralCurrency(e.target.value);
                                             }}>
                                             {
                                               erc20_tokens.map((item) => {
@@ -291,7 +295,7 @@ class LoanOffer extends Component {
                     </button>
                     </div>
 
-                    <div className="btn-wrapper" style={{marginTop:collateralCount?'-30px':'176px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, collateral:false});}}>
+                    <div className="btn-wrapper" style={{marginTop:collateralCount?'-30px':'176px', cursor:'pointer'}} onClick={this.handleAddMetadata}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
@@ -328,32 +332,21 @@ class LoanOffer extends Component {
 
                   <div className="card-body text-left" style={{ marginBottom: !duration?'45%':'21%'}}>
                     <p>Collateral</p>
-                    {collateralCurrency1 &&
-                      <div className="col">
-                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${collateralCurrency1.toLowerCase()}.png`}/>
+                    {collateralCurrencies.map((collateral) => {
+                      return <div className="col">
+                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${collateral.toLowerCase()}.png`}/>
                       <p>LTV : {ltv1}</p>
                       <p>MPR: {mpr1}</p>
-                    </div>
+                    </div>;
+                    })
+
                     }
-                    {collateralCurrency2 &&
-                      <div className="col">
-                      <img id="img2 "alt="img2" src={`/assets/img/32/color/${collateralCurrency2.toLowerCase()}.png`}/>
-                      <p>LTV : {ltv2}</p>
-                      <p>MPR: {mpr2}</p>
-                    </div>
-                    }
-                    {collateralCurrency3 &&
-                      <div className="col">
-                      <img id="img3 "alt="img3" src={`/assets/img/32/color/${collateralCurrency3.toLowerCase()}.png`}/>
-                      <p>LTV : {ltv3}</p>
-                      <p>MPR: {mpr3}</p>
-                    </div>
-                    }
+
                     {duration ? <div className="mt-4"><p>Duration {duration} days</p></div>
                     :<div className="mt-4"><p>Duration  (not set) </p></div>}
 
                     {!!duration && <div className="btn-wrapper text-center" onClick={()=>{
-                      this.createLoanOffer(loanAmount, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3);
+                      this.createLoanOffer(loanAmount, duration, collateralMetadata);
                     }}>
                       <br/>
                       <a className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5" style={{color:'white'}}>

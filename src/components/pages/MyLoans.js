@@ -650,7 +650,7 @@ class MyLoans extends Component {
                                           </span>
                                         </div>
                                         <span>
-                                          {activeLoan && activeLoan.collateralAmount}
+                                          {parseFloat(activeLoan.collateralAmount)}
                                           {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
                                         </span>
                                       </td>
