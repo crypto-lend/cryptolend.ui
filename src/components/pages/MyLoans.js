@@ -167,18 +167,16 @@ class MyLoans extends Component {
   handleLoanRepaid = async (repayments, activeLoan, currentDate) => {
     try {
       let {loanRepaid} = this.state;
-      repayments.map((repayment,i)=>{
-        if(/*(currentDate <
-          this.convertDateEpoc(
-            activeLoan.startedOn,
-            repayment.repaymentNumber
-          ))*/
-          activeLoan.borrower === repayment.repayee){
-            this.setState({loanRepaid:loanRepaid + parseFloat(repayment.totalRepaymentAmount)});
-            console.log("loanRepaid", loanRepaid);
+      let totalRepayment = 0;
+      let totalRepaid = 0;
+      repayments.map((repayment) => {
+        totalRepayment = totalRepayment + parseFloat(repayment.totalRepaymentAmount)
+        if(activeLoan.borrower === repayment.repayee){
+          totalRepaid = totalRepaid + parseFloat(repayment.totalRepaymentAmount)
         }
       })
 
+      this.setState({loanRepaid:((totalRepaid/totalRepayment)*100)})
     } catch (error) {
       console.log(error);
     }
@@ -652,7 +650,7 @@ class MyLoans extends Component {
                                           Loan Repaid{" "}
                                         </span>
                                         <span>
-                                           { loanRepaid }
+                                           { loanRepaid.toFixed(2) + "% "}
                                         </span>
                                       </td>
                                       <td>
@@ -889,7 +887,7 @@ class MyLoans extends Component {
                                           Loan Repaid {" "}
                                         </span>
                                         <span>
-                                           { loanRepaid }
+                                           { loanRepaid.toFixed(2) + "% " }
                                         </span>
                                       </td>
                                       <td>
