@@ -441,17 +441,19 @@ class ViewAllOffers extends Component {
                           className="text-left ml-3"
                           style={{ fontSize: ".875rem" }}
                         >
-                          MPR {loanOffer.collaterals[0].mpr}%{" "}
-                          {loanOffer.collaterals[1].mpr} %{" "}
-                          {loanOffer.collaterals[2].mpr}%{" "}
+                          MPR {loanOffer.collaterals.map((item) =>{
+                              return item.mpr +"% ";
+                          })}
+
                         </div>
                         <div
                           className="text-left ml-3"
                           style={{ fontSize: ".875rem" }}
                         >
-                          LTV {loanOffer.collaterals[0].ltv}%{" "}
-                          {loanOffer.collaterals[1].ltv}%{" "}
-                          {loanOffer.collaterals[2].ltv}%
+                          LTV {loanOffer.collaterals.map((item) =>{
+                              return item.ltv +"% ";
+                          })}
+
                         </div>
                       </div>
                       <div className="card-body text-left">
