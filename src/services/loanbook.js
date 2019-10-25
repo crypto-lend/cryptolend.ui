@@ -53,7 +53,7 @@ export const CreateNewLoanOffer = (params) => {
 
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
 
-        let collateralsMetadata = new Array(3);
+        let collateralsMetadata = new Array();
 
         for(var i in params.collaterals){
             collateralsMetadata[i] =

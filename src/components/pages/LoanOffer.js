@@ -210,7 +210,7 @@ class LoanOffer extends Component {
 
                     {<div className="row ml-2">
 
-                           {<div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
+                           {<div className="card bg-gradient-success col-md-5" style={{height:'300px', marginLeft:'30%'}}>
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
                                       this.setState({collateralCurrency : e.target.value});
