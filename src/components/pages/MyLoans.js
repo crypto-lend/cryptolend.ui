@@ -372,12 +372,6 @@ class MyLoans extends Component {
     return date;
   };
 
-  toggleMenu = id => {
-    this.setState({
-      showDropDown: id
-    });
-  };
-
   render() {
     const {
       myBorrowedLoans,
@@ -539,7 +533,6 @@ class MyLoans extends Component {
                                         <td>
                                           <DropDown
                                             id={loan.loanAddress}
-                                            onClick={this.toggleMenu}
                                             show={
                                               showDropDown === loan.loanAddress && loan.loanAddress === ( repayments && repayments.loanContractAddress )
                                             }
@@ -787,7 +780,6 @@ class MyLoans extends Component {
                                         <td>
                                           <DropDown
                                             id={loan.loanAddress}
-                                            onClick={this.toggleMenu}
                                             show={
                                               showDropDown === loan.loanAddress
                                             }
@@ -973,21 +965,21 @@ class MyLoans extends Component {
 }
 
 function DropDown(props) {
-  const { onClick, id, show, loanAddress, duration, self, activeLoan, currentDate } = props;
+  const {  id, show, loanAddress, duration, self, activeLoan, currentDate } = props;
   let { repayments } = self.state;
   return (
     <div className="dropdown">
       <button
         className="btn btn-info"
         onClick={async () => {
-          onClick(id);
-          self.setState({ repayments: [] });
+          self.setState({ repayments: [], showDropDown: null });
           repayments = await self.getActiveLoanRepayments(
             loanAddress,
             duration
           );
           self.setState({
-            repayments: repayments, activeLoan: activeLoan
+            repayments: repayments, activeLoan: activeLoan,
+            showDropDown: id
           });
           console.log("repayments - ", repayments);
           console.log("activeLoan - ", activeLoan);
