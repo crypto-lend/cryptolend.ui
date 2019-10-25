@@ -662,7 +662,8 @@ class MyLoans extends Component {
                                           {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
                                         </span>
                                       </td>
-                                      <td>
+                                      {loanRepaid.toFixed(2) == 100.00 &&
+                                        <td>
                                         <button
                                           className="btn btn-primary"
                                           type="button"
@@ -674,7 +675,7 @@ class MyLoans extends Component {
                                         >
                                           Claim
                                         </button>
-                                      </td>
+                                      </td>}
                                       </tr>}
                                   </>
                                 );
