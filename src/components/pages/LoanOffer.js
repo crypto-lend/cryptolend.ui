@@ -85,6 +85,7 @@ class LoanOffer extends Component {
       await TransferFundsToLoanContract(loanContractAddress, loanAmount);
 
       //window.location="/myloans";
+      console.log("fundLoanOffer => loanContractAddress line 87", loanContractAddress);
 
       this.setState({
         createOfferAlert:false,
@@ -98,7 +99,7 @@ class LoanOffer extends Component {
   }
 
   acceptLoanOffer = async (interest, collateralAddress, loanContractAddress, collateralAmount, collateralPrice, ltv) => {
-
+    console.log("acceptLoanOffer => loanContractAddress line 102", loanContractAddress);
     // var self = this;
     // const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
     // const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
