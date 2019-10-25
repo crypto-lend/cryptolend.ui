@@ -432,14 +432,14 @@ class ViewAllOffers extends Component {
                         <div className="row row-example">
                           <div className="mx-auto mb-2">
                           {loanOffer.collaterals.map((collateral)=>{
-                            return <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} />;
+                            return <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} style={{width:'30px'}}/>;
                           })
                             }
                           </div>
                         </div>
                         <div
                           className="text-left ml-3"
-                          style={{ fontSize: ".875rem" }}
+                          style={{ fontSize: "x-small" }}
                         >
                           MPR {loanOffer.collaterals.map((item) =>{
                               return item.mpr +"% ";
@@ -448,7 +448,7 @@ class ViewAllOffers extends Component {
                         </div>
                         <div
                           className="text-left ml-3"
-                          style={{ fontSize: ".875rem" }}
+                          style={{ fontSize: "x-small" }}
                         >
                           LTV {loanOffer.collaterals.map((item) =>{
                               return item.ltv +"% ";

@@ -118,10 +118,11 @@ class LoanOffer extends Component {
   }
 
   handleAddCollateralCurrency = (collateralCurrency) => {
-    let {collateralCurrencies} = this.state;
+    let {collateralCurrencies, erc20_tokens} = this.state;
     collateralCurrencies.push(collateralCurrency);
     this.setState({collateralCurrencies:collateralCurrencies});
-    // this.setState({erc20_tokens:this.arrayRemove(erc20_tokens, e.target.value)});
+    erc20_tokens = this.arrayRemove(erc20_tokens, collateralCurrency)
+    this.setState({erc20_tokens:erc20_tokens});
   }
 
   handleAddMetadata = () => {
