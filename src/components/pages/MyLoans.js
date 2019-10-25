@@ -147,7 +147,6 @@ class MyLoans extends Component {
         repayments.push(repaymentData);
       }
 
-      console.log("repayments - ", repayments);
       return repayments;
     } catch (error) {
       console.log(error);
@@ -175,7 +174,7 @@ class MyLoans extends Component {
             repayment.repaymentNumber
           ))*/
           activeLoan.borrower === repayment.repayee){
-            this.setState({loanRepaid:loanRepaid + repayment.totalRepaymentAmount});
+            this.setState({loanRepaid:loanRepaid + parseFloat(repayment.totalRepaymentAmount)});
             console.log("loanRepaid", loanRepaid);
         }
       })
@@ -542,7 +541,7 @@ class MyLoans extends Component {
                                             id={loan.loanAddress}
                                             onClick={this.toggleMenu}
                                             show={
-                                              showDropDown === loan.loanAddress
+                                              showDropDown === activeLoan.loanAddress && activeLoan.loanAddress === ( repayments && repayments.loanContractAddress )
                                             }
                                             activeLoan={loan}
                                             loanAddress={loan.loanAddress}
@@ -553,7 +552,7 @@ class MyLoans extends Component {
                                         </td>
                                       )}
                                     </tr>
-                                    {showDropDown === loan.loanAddress &&
+                                    {showDropDown === activeLoan.loanAddress &&
                                       repayments.map((repayment, i) => {
                                         console.log(i);
                                         return (
@@ -992,10 +991,14 @@ function DropDown(props) {
           self.setState({
             repayments: repayments, activeLoan: activeLoan
           });
+          console.log("repayments - ", repayments);
+          console.log("activeLoan - ", activeLoan);
+
           self.handleLoanRepaid(
             repayments, activeLoan, currentDate
           );
         }}
+
         aria-haspopup="true"
         aria-expanded="true"
       >
