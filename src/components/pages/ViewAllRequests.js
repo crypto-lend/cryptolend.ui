@@ -248,10 +248,10 @@ class ViewAllRequests extends Component {
                  <div className="card">
                    <div className="card-header">
 
-                   <div className="row row-example">
+               <div className="row row-example" style={{fontSize:'60%'}}>
                  <div className="col-sm">
                    <span><p>Amount  </p></span>
-                   <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {loanRequest.loanAmount} ETH </span>
+                   <span className="btn-inner--text"><img style={{width:'20px'}} src="/assets/img/eth.png"/> {loanRequest.loanAmount} ETH </span>
                  </div>
                  <div className="col-sm">
                    <span><p>Collateral </p></span>

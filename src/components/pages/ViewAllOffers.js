@@ -93,8 +93,10 @@ class ViewAllOffers extends Component {
   handleAcceptLoanOffer = async loanContractAddress => {
     try {
       await AcceptLoanOffer(loanContractAddress);
+      return true;
     } catch (e) {
       console.log(e);
+      return false;
     } finally {
     }
   };
@@ -142,17 +144,17 @@ class ViewAllOffers extends Component {
     this.setState({ acceptCollateralAlert: false });
   };
 
-  hideAlertAcceptCollateralConfirm = () => {
-    const { loanAddress } = this.state;
-    this.handleAcceptLoanOffer(loanAddress);
-    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
-  }
-
   hideAlertTransferCollateralCancel = () => {
     this.setState({ transferCollateralAlert: false });
   };
 
-  hideAlertTransferCollateralConfirm = () => {
+  hideAlertAcceptCollateralConfirm = async () => {
+    const { loanAddress } = this.state;
+    const transferCollateralAlert = await this.handleAcceptLoanOffer(loanAddress);
+    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
+  }
+
+  hideAlertTransferCollateralConfirm = async () => {
     let { loanAddress, collateralAddress } = this.state;
     this.setState({transferCollateralAlert:false});
     console.log("collateralAddress : ", collateralAddress);
@@ -429,9 +431,10 @@ class ViewAllOffers extends Component {
                       <div className="card-header">
                         <div className="row row-example">
                           <div className="mx-auto mb-2">
-                            <img src="/assets/img/32/color/btc.png" />
-                            <img src="/assets/img/32/color/bnb.png" />
-                            <img src="/assets/img/32/color/mana.png" />
+                          {loanOffer.collaterals.map((collateral)=>{
+                            return <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} />;
+                          })
+                            }
                           </div>
                         </div>
                         <div
@@ -447,7 +450,7 @@ class ViewAllOffers extends Component {
                           style={{ fontSize: ".875rem" }}
                         >
                           LTV {loanOffer.collaterals[0].ltv}%{" "}
-                          {loanOffer.collaterals[2].ltv}%{" "}
+                          {loanOffer.collaterals[1].ltv}%{" "}
                           {loanOffer.collaterals[2].ltv}%
                         </div>
                       </div>
