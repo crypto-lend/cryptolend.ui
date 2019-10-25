@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
-import ReactCountryFlag from 'react-country-flag';
-import {InstallMetaMask}  from '../Web3/InstallMetaMask';
-import { EthereumIcon } from '../Web3/EthereumIcon';
-import blocklendr from '../../assets/img/brand/blocklendrLogo.jpg';
-import {fetchNetwork, fetchAccounts, getAccounts} from '../../services/Web3Service';
-import Header  from '../pages/Header';
+import React, { Component } from "react";
+import {
+  fetchAccounts,
+} from "../../services/Web3Service";
+import Header from "./Header";
 
 class LandingPage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.fetchWeb3();
-
   }
 
   componentDidMount() {
@@ -19,30 +16,28 @@ class LandingPage extends Component {
 
   fetchWeb3 = async () => {
     const res = await fetchAccounts();
-    console.log('window.web3 : ',window.web3);
+    console.log("window.web3 : ", window.web3);
 
-    window.addEventListener('load', () => {
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    console.log('window.web3 : ',window.web3);
+    window.addEventListener("load", () => {
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+      console.log("window.web3 : ", window.web3);
 
-    if (typeof window.web3 !== 'undefined') {
-      console.log('Login metamask web3');
-      // Use Mist/MetaMask's provider
-    } else {
-      console.log('No web3? You should consider trying MetaMask!');
-      // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    }
-  });
-  }
-
-
+      if (typeof window.web3 !== "undefined") {
+        console.log("Login metamask web3");
+        // Use Mist/MetaMask's provider
+      } else {
+        console.log("No web3? You should consider trying MetaMask!");
+        // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+      }
+    });
+  };
 
   render() {
     const web3 = window.web3;
     return (
       <div>
-        <div className="LandingPage text-center" style={{color:'fff'}}>
-          <Header />
+        <Header/>
+        <div className="LandingPage text-center" style={{ color: "fff" }}>
           <div className="position-relative">
             <section className="section-hero section-shaped my-0">
               <div className="shape shape-style-1 shape-primary">
@@ -58,22 +53,31 @@ class LandingPage extends Component {
                 <span className="span-100"></span>
               </div>
 
-
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
-                  {
-                    !web3 &&
-                    <InstallMetaMask/>
-                  }
                   <div className="col-lg-7 text-center">
-                    <strong style={{marginTop: '15%', fontSize:'50px'}}> THE GLOBAL LENDING MARKETPLACE</strong>
-                    <div className="btn-wrapper" style={{marginTop:'80px'}}>
-                      <a href="#" className="btn btn-info btn-icon mb-3 mb-sm-0" data-toggle="scroll">
-                        <span className="btn-inner--icon"><i className="fa fa-calculator"></i></span>
+                    <strong style={{ marginTop: "15%", fontSize: "50px" }}>
+                      {" "}
+                      THE GLOBAL LENDING MARKETPLACE
+                    </strong>
+                    <div className="btn-wrapper" style={{ marginTop: "80px" }}>
+                      <a
+                        href="#"
+                        className="btn btn-info btn-icon mb-3 mb-sm-0"
+                        data-toggle="scroll"
+                      >
+                        <span className="btn-inner--icon">
+                          <i className="fa fa-calculator"></i>
+                        </span>
                         <span className="btn-inner--text">Loan Calculator</span>
                       </a>
-                      <a href="/request" className="btn btn-white btn-icon mb-3 mb-sm-0">
-                        <span className="btn-inner--icon"><i className="ni ni-money-coins"></i></span>
+                      <a
+                        href="/request"
+                        className="btn btn-white btn-icon mb-3 mb-sm-0"
+                      >
+                        <span className="btn-inner--icon">
+                          <i className="ni ni-money-coins"></i>
+                        </span>
                         <span className="btn-inner--text">Start Borrowing</span>
                       </a>
                     </div>
@@ -83,9 +87,7 @@ class LandingPage extends Component {
             </section>
           </div>
         </div>
-        <div>
-
-       </div>
+        <div></div>
       </div>
     );
   }

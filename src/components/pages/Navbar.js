@@ -1,148 +1,128 @@
-import React from "react";
-import blocklendr from "../../assets/img/brand/blocklendrLogo.jpg";
-import ReactCountryFlag from "react-country-flag";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-export default () => (
-  <header className="header-global">
-    <nav
-      id="navbar-main"
-      className="navbar navbar-main navbar-expand-lg navbar-light"
+import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
+import ReactCountryFlag from "react-country-flag";
+import { FEATURES, INTEREST, COMPANY, ENTERPRISE } from "../config/navigation";
+
+const MenuItem = ({ title, options }) => {
+  const [showMenu, setMenu] = useState(false);
+
+  return (
+    <li
+      className="nav-item dropdown mb-md-0 mb-1 mx-md-2 mx-0"
+      onMouseEnter={() => setMenu(true)}
+      onMouseLeave={() => setMenu(false)}
+      onClick={() => setMenu(!showMenu)}
+      style={{
+        cursor: "pointer"
+      }}
     >
-      <div className="container" style={{ maxWidth: "1080px" }}>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbar_global"
-          aria-controls="navbar_global"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="navbar-collapse collapse" id="navbar_global">
-          <div className="navbar-collapse-header">
-            <div className="row">
-              <div className="col-6 collapse-close">
-                <button
-                  type="button"
-                  className="navbar-toggler"
-                  data-toggle="collapse"
-                  data-target="#navbar_global"
-                  aria-controls="navbar_global"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                >
-                  <span></span>
-                  <span></span>
-                </button>
+      <span className="nav-link dropdown-toggle " role="button">
+        {title}
+      </span>
+      <div className={`dropdown-menu ${showMenu ? "show" : ""}`}>
+        {options.map(({ text, link }, index) => (
+          <Link to={link} key={index} className="dropdown-item">
+            {text}
+          </Link>
+        ))}
+      </div>
+    </li>
+  );
+};
+export default () => {
+  const [showNavbar, toggleNavbar] = useState(false);
+  return (
+    <header className="header-global">
+      <nav
+        id="navbar-main"
+        className="navbar navbar-main navbar-expand-lg navbar-light"
+      >
+        <div className="container">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbar_global"
+            aria-controls="navbar_global"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            onClick={() => toggleNavbar(!showNavbar)}
+          >
+            <span className="fas fa-ellipsis-h"></span>
+          </button>
+          <div
+            className={`navbar-collapse collapse ${showNavbar ? "show" : ""}`}
+          >
+            <div className="navbar-collapse-header">
+              <div className="row">
+                <div className="col-6 collapse-close">
+                  <button
+                    type="button"
+                    className="navbar-toggler"
+                    data-toggle="collapse"
+                    data-target="#navbar_global"
+                    aria-controls="navbar_global"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                    onClick={() => toggleNavbar(false)}
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <ul className="navbar-nav navbar-nav-hover align-items-lg-center">
-            <li className="nav-item dropdown">
-              <a
-                href="/home"
-                className="nav-link"
-                data-toggle="dropdown"
+            <ul className="navbar-nav-hover text-center align-items-center p-0">
+              <li className="nav-item dropdown mb-1">
+                <Link
+                  to="/"
+                  className="nav-link"
+                  data-toggle="dropdown"
+                  role="button"
+                >
+                  <img
+                    src={blocklendr}
+                    alt="Blocklendr"
+                    style={{ width: "40%" }}
+                  />
+                </Link>
+              </li>
+              <MenuItem title={"Features"} options={FEATURES} />
+              <MenuItem title={"Earn Interest"} options={INTEREST} />
+
+              <MenuItem title={"Company"} options={COMPANY} />
+
+              <li className="nav-item dropdown mb-md-0 mb-1 mx-md-2 mx-0">
+                <Link className="nav-link" to="/support" role="button">
+                  <span className="nav-link-inner--text">Support</span>
+                </Link>
+              </li>
+
+              <MenuItem title={"Enterprise"} options={ENTERPRISE} />
+              <Link
+                to="/login"
                 role="button"
+                className="text-white nav-item mt-md-0 mt-2 mx-md-2 mx-0 btn btn-primary"
               >
-                <img
-                  src={blocklendr}
-                  alt="Blocklendr"
-                  style={{ width: "50%" }}
-                />
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="/features"
-                className="nav-link"
-                data-toggle="dropdown"
-                role="button"
-              >
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Features</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/request"
-                role="button"
-              >
-                <i className="ni ni-collection d-lg-none"></i>
-                <span className="nav-link-inner--text">Earn Interest</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/offer"
-                role="button"
-              >
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Company</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/view-requests"
-                role="button"
-              >
-                <i className="ni ni-collection d-lg-none"></i>
-                <span className="nav-link-inner--text">Support</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/view-offers"
-                role="button"
-              >
-                <i className="ni ni-ui-04 d-lg-none"></i>
-                <span className="nav-link-inner--text">Enterprise</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/view-offers"
-                role="button"
-              >
-                <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Login</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link"
-                data-toggle="dropdown"
-                href="/view-offers"
+              </Link>
+
+              <Link
+                to="/register-form"
                 role="button"
+                className="text-white nav-item mt-md-0 mt-2 mx-md-2 mx-0 btn btn-success"
               >
-                <i className="ni ni-ui-04 d-lg-none"></i>
                 <span className="nav-link-inner--text">Register</span>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <ReactCountryFlag code="UK" svg />
-            </li>
-          </ul>
+              </Link>
+
+              <li className="nav-item mb-1 dropdown">
+                <ReactCountryFlag code="UK" svg />
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-  </header>
-);
+      </nav>
+    </header>
+  );
+};

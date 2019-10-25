@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import ReactCountryFlag from 'react-country-flag';
 import { Link } from 'react-router-dom';
-import Header  from '../pages/Header';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
 import '../../assets/vendor/nucleo/css/nucleo.css';
 import './LoanOffer.css';
-import { LoanCreatorABI, LoanCreatorAddress, LoanContractABI, LoanContractAddress, FinocialLoanABI, FinocialABI, FinocialAddress, StandardTokenABI, CollateralAddress } from '../Web3/abi';
+import Header from './Header';
+import { CreateNewLoanOffer, FetchCollateralPrice } from '../../services/loanbook';
+import { TransferFundsToLoanContract } from '../../services/loanContract';
+import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
 class LoanOffer extends Component {
   constructor(){
@@ -35,24 +36,16 @@ class LoanOffer extends Component {
       createOfferAlert:false,
       approveOfferAlert:false,
       acceptLoanAlert:false,
-      loanOfferContractAddress:'',
+      loanContractAddress:'',
       ropstenTransactionhash:'',
       durationArr:[30,60,90,120,150,180,210,240,270,300,330,360],
       durationStart:1,
       durationEnd:360,
       stableCoins :  ['STABLE COINS','DAI', 'PAX', 'TUSD'],
-      erc20_tokens :  ['BNB', 'GTO', 'QKC', 'NEXO',
-          'PAX','EGT',  'MANA','POWR',
-          'TUSD','LAMB','CTXC','ENJ',
-          'CELR','HTB','ICX',  'WTC',
-          'USD', 'BTM','EDO', 'SXDT',
-          'OMG','CRO','TOP','SXUT',
-          'MEDX','ITC','REP','STO',
-          'LINK','CMT','WAX',
-          'MATIC','ELF', 'COSM',
-          'HT','BZ','NAS',
-          'FET','PPT','MCO'],
-          collateralCount : 0
+      erc20_tokens :  supported_erc20_token,
+      collateralCount : 0,
+      collateralCurrencies:[],
+      collateralMetadata:[]
     };
   }
 
@@ -65,98 +58,57 @@ class LoanOffer extends Component {
   }
 
 
-  createLoanOffer = async (principal, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3) => {
-    const res = await window.ethereum.enable();
-    let collateralItem1 = {}, collateralItem2 = {}, collateralItem3 = {};
-    let collateralMetadata = [];
-
-    collateralItem1.collateralCurrency1 = collateralCurrency1;
-    collateralItem1.ltv1 = ltv1;
-    collateralItem1.mpr1 = mpr1;
-    collateralMetadata.push({collateralItem1:collateralItem1})
-
-    collateralItem2.collateralCurrency2 = collateralCurrency2;
-    collateralItem2.ltv2 = ltv2;
-    collateralItem2.mpr2 = mpr2;
-    collateralMetadata.push({collateralItem2:collateralItem2})
-
-    collateralItem3.collateralCurrency3 = collateralCurrency3;
-    collateralItem3.ltv3 = ltv3;
-    collateralItem3.mpr3 = mpr3;
-    collateralMetadata.push({collateralItem3:collateralItem3})
-
-        console.log("collateralMetadata", collateralMetadata);
-        // expected output: "Success!"
-        const LoanCreator = window.web3.eth.contract(LoanCreatorABI).at(LoanCreatorAddress);
-          LoanCreator.createNewLoanOffer( window.web3.toWei(principal), duration, window.web3.toHex(JSON.stringify(collateralMetadata)), {
-          from: window.web3.eth.accounts[0]
-        }, async (err, res) => {
-          if(!err){
-            console.log("Transaction in process", res)
-            const receipt = await this.getTransactionReceipt(res)
-            // console.log('receipt.logs[0].data',receipt.logs[0].data);
-            let address = receipt.logs[0].data;
-            address = address.split("000000000000000000000000");
-            address = "0x" + address[2];
-            // console.log("Data Address: ",address);
-            console.log("window.web3.toWei(principal) : ",  window.web3.toWei(principal),"duration : ", duration, "window.web3.toHex(JSON.stringify(collateralMetadata)) : ", window.web3.toHex(JSON.stringify(collateralMetadata)), "from: window.web3.eth.accounts[0]",  window.web3.eth.accounts[0]);
-            this.setState({createOfferAlert:true, monthlyInt:0, approveOfferAlert:true, loanOfferContractAddress:address, ropstenTransactionhash:receipt.transactionHash})
-
-
-          }
-        });
-    }
-
-  getTransactionReceipt = async (hash) => {
-      let receipt = null;
-      while (receipt === null) {
-        // we are going to check every second if transation is mined or not, once it is mined we'll leave the loop
-        receipt = await this.getTransactionReceiptPromise(hash);
-        setTimeout(function(){ console.log('Every second'); }, 1000);
-      }
-      return receipt;
-    };
-
-  getTransactionReceiptPromise = (hash) => {
-      // here we just promisify getTransactionReceipt function for convenience
-      return new Promise(((resolve, reject) => {
-          window.web3.eth.getTransactionReceipt(hash, function(err, data) {
-              if (err !== null) reject(err);
-              else resolve(data);
+  createLoanOffer = async (principal, duration, collateralMetadata) => {
+        try {
+          const loanContractAddress = await CreateNewLoanOffer({
+            principal: principal,
+            duration: duration,
+            collaterals: collateralMetadata
           });
-      }));
+
+          this.setState({
+            createOfferAlert:true,
+            approveOfferAlert:true,
+            loanContractAddress: loanContractAddress
+          });
+
+        } catch (error) {
+
+        }
     }
 
-  fundLoanOffer = async (loanAmount, loanOfferContractAddress) => {
-    let self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanOfferContractAddress);
 
-     LoanContract.transferFundsToLoan({
-      from: window.web3.eth.accounts[0],
-      value: window.web3.toWei(loanAmount),
-      gas: 30000
-    },
-    (err, res) => {
-      if (!err) {
-        console.log(res);
-        // window.location="/myloans";
-        self.setState({approveOfferAlert:false, acceptLoanAlert:true})
-      } else {}
-  });
+
+  fundLoanOffer = async (loanAmount, loanContractAddress) => {
+
+    try {
+      await TransferFundsToLoanContract(loanContractAddress, loanAmount);
+
+      //window.location="/myloans";
+
+      this.setState({
+        createOfferAlert:false,
+        approveOfferAlert:false,
+        acceptLoanAlert:true
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  acceptLoanOffer = async (interest, collateralAddress, loanOfferContractAddress, collateralAmount, collateralPrice, ltv) => {
+  acceptLoanOffer = async (interest, collateralAddress, loanContractAddress, collateralAmount, collateralPrice, ltv) => {
 
-    var self = this;
-    const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanOfferContractAddress);
-    const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
-      from: window.web3.eth.accounts[0],
-      gas: 300000
-    }, (err, transactionHash) => {
-      if (!err)
-        console.log(transactionHash);
-    })
-    console.log("ACCEPT LOAN :", acceptLoan);
+    // var self = this;
+    // const LoanContract = window.web3.eth.contract(LoanContractABI).at(loanContractAddress);
+    // const acceptLoan = await LoanContract.acceptLoanOffer(interest, collateralAddress, collateralAmount, collateralPrice, ltv,{
+    //   from: window.web3.eth.accounts[0],
+    //   gas: 300000
+    // }, (err, transactionHash) => {
+    //   if (!err)
+    //     console.log(transactionHash);
+    // })
+    // console.log("ACCEPT LOAN :", acceptLoan);
 
   }
 
@@ -165,16 +117,41 @@ class LoanOffer extends Component {
     console.log(this.state.collateralCount);
   }
 
+  handleAddCollateralCurrency = (collateralCurrency) => {
+    let {collateralCurrencies} = this.state;
+    collateralCurrencies.push(collateralCurrency);
+    this.setState({collateralCurrencies:collateralCurrencies});
+    // this.setState({erc20_tokens:this.arrayRemove(erc20_tokens, e.target.value)});
+  }
+
+  handleAddMetadata = () => {
+    const { ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrencies } = this.state;
+    let collateralMetadata = [];
+    let ltv = [];
+    let mpr = [];
+    ltv.push(ltv1, ltv2, ltv3);
+    mpr.push(mpr1, mpr2, mpr3);
+    collateralCurrencies.map((collateralCurrency,i) => {
+      collateralMetadata.push({
+        collateral: getTokenBySymbol[collateralCurrency].address,
+        ltv: ltv[i],
+        mpr: mpr[i]
+      });
+    });
+
+    this.setState({collateralMetadata:collateralMetadata, durationView:true, collateral:false});
+  }
+
   render() {
-    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrency1, collateralCurrency2, collateralCurrency3, collateralCount, collateralValue,
-    ltv1,ltv2,ltv3, mpr1,mpr2,mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanOfferContractAddress, ropstenTransactionhash } = this.state;
+    const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralCurrencies, collateralMetadata, collateralCount, collateralValue,
+          ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, createOfferAlert,approveOfferAlert, acceptLoanAlert, loanContractAddress, ropstenTransactionhash } = this.state;
 
     return (
       <div className="LoanOffer text-center">
-      <Header />
+        <Header/>
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
-            <div className="shape shape-style-1 shape-primary">
+            <div className="">
               <span className="span-150"></span>
               <span className="span-50"></span>
               <span className="span-50"></span>
@@ -257,12 +234,11 @@ class LoanOffer extends Component {
                            {!!collateralCount && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                 <div className="col-md-12 form-group mt-5">
                                     <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                                      this.setState({collateralCurrency1:e.target.value});
-                                       // this.setState({erc20_tokens:this.arrayRemove(erc20_tokens, e.target.value)});
+                                      this.handleAddCollateralCurrency(e.target.value);
                                     }}>
                                     {
                                       erc20_tokens.map((item) => {
-                                        return <option>{item}</option>;
+                                        return <option>{ item.symbol }</option>;
                                     })
                                     }
                                     </select>
@@ -277,11 +253,11 @@ class LoanOffer extends Component {
                                {!!(collateralCount>1) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                     <div className="col-md-12 form-group mt-5">
                                         <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-                                          this.setState({collateralCurrency2:e.target.value});
+                                          this.handleAddCollateralCurrency(e.target.value);
                                         }}>
                                         {
                                           erc20_tokens.map((item) => {
-                                            return <option>{item}</option>;
+                                            return <option>{item.symbol}</option>;
                                         })
                                         }
                                         </select>
@@ -295,12 +271,11 @@ class LoanOffer extends Component {
                                    {!!(collateralCount>2) && <div className="card card-pricing bg-gradient-success border-0 col-md-3 mr-4" style={{height:'300px'}}>
                                         <div className="col-md-12 form-group mt-5">
                                             <select className="form-control" id="exampleFormControlSelect1" style={{width:'80px', display: 'inline'}} onClick={ (e)=>{
-
-                                              this.setState({collateralCurrency3:e.target.value});
+                                              this.handleAddCollateralCurrency(e.target.value);
                                             }}>
                                             {
                                               erc20_tokens.map((item) => {
-                                                return <option>{item}</option>;
+                                                return <option>{item.symbol}</option>;
                                             })
                                             }
                                             </select>
@@ -320,7 +295,7 @@ class LoanOffer extends Component {
                     </button>
                     </div>
 
-                    <div className="btn-wrapper" style={{marginTop:collateralCount?'-30px':'176px', cursor:'pointer'}} onClick={()=>{this.setState({durationView:true, collateral:false});}}>
+                    <div className="btn-wrapper" style={{marginTop:collateralCount?'-30px':'176px', cursor:'pointer'}} onClick={this.handleAddMetadata}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                         <span className="btn-inner--text">Next</span>
                       </a>
@@ -357,54 +332,43 @@ class LoanOffer extends Component {
 
                   <div className="card-body text-left" style={{ marginBottom: !duration?'45%':'21%'}}>
                     <p>Collateral</p>
-                    {collateralCurrency1 &&
-                      <div className="col">
-                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${collateralCurrency1.toLowerCase()}.png`}/>
+                    {collateralCurrencies.map((collateral) => {
+                      return <div className="col">
+                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${collateral.toLowerCase()}.png`}/>
                       <p>LTV : {ltv1}</p>
                       <p>MPR: {mpr1}</p>
-                    </div>
+                    </div>;
+                    })
+
                     }
-                    {collateralCurrency2 &&
-                      <div className="col">
-                      <img id="img2 "alt="img2" src={`/assets/img/32/color/${collateralCurrency2.toLowerCase()}.png`}/>
-                      <p>LTV : {ltv2}</p>
-                      <p>MPR: {mpr2}</p>
-                    </div>
-                    }
-                    {collateralCurrency3 &&
-                      <div className="col">
-                      <img id="img3 "alt="img3" src={`/assets/img/32/color/${collateralCurrency3.toLowerCase()}.png`}/>
-                      <p>LTV : {ltv3}</p>
-                      <p>MPR: {mpr3}</p>
-                    </div>
-                    }
+
                     {duration ? <div className="mt-4"><p>Duration {duration} days</p></div>
                     :<div className="mt-4"><p>Duration  (not set) </p></div>}
 
                     {!!duration && <div className="btn-wrapper text-center" onClick={()=>{
-                      this.createLoanOffer(loanAmount, duration, ltv1, ltv2, ltv3, mpr1, mpr2, mpr3, collateralCurrency1, collateralCurrency2, collateralCurrency3);
+                      this.createLoanOffer(loanAmount, duration, collateralMetadata);
                     }}>
                       <br/>
-                      <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
+                      <a className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5" style={{color:'white'}}>
                         <span className="btn-inner--text">Create</span>
                       </a>
                     </div>}
                     {approveOfferAlert &&
                     <div className="btn-wrapper text-center mt-3">
                       <button className="btn btn-primary" type="button" onClick={()=>{
-                        this.fundLoanOffer(loanAmount, loanOfferContractAddress);
+                        this.fundLoanOffer(loanAmount, loanContractAddress);
                         }}>
                         Fund Loan
                       </button>
                     </div>}
-                  {acceptLoanAlert &&
+                  {/*acceptLoanAlert &&
                   <div className="btn-wrapper text-center mt-3">
                     <button className="btn btn-primary" type="button" onClick={()=>{
-                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), loanOfferContractAddress, window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
+                      this.acceptLoanOffer(mpr1, CollateralAddress.toString(), loanContractAddress, window.web3.toWei(loanAmount), window.web3.toWei(0.1), ltv1);
                       }}>
                       Accept Loan
                     </button>
-                  </div>}
+                  </div>*/}
 
                   {acceptLoanAlert && <div className="alert alert-success mt-2" style={{marginLeft:'-1.5%',width:'104.5%', marginTop:'-7%'}} role="alert">
                       Your loan is funded successfully!
