@@ -541,7 +541,7 @@ class MyLoans extends Component {
                                             id={loan.loanAddress}
                                             onClick={this.toggleMenu}
                                             show={
-                                              showDropDown === activeLoan.loanAddress && activeLoan.loanAddress === ( repayments && repayments.loanContractAddress )
+                                              showDropDown === loan.loanAddress && loan.loanAddress === ( repayments && repayments.loanContractAddress )
                                             }
                                             activeLoan={loan}
                                             loanAddress={loan.loanAddress}
@@ -552,9 +552,8 @@ class MyLoans extends Component {
                                         </td>
                                       )}
                                     </tr>
-                                    {showDropDown === activeLoan.loanAddress &&
+                                    {showDropDown === loan.loanAddress &&
                                       repayments.map((repayment, i) => {
-                                        console.log(i);
                                         return (
                                           <tr id="repay" key={i}>
                                             <td>
@@ -642,7 +641,7 @@ class MyLoans extends Component {
                                           </tr>
                                         );
                                       })}
-                                      {showDropDown === activeLoan.loanAddress && <tr>
+                                      {showDropDown === loan.loanAddress && <tr>
                                       <td>
                                         <div className="media-body">
                                           <span className="mb-0 text-sm">
@@ -802,7 +801,6 @@ class MyLoans extends Component {
                                     </tr>
                                     {showDropDown === loan.loanAddress &&
                                       repayments.map((repayment, i) => {
-                                        console.log(i);
                                         return (
                                           <tr id="repay" key={i}>
                                             <td>
@@ -881,7 +879,7 @@ class MyLoans extends Component {
                                           </tr>
                                         );
                                       })}
-                                      {showDropDown === activeLoan.loanAddress && <tr>
+                                      {showDropDown === loan.loanAddress && <tr>
                                       <td>
                                         <div className="media-body">
                                           <span className="mb-0 text-sm">
