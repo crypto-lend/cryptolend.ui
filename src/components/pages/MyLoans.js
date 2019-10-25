@@ -17,6 +17,7 @@ import {
   GetRepaymentData,
   RepayLoan,
   ClaimCollateralByBorrower,
+  ClaimCollateralByLender,
   LiquidateLoanCollateral
 } from "../../services/loanContract";
 import "../../assets/vendor/font-awesome/css/font-awesome.css";
@@ -606,26 +607,17 @@ class MyLoans extends Component {
                                                 </span>
                                               </div>
                                               <span>
-                                                {currentDate >
-                                                this.convertDateEpoc(
-                                                  activeLoan.startedOn,
-                                                  repayment.repaymentNumber-1
-                                                )
-                                                  ? "Expired"
-                                                  : activeLoan.borrower === repayment.repayee
+                                                {activeLoan.borrower === repayment.repayee
                                                   ? "Paid"
+                                                  : currentDate >
+                                                  this.convertDateEpoc(
+                                                    activeLoan.startedOn,
+                                                    repayment.repaymentNumber-1
+                                                  )
+                                                  ? "Not Due"
                                                   : "Due"}
                                               </span>
                                             </td>
-                                            <td>
-                                              <div className="media-body">
-                                                <span className="mb-0 text-sm">
-                                                  Comments
-                                                </span>
-                                              </div>
-                                              <span>--</span>
-                                            </td>
-
                                             {(currentDate <
                                             this.convertDateEpoc(
                                               activeLoan.startedOn,
@@ -651,53 +643,53 @@ class MyLoans extends Component {
                                           </tr>
                                         );
                                       })}
+                                      {showDropDown === activeLoan.loanAddress && <tr>
+                                      <td>
+                                        <div className="media-body">
+                                          <span className="mb-0 text-sm">
+                                            {" "}
+                                            Collateral Amount
+                                          </span>
+                                        </div>
+                                        <span>
+                                          {activeLoan && activeLoan.collateralAmount}
+                                          {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                                        </span>
+                                      </td>
+                                      <td>
+                                        <span>
+                                          Loan Repaid{" "}
+                                        </span>
+                                        <span>
+                                           { loanRepaid }
+                                        </span>
+                                      </td>
+                                      <td>
+                                        <span>
+                                          Collateral Left {" "}
+                                        </span>
+                                        <span>
+                                          {activeLoan && activeLoan.collateralAmount}
+                                          {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
+                                        </span>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="btn btn-primary"
+                                          type="button"
+                                          onClick={() => {
+                                            ClaimCollateralByBorrower(
+                                              repayments[0].loanContractAddress
+                                            );
+                                          }}
+                                        >
+                                          Claim
+                                        </button>
+                                      </td>
+                                      </tr>}
                                   </>
                                 );
                               })}
-                              {showDropDown === activeLoan.loanAddress && <tr>
-                              <td>
-                                <div className="media-body">
-                                  <span className="mb-0 text-sm">
-                                    {" "}
-                                    Collateral Amount
-                                  </span>
-                                </div>
-                                <span>
-                                  {activeLoan && activeLoan.collateralAmount}
-                                  {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
-                                </span>
-                              </td>
-                              <td>
-                                <span>
-                                  Loan Repaid{" "}
-                                </span>
-                                <span>
-                                   { loanRepaid }
-                                </span>
-                              </td>
-                              <td>
-                                <span>
-                                  Collateral Left {" "}
-                                </span>
-                                <span>
-                                  {activeLoan && activeLoan.collateralAmount}
-                                  {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
-                                </span>
-                              </td>
-                              <td>
-                                <button
-                                  className="btn btn-primary"
-                                  type="button"
-                                  onClick={() => {
-                                    ClaimCollateralByBorrower(
-                                      repayments[0].loanContractAddress
-                                    );
-                                  }}
-                                >
-                                  Claim
-                                </button>
-                              </td>
-                              </tr>}
                             </tbody>
                           </table>
 
@@ -863,25 +855,29 @@ class MyLoans extends Component {
                                                 </span>
                                               </div>
                                               <span>
-                                                {currentDate >
+                                              {activeLoan.borrower === repayment.repayee
+                                                ? "Paid"
+                                                : currentDate >
                                                 this.convertDateEpoc(
                                                   activeLoan.startedOn,
-                                                  repayment.repaymentNumber
+                                                  repayment.repaymentNumber-1
                                                 )
-                                                  ? "Expired"
-                                                  : activeLoan.borrower ===
-                                                    repayment.repayee
-                                                  ? "Paid"
-                                                  : "Due"}
+                                                ? "Not Due"
+                                                : "Due"}
                                               </span>
                                             </td>
                                             <td>
-                                              <div className="media-body">
-                                                <span className="mb-0 text-sm">
-                                                  Comments
-                                                </span>
-                                              </div>
-                                              <span>--</span>
+                                              <button
+                                                className="btn btn-primary"
+                                                type="button"
+                                                onClick={() => {
+                                                  ClaimCollateralByLender(
+                                                    repayments[0].loanContractAddress, repayment.repaymentNumber
+                                                  );
+                                                }}
+                                              >
+                                                Claim
+                                              </button>
                                             </td>
                                           </tr>
                                         );
