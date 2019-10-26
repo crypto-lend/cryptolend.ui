@@ -10,6 +10,7 @@ import {
 import Loader from "react-loader";
 import Header from "../pages/Header";
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
+import { enableWeb3 } from '../Web3/enableWeb3';
 import { GetLoans } from "../../services/loanbook";
 import {
   GetLoanDetails,
@@ -27,6 +28,7 @@ import "./MyLoans.css";
 class MyLoans extends Component {
   constructor() {
     super();
+    enableWeb3();
     this.viewMyLoans();
 
     this.state = {
