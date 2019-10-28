@@ -24,8 +24,8 @@ class LoanOffer extends Component {
       duration: null,
       monthlyInt: '(not set)',
       collateralSafe: '(not set)',
-      ltv:0,
-      mpr:0,
+      ltv:200,
+      mpr:1,
       collateralCurrency:null,
       createOfferAlert:false,
       approveOfferAlert:false,
@@ -222,9 +222,9 @@ class LoanOffer extends Component {
                                     }
                                     </select>
                                     <h6 className="mt-4">LTV</h6>
-                                    <input className="font-weight-bold mb-0" type="number" value={ltv} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv:e.target.value>0 && e.target.value})} />
+                                    <input className="font-weight-bold mb-0" type="number" value={ltv} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv: e.target.value>=200 ? e.target.value : 200})} />
                                     <h6 className="mt-4">Interest</h6>
-                                    <input className="font-weight-bold mb-0" type="number" value={mpr} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr:e.target.value>0 && e.target.value})} />
+                                    <input className="font-weight-bold mb-0" type="number" value={mpr} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr: (e.target.value>=1 && e.target.value<=5) ? e.target.value : 1})} />
                                   </div>
                                </div>
                            }
