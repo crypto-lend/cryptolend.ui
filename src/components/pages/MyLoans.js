@@ -77,12 +77,12 @@ class MyLoans extends Component {
         const loan = await GetLoanDetails(loanAddress);
         const user = window.web3.eth.accounts[0];
 
-        if (loan[10] === user) {
+        if (loan[10] === user && loan[5].toNumber()>2) {
           myBorrowedLoans.push({
             loanAddress: loanAddress,
             loanAmount: window.web3.fromWei(loan[0].toNumber()),
             duration: loan[1].toNumber(),
-            interest: loan[2].toNumber() / 100,
+            interest: loan[2].toNumber(),
             createOn: loan[3].toNumber(),
             startedOn: loan[4].toNumber(),
             status: loan[5].toNumber(),
@@ -102,12 +102,12 @@ class MyLoans extends Component {
           this.setState({
             myBorrowedLoans: myBorrowedLoans
           });
-        } else if (loan[11] === user) {
+        } else if (loan[11] === user && loan[5].toNumber()>2 ) {
           myFundedLoans.push({
             loanAddress: loanAddress,
             loanAmount: window.web3.fromWei(loan[0].toNumber()),
             duration: loan[1].toNumber(),
-            interest: loan[2].toNumber() / 100,
+            interest: loan[2].toNumber(),
             createOn: loan[3].toNumber(),
             startedOn: loan[4].toNumber(),
             status: loan[5].toNumber(),
@@ -237,7 +237,7 @@ class MyLoans extends Component {
             <div className="media-body">
               <span className="mb-0 text-sm">Status</span>
             </div>
-            <span>{currentDate > dueDate[i] ? "Due" : "Not Due"}</span>
+            <span>{currentDate > dueDate[i] ? "Due" : "Defaulted"}</span>
           </td>
 
           <td>
@@ -605,14 +605,14 @@ class MyLoans extends Component {
                                                     activeLoan.startedOn,
                                                     repayment.repaymentNumber-1
                                                   )
-                                                  ? "Not Due"
+                                                  ? "Defaulted"
                                                   : "Due"}
                                               </span>
                                             </td>
                                             {(currentDate <
                                             this.convertDateEpoc(
                                               activeLoan.startedOn,
-                                              repayment.repaymentNumber
+                                              repayment.repaymentNumber-1
                                             )) &&
                                             activeLoan.borrower != repayment.repayee &&
                                             <td>
@@ -852,11 +852,18 @@ class MyLoans extends Component {
                                                   activeLoan.createOn,
                                                   repayment.repaymentNumber-1
                                                 )
-                                                ? "Not Due"
+                                                ? "Defaulted"
                                                 : "Due"}
                                               </span>
                                             </td>
-                                            <td>
+                                            {activeLoan.borrower === repayment.repayee
+                                              ? ''
+                                              : currentDate >
+                                              this.convertDateEpoc(
+                                                activeLoan.createOn,
+                                                repayment.repaymentNumber-1
+                                              )
+                                              && <td>
                                               <button
                                                 className="btn btn-primary"
                                                 type="button"
@@ -868,7 +875,7 @@ class MyLoans extends Component {
                                               >
                                                 Claim
                                               </button>
-                                            </td>
+                                            </td>}
                                           </tr>
                                         );
                                       })}

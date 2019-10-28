@@ -2,6 +2,7 @@ import { fetchMinedTransactionReceipt } from './Web3Service';
 import { StandardTokenABI } from '../components/Web3/abi';
 
 export const ExecuteTokenApproval = (params) => {
+  console.log('=======>',params);
 
     return new Promise((resolve, reject) => {
 

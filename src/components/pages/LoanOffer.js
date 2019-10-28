@@ -111,7 +111,7 @@ class LoanOffer extends Component {
       collateralMetadata.push({
         collateral: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address,
         ltv: ltv,
-        mpr: mpr
+        mpr: mpr * 100
       });
 
     this.setState({collateralMetadata:collateralMetadata})

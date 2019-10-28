@@ -6,6 +6,7 @@ import {
   AcceptLoanOffer,
   FinalizeCollateralTransfer
 } from "../../services/loanContract";
+import { ExecuteTokenApproval } from '../../services/token';
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 import SweetAlert from "react-bootstrap-sweetalert";
 import "./ViewAllOffers.css";
@@ -20,6 +21,7 @@ class ViewAllOffers extends Component {
       collateralMetadataAlert:false,
       transferCollateralAlert:false,
       acceptCollateralAlert:false,
+      approveCollateralAlert:false,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
@@ -47,7 +49,7 @@ class ViewAllOffers extends Component {
       collateralAddress:"0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
       loanAddress:'',
       activeLoanOffer:[],
-      activeCollateralValue:0
+      activeCollateralValue:0,
     };
   }
 
@@ -151,7 +153,7 @@ class ViewAllOffers extends Component {
   hideAlertAcceptCollateralConfirm = async () => {
     const { loanAddress } = this.state;
     const transferCollateralAlert = await this.handleAcceptLoanOffer(loanAddress);
-    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
+    this.setState({acceptCollateralAlert:false, approveCollateralAlert:true});
   }
 
   hideAlertTransferCollateralConfirm = async () => {
@@ -160,6 +162,30 @@ class ViewAllOffers extends Component {
     console.log("collateralAddress : ", collateralAddress);
     this.handleCollateralTransfer(loanAddress, collateralAddress);
   }
+
+  hideAlertAppproveCollateralConfirm = async(collateralAddress, loanContractAddress, collateralValue) => {
+    try {
+      await ExecuteTokenApproval({
+        ERC20Token: collateralAddress,
+        loanContractAddress: loanContractAddress,
+        tokenAmount: collateralValue
+      });
+
+      this.setState({
+        approveCollateralAlert:false,
+        transferCollateralAlert:true
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  hideAlertApproveCollateralCancel = async (collateralAddress, loanContractAddress, collateralValue) => {
+      this.setState({approveRequestAlert:true, acceptCollateralAlert:false});
+      console.log("collateralAddress : ", collateralAddress);
+  }
+
+
 
 
 
@@ -176,7 +202,10 @@ class ViewAllOffers extends Component {
       acceptCollateralAlert,
       collateralCurrencyToken,
       activeLoanOffer,
-      activeCollateralValue
+      activeCollateralValue,
+      collateralAddress,
+      loanAddress,
+      approveCollateralAlert
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -524,21 +553,7 @@ class ViewAllOffers extends Component {
                     </div>
                   </SweetAlert>
                 )}
-                {/*acceptCollateralAlert && (
-                  <SweetAlert
-                    warning
-                    showCancel
-                    confirmBtnText="Approve"
-                    confirmBtnBsStyle="info"
-                    cancelBtnBsStyle="default"
-                    title="Accept Loan Offer"
-                    onConfirm={this.hideAlertAcceptCollateralConfirm}
-                    onCancel={this.hideAlertAcceptCollateralCancel}
-                  >
-                    Approve Transfer collateral of {activeCollateralValue}{" "}
-                    {collateralCurrencyToken} tokens
-                  </SweetAlert>
-                )*/}
+
                 {acceptCollateralAlert && (
                   <SweetAlert
                     warning
@@ -551,6 +566,21 @@ class ViewAllOffers extends Component {
                     onCancel={this.hideAlertAcceptCollateralCancel}
                   >
                     Accept Transfer collateral of {activeCollateralValue}{" "}
+                    {collateralCurrencyToken} tokens
+                  </SweetAlert>
+                )}
+                {approveCollateralAlert && (
+                  <SweetAlert
+                    warning
+                    showCancel
+                    confirmBtnText="Approve"
+                    confirmBtnBsStyle="info"
+                    cancelBtnBsStyle="default"
+                    title="Approve Loan Offer"
+                    onConfirm={() => {this.hideAlertAppproveCollateralConfirm(collateralAddress, loanAddress, activeCollateralValue)}}
+                    onCancel={this.hideAlertApproveCollateralCancel}
+                  >
+                    Approve Transfer collateral of {activeCollateralValue}{" "}
                     {collateralCurrencyToken} tokens
                   </SweetAlert>
                 )}
