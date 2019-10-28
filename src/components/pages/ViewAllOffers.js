@@ -68,8 +68,8 @@ class ViewAllOffers extends Component {
           for (var i in loan[13]) {
             collaterals.push({
               address: loan[13][i][0].split('000000000000000000000000')[0],
-              ltv: window.web3.toBigNumber(loan[13][i][2]).toNumber(),
-              mpr: window.web3.toBigNumber(loan[13][i][1]).toNumber(),
+              ltv: window.web3.toBigNumber(loan[13][i][1]).toNumber(),
+              mpr: window.web3.toBigNumber(loan[13][i][2]).toNumber(),
               collateralCurrency: loan[13][i][3],
             });
           }
@@ -470,8 +470,8 @@ class ViewAllOffers extends Component {
                           className="text-left ml-3"
                           style={{ fontSize: "x-small" }}
                         >
-                          MPR {loanOffer.collaterals.map((item) =>{
-                              return item.mpr +"% ";
+                          LTV {loanOffer.collaterals.map((item) =>{
+                              return item.ltv +"% ";
                           })}
 
                         </div>
@@ -479,8 +479,8 @@ class ViewAllOffers extends Component {
                           className="text-left ml-3"
                           style={{ fontSize: "x-small" }}
                         >
-                          LTV {loanOffer.collaterals.map((item) =>{
-                              return item.ltv +"% ";
+                          MPR {loanOffer.collaterals.map((item) =>{
+                              return item.mpr +"% ";
                           })}
 
                         </div>
