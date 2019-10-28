@@ -1177,12 +1177,7 @@ export const LoanContractABI = [
   },
   {
     "constant": true,
-    "inputs": [
-      {
-        "name": "repaymentNumber",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "getRepaymentAmount",
     "outputs": [
       {
@@ -1241,6 +1236,6 @@ export const LoanContractABI = [
   }
 ];
 
-export const LoanBookAddress = "0xf117355DC0393b1968169c2957CB845C94A6e940";
+export const LoanBookAddress = "0x062FBE29BB8B6e0896c4b623D7674BE9119D6c8e";
 
 export default abi;
