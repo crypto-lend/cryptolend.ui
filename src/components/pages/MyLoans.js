@@ -768,7 +768,7 @@ class MyLoans extends Component {
                                         <span className="">
                                           {
                                             this.convertDate(
-                                              loan.startedOn,
+                                              loan.createOn,
                                               -1
                                             ).split(
                                               " GMT+0530 (India Standard Time)"
@@ -830,8 +830,8 @@ class MyLoans extends Component {
                                               <span>
                                                 {
                                                   this.convertDate(
-                                                    activeLoan.startedOn,
-                                                    repayment.repaymentNumber
+                                                    activeLoan.createOn,
+                                                    repayment.repaymentNumber-1
                                                   ).split(
                                                     " GMT+0530 (India Standard Time)"
                                                   )[0]
@@ -849,7 +849,7 @@ class MyLoans extends Component {
                                                 ? "Paid"
                                                 : currentDate >
                                                 this.convertDateEpoc(
-                                                  activeLoan.startedOn,
+                                                  activeLoan.createOn,
                                                   repayment.repaymentNumber-1
                                                 )
                                                 ? "Not Due"
