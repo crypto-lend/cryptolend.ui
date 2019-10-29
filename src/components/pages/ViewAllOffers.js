@@ -113,6 +113,7 @@ class ViewAllOffers extends Component {
   };
 
  handleCollateralConversion = async (collateralAddress, loanAmount) => {
+   // add LTV ratio of collateral as third argument to this function.
 
     let {activeCollateralValue} = this.state;
 
@@ -122,9 +123,10 @@ class ViewAllOffers extends Component {
       });
 
       console.log("collateralPrice",collateralPrice);
-
+      // when calculating collateralValue, use this formula
+      //((window.web3.toWei(loanAmount) / window.web3.toWei(collateralPrice))* (ltv/100))
       this.setState({
-        activeCollateralValue: (loanAmount / collateralPrice * 2),
+        activeCollateralValue: ((window.web3.toWei(loanAmount) / window.web3.toWei(collateralPrice))* 2),
       })
 
     } catch (error) {
