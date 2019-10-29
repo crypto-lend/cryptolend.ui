@@ -53,10 +53,21 @@ class LoanOffer extends Component {
   createLoanOffer = async (principal, duration, collateralMetadata) => {
         try {
           console.log("collateralMetadata", collateralMetadata);
+          let collaterals = [];
+          let collateralAddress = [];
+          collateralMetadata.map((collateral)=>{
+            collateralAddress = getTokenBySymbol[collateral.collateral] && getTokenBySymbol[collateral.collateral].address;
+            collaterals.push({
+              collateral: collateralAddress,
+              ltv: collateral.ltv,
+              mpr: collateral.mpr * 100
+            });
+          })
+
           const loanContractAddress = await CreateNewLoanOffer({
             principal: principal,
             duration: duration,
-            collaterals: collateralMetadata
+            collaterals: collaterals
           });
 
           this.setState({
@@ -109,7 +120,7 @@ class LoanOffer extends Component {
   handleAddCollateral = (collateralCurrency, ltv, mpr) => {
       let {collateralMetadata} = this.state;
       collateralMetadata.push({
-        collateral: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address,
+        collateral: collateralCurrency,
         ltv: ltv,
         mpr: mpr * 100
       });
@@ -275,11 +286,13 @@ class LoanOffer extends Component {
 
                   <div className="card-body text-left" style={{ marginBottom: !duration?'45%':'21%'}}>
                     <p>Collateral</p>
-                    {collateralMetadata.map((collaterals,i) => {
+                    {collateralMetadata.map((collateral,i) => {
+                      console.log('collateralMetadata', collateral );
                       return <div className="col" key={i}>
-                      <img id="img1 "alt="img1" src={'/assets/img/32/color/thc.png'}/>
-                      <p>LTV : {collaterals.ltv}</p>
-                      <p>MPR: {collaterals.mpr}</p>
+                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${collateral.collateral}.png`} alt={collateral.collateral}/>
+                      <p className="small">{collateral.collateral}</p>
+                      <p className="small">LTV : {collateral.ltv}</p>
+                      <p className="small">MPR: {collateral.mpr/100}</p>
                     </div>;
                     })
 

@@ -548,8 +548,6 @@ class ViewAllOffers extends Component {
                           MPR : {item.mpr} &nbsp; LTV : {item.ltv}%
                         </label>;
                       })}
-                      {
-                    }
                     </div>
                   </SweetAlert>
                 )}
