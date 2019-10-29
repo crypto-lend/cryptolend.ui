@@ -60,7 +60,7 @@ class LoanOffer extends Component {
             collaterals.push({
               collateral: collateralAddress,
               ltv: collateral.ltv,
-              mpr: collateral.mpr * 100
+              mpr: collateral.mpr
             });
           })
 

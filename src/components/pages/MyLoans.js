@@ -102,7 +102,8 @@ class MyLoans extends Component {
           this.setState({
             myBorrowedLoans: myBorrowedLoans
           });
-        } else if (loan[11] === user && loan[5].toNumber()>2 ) {
+        }
+        if (loan[11] === user && loan[5].toNumber()>2 ) {
           myFundedLoans.push({
             loanAddress: loanAddress,
             loanAmount: window.web3.fromWei(loan[0].toNumber()),
@@ -768,7 +769,7 @@ class MyLoans extends Component {
                                         <span className="">
                                           {
                                             this.convertDate(
-                                              loan.createOn,
+                                              loan.startedOn,
                                               -1
                                             ).split(
                                               " GMT+0530 (India Standard Time)"
@@ -830,7 +831,7 @@ class MyLoans extends Component {
                                               <span>
                                                 {
                                                   this.convertDate(
-                                                    activeLoan.createOn,
+                                                    activeLoan.startedOn,
                                                     repayment.repaymentNumber-1
                                                   ).split(
                                                     " GMT+0530 (India Standard Time)"
@@ -849,7 +850,7 @@ class MyLoans extends Component {
                                                 ? "Paid"
                                                 : currentDate >
                                                 this.convertDateEpoc(
-                                                  activeLoan.createOn,
+                                                  activeLoan.startedOn,
                                                   repayment.repaymentNumber-1
                                                 )
                                                 ? "Defaulted"
@@ -860,7 +861,7 @@ class MyLoans extends Component {
                                               ? ''
                                               : currentDate >
                                               this.convertDateEpoc(
-                                                activeLoan.createOn,
+                                                activeLoan.startedOn,
                                                 repayment.repaymentNumber-1
                                               )
                                               && <td>
