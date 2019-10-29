@@ -103,7 +103,8 @@ class ViewAllOffers extends Component {
     }
   };
 
-  handleCollateralTransfer = async (loanContractAddress, collateralAddress) => {
+  handleCollateralTransfer = async (loanContractAddress, collateralCurrencyToken) => {
+    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
     try {
       await FinalizeCollateralTransfer(loanContractAddress, collateralAddress);
     } catch (e) {
@@ -112,23 +113,22 @@ class ViewAllOffers extends Component {
     }
   };
 
- handleCollateralConversion = async (collateralAddress, activeLoanOffer, collateralCurrencyToken) => {
+ handleCollateralConversion = async (activeLoanOffer, collateralCurrencyToken) => {
    // add LTV ratio of collateral as third argument to this function.
 
     let {activeCollateralValue} = this.state;
-
+    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
     let ltv = 200;
     activeLoanOffer.collaterals.map((item,i) => {
       if(getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken){
         ltv = item.ltv;
       }
     })
+
     try {
       const collateralPrice = await FetchCollateralPrice({
         collateralAddress: collateralAddress
       });
-
-      console.log("collateralPrice",collateralPrice);
       // when calculating collateralValue, use this formula
       //((window.web3.toWei(loanAmount) / window.web3.toWei(collateralPrice))* (ltv/100))
       this.setState({
@@ -165,13 +165,15 @@ class ViewAllOffers extends Component {
   }
 
   hideAlertTransferCollateralConfirm = async () => {
-    let { loanAddress, collateralAddress } = this.state;
+    let { loanAddress, collateralCurrencyToken } = this.state;
     this.setState({transferCollateralAlert:false});
-    console.log("collateralAddress : ", collateralAddress);
-    this.handleCollateralTransfer(loanAddress, collateralAddress);
+    //console.log("collateralAddress : ", collateralAddress);
+    this.handleCollateralTransfer(loanAddress, collateralCurrencyToken);
   }
 
-  hideAlertAppproveCollateralConfirm = async(collateralAddress, loanContractAddress, collateralValue) => {
+  hideAlertAppproveCollateralConfirm = async(collateralCurrencyToken, loanContractAddress, collateralValue) => {
+    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
+    //console.log(collateralAddress, collateralValue);
     try {
       await ExecuteTokenApproval({
         ERC20Token: collateralAddress,
@@ -543,7 +545,7 @@ class ViewAllOffers extends Component {
                           this.setState({
                             collateralCurrencyToken: e.target.value
                           });
-                          this.handleCollateralConversion(getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address, activeLoanOffer, collateralCurrencyToken);
+                          this.handleCollateralConversion(activeLoanOffer, collateralCurrencyToken);
                         }}
                       >
                         {activeLoanOffer.collaterals.map((item, i) => {
@@ -582,7 +584,7 @@ class ViewAllOffers extends Component {
                     confirmBtnBsStyle="info"
                     cancelBtnBsStyle="default"
                     title="Approve Loan Offer"
-                    onConfirm={() => {this.hideAlertAppproveCollateralConfirm(collateralAddress, loanAddress, activeCollateralValue)}}
+                    onConfirm={() => {this.hideAlertAppproveCollateralConfirm(collateralCurrencyToken, loanAddress, activeCollateralValue)}}
                     onCancel={this.hideAlertApproveCollateralCancel}
                   >
                     Approve Transfer collateral of {activeCollateralValue}{" "}
