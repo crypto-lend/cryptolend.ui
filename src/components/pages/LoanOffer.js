@@ -276,8 +276,8 @@ class LoanOffer extends Component {
                   <div className="card-body text-left" style={{ marginBottom: !duration?'45%':'21%'}}>
                     <p>Collateral</p>
                     {collateralMetadata.map((collaterals,i) => {
-                      return <div className="col">
-                      <img id="img1 "alt="img1" src={`/assets/img/32/color/${getTokenByAddress[collaterals.collateral] && getTokenByAddress[collaterals.collateral].symbol}.png`}/>
+                      return <div className="col" key={i}>
+                      <img id="img1 "alt="img1" src={'/assets/img/32/color/thc.png'}/>
                       <p>LTV : {collaterals.ltv}</p>
                       <p>MPR: {collaterals.mpr}</p>
                     </div>;

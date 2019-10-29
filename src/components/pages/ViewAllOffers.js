@@ -69,7 +69,7 @@ class ViewAllOffers extends Component {
             collaterals.push({
               address: loan[13][i][0].split('000000000000000000000000')[0],
               ltv: window.web3.toBigNumber(loan[13][i][1]).toNumber(),
-              mpr: window.web3.toBigNumber(loan[13][i][2]).toNumber(),
+              mpr: window.web3.toBigNumber(loan[13][i][2]).toNumber()/100,
               collateralCurrency: loan[13][i][3],
             });
           }
