@@ -112,11 +112,17 @@ class ViewAllOffers extends Component {
     }
   };
 
- handleCollateralConversion = async (collateralAddress, loanAmount) => {
+ handleCollateralConversion = async (collateralAddress, activeLoanOffer, collateralCurrencyToken) => {
    // add LTV ratio of collateral as third argument to this function.
 
     let {activeCollateralValue} = this.state;
 
+    let ltv = 200;
+    activeLoanOffer.collaterals.map((item,i) => {
+      if(getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken){
+        ltv = item.ltv;
+      }
+    })
     try {
       const collateralPrice = await FetchCollateralPrice({
         collateralAddress: collateralAddress
@@ -126,7 +132,7 @@ class ViewAllOffers extends Component {
       // when calculating collateralValue, use this formula
       //((window.web3.toWei(loanAmount) / window.web3.toWei(collateralPrice))* (ltv/100))
       this.setState({
-        activeCollateralValue: ((window.web3.toWei(loanAmount) / window.web3.toWei(collateralPrice))* 2),
+        activeCollateralValue: ((window.web3.toWei(activeLoanOffer.loanAmount) / window.web3.toWei(collateralPrice))* ltv/100)
       })
 
     } catch (error) {
@@ -532,17 +538,16 @@ class ViewAllOffers extends Component {
                       </label>
                       <select
                         className="form-control"
-                        id="exampleFormControlSelect1"
                         style={{ width: "80px", display: "inline" }}
-                        onClick={e => {
+                        onChange={e => {
                           this.setState({
                             collateralCurrencyToken: e.target.value
                           });
-                          this.handleCollateralConversion(activeLoanOffer.collaterals[0].address, activeLoanOffer.loanAmount);
+                          this.handleCollateralConversion(getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address, activeLoanOffer, collateralCurrencyToken);
                         }}
                       >
-                        {activeLoanOffer.collaterals.map(item => {
-                          return <option>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
+                        {activeLoanOffer.collaterals.map((item, i) => {
+                          return <option id={i} value={getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
                         })}
                       </select>
                       {activeLoanOffer.collaterals.map((item,i) => {
