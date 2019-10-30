@@ -46,7 +46,7 @@ class ViewAllOffers extends Component {
           'FET','PPT','MCO'],
       collateral_tokens: ['BNB', 'GTO', 'QKC'],
       collateralCurrencyToken:'',
-      collateralAddress:"0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      collateralAddress:"",
       loanAddress:'',
       activeLoanOffer:[],
       activeCollateralValue:0,
@@ -117,13 +117,16 @@ class ViewAllOffers extends Component {
    // add LTV ratio of collateral as third argument to this function.
 
     let {activeCollateralValue} = this.state;
-    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
     let ltv = 200;
+    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
+    
     activeLoanOffer.collaterals.map((item,i) => {
       if(getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken){
         ltv = item.ltv;
+        this.setState({collateralAddress : collateralAddress, collateralCurrencyToken : collateralCurrencyToken});
       }
     })
+    console.log('collateralAddress', collateralAddress);
 
     try {
       const collateralPrice = await FetchCollateralPrice({
@@ -132,7 +135,7 @@ class ViewAllOffers extends Component {
       // when calculating collateralValue, use this formula
       //((window.web3.toWei(loanAmount) / window.web3.toWei(collateralPrice))* (ltv/100))
       this.setState({
-        activeCollateralValue: ((window.web3.toWei(activeLoanOffer.loanAmount) / window.web3.toWei(collateralPrice))* ltv/100)
+        activeCollateralValue: ((window.web3.toWei(activeLoanOffer.loanAmount) / (window.web3.toWei(collateralPrice))* (ltv/100)))
       })
 
     } catch (error) {
@@ -193,6 +196,10 @@ class ViewAllOffers extends Component {
   hideAlertApproveCollateralCancel = async (collateralAddress, loanContractAddress, collateralValue) => {
       this.setState({approveRequestAlert:true, acceptCollateralAlert:false});
       console.log("collateralAddress : ", collateralAddress);
+  }
+
+  handleTakeThisLoan = (loanOffer) => {
+    this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, activeLoanOffer:loanOffer});
   }
 
 
@@ -500,7 +507,7 @@ class ViewAllOffers extends Component {
                         <p>Amount  : { loanOffer.loanAmount } ETH</p>
 
                         <div className="btn-wrapper text-center" onClick={()=>{
-                          this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address, activeLoanOffer:loanOffer});
+                          this.handleTakeThisLoan(loanOffer)
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
                             <span className="btn-inner--text">
@@ -541,17 +548,15 @@ class ViewAllOffers extends Component {
                       <select
                         className="form-control"
                         style={{ width: "80px", display: "inline" }}
-                        onChange={e => {
-                          this.setState({
-                            collateralCurrencyToken: e.target.value
-                          });
-                          this.handleCollateralConversion(activeLoanOffer, collateralCurrencyToken);
+                        onClick={e => {
+                          this.handleCollateralConversion(activeLoanOffer, e.target.value);
                         }}
                       >
                         {activeLoanOffer.collaterals.map((item, i) => {
-                          return <option id={i} value={getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
+                          return <option>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
                         })}
                       </select>
+
                       {activeLoanOffer.collaterals.map((item,i) => {
                         return (getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken) && <label for="exampleFormControlSelect1" key={i}>
                           MPR : {item.mpr} &nbsp; LTV : {item.ltv}%
