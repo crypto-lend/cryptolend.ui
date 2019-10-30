@@ -183,7 +183,7 @@ class ViewAllOffers extends Component {
   }
 
   hideAlertApproveCollateralCancel = async (collateralAddress, loanContractAddress, collateralValue) => {
-      this.setState({approveRequestAlert:true, acceptCollateralAlert:false});
+      this.setState({approveRequestAlert:false, acceptCollateralAlert:false});
       console.log("collateralAddress : ", collateralAddress);
   }
 
@@ -211,7 +211,9 @@ class ViewAllOffers extends Component {
       collateralAddress,
       loanAddress,
       approveCollateralAlert,
-      loanOffers
+      loanOffers,
+      maxMonthlyInt,
+      minMonthlyInt
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -399,14 +401,14 @@ class ViewAllOffers extends Component {
                         <div className="">
                           <label style={{ marginLeft: "-180px" }}>
                             {" "}
-                            ({this.state.minMonthlyInt} %){" "}
+                            ({minMonthlyInt} %){" "}
                           </label>
                         </div>
                         <div
                           className=""
                           style={{ marginRight: "-180px", marginTop: "-30px" }}
                         >
-                          <label> ({this.state.maxMonthlyInt} %)</label>
+                          <label> ({maxMonthlyInt} %)</label>
                         </div>
                         <Nouislider
                           range={{ min: 0, max: 5 }}
@@ -417,7 +419,6 @@ class ViewAllOffers extends Component {
                               minMonthlyInt: e[0],
                               maxMonthlyInt: e[1]
                             });
-                            console.log(this.state.maxMonthlyInt);
                           }}
                         />
                       </div>
@@ -461,7 +462,7 @@ class ViewAllOffers extends Component {
               </div>
               <div className="ml-4 row">
                 {loanOffers.map((loanOffer, index) => (
-                  loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration &&
+                  loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration && //loanOffer.interest>minMonthlyInt && loanOffer.interest<maxMonthlyInt &&
                   <div key={index} className={loanOffers.length>=3?"col-md-4":loanOffers.length===2?"col-md-6":loanOffers.length===1?"col-md-12":""}>
                     <div className="card">
                       <div className="card-header">

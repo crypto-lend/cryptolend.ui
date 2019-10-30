@@ -28,17 +28,7 @@ class ViewAllRequests extends Component {
       maxMonthlyInt:5,
       minDuration:0,
       maxDuration:12,
-      erc20_tokens :  ['TTT', 'BTC','BNB', 'GTO', 'QKC', 'NEXO',
-          'PAX','EGT',  'MANA','POWR',
-          'TUSD','LAMB','CTXC','ENJ',
-          'CELR','HTB','ICX',  'WTC',
-          'USD', 'BTM','EDO', 'SXDT',
-          'OMG','CRO','TOP','SXUT',
-          'MEDX','ITC','REP','STO',
-          'LINK','CMT','WAX',
-          'MATIC','ELF', 'COSM',
-          'HT','BZ','NAS',
-          'FET','PPT','MCO'],
+      erc20_tokens : supported_erc20_token
     };
   }
 
@@ -112,7 +102,7 @@ class ViewAllRequests extends Component {
 
   render() {
     const { erc20_tokens, duration, minDuration, maxDuration, earnings, minMonthlyInt, maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency,
-    collateralMetadata } = this.state;
+    collateralMetadata, loanRequests } = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <Header/>
@@ -161,7 +151,7 @@ class ViewAllRequests extends Component {
                     }}>
                     {
                       erc20_tokens.map((item,i) => {
-                        return <option>{item}</option>;
+                        return <option>{item.symbol}</option>;
                     })
                     }
                     </select>
@@ -243,8 +233,8 @@ class ViewAllRequests extends Component {
           </div>
             <div className="ml-4 row">
               {
-                this.state.loanRequests.map((loanRequest)=>{
-                return  <div className="col">
+                loanRequests.map((loanRequest)=>{
+                return loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration && loanRequest.interest>minMonthlyInt && loanRequest.interest<maxMonthlyInt &&  <div className="col">
                  <div className="card">
                    <div className="card-header">
 
