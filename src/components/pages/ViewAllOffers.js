@@ -33,18 +33,7 @@ class ViewAllOffers extends Component {
       minDuration:'0',
       maxDuration:'12',
       defaulted:true,
-      erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
-          'PAX','EGT',  'MANA','POWR',
-          'TUSD','LAMB','CTXC','ENJ',
-          'CELR','HTB','ICX',  'WTC',
-          'USD', 'BTM','EDO', 'SXDT',
-          'OMG','CRO','TOP','SXUT',
-          'MEDX','ITC','REP','STO',
-          'LINK','CMT','WAX',
-          'MATIC','ELF', 'COSM',
-          'HT','BZ','NAS',
-          'FET','PPT','MCO'],
-      collateral_tokens: ['BNB', 'GTO', 'QKC'],
+      erc20_tokens :  supported_erc20_token,
       collateralCurrencyToken:'',
       collateralAddress:"",
       loanAddress:'',
@@ -119,7 +108,7 @@ class ViewAllOffers extends Component {
     let {activeCollateralValue} = this.state;
     let ltv = 200;
     let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
-    
+
     activeLoanOffer.collaterals.map((item,i) => {
       if(getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken){
         ltv = item.ltv;
@@ -214,7 +203,6 @@ class ViewAllOffers extends Component {
       minDuration,
       maxDuration,
       collateralMetadataAlert,
-      collateral_tokens,
       transferCollateralAlert,
       acceptCollateralAlert,
       collateralCurrencyToken,
@@ -222,7 +210,8 @@ class ViewAllOffers extends Component {
       activeCollateralValue,
       collateralAddress,
       loanAddress,
-      approveCollateralAlert
+      approveCollateralAlert,
+      loanOffers
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -288,7 +277,7 @@ class ViewAllOffers extends Component {
                           }}
                         >
                           {erc20_tokens.map((item, i) => {
-                            return <option>{item}</option>;
+                            return <option>{item.symbol}</option>;
                           })}
                         </select>
                       </div>
@@ -471,8 +460,9 @@ class ViewAllOffers extends Component {
                 </div>
               </div>
               <div className="ml-4 row">
-                {this.state.loanOffers.map((loanOffer, index) => (
-                  <div key={index} className={this.state.loanOffers.length<3?"col":"col-md-4"}>
+                {loanOffers.map((loanOffer, index) => (
+                  loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration &&
+                  <div key={index} className={loanOffers.length>=3?"col-md-4":loanOffers.length===2?"col-md-6":loanOffers.length===1?"col-md-12":""}>
                     <div className="card">
                       <div className="card-header">
                         <div className="row row-example">
