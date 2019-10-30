@@ -52,12 +52,12 @@ export const CreateNewLoanOffer = (params) => {
         const { web3 } = window;
 
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
-        
-        let collateralsMetadata = new Array(3);
-        
+
+        let collateralsMetadata = new Array();
+
         for(var i in params.collaterals){
-            collateralsMetadata[i] = 
-                [ web3.toHex(params.collaterals[i].collateral), 
+            collateralsMetadata[i] =
+                [ web3.toHex(params.collaterals[i].collateral),
                     padLeft(web3.toHex(params.collaterals[i].ltv),64),
                     padLeft(web3.toHex(params.collaterals[i].mpr),64)];
         }
@@ -68,7 +68,7 @@ export const CreateNewLoanOffer = (params) => {
             if(!err){
                 console.log(transactionHash);
                 const receipt = await fetchMinedTransactionReceipt(transactionHash);
-                console.log(receipt.logs[0].topics[2])
+                // console.log(receipt.logs[0].topics[2])
                 resolve(padLeft(web3.toHex(web3.toBigNumber(receipt.logs[0].topics[2])), 32));
             } else {
                 reject(err);
@@ -78,7 +78,7 @@ export const CreateNewLoanOffer = (params) => {
 }
 
 export const FetchCollateralPrice = (params) => {
-    
+
     return new Promise((resolve, reject) => {
 
         const { web3 } = window;

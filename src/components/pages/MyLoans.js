@@ -10,6 +10,7 @@ import {
 import Loader from "react-loader";
 import Header from "../pages/Header";
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
+import { enableWeb3 } from '../Web3/enableWeb3';
 import { GetLoans } from "../../services/loanbook";
 import {
   GetLoanDetails,
@@ -27,6 +28,7 @@ import "./MyLoans.css";
 class MyLoans extends Component {
   constructor() {
     super();
+    enableWeb3();
     this.viewMyLoans();
 
     this.state = {
@@ -75,12 +77,12 @@ class MyLoans extends Component {
         const loan = await GetLoanDetails(loanAddress);
         const user = window.web3.eth.accounts[0];
 
-        if (loan[10] === user) {
+        if (loan[10] === user && loan[5].toNumber()>2) {
           myBorrowedLoans.push({
             loanAddress: loanAddress,
             loanAmount: window.web3.fromWei(loan[0].toNumber()),
             duration: loan[1].toNumber(),
-            interest: loan[2].toNumber() / 100,
+            interest: loan[2].toNumber(),
             createOn: loan[3].toNumber(),
             startedOn: loan[4].toNumber(),
             status: loan[5].toNumber(),
@@ -100,12 +102,13 @@ class MyLoans extends Component {
           this.setState({
             myBorrowedLoans: myBorrowedLoans
           });
-        } else if (loan[11] === user) {
+        }
+        if (loan[11] === user && loan[5].toNumber()>2 ) {
           myFundedLoans.push({
             loanAddress: loanAddress,
             loanAmount: window.web3.fromWei(loan[0].toNumber()),
             duration: loan[1].toNumber(),
-            interest: loan[2].toNumber() / 100,
+            interest: loan[2].toNumber(),
             createOn: loan[3].toNumber(),
             startedOn: loan[4].toNumber(),
             status: loan[5].toNumber(),
@@ -167,18 +170,16 @@ class MyLoans extends Component {
   handleLoanRepaid = async (repayments, activeLoan, currentDate) => {
     try {
       let {loanRepaid} = this.state;
-      repayments.map((repayment,i)=>{
-        if(/*(currentDate <
-          this.convertDateEpoc(
-            activeLoan.startedOn,
-            repayment.repaymentNumber
-          ))*/
-          activeLoan.borrower === repayment.repayee){
-            this.setState({loanRepaid:loanRepaid + parseFloat(repayment.totalRepaymentAmount)});
-            console.log("loanRepaid", loanRepaid);
+      let totalRepayment = 0;
+      let totalRepaid = 0;
+      repayments.map((repayment) => {
+        totalRepayment = totalRepayment + parseFloat(repayment.totalRepaymentAmount)
+        if(activeLoan.borrower === repayment.repayee){
+          totalRepaid = totalRepaid + parseFloat(repayment.totalRepaymentAmount)
         }
       })
 
+      this.setState({loanRepaid:((totalRepaid/totalRepayment)*100)})
     } catch (error) {
       console.log(error);
     }
@@ -237,7 +238,7 @@ class MyLoans extends Component {
             <div className="media-body">
               <span className="mb-0 text-sm">Status</span>
             </div>
-            <span>{currentDate > dueDate[i] ? "Due" : "Not Due"}</span>
+            <span>{currentDate > dueDate[i] ? "Due" : "Defaulted"}</span>
           </td>
 
           <td>
@@ -605,14 +606,14 @@ class MyLoans extends Component {
                                                     activeLoan.startedOn,
                                                     repayment.repaymentNumber-1
                                                   )
-                                                  ? "Not Due"
+                                                  ? "Defaulted"
                                                   : "Due"}
                                               </span>
                                             </td>
                                             {(currentDate <
                                             this.convertDateEpoc(
                                               activeLoan.startedOn,
-                                              repayment.repaymentNumber
+                                              repayment.repaymentNumber-1
                                             )) &&
                                             activeLoan.borrower != repayment.repayee &&
                                             <td>
@@ -652,7 +653,7 @@ class MyLoans extends Component {
                                           Loan Repaid{" "}
                                         </span>
                                         <span>
-                                           { loanRepaid }
+                                           { loanRepaid.toFixed(2) + "% "}
                                         </span>
                                       </td>
                                       <td>
@@ -664,7 +665,15 @@ class MyLoans extends Component {
                                           {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
                                         </span>
                                       </td>
-                                      <td>
+                                      {currentDate >
+                                        this.convertDateEpoc(
+                                          activeLoan.startedOn,
+                                          repayments[0].repaymentNumber-1
+                                        )
+                                        && activeLoan.lender != repayments[0].repayee
+                                        &&
+                                        loanRepaid.toFixed(2) == 100.00 &&
+                                        <td>
                                         <button
                                           className="btn btn-primary"
                                           type="button"
@@ -676,7 +685,7 @@ class MyLoans extends Component {
                                         >
                                           Claim
                                         </button>
-                                      </td>
+                                      </td>}
                                       </tr>}
                                   </>
                                 );
@@ -830,7 +839,7 @@ class MyLoans extends Component {
                                                 {
                                                   this.convertDate(
                                                     activeLoan.startedOn,
-                                                    repayment.repaymentNumber
+                                                    repayment.repaymentNumber-1
                                                   ).split(
                                                     " GMT+0530 (India Standard Time)"
                                                   )[0]
@@ -851,11 +860,17 @@ class MyLoans extends Component {
                                                   activeLoan.startedOn,
                                                   repayment.repaymentNumber-1
                                                 )
-                                                ? "Not Due"
+                                                ? "Defaulted"
                                                 : "Due"}
                                               </span>
                                             </td>
-                                            <td>
+                                            {currentDate >
+                                              this.convertDateEpoc(
+                                                activeLoan.startedOn,
+                                                repayment.repaymentNumber-1
+                                              )
+                                              && activeLoan.borrower != repayment.repayee
+                                              && <td>
                                               <button
                                                 className="btn btn-primary"
                                                 type="button"
@@ -867,7 +882,7 @@ class MyLoans extends Component {
                                               >
                                                 Claim
                                               </button>
-                                            </td>
+                                            </td>}
                                           </tr>
                                         );
                                       })}
@@ -889,7 +904,7 @@ class MyLoans extends Component {
                                           Loan Repaid {" "}
                                         </span>
                                         <span>
-                                           { loanRepaid }
+                                           { loanRepaid.toFixed(2) + "% " }
                                         </span>
                                       </td>
                                       <td>

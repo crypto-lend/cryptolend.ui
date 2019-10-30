@@ -111,7 +111,7 @@ export const ApproveAndFundLoanRequest = (loanContractAddress, loanAmount) => {
     })
 }
 
-export const GetRepaymentData = (loanContractAddress, repaymentNumber) => {
+  export const GetRepaymentData = (loanContractAddress, repaymentNumber) => {
 
     return new Promise((resolve, reject) => {
 
@@ -119,7 +119,7 @@ export const GetRepaymentData = (loanContractAddress, repaymentNumber) => {
 
         const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
 
-        LoanContract.getRepaymentAmount(repaymentNumber, (err, repaymentData) => {
+        LoanContract.getRepaymentAmount((err, repaymentData) => {
             if(!err){
                 LoanContract.checkRepaymentStatus(repaymentNumber, (err, repayee) => {
                     if(!err){

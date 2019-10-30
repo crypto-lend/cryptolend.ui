@@ -43,7 +43,8 @@ function setupWeb3(){
     })
 }
 
-function getWeb3(){
+export function getWeb3(){
+  window.ethereum.enable()
     if (typeof window.web3 !== 'undefined'){
       return setupWeb3()
     } else {

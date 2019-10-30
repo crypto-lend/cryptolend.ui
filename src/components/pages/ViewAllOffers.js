@@ -6,6 +6,7 @@ import {
   AcceptLoanOffer,
   FinalizeCollateralTransfer
 } from "../../services/loanContract";
+import { ExecuteTokenApproval } from '../../services/token';
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 import SweetAlert from "react-bootstrap-sweetalert";
 import "./ViewAllOffers.css";
@@ -20,6 +21,7 @@ class ViewAllOffers extends Component {
       collateralMetadataAlert:false,
       transferCollateralAlert:false,
       acceptCollateralAlert:false,
+      approveCollateralAlert:false,
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
@@ -44,10 +46,10 @@ class ViewAllOffers extends Component {
           'FET','PPT','MCO'],
       collateral_tokens: ['BNB', 'GTO', 'QKC'],
       collateralCurrencyToken:'',
-      collateralAddress:"0xfCB0229a26C0087aFA7643D2Fb3Af94FC1885815",
+      collateralAddress:"",
       loanAddress:'',
       activeLoanOffer:[],
-      activeCollateralValue:0
+      activeCollateralValue:0,
     };
   }
 
@@ -66,8 +68,8 @@ class ViewAllOffers extends Component {
           for (var i in loan[13]) {
             collaterals.push({
               address: loan[13][i][0].split('000000000000000000000000')[0],
-              ltv: window.web3.toBigNumber(loan[13][i][2]).toNumber(),
-              mpr: window.web3.toBigNumber(loan[13][i][1]).toNumber(),
+              ltv: window.web3.toBigNumber(loan[13][i][1]).toNumber(),
+              mpr: window.web3.toBigNumber(loan[13][i][2]).toNumber()/100,
               collateralCurrency: loan[13][i][3],
             });
           }
@@ -101,7 +103,8 @@ class ViewAllOffers extends Component {
     }
   };
 
-  handleCollateralTransfer = async (loanContractAddress, collateralAddress) => {
+  handleCollateralTransfer = async (loanContractAddress, collateralCurrencyToken) => {
+    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
     try {
       await FinalizeCollateralTransfer(loanContractAddress, collateralAddress);
     } catch (e) {
@@ -110,19 +113,29 @@ class ViewAllOffers extends Component {
     }
   };
 
- handleCollateralConversion = async (collateralAddress, loanAmount) => {
+ handleCollateralConversion = async (activeLoanOffer, collateralCurrencyToken) => {
+   // add LTV ratio of collateral as third argument to this function.
 
     let {activeCollateralValue} = this.state;
+    let ltv = 200;
+    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
+    
+    activeLoanOffer.collaterals.map((item,i) => {
+      if(getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken){
+        ltv = item.ltv;
+        this.setState({collateralAddress : collateralAddress, collateralCurrencyToken : collateralCurrencyToken});
+      }
+    })
+    console.log('collateralAddress', collateralAddress);
 
     try {
       const collateralPrice = await FetchCollateralPrice({
         collateralAddress: collateralAddress
       });
-
-      console.log("collateralPrice",collateralPrice);
-
+      // when calculating collateralValue, use this formula
+      //((window.web3.toWei(loanAmount) / window.web3.toWei(collateralPrice))* (ltv/100))
       this.setState({
-        activeCollateralValue: (loanAmount / collateralPrice * 2),
+        activeCollateralValue: ((window.web3.toWei(activeLoanOffer.loanAmount) / (window.web3.toWei(collateralPrice))* (ltv/100)))
       })
 
     } catch (error) {
@@ -151,15 +164,45 @@ class ViewAllOffers extends Component {
   hideAlertAcceptCollateralConfirm = async () => {
     const { loanAddress } = this.state;
     const transferCollateralAlert = await this.handleAcceptLoanOffer(loanAddress);
-    this.setState({acceptCollateralAlert:false, transferCollateralAlert:true});
+    this.setState({acceptCollateralAlert:false, approveCollateralAlert:true});
   }
 
   hideAlertTransferCollateralConfirm = async () => {
-    let { loanAddress, collateralAddress } = this.state;
+    let { loanAddress, collateralCurrencyToken } = this.state;
     this.setState({transferCollateralAlert:false});
-    console.log("collateralAddress : ", collateralAddress);
-    this.handleCollateralTransfer(loanAddress, collateralAddress);
+    //console.log("collateralAddress : ", collateralAddress);
+    this.handleCollateralTransfer(loanAddress, collateralCurrencyToken);
   }
+
+  hideAlertAppproveCollateralConfirm = async(collateralCurrencyToken, loanContractAddress, collateralValue) => {
+    let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
+    //console.log(collateralAddress, collateralValue);
+    try {
+      await ExecuteTokenApproval({
+        ERC20Token: collateralAddress,
+        loanContractAddress: loanContractAddress,
+        tokenAmount: collateralValue
+      });
+
+      this.setState({
+        approveCollateralAlert:false,
+        transferCollateralAlert:true
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  hideAlertApproveCollateralCancel = async (collateralAddress, loanContractAddress, collateralValue) => {
+      this.setState({approveRequestAlert:true, acceptCollateralAlert:false});
+      console.log("collateralAddress : ", collateralAddress);
+  }
+
+  handleTakeThisLoan = (loanOffer) => {
+    this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, activeLoanOffer:loanOffer});
+  }
+
+
 
 
 
@@ -176,7 +219,10 @@ class ViewAllOffers extends Component {
       acceptCollateralAlert,
       collateralCurrencyToken,
       activeLoanOffer,
-      activeCollateralValue
+      activeCollateralValue,
+      collateralAddress,
+      loanAddress,
+      approveCollateralAlert
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -432,26 +478,26 @@ class ViewAllOffers extends Component {
                         <div className="row row-example">
                           <div className="mx-auto mb-2">
                           {loanOffer.collaterals.map((collateral)=>{
-                            return <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} />;
+                            return getTokenByAddress[collateral.address] && <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} style={{width:'30px'}}/>;
                           })
                             }
                           </div>
                         </div>
                         <div
                           className="text-left ml-3"
-                          style={{ fontSize: ".875rem" }}
+                          style={{ fontSize: "x-small" }}
                         >
-                          MPR {loanOffer.collaterals.map((item) =>{
-                              return item.mpr +"% ";
+                          LTV {loanOffer.collaterals.map((item) =>{
+                              return item.ltv +"% ";
                           })}
 
                         </div>
                         <div
                           className="text-left ml-3"
-                          style={{ fontSize: ".875rem" }}
+                          style={{ fontSize: "x-small" }}
                         >
-                          LTV {loanOffer.collaterals.map((item) =>{
-                              return item.ltv +"% ";
+                          MPR {loanOffer.collaterals.map((item) =>{
+                              return item.mpr +"% ";
                           })}
 
                         </div>
@@ -461,7 +507,7 @@ class ViewAllOffers extends Component {
                         <p>Amount  : { loanOffer.loanAmount } ETH</p>
 
                         <div className="btn-wrapper text-center" onClick={()=>{
-                          this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, collateralAddress:loanOffer.collaterals[0].address, activeLoanOffer:loanOffer});
+                          this.handleTakeThisLoan(loanOffer)
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
                             <span className="btn-inner--text">
@@ -501,44 +547,25 @@ class ViewAllOffers extends Component {
                       </label>
                       <select
                         className="form-control"
-                        id="exampleFormControlSelect1"
                         style={{ width: "80px", display: "inline" }}
                         onClick={e => {
-                          this.setState({
-                            collateralCurrencyToken: e.target.value
-                          });
-                          this.handleCollateralConversion(activeLoanOffer.collaterals[0].address, activeLoanOffer.loanAmount);
+                          this.handleCollateralConversion(activeLoanOffer, e.target.value);
                         }}
                       >
-                        {activeLoanOffer.collaterals.map(item => {
+                        {activeLoanOffer.collaterals.map((item, i) => {
                           return <option>{getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol}</option>;
                         })}
                       </select>
+
                       {activeLoanOffer.collaterals.map((item,i) => {
                         return (getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken) && <label for="exampleFormControlSelect1" key={i}>
                           MPR : {item.mpr} &nbsp; LTV : {item.ltv}%
                         </label>;
                       })}
-                      {
-                    }
                     </div>
                   </SweetAlert>
                 )}
-                {/*acceptCollateralAlert && (
-                  <SweetAlert
-                    warning
-                    showCancel
-                    confirmBtnText="Approve"
-                    confirmBtnBsStyle="info"
-                    cancelBtnBsStyle="default"
-                    title="Accept Loan Offer"
-                    onConfirm={this.hideAlertAcceptCollateralConfirm}
-                    onCancel={this.hideAlertAcceptCollateralCancel}
-                  >
-                    Approve Transfer collateral of {activeCollateralValue}{" "}
-                    {collateralCurrencyToken} tokens
-                  </SweetAlert>
-                )*/}
+
                 {acceptCollateralAlert && (
                   <SweetAlert
                     warning
@@ -551,6 +578,21 @@ class ViewAllOffers extends Component {
                     onCancel={this.hideAlertAcceptCollateralCancel}
                   >
                     Accept Transfer collateral of {activeCollateralValue}{" "}
+                    {collateralCurrencyToken} tokens
+                  </SweetAlert>
+                )}
+                {approveCollateralAlert && (
+                  <SweetAlert
+                    warning
+                    showCancel
+                    confirmBtnText="Approve"
+                    confirmBtnBsStyle="info"
+                    cancelBtnBsStyle="default"
+                    title="Approve Loan Offer"
+                    onConfirm={() => {this.hideAlertAppproveCollateralConfirm(collateralCurrencyToken, loanAddress, activeCollateralValue)}}
+                    onCancel={this.hideAlertApproveCollateralCancel}
+                  >
+                    Approve Transfer collateral of {activeCollateralValue}{" "}
                     {collateralCurrencyToken} tokens
                   </SweetAlert>
                 )}
