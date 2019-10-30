@@ -670,7 +670,7 @@ class MyLoans extends Component {
                                           activeLoan.startedOn,
                                           repayments[0].repaymentNumber-1
                                         )
-                                        && activeLoan.lender != repayments[0].repayee
+                                        && activeLoan.borrower !== repayments[0].repayee
                                         &&
                                         loanRepaid.toFixed(2) == 100.00 &&
                                         <td>
@@ -869,7 +869,7 @@ class MyLoans extends Component {
                                                 activeLoan.startedOn,
                                                 repayment.repaymentNumber-1
                                               )
-                                              && activeLoan.borrower != repayment.repayee
+                                              && activeLoan.lender !== repayment.repayee
                                               && <td>
                                               <button
                                                 className="btn btn-primary"
