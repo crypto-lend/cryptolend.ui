@@ -665,7 +665,14 @@ class MyLoans extends Component {
                                           {activeLoan && getTokenByAddress[activeLoan.collateralAddress] && getTokenByAddress[activeLoan.collateralAddress].symbol}
                                         </span>
                                       </td>
-                                      {loanRepaid.toFixed(2) == 100.00 &&
+                                      {currentDate >
+                                        this.convertDateEpoc(
+                                          activeLoan.startedOn,
+                                          repayments[0].repaymentNumber-1
+                                        )
+                                        && activeLoan.lender != repayments[0].repayee
+                                        &&
+                                        loanRepaid.toFixed(2) == 100.00 &&
                                         <td>
                                         <button
                                           className="btn btn-primary"
