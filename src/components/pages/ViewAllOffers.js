@@ -462,7 +462,7 @@ class ViewAllOffers extends Component {
               </div>
               <div className="ml-4 row">
                 {loanOffers.map((loanOffer, index) => (
-                  loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration && loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt &&
+                  loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration && ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) || (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) || (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) || (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) || (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) || (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
                   <div key={index} className={loanOffers.length>=3?"col-md-4":loanOffers.length===2?"col-md-6":loanOffers.length===1?"col-md-12":""}>
                     <div className="card">
                       <div className="card-header">
