@@ -40,7 +40,8 @@ class ViewAllOffers extends Component {
       activeLoanOffer:[],
       activeCollateralValue:0,
       loanCurrency:'',
-      collateralCurrency:'MIP'
+      collateralCurrency:'MIP',
+      loanOfferCount:0
     };
   }
 
@@ -201,7 +202,7 @@ class ViewAllOffers extends Component {
 
 
   render() {
-    const {
+    let {
       erc20_tokens,
       duration,
       minDuration,
@@ -222,7 +223,8 @@ class ViewAllOffers extends Component {
       finished,
       waitingForBorrower,
       loanCurrency,
-      collateralCurrency
+      collateralCurrency,
+      loanOfferCount
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -484,8 +486,8 @@ class ViewAllOffers extends Component {
                   (loanOffer.collaterals[2] && getTokenByAddress[loanOffer.collaterals[2].address] && getTokenByAddress[loanOffer.collaterals[2].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[4] && getTokenByAddress[loanOffer.collaterals[4].address] && getTokenByAddress[loanOffer.collaterals[4].address].symbol == collateralCurrency) ||
-                  (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency)) &&
-                  <div key={index} className={loanOffers.length>3?"col-md-6":"col"}>
+                  (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency)) && (loanOfferCount++) ?
+                  <div key={index} className={loanOfferCount>2?"col-md-4":"col"}>
                     <div className="card">
                       <div className="card-header">
                         <div className="row row-example">
@@ -537,6 +539,7 @@ class ViewAllOffers extends Component {
                       <span className="alert-text">{loanOffer.status==1?'Waiting for borrower':loanOffer.status==3?'Waiting for payback':'Finished'}</span>
                     </div>
                   </div>
+                  :''
                 ))}
                 {collateralMetadataAlert && (
                   <SweetAlert
