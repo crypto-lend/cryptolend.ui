@@ -213,7 +213,10 @@ class ViewAllOffers extends Component {
       approveCollateralAlert,
       loanOffers,
       maxMonthlyInt,
-      minMonthlyInt
+      minMonthlyInt,
+      waitingForPayback,
+      finished,
+      waitingForBorrower
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -311,7 +314,7 @@ class ViewAllOffers extends Component {
                                     Waiting for Borrowers
                                   </label>
                                 </div>
-                                <div className="custom-control custom-checkbox mb-3 ">
+                                {/*<div className="custom-control custom-checkbox mb-3 ">
                                   <input
                                     className="custom-control-input"
                                     id="customCheck2"
@@ -330,7 +333,7 @@ class ViewAllOffers extends Component {
                                   >
                                     Waiting for collateral
                                   </label>
-                                </div>
+                                </div>*/}
                                 <div className="custom-control custom-checkbox mb-3 ">
                                   <input
                                     className="custom-control-input"
@@ -370,7 +373,7 @@ class ViewAllOffers extends Component {
                                     Finished
                                   </label>
                                 </div>{" "}
-                                <div className="custom-control custom-checkbox mb-3 ">
+                                {/*<div className="custom-control custom-checkbox mb-3 ">
                                   <input
                                     className="custom-control-input"
                                     id="customCheck5"
@@ -388,7 +391,7 @@ class ViewAllOffers extends Component {
                                   >
                                     Defaulted
                                   </label>
-                                </div>
+                                </div>*/}
                               </div>
                             </div>
                           </form>
@@ -462,7 +465,9 @@ class ViewAllOffers extends Component {
               </div>
               <div className="ml-4 row">
                 {loanOffers.map((loanOffer, index) => (
-                  loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration && ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) || (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) || (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) || (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) || (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) || (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
+                  ((waitingForBorrower && loanOffer.status===1) || (waitingForPayback && loanOffer.status===2) || (finished && loanOffer.status===3)) &&
+                  (loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration) &&
+                  ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) || (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) || (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) || (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) || (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) || (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
                   <div key={index} className={loanOffers.length>=3?"col-md-4":loanOffers.length===2?"col-md-6":loanOffers.length===1?"col-md-12":""}>
                     <div className="card">
                       <div className="card-header">
