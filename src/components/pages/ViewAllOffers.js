@@ -54,7 +54,7 @@ class ViewAllOffers extends Component {
       for (const loanAddress of loans) {
         const loan = await GetLoanDetails(loanAddress);
 
-        if (loan[5].toNumber() === 1) {
+        if (loan[5].toNumber() > 0) {
           let collaterals = [];
           for (var i in loan[13]) {
             collaterals.push({
@@ -64,7 +64,6 @@ class ViewAllOffers extends Component {
               collateralCurrency: loan[13][i][3],
             });
           }
-          console.log('loan', loan);
 
           loanOffers.push({
             loanAddress: loanAddress,
@@ -76,6 +75,9 @@ class ViewAllOffers extends Component {
           });
         }
       }
+
+      console.log('loanOffers', loanOffers);
+
 
       this.setState({ loanOffers });
     } catch (e) {
@@ -471,9 +473,19 @@ class ViewAllOffers extends Component {
                 {loanOffers.map((loanOffer, index) => (
                   ((waitingForBorrower && loanOffer.status===1) || (waitingForPayback && loanOffer.status===2) || (finished && loanOffer.status===3)) &&
                   (loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration) &&
-                  ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) || (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) || (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) || (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) || (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) || (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
-                  ((getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency) || (loanOffer.collaterals[1] && getTokenByAddress[loanOffer.collaterals[1].address] && getTokenByAddress[loanOffer.collaterals[1].address].symbol == collateralCurrency) || (loanOffer.collaterals[2] && getTokenByAddress[loanOffer.collaterals[2].address].symbol == collateralCurrency) || (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) || (loanOffer.collaterals[4] && getTokenByAddress[loanOffer.collaterals[4].address].symbol == collateralCurrency) || (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency)) &&
-                  <div key={index} className={"col"}>
+                  ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
+                  ((loanOffer.collaterals[0] && getTokenByAddress[loanOffer.collaterals[0].address] && getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency)||
+                  (loanOffer.collaterals[1] && getTokenByAddress[loanOffer.collaterals[1].address] && getTokenByAddress[loanOffer.collaterals[1].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[2] && getTokenByAddress[loanOffer.collaterals[2].address] && getTokenByAddress[loanOffer.collaterals[2].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[4] && getTokenByAddress[loanOffer.collaterals[4].address] && getTokenByAddress[loanOffer.collaterals[4].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency)) &&
+                  <div key={index} className={loanOffers.length>3?"col-md-6":"col"}>
                     <div className="card">
                       <div className="card-header">
                         <div className="row row-example">
@@ -507,7 +519,7 @@ class ViewAllOffers extends Component {
                         <p style={{ fontSize: "small" }}>Duration  : { loanOffer.duration } days</p>
                         <p style={{ fontSize: "small" }}>Amount  : { loanOffer.loanAmount } ETH</p>
 
-                        <div className="btn-wrapper text-center" onClick={()=>{
+                        {loanOffer.status==1 && <div className="btn-wrapper text-center" onClick={()=>{
                           this.handleTakeThisLoan(loanOffer)
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
@@ -515,14 +527,14 @@ class ViewAllOffers extends Component {
                               Take this loan
                             </span>
                           </a>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                     <div
                       className="alert alert-primary alert-dismissible fade show text-center"
                       role="alert"
                     >
-                      <span className="alert-text">Waiting for borrower</span>
+                      <span className="alert-text">{loanOffer.status==1?'Waiting for borrower':loanOffer.status==2?'Waiting for payback':'Finished'}</span>
                     </div>
                   </div>
                 ))}
