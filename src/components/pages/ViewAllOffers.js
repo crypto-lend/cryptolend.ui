@@ -39,6 +39,8 @@ class ViewAllOffers extends Component {
       loanAddress:'',
       activeLoanOffer:[],
       activeCollateralValue:0,
+      loanCurrency:'',
+      collateralCurrency:'MIP'
     };
   }
 
@@ -216,7 +218,9 @@ class ViewAllOffers extends Component {
       minMonthlyInt,
       waitingForPayback,
       finished,
-      waitingForBorrower
+      waitingForBorrower,
+      loanCurrency,
+      collateralCurrency
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -244,7 +248,7 @@ class ViewAllOffers extends Component {
                 <div className="card-header bg-transparent">
                   <i className="fa fa-filter" aria-hidden="true"></i>
                   <a className="ls-1 text-primary py-3 mb-0 ml-2">
-                    View All Requests
+                    View All Offers
                   </a>
                 </div>
                 <div className="card-body">
@@ -259,7 +263,7 @@ class ViewAllOffers extends Component {
                           id="exampleFormControlSelect1"
                           onClick={e => {
                             this.setState({
-                              collateralCurrency: e.target.value
+                              loanCurrency: e.target.value
                             });
                           }}
                         >
@@ -468,6 +472,7 @@ class ViewAllOffers extends Component {
                   ((waitingForBorrower && loanOffer.status===1) || (waitingForPayback && loanOffer.status===2) || (finished && loanOffer.status===3)) &&
                   (loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration) &&
                   ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) || (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) || (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) || (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) || (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) || (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
+                  ((getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency) || (loanOffer.collaterals[1] && getTokenByAddress[loanOffer.collaterals[1].address].symbol == collateralCurrency) || (loanOffer.collaterals[2] && getTokenByAddress[loanOffer.collaterals[2].address].symbol == collateralCurrency) || (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) || (loanOffer.collaterals[4] && getTokenByAddress[loanOffer.collaterals[4].address].symbol == collateralCurrency) || (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency)) &&
                   <div key={index} className={loanOffers.length>=3?"col-md-4":loanOffers.length===2?"col-md-6":loanOffers.length===1?"col-md-12":""}>
                     <div className="card">
                       <div className="card-header">

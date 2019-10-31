@@ -668,9 +668,9 @@ class MyLoans extends Component {
                                       {currentDate >
                                         this.convertDateEpoc(
                                           activeLoan.startedOn,
-                                          repayments[0].repaymentNumber-1
+                                          repayments[(activeLoan.duration/30)-1].repaymentNumber-1
                                         )
-                                        && activeLoan.borrower !== repayments[0].repayee
+                                        && activeLoan.lender !== repayments[(activeLoan.duration/30)-1].repayee
                                         &&
                                         loanRepaid.toFixed(2) == 100.00 &&
                                         <td>
@@ -679,7 +679,7 @@ class MyLoans extends Component {
                                           type="button"
                                           onClick={() => {
                                             ClaimCollateralByBorrower(
-                                              repayments[0].loanContractAddress
+                                              repayments[(activeLoan.duration/30)-1].loanContractAddress
                                             );
                                           }}
                                         >
