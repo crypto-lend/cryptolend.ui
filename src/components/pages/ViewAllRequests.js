@@ -44,7 +44,11 @@ class ViewAllRequests extends Component {
         loans.map(async(loanAddress) => {
           const loan = await GetLoanDetails(loanAddress);
 
-          if(loan[5].toNumber() === 2){
+      /*    if(loan[5].toNumber() === 2){
+            for request/active i have changed it to >= 2
+      */
+
+          if(loan[5].toNumber() >= 2 ){
 
             loanRequests.push({
               loanAddress: loanAddress,

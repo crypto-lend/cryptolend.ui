@@ -471,7 +471,7 @@ class ViewAllOffers extends Component {
               </div>
               <div className="ml-4 row">
                 {loanOffers.map((loanOffer, index) => (
-                  ((waitingForBorrower && loanOffer.status===1) || (waitingForPayback && loanOffer.status===2) || (finished && loanOffer.status===3)) &&
+                  ((waitingForBorrower && loanOffer.status==1) || (waitingForPayback && loanOffer.status==3)) &&
                   (loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration) &&
                   ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) ||
@@ -519,7 +519,7 @@ class ViewAllOffers extends Component {
                         <p style={{ fontSize: "small" }}>Duration  : { loanOffer.duration } days</p>
                         <p style={{ fontSize: "small" }}>Amount  : { loanOffer.loanAmount } ETH</p>
 
-                        {loanOffer.status==1 && <div className="btn-wrapper text-center" onClick={()=>{
+                        {loanOffer.status===1 && <div className="btn-wrapper text-center" onClick={()=>{
                           this.handleTakeThisLoan(loanOffer)
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
@@ -534,7 +534,7 @@ class ViewAllOffers extends Component {
                       className="alert alert-primary alert-dismissible fade show text-center"
                       role="alert"
                     >
-                      <span className="alert-text">{loanOffer.status==1?'Waiting for borrower':loanOffer.status==2?'Waiting for payback':'Finished'}</span>
+                      <span className="alert-text">{loanOffer.status==1?'Waiting for borrower':loanOffer.status==3?'Waiting for payback':'Finished'}</span>
                     </div>
                   </div>
                 ))}
