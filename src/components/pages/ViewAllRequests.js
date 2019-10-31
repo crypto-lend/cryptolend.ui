@@ -168,14 +168,14 @@ class ViewAllRequests extends Component {
                               <input className="custom-control-input" id="customCheck1" type="checkbox" checked={this.state.waitingForLender} onClick={()=>{this.setState({waitingForLender:!this.state.waitingForLender})}}/>
                               <label className="custom-control-label" for="customCheck1">Waiting for Lenders</label>
                             </div>
-                            <div className="custom-control custom-checkbox mb-3">
+                            {/*<div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck2" type="checkbox" checked={this.state.waitingForCollateral} onClick={()=>{this.setState({waitingForCollateral:!this.state.waitingForCollateral})}}/>
                               <label className="custom-control-label" for="customCheck2">Waiting for collateral</label>
-                            </div>
-                            {/*<div className="custom-control custom-checkbox mb-3">
+                            </div>*/}
+                            {<div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck3" type="checkbox" checked={this.state.waitingForPayback} onClick={()=>{this.setState({waitingForPayback:!this.state.waitingForPayback})}}/>
                               <label className="custom-control-label" for="customCheck3">Waiting for Payback</label>
-                            </div>*/}
+                            </div>}
                             <div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck4" type="checkbox" checked={this.state.finished} onClick={()=>{this.setState({finished:!this.state.finished})}}/>
                               <label className="custom-control-label" for="customCheck4">Finished</label>
@@ -236,7 +236,7 @@ class ViewAllRequests extends Component {
               {
                 loanRequests.map((loanRequest)=>{
                 return ((waitingForLender && loanRequest.status==2) ||
-                (waitingForCollateral && loanRequest.status==1) ||
+                ((waitingForPayback && loanRequest.status==1) ||
                 (finished && loanRequest.status==3)) &&
                 getTokenByAddress[loanRequest.collateral.address].symbol == collateralCurrency &&
                 loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration &&
