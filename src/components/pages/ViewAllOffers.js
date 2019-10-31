@@ -497,7 +497,7 @@ class ViewAllOffers extends Component {
                           </div>
                         </div>
                         <div
-                          className="text-left ml-3"
+                          className="ml-3"
                           style={{ fontSize: "x-small" }}
                         >
                           LTV {loanOffer.collaterals.map((item) =>{
@@ -506,7 +506,7 @@ class ViewAllOffers extends Component {
 
                         </div>
                         <div
-                          className="text-left ml-3"
+                          className="ml-3"
                           style={{ fontSize: "x-small" }}
                         >
                           MPR {loanOffer.collaterals.map((item) =>{
@@ -515,7 +515,7 @@ class ViewAllOffers extends Component {
 
                         </div>
                       </div>
-                      <div className="card-body text-left">
+                      <div className="card-body ">
                         <p style={{ fontSize: "small" }}>Duration  : { loanOffer.duration } days</p>
                         <p style={{ fontSize: "small" }}>Amount  : { loanOffer.loanAmount } ETH</p>
 
