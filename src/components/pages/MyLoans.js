@@ -918,8 +918,10 @@ class MyLoans extends Component {
                                       </td>
                                       <td>
                                         <button
-                                          className="btn btn-primary"
+                                          className="btn btn-danger"
                                           type="button"
+                                          dataToggle="tooltip"
+                                          title="You can liquidate a portion of the loan’s collateral if the LTV exceeds 75%!"
                                           onClick={() => {
                                             LiquidateLoanCollateral(
                                               repayments[0].loanContractAddress
