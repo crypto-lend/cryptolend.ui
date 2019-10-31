@@ -18,7 +18,7 @@ class ViewAllRequests extends Component {
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       loanCurrency:'ETH',
-      collateralCurrency:'TTT',
+      collateralCurrency:'MIP',
       waitingForLender:true,
       waitingForCollateral:false,
       waitingForPayback:false,
@@ -102,7 +102,7 @@ class ViewAllRequests extends Component {
 
   render() {
     const { erc20_tokens, duration, minDuration, maxDuration, earnings, minMonthlyInt, maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency,
-    collateralMetadata, loanRequests } = this.state;
+    collateralMetadata, loanRequests, waitingForLender, waitingForCollateral, finished } = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <Header/>
@@ -172,17 +172,18 @@ class ViewAllRequests extends Component {
                               <input className="custom-control-input" id="customCheck2" type="checkbox" checked={this.state.waitingForCollateral} onClick={()=>{this.setState({waitingForCollateral:!this.state.waitingForCollateral})}}/>
                               <label className="custom-control-label" for="customCheck2">Waiting for collateral</label>
                             </div>
-                            <div className="custom-control custom-checkbox mb-3">
+                            {/*<div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck3" type="checkbox" checked={this.state.waitingForPayback} onClick={()=>{this.setState({waitingForPayback:!this.state.waitingForPayback})}}/>
                               <label className="custom-control-label" for="customCheck3">Waiting for Payback</label>
-                            </div>
+                            </div>*/}
                             <div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck4" type="checkbox" checked={this.state.finished} onClick={()=>{this.setState({finished:!this.state.finished})}}/>
                               <label className="custom-control-label" for="customCheck4">Finished</label>
-                            </div>  <div className="custom-control custom-checkbox mb-3">
+                            </div>
+                            {/*<div className="custom-control custom-checkbox mb-3">
                                 <input className="custom-control-input" id="customCheck5" type="checkbox" checked={this.state.defaulted} onClick={()=>{this.setState({defaulted:!this.state.defaulted})}}/>
                                 <label className="custom-control-label" for="customCheck5">Defaulted</label>
-                            </div>
+                            </div>*/}
                           </div>
                         </div>
                       </form>
@@ -234,7 +235,13 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 loanRequests.map((loanRequest)=>{
-                return loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration && loanRequest.interest>minMonthlyInt && loanRequest.interest<maxMonthlyInt &&  <div className="col">
+                return ((waitingForLender && loanRequest.status==2) ||
+                (waitingForCollateral && loanRequest.status==1) ||
+                (finished && loanRequest.status==3)) &&
+                getTokenByAddress[loanRequest.collateral.address].symbol == collateralCurrency &&
+                loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration &&
+                loanRequest.interest>minMonthlyInt && loanRequest.interest<maxMonthlyInt &&
+              <div className="col">
                  <div className="card">
                    <div className="card-header">
 
