@@ -670,7 +670,7 @@ class MyLoans extends Component {
                                           activeLoan.startedOn,
                                           repayments[(activeLoan.duration/30)-1].repaymentNumber-1
                                         )
-                                        && activeLoan.lender !== repayments[(activeLoan.duration/30)-1].repayee
+                                        && activeLoan.collateralStatus<2
                                         &&
                                         loanRepaid.toFixed(2) == 100.00 &&
                                         <td>
