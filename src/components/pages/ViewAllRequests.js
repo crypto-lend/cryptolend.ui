@@ -21,7 +21,7 @@ class ViewAllRequests extends Component {
       collateralCurrency:'MIP',
       waitingForLender:true,
       waitingForCollateral:false,
-      waitingForPayback:false,
+      waitingForPayback:true,
       finished:false,
       defaulted:false,
       minMonthlyInt:0,
@@ -102,7 +102,7 @@ class ViewAllRequests extends Component {
 
   render() {
     const { erc20_tokens, duration, minDuration, maxDuration, earnings, minMonthlyInt, maxMonthlyInt, loanAddress, status, collateralAddress, collateralValue, loanAddresses, collateralCurrency, loanCurrency,
-    collateralMetadata, loanRequests, waitingForLender, waitingForCollateral, finished } = this.state;
+    collateralMetadata, loanRequests, waitingForLender, waitingForPayback, finished } = this.state;
     return (
       <div className="ViewAllRequests text-center">
         <Header/>
@@ -168,14 +168,14 @@ class ViewAllRequests extends Component {
                               <input className="custom-control-input" id="customCheck1" type="checkbox" checked={this.state.waitingForLender} onClick={()=>{this.setState({waitingForLender:!this.state.waitingForLender})}}/>
                               <label className="custom-control-label" for="customCheck1">Waiting for Lenders</label>
                             </div>
-                            <div className="custom-control custom-checkbox mb-3">
+                            {/*<div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck2" type="checkbox" checked={this.state.waitingForCollateral} onClick={()=>{this.setState({waitingForCollateral:!this.state.waitingForCollateral})}}/>
                               <label className="custom-control-label" for="customCheck2">Waiting for collateral</label>
-                            </div>
-                            {/*<div className="custom-control custom-checkbox mb-3">
+                            </div>*/}
+                            <div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck3" type="checkbox" checked={this.state.waitingForPayback} onClick={()=>{this.setState({waitingForPayback:!this.state.waitingForPayback})}}/>
                               <label className="custom-control-label" for="customCheck3">Waiting for Payback</label>
-                            </div>*/}
+                            </div>
                             <div className="custom-control custom-checkbox mb-3">
                               <input className="custom-control-input" id="customCheck4" type="checkbox" checked={this.state.finished} onClick={()=>{this.setState({finished:!this.state.finished})}}/>
                               <label className="custom-control-label" for="customCheck4">Finished</label>
@@ -235,8 +235,8 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 loanRequests.map((loanRequest)=>{
-                return ((waitingForLender && loanRequest.status==2) ||
-                (waitingForCollateral && loanRequest.status==1) ||
+                return ((waitingForLender && loanRequest.status==1) ||
+                (waitingForPayback && loanRequest.status==2) ||
                 (finished && loanRequest.status==3)) &&
                 getTokenByAddress[loanRequest.collateral.address].symbol == collateralCurrency &&
                 loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration &&
@@ -262,23 +262,19 @@ class ViewAllRequests extends Component {
                    {/* <p>Safeness : {this.state.safeness}</p>
                    <p>Expires in : {this.state.expireIn}</p> */}
                    </div>
-                  {/* {status[i]==2 && */}
+                  {loanRequest.status==1 &&
                   <div className="btn-wrapper text-center" onClick={()=>this.approveAndFundLoanRequest(loanRequest.loanAmount, loanRequest.loanAddress)}>
                    <a href="#" className="btn btn-primary btn-icon m-1">
                      <span className="btn-inner--text">Fund Now</span>
                    </a>
+                 </div>}
                  </div>
+                 <div
+                   className="alert alert-primary alert-dismissible fade show text-center"
+                   role="alert"
+                 >
+                   <span className="alert-text">{loanRequest.status==1?'Waiting for lender':loanRequest.status==2?'Waiting for payback':'Finished'}</span>
                  </div>
-                 {/* {status[i]==3 && <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                   <span className="alert-text">Already Funded</span>
-                 </div>
-                }
-                {
-                   status[i]==2 &&
-                   <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-                     <span className="alert-text">Waiting for lender</span>
-                   </div>
-               } */}
                </div>;
                 })
             }
