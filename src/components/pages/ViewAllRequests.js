@@ -235,9 +235,9 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 loanRequests.map((loanRequest)=>{
-                return ((waitingForLender && loanRequest.status==1) ||
-                (waitingForPayback && loanRequest.status==2) ||
-                (finished && loanRequest.status==3)) &&
+                return ((waitingForLender && loanRequest.status==2) ||
+                (waitingForPayback && loanRequest.status==3) ||
+                (finished && loanRequest.status==4)) &&
                 getTokenByAddress[loanRequest.collateral.address].symbol == collateralCurrency &&
                 loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration &&
                 loanRequest.interest>minMonthlyInt && loanRequest.interest<maxMonthlyInt &&
@@ -262,7 +262,7 @@ class ViewAllRequests extends Component {
                    {/* <p>Safeness : {this.state.safeness}</p>
                    <p>Expires in : {this.state.expireIn}</p> */}
                    </div>
-                  {loanRequest.status==1 &&
+                  {loanRequest.status==2 &&
                   <div className="btn-wrapper text-center" onClick={()=>this.approveAndFundLoanRequest(loanRequest.loanAmount, loanRequest.loanAddress)}>
                    <a href="#" className="btn btn-primary btn-icon m-1">
                      <span className="btn-inner--text">Fund Now</span>
@@ -273,7 +273,7 @@ class ViewAllRequests extends Component {
                    className="alert alert-primary alert-dismissible fade show text-center"
                    role="alert"
                  >
-                   <span className="alert-text">{loanRequest.status==1?'Waiting for lender':loanRequest.status==2?'Waiting for payback':'Finished'}</span>
+                   <span className="alert-text">{loanRequest.status==2?'Waiting for lender':loanRequest.status==3?'Waiting for payback':'Finished'}</span>
                  </div>
                </div>;
                 })
