@@ -24,10 +24,10 @@ class LoanOffer extends Component {
       duration: null,
       monthlyInt: '(not set)',
       collateralSafe: '(not set)',
-      ltv:200,
+      ltv:50,
       mpr:1,
       collateralCurrency:null,
-      createOfferAlert:false,
+      createOfferAlert:true,
       approveOfferAlert:false,
       acceptLoanAlert:false,
       loanContractAddress:'',
@@ -71,7 +71,7 @@ class LoanOffer extends Component {
           });
 
           this.setState({
-            createOfferAlert:true,
+            createOfferAlert:false,
             approveOfferAlert:true,
             loanContractAddress: loanContractAddress
           });
@@ -92,7 +92,6 @@ class LoanOffer extends Component {
       console.log("fundLoanOffer => loanContractAddress line 87", loanContractAddress);
 
       this.setState({
-        createOfferAlert:false,
         approveOfferAlert:false,
         acceptLoanAlert:true
       });
@@ -237,7 +236,7 @@ class LoanOffer extends Component {
                                     }
                                     </select>
                                     <h6 className="mt-4">LTV</h6>
-                                    <input className="font-weight-bold mb-0" type="number" value={ltv} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv: e.target.value>=200 ? e.target.value : 200})} />
+                                    <input className="font-weight-bold mb-0" type="number" value={ltv} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv: e.target.value>=50 ? e.target.value : 50})} />
                                     <h6 className="mt-4">Interest</h6>
                                     <input className="font-weight-bold mb-0" type="number" value={mpr} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr: (e.target.value>=1 && e.target.value<=5) ? e.target.value : 1})} />
                                   </div>
@@ -305,7 +304,9 @@ class LoanOffer extends Component {
                     {duration ? <div className="mt-4"><p>Duration {duration} days</p></div>
                     :<div className="mt-4"><p>Duration  (not set) </p></div>}
 
-                    {!!duration && <div className="btn-wrapper text-center" onClick={()=>{
+                    {!!duration &&
+                      createOfferAlert &&
+                      <div className="btn-wrapper text-center" onClick={()=>{
                       this.createLoanOffer(loanAmount, duration, collateralMetadata);
                     }}>
                       <br/>
@@ -339,7 +340,7 @@ class LoanOffer extends Component {
             </div>
           </section>
         </div>
-        {createOfferAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%', marginTop:'-7%'}} role="alert">
+        {!createOfferAlert && <div className="alert alert-success" style={{marginLeft:'9.5%',width:'46.5%', marginTop:'-7%'}} role="alert">
               <strong>Congratulations! Loan Offer is Created successfully!</strong>
           </div>}
         {createOfferAlert && <Link to={"https://ropsten.etherscan.io/tx/"+ropstenTransactionhash} style={{color:'#fff'}}  target='_blank'> Check transation on Ropsten </Link>}
