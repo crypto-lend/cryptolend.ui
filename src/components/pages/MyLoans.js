@@ -72,7 +72,8 @@ class MyLoans extends Component {
       this.setState({ currentDate: currentDate });
 
       let { myBorrowedLoans, myFundedLoans } = this.state;
-
+      myBorrowedLoans = [];
+      myFundedLoans = [];
       loans.map(async loanAddress => {
         const loan = await GetLoanDetails(loanAddress);
         const user = window.web3.eth.accounts[0];
@@ -1005,7 +1006,11 @@ function DropDown(props) {
           self.handleLoanRepaid(
             repayments, activeLoan, currentDate
           );
+
+          self.viewMyLoans();
         }}
+
+
 
         aria-haspopup="true"
         aria-expanded="true"
