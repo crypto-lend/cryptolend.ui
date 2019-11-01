@@ -33,7 +33,7 @@ class ViewAllOffers extends Component {
       maxMonthlyInt:'5',
       minDuration:'0',
       maxDuration:'12',
-      defaulted:true,
+      defaulted:false,
       erc20_tokens :  supported_erc20_token,
       collateralCurrencyToken:'',
       collateralAddress:"",
@@ -42,7 +42,7 @@ class ViewAllOffers extends Component {
       activeCollateralValue:0,
       loanCurrency:'',
       collateralCurrency:'MIP',
-      loanOfferCount:0
+      loanOfferCount:1
     };
   }
 
@@ -58,6 +58,8 @@ class ViewAllOffers extends Component {
 
         if (loan[5].toNumber() > 0) {
           let collaterals = [];
+          let finished = undefined;
+
           for (var i in loan[13]) {
             collaterals.push({
               address: loan[13][i][0].split('000000000000000000000000')[0],
@@ -66,9 +68,28 @@ class ViewAllOffers extends Component {
               collateralCurrency: loan[13][i][3],
             });
           }
-          let repayments = [];
-          repayments = await this.getActiveLoanRepayments(loanAddress, loan[1].toNumber());
+          if(loan[5].toNumber()>2){
+            finished = true;
+            let repayments = [];
+            let borrower = loan[10];
+            let currentDate = new Date();
+            let startedOn = loan[4].toNumber();
+            let duration = loan[1].toNumber();
 
+
+            repayments = await this.getActiveLoanRepayments(loanAddress, duration);
+
+            let dueDate = this.convertDateEpoc(startedOn,
+              repayments[(duration/30)-1].repaymentNumber-1
+            );
+
+
+           repayments.map((repay) => {
+            if(repay.repayee !== borrower &&
+              currentDate > dueDate){
+              finished = false;
+            }
+          })}
 
           loanOffers.push({
             loanAddress: loanAddress,
@@ -77,7 +98,7 @@ class ViewAllOffers extends Component {
             interest: loan[2].toNumber() / 100,
             collaterals: collaterals,
             status: loan[5].toNumber(),
-            repayments: repayments
+            finished: finished
           });
         }
       }
@@ -219,6 +240,11 @@ class ViewAllOffers extends Component {
     this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, activeLoanOffer:loanOffer});
   }
 
+  convertDateEpoc = (currentDueDate, i) => {
+    let date = new Date(currentDueDate * 1000);
+    date.setMinutes(date.getMinutes() + (i + 1) * 30);
+    return date;
+  };
 
 
 
@@ -244,6 +270,7 @@ class ViewAllOffers extends Component {
       minMonthlyInt,
       waitingForPayback,
       finished,
+      defaulted,
       waitingForBorrower,
       loanCurrency,
       collateralCurrency,
@@ -404,7 +431,7 @@ class ViewAllOffers extends Component {
                                     Finished
                                   </label>
                                 </div>{" "}
-                                {/*<div className="custom-control custom-checkbox mb-3 ">
+                                <div className="custom-control custom-checkbox mb-3 ">
                                   <input
                                     className="custom-control-input"
                                     id="customCheck5"
@@ -422,7 +449,7 @@ class ViewAllOffers extends Component {
                                   >
                                     Defaulted
                                   </label>
-                                </div>*/}
+                                </div>
                               </div>
                             </div>
                           </form>
@@ -496,9 +523,9 @@ class ViewAllOffers extends Component {
               </div>
               <div className="ml-4 row">
                 {loanOffers.map((loanOffer, index) => (
-                  ((waitingForBorrower && loanOffer.status==1) || (waitingForPayback && loanOffer.status==3)) &&
+                  ((waitingForBorrower && loanOffer.status==1) || (waitingForPayback && loanOffer.status==3 && loanOffer.finished==undefined) || (finished && loanOffer.status==3 && loanOffer.finished) || (defaulted && loanOffer.status==3 && !loanOffer.finished)) &&
                   (loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration) &&
-                  ((loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) ||
+                  ((loanOffer.collaterals[0] &&  loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) ||
@@ -510,7 +537,7 @@ class ViewAllOffers extends Component {
                   (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[4] && getTokenByAddress[loanOffer.collaterals[4].address] && getTokenByAddress[loanOffer.collaterals[4].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency)) && (loanOfferCount++) ?
-                  <div key={index} className={loanOfferCount>2?"col-md-4":"col"}>
+                  <div key={index} className={loanOfferCount>3?"col-md-4":"col"}>
                     <div className="card">
                       <div className="card-header">
                         <div className="row row-example">
@@ -559,7 +586,11 @@ class ViewAllOffers extends Component {
                       className="alert alert-primary alert-dismissible fade show text-center"
                       role="alert"
                     >
-                      <span className="alert-text">{loanOffer.status==1?'Waiting for borrower':loanOffer.status==3?'Waiting for payback':'Finished'}</span>
+                      <span className="alert-text">{(loanOffer.status==1 && waitingForBorrower)?'Waiting for borrower'
+                      :(loanOffer.status==3 && finished && loanOffer.finished)?'Finished'
+                      :(loanOffer.status==3 && defaulted && !loanOffer.finished)?'Defaulted'
+                      :(loanOffer.status==3 && waitingForPayback && loanOffer.finished==undefined)?'Waiting for payback'
+                      :'Finished'}</span>
                     </div>
                   </div>
                   :''
