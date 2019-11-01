@@ -17,6 +17,7 @@ class ViewAllOffers extends Component {
   constructor() {
     super();
     this.viewAllOffers();
+    supported_erc20_token.unshift({symbol:'ALL'});
     this.state = {
       loanOffers: [],
       collateralMetadataAlert:false,
@@ -41,7 +42,7 @@ class ViewAllOffers extends Component {
       activeLoanOffer:[],
       activeCollateralValue:0,
       loanCurrency:'',
-      collateralCurrency:'MIP',
+      collateralCurrency:'ALL',
       loanOfferCount:1
     };
   }
@@ -51,7 +52,8 @@ class ViewAllOffers extends Component {
     try {
       const loans = await GetLoans();
 
-      const loanOffers = [...this.state.loanOffers];
+      let { loanOffers } = this.state;
+
 
       for (const loanAddress of loans) {
         const loan = await GetLoanDetails(loanAddress);
@@ -531,12 +533,12 @@ class ViewAllOffers extends Component {
                   (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
-                  ((loanOffer.collaterals[0] && getTokenByAddress[loanOffer.collaterals[0].address] && getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency)||
+                  ((collateralCurrency=='ALL') || ((loanOffer.collaterals[0] && getTokenByAddress[loanOffer.collaterals[0].address] && getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency)||
                   (loanOffer.collaterals[1] && getTokenByAddress[loanOffer.collaterals[1].address] && getTokenByAddress[loanOffer.collaterals[1].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[2] && getTokenByAddress[loanOffer.collaterals[2].address] && getTokenByAddress[loanOffer.collaterals[2].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[4] && getTokenByAddress[loanOffer.collaterals[4].address] && getTokenByAddress[loanOffer.collaterals[4].address].symbol == collateralCurrency) ||
-                  (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency)) && (loanOfferCount++) ?
+                  (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency))) && (loanOfferCount++) ?
                   <div key={index} className={loanOfferCount>3?"col-md-4":"col"}>
                     <div className="card">
                       <div className="card-header">
