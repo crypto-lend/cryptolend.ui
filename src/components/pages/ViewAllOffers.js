@@ -17,7 +17,6 @@ class ViewAllOffers extends Component {
   constructor() {
     super();
     this.viewAllOffers();
-    supported_erc20_token.unshift({symbol:'ALL'});
     this.state = {
       loanOffers: [],
       collateralMetadataAlert:false,
@@ -35,7 +34,6 @@ class ViewAllOffers extends Component {
       minDuration:'0',
       maxDuration:'12',
       defaulted:false,
-      erc20_tokens :  supported_erc20_token,
       collateralCurrencyToken:'',
       collateralAddress:"",
       loanAddress:'',
@@ -43,6 +41,7 @@ class ViewAllOffers extends Component {
       activeCollateralValue:0,
       loanCurrency:'',
       collateralCurrency:'ALL',
+      erc20_tokens :  [{symbol:'ALL'}, ...supported_erc20_token],
       loanOfferCount:1
     };
   }
@@ -50,10 +49,10 @@ class ViewAllOffers extends Component {
   //Get All Loans
   viewAllOffers = async () => {
     try {
+
       const loans = await GetLoans();
 
-      let { loanOffers } = this.state;
-
+      let { loanOffers, erc20_tokens } = this.state;
 
       for (const loanAddress of loans) {
         const loan = await GetLoanDetails(loanAddress);
@@ -533,7 +532,7 @@ class ViewAllOffers extends Component {
                   (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
-                  ((collateralCurrency=='ALL') || ((loanOffer.collaterals[0] && getTokenByAddress[loanOffer.collaterals[0].address] && getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency)||
+                  ((collateralCurrency == 'ALL') || ((loanOffer.collaterals[0] && getTokenByAddress[loanOffer.collaterals[0].address] && getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency)||
                   (loanOffer.collaterals[1] && getTokenByAddress[loanOffer.collaterals[1].address] && getTokenByAddress[loanOffer.collaterals[1].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[2] && getTokenByAddress[loanOffer.collaterals[2].address] && getTokenByAddress[loanOffer.collaterals[2].address].symbol == collateralCurrency) ||
                   (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) ||

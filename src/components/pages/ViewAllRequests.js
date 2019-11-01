@@ -18,7 +18,7 @@ class ViewAllRequests extends Component {
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       loanCurrency:'ETH',
-      collateralCurrency:'MIP',
+      collateralCurrency:'ALL',
       waitingForLender:true,
       waitingForCollateral:false,
       waitingForPayback:false,
@@ -28,7 +28,7 @@ class ViewAllRequests extends Component {
       maxMonthlyInt:5,
       minDuration:0,
       maxDuration:12,
-      erc20_tokens : supported_erc20_token
+      erc20_tokens :  [{symbol:'ALL'}, ...supported_erc20_token]
     };
   }
 
@@ -222,7 +222,7 @@ class ViewAllRequests extends Component {
             </div>
             <div className="card-footer" style={{marginTop:'-40px'}} onClick={()=>{
               this.setState({ loanCurrency:'ETH',
-                    collateralCurrency:'TTT',
+                    collateralCurrency:'ALL',
                     waitingForLender:true,
                     waitingForCollateral:false,
                     waitingForPayback:false,
@@ -242,7 +242,7 @@ class ViewAllRequests extends Component {
                 return ((waitingForLender && loanRequest.status==2) ||
                 (waitingForPayback && loanRequest.status==3) ||
                 (finished && loanRequest.status==4)) &&
-                getTokenByAddress[loanRequest.collateral.address].symbol == collateralCurrency &&
+                (collateralCurrency == 'ALL' || getTokenByAddress[loanRequest.collateral.address].symbol == collateralCurrency) &&
                 loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration &&
                 loanRequest.interest>minMonthlyInt && loanRequest.interest<maxMonthlyInt &&
               <div className="col">
