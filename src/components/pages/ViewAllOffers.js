@@ -3,6 +3,7 @@ import Nouislider from "nouislider-react";
 import { GetLoans, FetchCollateralPrice } from "../../services/loanbook";
 import {
   GetLoanDetails,
+  GetRepaymentData,
   AcceptLoanOffer,
   FinalizeCollateralTransfer
 } from "../../services/loanContract";
@@ -25,9 +26,9 @@ class ViewAllOffers extends Component {
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
-      waitingForCollateral:true,
-      waitingForPayback:true,
-      finished:true,
+      waitingForCollateral:false,
+      waitingForPayback:false,
+      finished:false,
       minMonthlyInt:'0',
       maxMonthlyInt:'5',
       minDuration:'0',
@@ -65,6 +66,9 @@ class ViewAllOffers extends Component {
               collateralCurrency: loan[13][i][3],
             });
           }
+          let repayments = [];
+          repayments = await this.getActiveLoanRepayments(loanAddress, loan[1].toNumber());
+
 
           loanOffers.push({
             loanAddress: loanAddress,
@@ -72,17 +76,36 @@ class ViewAllOffers extends Component {
             duration: loan[1].toNumber(),
             interest: loan[2].toNumber() / 100,
             collaterals: collaterals,
-            status: loan[5].toNumber()
+            status: loan[5].toNumber(),
+            repayments: repayments
           });
         }
       }
 
-      console.log('loanOffers', loanOffers);
+      console.log('loanOffers >>>>', loanOffers);
 
 
       this.setState({ loanOffers });
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  getActiveLoanRepayments = async (loanAddress, duration) => {
+    let { repayments } = this.state;
+
+    repayments = new Array();
+    try {
+      let totalNumberOfRepayments = duration / 30;
+
+      for (var i = 1; i <= totalNumberOfRepayments; i++) {
+        const repaymentData = await GetRepaymentData(loanAddress, i);
+        repayments.push(repaymentData);
+      }
+
+      return repayments;
+    } catch (error) {
+      console.log(error);
     }
   };
 

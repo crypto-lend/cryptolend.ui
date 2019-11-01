@@ -21,7 +21,7 @@ class ViewAllRequests extends Component {
       collateralCurrency:'MIP',
       waitingForLender:true,
       waitingForCollateral:false,
-      waitingForPayback:true,
+      waitingForPayback:false,
       finished:false,
       defaulted:false,
       minMonthlyInt:0,

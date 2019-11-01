@@ -869,6 +869,7 @@ class MyLoans extends Component {
                                                 activeLoan.startedOn,
                                                 repayment.repaymentNumber-1
                                               )
+                                              && activeLoan.borrower !== repayment.repayee
                                               && activeLoan.lender !== repayment.repayee
                                               && <td>
                                               <button
