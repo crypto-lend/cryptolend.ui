@@ -5,7 +5,13 @@ UI for interacting with Smart Contracts over ETH Blockchain
 ## Functions / UI Methods 
 
 Loan request
-Borrower Request 
+
+Borrower Request
+
+Loan offer
+
+lender offers
+
 Metamask
 
 
