@@ -66,7 +66,11 @@ export default function(props) {
       );
       push("/myloans");
     } catch (err) {
-      if (typeof err.response.data.message === "string") {
+      if (
+        err.response &&
+        err.response.data &&
+        typeof err.response.data.message === "string"
+      ) {
         setError(err.response.data.message);
       } else {
         setError(
