@@ -236,9 +236,9 @@ class LoanOffer extends Component {
                                     }
                                     </select>
                                     <h6 className="mt-4">LTV</h6>
-                                    <input className="font-weight-bold mb-0" type="number" value={ltv} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv: e.target.value>=50 ? e.target.value : 50})} />
+                                    <input className="font-weight-bold mb-0" type="number" value={ltv} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({ltv: (e.target.value>0 && e.target.value<=50) ? e.target.value : 1})} />
                                     <h6 className="mt-4">Interest</h6>
-                                    <input className="font-weight-bold mb-0" type="number" value={mpr} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr: (e.target.value>=1 && e.target.value<=5) ? e.target.value : 1})} />
+                                    <input className="font-weight-bold mb-0" type="number" value={mpr} style={{width: 'inherit', textAlign: 'center'}} onChange={(e)=>this.setState({mpr: (e.target.value>0 && e.target.value<=5) ? e.target.value : 1})} />
                                   </div>
                                </div>
                            }
