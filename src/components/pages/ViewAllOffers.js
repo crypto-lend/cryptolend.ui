@@ -59,7 +59,7 @@ class ViewAllOffers extends Component {
 
         if (loan[5].toNumber() > 0) {
           let collaterals = [];
-          let finished = undefined;
+          let finished = 'waiting';
 
           for (var i in loan[13]) {
             collaterals.push({
@@ -524,7 +524,7 @@ class ViewAllOffers extends Component {
               </div>
               <div className="ml-4 row">
                 {loanOffers.map((loanOffer, index) => (
-                  ((waitingForBorrower && loanOffer.status==1) || (waitingForPayback && loanOffer.status==3 && loanOffer.finished==undefined) || (finished && loanOffer.status==3 && loanOffer.finished) || (defaulted && loanOffer.status==3 && !loanOffer.finished)) &&
+                  ((waitingForBorrower && loanOffer.status==1) || (waitingForPayback && loanOffer.status==3 && loanOffer.finished==='waiting') || (finished && loanOffer.status==3 && loanOffer.finished) || (defaulted && loanOffer.status==3 && !loanOffer.finished)) &&
                   (loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration) &&
                   ((loanOffer.collaterals[0] &&  loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) ||
                   (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) ||
@@ -588,10 +588,10 @@ class ViewAllOffers extends Component {
                       role="alert"
                     >
                       <span className="alert-text">{(loanOffer.status==1 && waitingForBorrower)?'Waiting for borrower'
+                      :(loanOffer.status==3 && waitingForPayback && loanOffer.finished=='waiting')?'Waiting for payback'
                       :(loanOffer.status==3 && finished && loanOffer.finished)?'Finished'
                       :(loanOffer.status==3 && defaulted && !loanOffer.finished)?'Defaulted'
-                      :(loanOffer.status==3 && waitingForPayback && loanOffer.finished==undefined)?'Waiting for payback'
-                      :'Finished'}</span>
+                      :'Waiting for payback'}</span>
                     </div>
                   </div>
                   :''
