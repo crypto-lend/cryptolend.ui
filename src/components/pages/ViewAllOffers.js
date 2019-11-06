@@ -544,7 +544,7 @@ class ViewAllOffers extends Component {
                         <div className="row row-example">
                           <div className="mx-auto mb-2">
                           {loanOffer.collaterals.map((collateral)=>{
-                            return getTokenByAddress[collateral.address] && <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} style={{width:'30px'}}/>;
+                            return <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} style={{width:'30px'}}/>;
                           })
                             }
                           </div>
