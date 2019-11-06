@@ -351,7 +351,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
                     <span className="alert-text">Total premium for this loan : {totalPremium} ETH ({apr.toFixed(2)}% APR)</span>
                   </div>
                   <h6 className="text-left pl-3" style={{fontSize:"12px"}}>Monthly installment : {monthlyInstallment} ETH</h6>
-                  <p className="text-left pl-3" style={{fontSize:"12px"}}>The first installment will include the loan origination fee</p>
+                  <p className="text-left pl-3" style={{fontSize:"12px"}}>Origination fee will be taken once the loan has been funded.</p>
                   <h6 className="text-left pl-3" style={{fontSize:"13px"}}><span>Origination fee : {originationFee}%</span></h6>
                   </div>
                   :''
