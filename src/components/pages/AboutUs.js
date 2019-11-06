@@ -6,7 +6,7 @@ const DATA = [
   {
     title: "Instant Cash Loans",
     text:
-      "By depositing crypto to our bank-grade-security, insured custodial accounts (insured up to $100 million with Lloyds of London, provided by our partner, Bitgo) you can enjoy instant cash loans deposited to your bank account. Our interest rates are dependant on the loan value and can be viewed on the ‘my account’ page after registration. Unlike banks and traditional loan providers, Blocklendr requires no minimum repayments, no maximum loan terms, and as long as your account’s collateral stays within the maximum loan-to-value ratio (also viewable on your ‘my account page’), you can pay back as much or a little as you want, whenever you want. Once the loan is fully repaid, you can withdraw your crypto instantly."
+      "By depositing crypto to our bank-grade-security, insured custodial accounts (insured up to $100 million with Lloyds of London, provided by our partner, Bitgo) you can enjoy instant cash loans deposited to your bank account. Our interest rates are dependant on the loan value and can be viewed on the ‘my account’ page after registration. Unlike banks and traditional loan providers, Blocklendr requires no minimum repayments, no maximum loan terms, and as long as your account’s collateral stays within the maximum loan-to-value ratio (also viewable on your ‘my account page’), you can pay back as much or a little as you want, whenever you want. Once the loan is fully repaid, you can withdraw your crypto instantly. This service is currently available to enterprise-clients only, but we will be removing this restriction in the coming months."
   },
   {
     title: "Peer-To-Peer Crypto Lending Marketplace",

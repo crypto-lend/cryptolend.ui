@@ -14,7 +14,7 @@ const DATA = [
   {
     title: "Instant Cash Loans",
     text:
-      "Spend your money straight away with the Blocklendr card or withdraw to your back account. From 8% APR on what you use.",
+      "Spend your money straight away with the Blocklendr card or withdraw to your back account. From 8% APR on what you use. This service is currently available to enterprise-clients only, but we will be removing this restriction in the coming months.",
     img: Point2
   },
   {

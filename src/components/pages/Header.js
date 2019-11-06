@@ -116,7 +116,7 @@ export default class Header extends Component {
                   </Link>
                 </li>
 
-                <li className="nav-item dropdown">
+                {/*<li className="nav-item dropdown">
                   <Link
                     to="#"
                     className="nav-link"
@@ -127,7 +127,7 @@ export default class Header extends Component {
                   >
                     <i className="fa fa-bar-chart" aria-hidden="true"></i>
                   </Link>
-                </li>
+                </li>*/}
 
                 <li className="nav-item dropdown">
                   <Link
@@ -147,19 +147,16 @@ export default class Header extends Component {
                   </Link>
                   <div className="dropdown-menu">
                     <Link to="#" className="dropdown-item">
-                      FAQ
+                      Tips for lenders
                     </Link>
                     <Link to="#" className="dropdown-item">
-                      Legal
+                      Tips for borrowers
                     </Link>
                     <Link to="#" className="dropdown-item">
                       Fees
                     </Link>
                     <Link to="#" className="dropdown-item">
-                      Live Support
-                    </Link>
-                    <Link to="#" className="dropdown-item">
-                      Submit Ticket
+                      Support
                     </Link>
                   </div>
                 </li>
