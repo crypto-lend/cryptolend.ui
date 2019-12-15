@@ -25,7 +25,7 @@ export const CreateNewLoanRequest = (params) => {
     return new Promise((resolve, reject) => {
 
         const { web3 } = window;
-
+        debugger; 
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
 
         LoanBook.createNewLoanRequest(web3.toWei(params.principal), params.duration,
@@ -50,7 +50,7 @@ export const CreateNewLoanOffer = (params) => {
     return new Promise((resolve, reject) => {
 
         const { web3 } = window;
-
+        debugger;
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
 
         let collateralsMetadata = new Array();
@@ -80,7 +80,7 @@ export const CreateNewLoanOffer = (params) => {
 export const FetchCollateralPrice = (params) => {
 
     return new Promise((resolve, reject) => {
-
+        debugger;
         const { web3 } = window;
 
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);

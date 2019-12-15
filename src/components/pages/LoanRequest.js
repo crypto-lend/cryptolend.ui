@@ -46,8 +46,9 @@ class LoanRequest extends Component {
   }
 
 createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount) => {
-
+      
       try {
+        debugger;
         const loanContractAddress = await CreateNewLoanRequest({
           principal: principal,
           duration: duration,
@@ -136,6 +137,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
     let {collateralValue} = this.state;
 
     try {
+      debugger;
       const collateralPrice = await FetchCollateralPrice({
         collateralAddress: collateralAddress
       });
@@ -147,7 +149,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
       })
 
     } catch (error) {
-
+      console.log(error);
     }
 }
 
@@ -386,7 +388,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
                   }
 
                   </div>
-                  { monthlyInt?
+                  { !createRequestAlert && monthlyInt?
                     <div className="btn-wrapper text-center mb-5 mt-5" onClick={()=>{
                       this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralCurrency,collateralValue);
                       }}>
