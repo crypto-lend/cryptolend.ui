@@ -28,6 +28,16 @@ export const supported_erc20_token = [
         name: "Cannabinoid",
         symbol: "CBD",
         address: "0xbAd69980892208C349e7EF0eF3C69D83C6Dfd960"
+    },
+    {
+        name: "WeenusToken",
+        symbol: "WEENUS",
+        address: "0xaFF4481D10270F50f203E0763e2597776068CBc5"
+    },
+    {
+        name: "XeenusToken",
+        symbol: "XEENUS",
+        address: "0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c"
     }
 ]
 
@@ -55,6 +65,14 @@ export const getTokenByAddress = {
   "0xbad69980892208c349e7ef0ef3c69d83c6dfd960": {
       name: "Cannabinoid",
       symbol: "CBD"
+  },
+  "0xaFF4481D10270F50f203E0763e2597776068CBc5": {
+    name: "WeenusToken",
+    symbol: "WEENUS"
+  },
+  "0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c": {
+    name: "XeenusToken",
+    symbol: "XEENUS"
   }
 }
 
@@ -83,5 +101,13 @@ export const getTokenBySymbol = {
   "CBD": {
       name: "Cannabinoid",
       address: "0xbAd69980892208C349e7EF0eF3C69D83C6Dfd960"
-  }
+  },
+  "WEENUS": {
+    name: "WeenusToken",
+    address: "0xaFF4481D10270F50f203E0763e2597776068CBc5"
+   },
+  "XEENUS": {
+    name: "XeeusToken",
+    address: "0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c"  
+   }
 }

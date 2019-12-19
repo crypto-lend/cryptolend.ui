@@ -36,12 +36,12 @@ class ViewAllRequests extends Component {
   viewAllRequest = async () => {
 
     try {
-
+        debugger;
         const loans = await GetLoans();
-
         let  { loanRequests } = this.state;
 
         loans.map(async(loanAddress) => {
+          debugger;
           const loan = await GetLoanDetails(loanAddress);
 
       /*    if(loan[5].toNumber() === 2){
@@ -68,7 +68,7 @@ class ViewAllRequests extends Component {
             //               // console.log('startedOn:', date);
 
             this.setState({
-              loanRequests: loanRequests,
+              loanRequests: loanRequests
             });
           }
         });
@@ -236,6 +236,7 @@ class ViewAllRequests extends Component {
               <a href="#!" className=" text-muted">Reset Filters</a>
             </div>
           </div>
+            
             <div className="ml-4 row">
               {
                 loanRequests.map((loanRequest)=>{

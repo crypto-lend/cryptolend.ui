@@ -22,6 +22,7 @@ class LoanRequest extends Component {
       loaded:true,
       alertLoanAmount:false,
       createRequestAlert:false,
+      allowCreateRequest:true,
       approveRequestAlert:false,
       transferCollateralAlert:false,
       transferCollateralSuccessAlert:false,
@@ -58,6 +59,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
         });
 
         this.setState({
+          allowCreateRequest:false,
           createRequestAlert: true,
           approveRequestAlert: true,
           loanContractAddress: loanContractAddress,
@@ -158,7 +160,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
 
     const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow,
       durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, alertLoanAmount,
-      loanAmountInput, createRequestAlert, loanContractAddress, ropstenTransactionhash, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
+      loanAmountInput, createRequestAlert, allowCreateRequest,loanContractAddress, ropstenTransactionhash, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
 
 
     return (
@@ -388,7 +390,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
                   }
 
                   </div>
-                  { !createRequestAlert && monthlyInt?
+                  { allowCreateRequest && monthlyInt?
                     <div className="btn-wrapper text-center mb-5 mt-5" onClick={()=>{
                       this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralCurrency,collateralValue);
                       }}>
