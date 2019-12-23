@@ -1,5 +1,5 @@
 export const supported_erc20_token = [
-    {
+    /*{
         name: "Marijuana Infused Product.",
         symbol: "MIP",
         address: "0x400138Dab9A7Bb8d81d969832BF844C7ecD00228"
@@ -28,7 +28,7 @@ export const supported_erc20_token = [
         name: "Cannabinoid",
         symbol: "CBD",
         address: "0xbAd69980892208C349e7EF0eF3C69D83C6Dfd960"
-    },
+    },*/
     {
         name: "WeenusToken",
         symbol: "WEENUS",
@@ -42,7 +42,7 @@ export const supported_erc20_token = [
 ]
 
 export const getTokenByAddress = {
-  "0x400138dab9a7bb8d81d969832bf844c7ecd00228": {
+  /*"0x400138dab9a7bb8d81d969832bf844c7ecd00228": {
       name: "Marijuana Infused Product.",
       symbol: "MIP"
   },
@@ -65,7 +65,7 @@ export const getTokenByAddress = {
   "0xbad69980892208c349e7ef0ef3c69d83c6dfd960": {
       name: "Cannabinoid",
       symbol: "CBD"
-  },
+  },*/
   "0xaFF4481D10270F50f203E0763e2597776068CBc5": {
     name: "WeenusToken",
     symbol: "WEENUS"
@@ -78,7 +78,7 @@ export const getTokenByAddress = {
 
 export const getTokenBySymbol = {
 
-  "MIP": {
+  /*"MIP": {
       name: "Marijuana Infused Product.",
       address: "0x400138Dab9A7Bb8d81d969832BF844C7ecD00228"
   },
@@ -101,7 +101,7 @@ export const getTokenBySymbol = {
   "CBD": {
       name: "Cannabinoid",
       address: "0xbAd69980892208C349e7EF0eF3C69D83C6Dfd960"
-  },
+  },*/
   "WEENUS": {
     name: "WeenusToken",
     address: "0xaFF4481D10270F50f203E0763e2597776068CBc5"
