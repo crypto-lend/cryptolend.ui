@@ -17,11 +17,7 @@ export const FEATURES = [
 
 export const INTEREST = [
   {
-    text: "Earn Interest in GBP, EUR, USD, RUB",
-    link: "/earn-interest/fiat"
-  },
-  {
-    text: "Earn Interest in Stable Coins",
+    text: "Earn Interest on Stable Coins",
     link: "/earn-interest/stable-coin"
   }
 ];

@@ -3,6 +3,7 @@ import Nouislider from "nouislider-react";
 import { GetLoans, FetchCollateralPrice } from "../../services/loanbook";
 import {
   GetLoanDetails,
+  GetRepaymentData,
   AcceptLoanOffer,
   FinalizeCollateralTransfer
 } from "../../services/loanContract";
@@ -25,46 +26,41 @@ class ViewAllOffers extends Component {
       safeness: 'SAFE',
       expireIn: '5D 15H 30M',
       waitingForBorrower:true,
-      waitingForCollateral:true,
-      waitingForPayback:true,
-      finished:true,
+      waitingForCollateral:false,
+      waitingForPayback:false,
+      finished:false,
       minMonthlyInt:'0',
       maxMonthlyInt:'5',
       minDuration:'0',
       maxDuration:'12',
-      defaulted:true,
-      erc20_tokens :  ['ERC20 TOKENS','BNB', 'GTO', 'QKC', 'NEXO',
-          'PAX','EGT',  'MANA','POWR',
-          'TUSD','LAMB','CTXC','ENJ',
-          'CELR','HTB','ICX',  'WTC',
-          'USD', 'BTM','EDO', 'SXDT',
-          'OMG','CRO','TOP','SXUT',
-          'MEDX','ITC','REP','STO',
-          'LINK','CMT','WAX',
-          'MATIC','ELF', 'COSM',
-          'HT','BZ','NAS',
-          'FET','PPT','MCO'],
-      collateral_tokens: ['BNB', 'GTO', 'QKC'],
+      defaulted:false,
       collateralCurrencyToken:'',
       collateralAddress:"",
       loanAddress:'',
       activeLoanOffer:[],
       activeCollateralValue:0,
+      loanCurrency:'',
+      collateralCurrency:'ALL',
+      erc20_tokens :  [{symbol:'ALL'}, ...supported_erc20_token],
+      loanOfferCount:1
     };
   }
 
   //Get All Loans
   viewAllOffers = async () => {
     try {
+
       const loans = await GetLoans();
 
-      const loanOffers = [...this.state.loanOffers];
+      let { loanOffers, erc20_tokens } = this.state;
 
       for (const loanAddress of loans) {
         const loan = await GetLoanDetails(loanAddress);
 
-        if (loan[5].toNumber() === 1) {
+        if (loan[5].toNumber() > 0) {
           let collaterals = [];
+          let finished = 'waiting';
+
           for (var i in loan[13]) {
             collaterals.push({
               address: loan[13][i][0].split('000000000000000000000000')[0],
@@ -73,7 +69,28 @@ class ViewAllOffers extends Component {
               collateralCurrency: loan[13][i][3],
             });
           }
-          console.log('loan', loan);
+          if(loan[5].toNumber()>2){
+            finished = true;
+            let repayments = [];
+            let borrower = loan[10];
+            let currentDate = new Date();
+            let startedOn = loan[4].toNumber();
+            let duration = loan[1].toNumber();
+
+
+            repayments = await this.getActiveLoanRepayments(loanAddress, duration);
+
+            let dueDate = this.convertDateEpoc(startedOn,
+              repayments[(duration/30)-1].repaymentNumber-1
+            );
+
+
+           repayments.map((repay) => {
+            if(repay.repayee !== borrower &&
+              currentDate > dueDate){
+              finished = false;
+            }
+          })}
 
           loanOffers.push({
             loanAddress: loanAddress,
@@ -81,14 +98,36 @@ class ViewAllOffers extends Component {
             duration: loan[1].toNumber(),
             interest: loan[2].toNumber() / 100,
             collaterals: collaterals,
-            status: loan[5].toNumber()
+            status: loan[5].toNumber(),
+            finished: finished
           });
         }
       }
 
+      console.log('loanOffers >>>>', loanOffers);
+
+
       this.setState({ loanOffers });
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  getActiveLoanRepayments = async (loanAddress, duration) => {
+    let { repayments } = this.state;
+
+    repayments = new Array();
+    try {
+      let totalNumberOfRepayments = duration / 30;
+
+      for (var i = 1; i <= totalNumberOfRepayments; i++) {
+        const repaymentData = await GetRepaymentData(loanAddress, i);
+        repayments.push(repaymentData);
+      }
+
+      return repayments;
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -119,7 +158,7 @@ class ViewAllOffers extends Component {
     let {activeCollateralValue} = this.state;
     let ltv = 200;
     let collateralAddress = getTokenBySymbol[collateralCurrencyToken] && getTokenBySymbol[collateralCurrencyToken].address;
-    
+
     activeLoanOffer.collaterals.map((item,i) => {
       if(getTokenByAddress[item.address] && getTokenByAddress[item.address].symbol===collateralCurrencyToken){
         ltv = item.ltv;
@@ -194,7 +233,7 @@ class ViewAllOffers extends Component {
   }
 
   hideAlertApproveCollateralCancel = async (collateralAddress, loanContractAddress, collateralValue) => {
-      this.setState({approveRequestAlert:true, acceptCollateralAlert:false});
+      this.setState({approveRequestAlert:false, acceptCollateralAlert:false});
       console.log("collateralAddress : ", collateralAddress);
   }
 
@@ -202,19 +241,23 @@ class ViewAllOffers extends Component {
     this.setState({collateralMetadataAlert:true, loanAddress:loanOffer.loanAddress, activeLoanOffer:loanOffer});
   }
 
+  convertDateEpoc = (currentDueDate, i) => {
+    let date = new Date(currentDueDate * 1000);
+    date.setMinutes(date.getMinutes() + (i + 1) * 30);
+    return date;
+  };
 
 
 
 
 
   render() {
-    const {
+    let {
       erc20_tokens,
       duration,
       minDuration,
       maxDuration,
       collateralMetadataAlert,
-      collateral_tokens,
       transferCollateralAlert,
       acceptCollateralAlert,
       collateralCurrencyToken,
@@ -222,7 +265,17 @@ class ViewAllOffers extends Component {
       activeCollateralValue,
       collateralAddress,
       loanAddress,
-      approveCollateralAlert
+      approveCollateralAlert,
+      loanOffers,
+      maxMonthlyInt,
+      minMonthlyInt,
+      waitingForPayback,
+      finished,
+      defaulted,
+      waitingForBorrower,
+      loanCurrency,
+      collateralCurrency,
+      loanOfferCount
     } = this.state;
     return (
       <div className="ViewAllOffers text-center">
@@ -250,7 +303,7 @@ class ViewAllOffers extends Component {
                 <div className="card-header bg-transparent">
                   <i className="fa fa-filter" aria-hidden="true"></i>
                   <a className="ls-1 text-primary py-3 mb-0 ml-2">
-                    View All Requests
+                    View All Offers
                   </a>
                 </div>
                 <div className="card-body">
@@ -265,7 +318,7 @@ class ViewAllOffers extends Component {
                           id="exampleFormControlSelect1"
                           onClick={e => {
                             this.setState({
-                              collateralCurrency: e.target.value
+                              loanCurrency: e.target.value
                             });
                           }}
                         >
@@ -288,7 +341,7 @@ class ViewAllOffers extends Component {
                           }}
                         >
                           {erc20_tokens.map((item, i) => {
-                            return <option>{item}</option>;
+                            return <option>{item.symbol}</option>;
                           })}
                         </select>
                       </div>
@@ -320,7 +373,7 @@ class ViewAllOffers extends Component {
                                     Waiting for Borrowers
                                   </label>
                                 </div>
-                                <div className="custom-control custom-checkbox mb-3 ">
+                                {/*<div className="custom-control custom-checkbox mb-3 ">
                                   <input
                                     className="custom-control-input"
                                     id="customCheck2"
@@ -339,7 +392,7 @@ class ViewAllOffers extends Component {
                                   >
                                     Waiting for collateral
                                   </label>
-                                </div>
+                                </div>*/}
                                 <div className="custom-control custom-checkbox mb-3 ">
                                   <input
                                     className="custom-control-input"
@@ -410,14 +463,14 @@ class ViewAllOffers extends Component {
                         <div className="">
                           <label style={{ marginLeft: "-180px" }}>
                             {" "}
-                            ({this.state.minMonthlyInt} %){" "}
+                            ({minMonthlyInt} %){" "}
                           </label>
                         </div>
                         <div
                           className=""
                           style={{ marginRight: "-180px", marginTop: "-30px" }}
                         >
-                          <label> ({this.state.maxMonthlyInt} %)</label>
+                          <label> ({maxMonthlyInt} %)</label>
                         </div>
                         <Nouislider
                           range={{ min: 0, max: 5 }}
@@ -428,7 +481,6 @@ class ViewAllOffers extends Component {
                               minMonthlyInt: e[0],
                               maxMonthlyInt: e[1]
                             });
-                            console.log(this.state.maxMonthlyInt);
                           }}
                         />
                       </div>
@@ -471,20 +523,34 @@ class ViewAllOffers extends Component {
                 </div>
               </div>
               <div className="ml-4 row">
-                {this.state.loanOffers.map((loanOffer, index) => (
-                  <div key={index} className={this.state.loanOffers.length<3?"col":"col-md-4"}>
+                {loanOffers.map((loanOffer, index) => (
+                  ((waitingForBorrower && loanOffer.status==1) || (waitingForPayback && loanOffer.status==3 && loanOffer.finished==='waiting') || (finished && loanOffer.status==3 && loanOffer.finished) || (defaulted && loanOffer.status==3 && !loanOffer.finished)) &&
+                  (loanOffer.duration/30>minDuration && loanOffer.duration/30<maxDuration) &&
+                  ((loanOffer.collaterals[0] &&  loanOffer.collaterals[0].mpr > minMonthlyInt && loanOffer.collaterals[0].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[1] &&  loanOffer.collaterals[1].mpr > minMonthlyInt && loanOffer.collaterals[1].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[2] &&  loanOffer.collaterals[2].mpr > minMonthlyInt && loanOffer.collaterals[2].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[3] &&  loanOffer.collaterals[3].mpr > minMonthlyInt && loanOffer.collaterals[3].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[4] &&  loanOffer.collaterals[4].mpr > minMonthlyInt && loanOffer.collaterals[4].mpr <maxMonthlyInt) ||
+                  (loanOffer.collaterals[5] &&  loanOffer.collaterals[5].mpr > minMonthlyInt && loanOffer.collaterals[5].mpr <maxMonthlyInt)) &&
+                  ((collateralCurrency == 'ALL') || ((loanOffer.collaterals[0] && getTokenByAddress[loanOffer.collaterals[0].address] && getTokenByAddress[loanOffer.collaterals[0].address].symbol == collateralCurrency)||
+                  (loanOffer.collaterals[1] && getTokenByAddress[loanOffer.collaterals[1].address] && getTokenByAddress[loanOffer.collaterals[1].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[2] && getTokenByAddress[loanOffer.collaterals[2].address] && getTokenByAddress[loanOffer.collaterals[2].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[3] && getTokenByAddress[loanOffer.collaterals[3].address] && getTokenByAddress[loanOffer.collaterals[3].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[4] && getTokenByAddress[loanOffer.collaterals[4].address] && getTokenByAddress[loanOffer.collaterals[4].address].symbol == collateralCurrency) ||
+                  (loanOffer.collaterals[5] && getTokenByAddress[loanOffer.collaterals[5].address] && getTokenByAddress[loanOffer.collaterals[5].address].symbol == collateralCurrency))) && (loanOfferCount++) ?
+                  <div key={index} className={loanOfferCount>3?"col-md-4":"col"}>
                     <div className="card">
                       <div className="card-header">
                         <div className="row row-example">
                           <div className="mx-auto mb-2">
                           {loanOffer.collaterals.map((collateral)=>{
-                            return getTokenByAddress[collateral.address] && <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} style={{width:'30px'}}/>;
+                            return <img src={`/assets/img/32/color/` + ( getTokenByAddress[collateral.address] && getTokenByAddress[collateral.address].symbol )  +`.png`} style={{width:'30px'}}/>;
                           })
                             }
                           </div>
                         </div>
                         <div
-                          className="text-left ml-3"
+                          className="ml-3"
                           style={{ fontSize: "x-small" }}
                         >
                           LTV {loanOffer.collaterals.map((item) =>{
@@ -493,7 +559,7 @@ class ViewAllOffers extends Component {
 
                         </div>
                         <div
-                          className="text-left ml-3"
+                          className="ml-3"
                           style={{ fontSize: "x-small" }}
                         >
                           MPR {loanOffer.collaterals.map((item) =>{
@@ -502,11 +568,11 @@ class ViewAllOffers extends Component {
 
                         </div>
                       </div>
-                      <div className="card-body text-left">
-                        <p>Duration  : { loanOffer.duration } days</p>
-                        <p>Amount  : { loanOffer.loanAmount } ETH</p>
+                      <div className="card-body ">
+                        <p style={{ fontSize: "small" }}>Duration  : { loanOffer.duration } days</p>
+                        <p style={{ fontSize: "small" }}>Amount  : { loanOffer.loanAmount } ETH</p>
 
-                        <div className="btn-wrapper text-center" onClick={()=>{
+                        {loanOffer.status===1 && <div className="btn-wrapper text-center" onClick={()=>{
                           this.handleTakeThisLoan(loanOffer)
                         }}>
                           <a href="#" className="btn btn-primary btn-icon mt-2">
@@ -514,16 +580,21 @@ class ViewAllOffers extends Component {
                               Take this loan
                             </span>
                           </a>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                     <div
                       className="alert alert-primary alert-dismissible fade show text-center"
                       role="alert"
                     >
-                      <span className="alert-text">Waiting for borrower</span>
+                      <span className="alert-text">{(loanOffer.status==1 && waitingForBorrower)?'Waiting for borrower'
+                      :(loanOffer.status==3 && waitingForPayback && loanOffer.finished=='waiting')?'Waiting for payback'
+                      :(loanOffer.status==3 && finished && loanOffer.finished)?'Finished'
+                      :(loanOffer.status==3 && defaulted && !loanOffer.finished)?'Defaulted'
+                      :'Waiting for payback'}</span>
                     </div>
                   </div>
+                  :''
                 ))}
                 {collateralMetadataAlert && (
                   <SweetAlert

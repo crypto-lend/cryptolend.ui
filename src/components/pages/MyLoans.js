@@ -72,7 +72,8 @@ class MyLoans extends Component {
       this.setState({ currentDate: currentDate });
 
       let { myBorrowedLoans, myFundedLoans } = this.state;
-
+      myBorrowedLoans = [];
+      myFundedLoans = [];
       loans.map(async loanAddress => {
         const loan = await GetLoanDetails(loanAddress);
         const user = window.web3.eth.accounts[0];
@@ -668,9 +669,9 @@ class MyLoans extends Component {
                                       {currentDate >
                                         this.convertDateEpoc(
                                           activeLoan.startedOn,
-                                          repayments[0].repaymentNumber-1
+                                          repayments[(activeLoan.duration/30)-1].repaymentNumber-1
                                         )
-                                        && activeLoan.lender != repayments[0].repayee
+                                        && activeLoan.collateralStatus<2
                                         &&
                                         loanRepaid.toFixed(2) == 100.00 &&
                                         <td>
@@ -679,7 +680,7 @@ class MyLoans extends Component {
                                           type="button"
                                           onClick={() => {
                                             ClaimCollateralByBorrower(
-                                              repayments[0].loanContractAddress
+                                              repayments[(activeLoan.duration/30)-1].loanContractAddress
                                             );
                                           }}
                                         >
@@ -869,7 +870,8 @@ class MyLoans extends Component {
                                                 activeLoan.startedOn,
                                                 repayment.repaymentNumber-1
                                               )
-                                              && activeLoan.borrower != repayment.repayee
+                                              && activeLoan.borrower !== repayment.repayee
+                                              && activeLoan.lender !== repayment.repayee
                                               && <td>
                                               <button
                                                 className="btn btn-primary"
@@ -918,8 +920,10 @@ class MyLoans extends Component {
                                       </td>
                                       <td>
                                         <button
-                                          className="btn btn-primary"
+                                          className="btn btn-danger"
                                           type="button"
+                                          dataToggle="tooltip"
+                                          title="You can liquidate a portion of the loan’s collateral if the LTV exceeds 75%!"
                                           onClick={() => {
                                             LiquidateLoanCollateral(
                                               repayments[0].loanContractAddress
@@ -1002,7 +1006,11 @@ function DropDown(props) {
           self.handleLoanRepaid(
             repayments, activeLoan, currentDate
           );
+
+          self.viewMyLoans();
         }}
+
+
 
         aria-haspopup="true"
         aria-expanded="true"

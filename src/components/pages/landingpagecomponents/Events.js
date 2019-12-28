@@ -8,7 +8,8 @@ const DATA = [
     title: "Malta AI & Blockchain Summit",
     date: "7-8th Nov",
     text:
-      "Blocklendr’s team are pleased to be attending the Malta AI & Blockchain Summit from 7-8th November. The summit will be showcasing the future of artificial intelligence, blockchain, big data, IoT and quantum technologies."
+      "Blocklendr’s team are pleased to be attending the Malta AI & Blockchain Summit from 7-8th November. The summit will be showcasing the future of artificial intelligence, blockchain, big data, IoT and quantum technologies.",
+    url: "https://maltablockchainsummit.com/"
   }
 ];
 
@@ -31,7 +32,7 @@ export default function Events({ background }) {
           </div>
         </div>
         <div className="row mt-4">
-          {DATA.map(({ img, title, date, text }, index) => (
+          {DATA.map(({ img, title, date, text, url }, index) => (
             <div className={`card col-12 my-3 ${background}`} key={index}>
               <div className="card-body">
                 <div className="row align-items-start">
@@ -45,12 +46,13 @@ export default function Events({ background }) {
                       src={img}
                     />
                   </div>
-                  <div className="col-12 col-md mt-4 mt-md-0">
+                  <div className="col-12 col-md mt-4 mt-md-0 text-left">
                     <div className="mb-3 text-left">
                       <span className="h5">{title}</span>
                       <small className="float-right">{date}</small>
                     </div>
                     <p className="text-sm text-muted text-left mb-0">{text}</p>
+                    <a href={url}>Link</a>
                   </div>
                 </div>
               </div>
