@@ -76,7 +76,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
   handleERC20TokenApproval = async(collateralAddress, loanContractAddress, collateralValue) => {
 
     try {
-
+      debugger;
       await ExecuteTokenApproval({
         ERC20Token: collateralAddress,
         loanContractAddress: loanContractAddress,
@@ -144,6 +144,9 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
         collateralAddress: collateralAddress
       });
 
+      // collateralPrice here is in ETH
+      // divide by 2 is used assuming fix LTV of 50
+      // collateralValue is number of tokens (not always int?)
       this.setState({
         loanAmount: (collateralValue * collateralPrice / 2),
         currency:false,

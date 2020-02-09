@@ -24,7 +24,7 @@ export const FinalizeCollateralTransfer = (loanContractAddress, collateralAddres
     return new Promise((resolve, reject) => {
 
         const { web3 } = window;
-
+        debugger;
         const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
 
         LoanContract.transferCollateralToLoan(collateralAddress, {

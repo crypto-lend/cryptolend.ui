@@ -88,8 +88,8 @@ export const FetchCollateralPrice = (params) => {
 
         LoanBook.getCollateralPrice(params.collateralAddress, (err, price) => {
             if(!err){
-                //resolve(web3.fromWei(price.toNumber()));
-                resolve(price.toNumber());
+                resolve(web3.fromWei(price.toNumber()));
+                //resolve(price.toNumber());
             } else {
                 reject(err);
             }

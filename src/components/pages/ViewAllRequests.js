@@ -38,17 +38,20 @@ class ViewAllRequests extends Component {
     try {
         debugger;
         const loans = await GetLoans();
+        console.log("all loans: ", loans);
         let  { loanRequests } = this.state;
 
         loans.map(async(loanAddress) => {
           debugger;
           const loan = await GetLoanDetails(loanAddress);
+          console.log("loan details: ", loan);
+          console.log("loan collateral", loan[5][0][0]);
 
       /*    if(loan[5].toNumber() === 2){
             for request/active i have changed it to >= 2
       */
 
-          if(loan[5].toNumber() >= 2 ){
+          if(loan[4].toNumber() >= 2 ){
 
             loanRequests.push({
               loanAddress: loanAddress,
@@ -56,10 +59,10 @@ class ViewAllRequests extends Component {
               duration: loan[1].toNumber(),
               interest: (loan[2].toNumber() / 100),
               collateral: {
-                address: loan[6],
+                address: loan[5][0][0],
                 amount: loan[7].toNumber()
               },
-              status: loan[5].toNumber(),
+              status: loan[4].toNumber(),
 
             });
 
@@ -67,6 +70,7 @@ class ViewAllRequests extends Component {
             //               date = this.convertDate(date, -1);
             //               // console.log('startedOn:', date);
 
+            console.log("loan reqests", loanRequests);
             this.setState({
               loanRequests: loanRequests
             });
@@ -240,6 +244,8 @@ class ViewAllRequests extends Component {
             <div className="ml-4 row">
               {
                 loanRequests.map((loanRequest)=>{
+                console.log("Testing collateral address: ", loanRequest.collateralAddress);
+                console.log("Testing collateral address new: ", loanRequest.collateral.collateralAddress);
                 return ((waitingForLender && loanRequest.status==2) ||
                 (waitingForPayback && loanRequest.status==3) ||
                 (finished && loanRequest.status==4)) &&
@@ -289,12 +295,10 @@ class ViewAllRequests extends Component {
                 <div className="col-md-4">
                 <div className="card">
                   <div className="card-header">
-
                   <div className="row row-example">
                 <div className="col-sm">
                   <span><p>Loan amount  </p></span>
                   <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount} ETH</span>
-
                 </div>
                 <div className="col-sm">
                   <span><p>Collateral </p></span>
@@ -306,14 +310,12 @@ class ViewAllRequests extends Component {
                   <p>Earnings : {this.state.earnings[1]} %</p>
                   <p>Duration  : {this.state.duration[1]} days</p>
                   <p>Safeness : {this.state.safeness}</p>
-
                   </div>
                 </div>
                 <div className="alert alert-warning alert-dismissible fade show text-center" role="alert">
                   <span className="alert-text">Waiting for Payback</span>
                 </div>
               </div>
-
               */}
 
             </div>
