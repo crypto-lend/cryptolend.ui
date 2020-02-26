@@ -59,7 +59,7 @@ export default function p2p() {
               <div className="card bg-secondary card-pricing border-0 text-center mb-4">
                 <div className="card-header bg-secondary">
                   <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
-                    How Blocklendr p2p works{" "}
+                    How Cryptolendr p2p works{" "}
                   </h2>
                 </div>
                 <div className="card-body">

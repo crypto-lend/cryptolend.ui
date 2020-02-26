@@ -42,11 +42,11 @@ export const ENTERPRISE = [
 export const SOCIALLINKS = [
   {
     icon: facebookIcon,
-    link: "https://www.facebook.com/Blocklendr-102494831167711/"
+    link: "https://www.facebook.com/Cryptolendr-102494831167711/"
   },
   {
     icon: twitterIcon,
-    link: "https://twitter.com/blocklendr"
+    link: "https://twitter.com/Cryptolendr"
   },
   // {
   //   icon: linkedInIcon,

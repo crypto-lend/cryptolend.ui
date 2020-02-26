@@ -8,11 +8,11 @@ import Point5 from "../../images/cashflow/5.png";
 
 const DATA = [
   { text: "Register Account", img: Point1 },
-  { text: "Add funds to secure Blocklendr account", img: Point2 },
+  { text: "Add funds to secure Cryptolendr account", img: Point2 },
   { text: "Credit line becomes instantly available", img: Point3 },
   {
     text:
-      "Spend money instantly with Blocklendr card or withdraw to Bank Account",
+      "Spend money instantly with Cryptolendr card or withdraw to Bank Account",
     img: Point4
   },
   { text: "No minimum repayments or hidden fees", img: Point5 }
@@ -38,7 +38,7 @@ const Points = ({ points }) => (
   </ul>
 );
 
-export default function() {
+export default function () {
   return (
     <div className="position-relative my-5">
       <section className="section-shaped my-0">
@@ -48,7 +48,7 @@ export default function() {
               <div className="card card-pricing border-0 text-center">
                 <div className="card-header bg-transparent">
                   <h2 className="text-uppercase ls-1 text-primary py-3">
-                    How Blocklendr Cash Works{" "}
+                    How Cryptolendr Cash Works{" "}
                   </h2>
                 </div>
                 <div className="card-body">

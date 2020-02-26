@@ -18,7 +18,7 @@ export default () => (
     <div className="container text-center text-md-left mt-4">
       <div className="row mt-3 dark-grey-text">
         <div className="col-md-3 col-lg-4 col-xl-3 mb-4">
-          <h6 className="text-uppercase font-weight-bold">Blocklendr</h6>
+          <h6 className="text-uppercase font-weight-bold">Cryptolendr</h6>
           <hr className="w-100 accent-3 mb-4 mt-0 d-inline-block mx-auto" />
           <div className="col-12 text-md-left p-0 mb-4 mb-md-0">
             <h6 className="mb-0">Get connected with us on social networks!</h6>
@@ -97,7 +97,7 @@ export default () => (
       © {new Date().getFullYear()} Copyright:
       <Link className="dark-grey-text" to="/">
         {" "}
-        Blocklendr Global Ltd.
+        Cryptolendr Global Ltd.
       </Link>
       <ul className="navbar-nav-hover text-center mt-2 p-0 align-items-center">
         <li className="nav-item dropdown mx-2">

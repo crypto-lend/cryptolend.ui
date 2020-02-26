@@ -18,7 +18,7 @@ const FormConfig = {
     },
     "white-label": {
       text:
-        "Partner with Blocklendr and use our API's for insured, crypto-interest bearing accounts. Wallet providers, exchanges and custodians can work with Blocklendr to provide their customers with the ability to earn interest on their crypto deposits. ",
+        "Partner with Cryptolendr and use our API's for insured, crypto-interest bearing accounts. Wallet providers, exchanges and custodians can work with Cryptolendr to provide their customers with the ability to earn interest on their crypto deposits. ",
       redirect: "/enterprise/white-label"
     }
   },
@@ -95,7 +95,7 @@ export default function EmailForm(props) {
                   type="submit"
                   className={`btn btn-primary mt-3 w-50 ${
                     validateEmail(email) ? "" : "disabled"
-                  }`}
+                    }`}
                 >
                   <span className="btn-inner--text">Register Now</span>
                   <span className="btn-inner--icon ml-3">
