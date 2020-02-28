@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { fetchAccounts } from "../../services/Web3Service";
 import P2P from "./landingpagecomponents/p2p";
-import Cryptolendr from "./landingpagecomponents/blockleander";
+import Cryptolendr from "./landingpagecomponents/cryptolendr";
 import Clients from "./landingpagecomponents/clients";
 import CryptolendrCash from "./landingpagecomponents/blockLenderCashWorks";
 import macbookScreen from "../images/macbook.png";
