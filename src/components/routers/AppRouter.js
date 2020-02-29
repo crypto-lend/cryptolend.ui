@@ -55,7 +55,7 @@ export const AppRouter = () => (
         <Route path="/support" component={ContactUs} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/:menuItem/:subItem" exact component={EmailForm} />
-        <Redirect to="/" />
+        <Redirect to="/home" />
       </Switch>
     </Fragment>
   </BrowserRouter>

@@ -120,7 +120,7 @@ export default function Register(props) {
                 <div className=" col-lg-6 col-md-8 px-5">
                   <h2 className="text-white">Register</h2>
                   <p className="text-lead text-white">
-                    Register your interest with Blocklendr. Be the first to join
+                    Register your interest with Cryptolendr. Be the first to join
                     our revolutionary platform.
                   </p>
                 </div>
@@ -296,7 +296,7 @@ export default function Register(props) {
                         type="submit"
                         className={`btn btn-primary mt-5 w-50 ${
                           checkValidity() ? "" : "disabled"
-                        }`}
+                          }`}
                       >
                         Submit
                       </button>

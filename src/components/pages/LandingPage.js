@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 import { fetchAccounts } from "../../services/Web3Service";
 import P2P from "./landingpagecomponents/p2p";
-import Blocklendr from "./landingpagecomponents/blockleander";
+import Cryptolendr from "./landingpagecomponents/cryptolendr";
 import Clients from "./landingpagecomponents/clients";
-import BlockLendrCash from "./landingpagecomponents/blockLenderCashWorks";
+import CryptolendrCash from "./landingpagecomponents/blockLenderCashWorks";
 import macbookScreen from "../images/macbook.png";
 import SupportedCrypto from "./landingpagecomponents/SupportedCrypto";
 import Vision from "./landingpagecomponents/Vison";
@@ -45,7 +45,7 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <Navbar/>
+        <Navbar />
         <div className="HomePage text-center">
           <div className="position-relative py-5">
             <section className="section-shaped my-0">
@@ -90,8 +90,8 @@ class HomePage extends Component {
             </section>
           </div>
           <P2P />
-          <BlockLendrCash />
-          <Blocklendr />
+          <CryptolendrCash />
+          <Cryptolendr />
           <Clients />
           <SupportedCrypto />
           <Vision />

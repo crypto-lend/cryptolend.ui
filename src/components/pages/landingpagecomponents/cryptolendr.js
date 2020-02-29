@@ -14,7 +14,7 @@ const DATA = [
   {
     title: "Instant Cash Loans",
     text:
-      "Spend your money straight away with the Blocklendr card or withdraw to your back account. From 8% APR on what you use. This service is currently available to enterprise-clients only, but we will be removing this restriction in the coming months.",
+      "Spend your money straight away with the Cryptolendr card or withdraw to your back account. From 8% APR on what you use. This service is currently available to enterprise-clients only, but we will be removing this restriction in the coming months.",
     img: Point2
   },
   {
@@ -24,7 +24,7 @@ const DATA = [
     img: Point3
   }
 ];
-const BlockLender = () => {
+const Cryptolendr = () => {
   return (
     <div className="bg-secondary pb-5">
       <div className="position-relative container ">
@@ -35,7 +35,7 @@ const BlockLender = () => {
               className="card-header bg-transparent"
             >
               <h2 className="text-uppercase ls-1 text-primary py-3 mb-0">
-                Why Blocklender{" "}
+                Why Cryptolendr{" "}
               </h2>
             </div>
           </div>
@@ -67,4 +67,4 @@ const BlockLender = () => {
   );
 };
 
-export default BlockLender;
+export default Cryptolendr;

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { EthereumIcon } from "../Web3/EthereumIcon";
 import { Link } from "react-router-dom";
-import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
+// import Cryptolendr from "../../assets/img/brand/CryptolendrLogo.png";
 import {
   fetchNetwork,
   fetchAccounts,
@@ -48,11 +48,11 @@ export default class Header extends Component {
           <div className="container" style={{ maxWidth: "1080px" }}>
             <div className="navbar-collapse collapse" id="navbar_global">
               <ul className="navbar-nav-hover align-items-lg-center">
-              <li className="nav-item dropdown text-center">
-              <Link to="/">
-                <img src={blocklendr} alt="Blocklendr" style={{ width: "20%" }} />
-              </Link>
-              </li>
+                {/* <li className="nav-item dropdown text-center">
+                  <Link to="/">
+                    <img src={Cryptolendr} alt="Cryptolendr" style={{ width: "20%" }} />
+                  </Link>
+                </li> */}
                 <li className="nav-item dropdown">
                   <Link to="/myloans"
                     className="nav-link"

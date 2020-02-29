@@ -24,7 +24,7 @@ export default function Vision() {
           marginBottom: "8rem"
         }}
       >
-        At Blocklendr, we stand for financial equality without boarders or
+        At Cryptolendr, we stand for financial equality without boarders or
         prejudice. We believe that everybody around the world should have the
         opportunity to access a fair banking system, credit and financial
         support no matter where they’re from or what their history is. We are
