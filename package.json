@@ -2,7 +2,7 @@
   "name": "lending-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/upscaletech/finocial.ui",
+  "homepage": "https://crypto-lend.github.io/cryptolendr.ui",
   "engines": {
     "node": "10.3.0"
   },
@@ -94,7 +94,10 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "serve:dev": "webpack-dev-server --env.env=dev --hot",
     "lint": "eslint .; exit 0",
     "lint:fix": "eslint . --fix; exit 0"
