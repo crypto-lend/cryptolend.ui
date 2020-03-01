@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import './assets/vendor/font-awesome/css/font-awesome.css';
 import './assets/vendor/nucleo/css/nucleo.css';
 import './assets/css/argon.min.css';
@@ -12,9 +12,16 @@ import { AppRouter } from './components/routers/AppRouter';
 
 import { Web3Provider } from './components/Web3/Web3Provider';
 
+import { enableWeb3 } from './components/Web3/enableWeb3';
+
+
 const App = () => (
   <Provider store={createAppStore()}>
-    <div style={{backgroundColor: 'white'}}>
+    {
+      enableWeb3()
+
+    }
+    <div style={{ backgroundColor: 'white' }}>
       <Web3Provider />
       <AppRouter />
     </div>
