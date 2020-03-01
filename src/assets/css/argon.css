@@ -12642,7 +12642,7 @@ main
 
 .section-nucleo-icons
 {
-    --icon-size: 5rem;
+    --1: 5rem;
     --icon-sm-size: 3.75rem;
     --gutter: 7rem;
 }
@@ -12667,8 +12667,8 @@ main
 {
     font-size: 1.7em;
 
-    width: var(--icon-size);
-    height: var(--icon-size);
+    width: var(--1);
+    height: var(--1);
 }
 .section-nucleo-icons .icons-container i.icon-sm
 {
@@ -15314,7 +15314,7 @@ textarea[resize='horizontal']
 
 .icon-sm + .icon-text
 {
-    width: calc(100% - $icon-size-sm - 1);
+    width: calc(100% - 1 - 1);
 }
 
 .icon-shape

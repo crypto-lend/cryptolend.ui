@@ -18299,7 +18299,7 @@ textarea[resize='horizontal']
 }
 .icon-sm + .icon-text
 {
-    width: calc(100% - $icon-size-sm - 1);
+    width: calc(100% - 1);
 }
 
 .icon-shape
