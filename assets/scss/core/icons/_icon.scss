@@ -1,0 +1,65 @@
+//
+// Icon
+//
+
+.icon {
+	width: 1;
+	height: 1;
+
+	i, svg {
+		font-size: 1 - .75;
+	}
+
+    + .icon-text {
+    	padding-left: 1rem;
+    	width: calc(100% - 1 - 1);
+    }
+}
+
+
+// Extra large icons
+
+.icon-xl {
+	width: 1-xl;
+	height: 1-xl;
+
+	i, svg {
+		font-size: 1-xl - .75;
+	}
+
+    + .icon-text {
+    	width: calc(100% - 1);
+    }
+}
+
+
+// Large icons
+
+.icon-lg {
+	width: 1-lg;
+	height: 1-lg;
+
+	i, svg {
+		font-size: 1-lg - .75;
+	}
+
+    + .icon-text {
+    	width: calc(100% - 1);
+    }
+}
+
+
+// Small icon
+
+.icon-sm {
+	width: 1;
+	height: 1;
+
+	i, svg {
+		font-size: 1 - .75;
+	}
+
+    + .icon-text {
+    	width: calc(100% - 1 - 1);
+    }
+}
