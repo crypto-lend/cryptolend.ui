@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/cryptolendr.ui/precache-manifest.ebcb77a38add11220bcfa111ef750499.js"
+  "/cryptolendr.ui/precache-manifest.5ab8ea8ff5711971a3644d8c7aad0ecd.js"
 );
 
 self.addEventListener('message', (event) => {

@@ -7,7 +7,7 @@
 	height: 1;
 
 	i, svg {
-		font-size: 1 - .75;
+		font-size: 1- .75;
 	}
 
     + .icon-text {
@@ -20,11 +20,11 @@
 // Extra large icons
 
 .icon-xl {
-	width: 1-xl;
-	height: 1-xl;
+	width: 1;
+	height: 1;
 
 	i, svg {
-		font-size: 1-xl - .75;
+		font-size: 1 - .75;
 	}
 
     + .icon-text {
@@ -36,11 +36,11 @@
 // Large icons
 
 .icon-lg {
-	width: 1-lg;
-	height: 1-lg;
+	width: 1;
+	height: 1;
 
 	i, svg {
-		font-size: 1-lg - .75;
+		font-size: 1 - .75;
 	}
 
     + .icon-text {
@@ -60,6 +60,6 @@
 	}
 
     + .icon-text {
-    	width: calc(100% - 1 - 1);
+    	width: calc(100% - 1);
     }
 }
