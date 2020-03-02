@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/cryptolendr/static/css/main.8c0faf86.chunk.css",
-    "main.js": "/cryptolendr/static/js/main.33b4fc7b.chunk.js",
-    "main.js.map": "/cryptolendr/static/js/main.33b4fc7b.chunk.js.map",
+    "main.js": "/cryptolendr/static/js/main.b4027026.chunk.js",
+    "main.js.map": "/cryptolendr/static/js/main.b4027026.chunk.js.map",
     "runtime~main.js": "/cryptolendr/static/js/runtime~main.aab79e4b.js",
     "runtime~main.js.map": "/cryptolendr/static/js/runtime~main.aab79e4b.js.map",
     "static/js/2.6a2fcc23.chunk.js": "/cryptolendr/static/js/2.6a2fcc23.chunk.js",
     "static/js/2.6a2fcc23.chunk.js.map": "/cryptolendr/static/js/2.6a2fcc23.chunk.js.map",
     "index.html": "/cryptolendr/index.html",
-    "precache-manifest.9e1945befb4cdae56cbbea3bdaa80db3.js": "/cryptolendr/precache-manifest.9e1945befb4cdae56cbbea3bdaa80db3.js",
+    "precache-manifest.f692462ab788840f28b09d5bb17228fc.js": "/cryptolendr/precache-manifest.f692462ab788840f28b09d5bb17228fc.js",
     "service-worker.js": "/cryptolendr/service-worker.js",
     "static/css/main.8c0faf86.chunk.css.map": "/cryptolendr/static/css/main.8c0faf86.chunk.css.map",
     "static/media/1.png": "/cryptolendr/static/media/1.e658b562.png",

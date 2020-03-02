@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "550407b6fef1a67cfcddf4408d363d5b",
+    "revision": "8d0d2d22bad666468b5b4644d358ad2d",
     "url": "/cryptolendr/index.html"
   },
   {
-    "revision": "6d6943d046c6fc033d13",
+    "revision": "55849611d51f645cf5d9",
     "url": "/cryptolendr/static/css/main.8c0faf86.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/cryptolendr/static/js/2.6a2fcc23.chunk.js"
   },
   {
-    "revision": "6d6943d046c6fc033d13",
-    "url": "/cryptolendr/static/js/main.33b4fc7b.chunk.js"
+    "revision": "55849611d51f645cf5d9",
+    "url": "/cryptolendr/static/js/main.b4027026.chunk.js"
   },
   {
     "revision": "5a04dff8ca1e135c96bf",
