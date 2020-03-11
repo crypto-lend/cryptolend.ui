@@ -263,7 +263,7 @@ class ViewAllRequests extends Component {
                  </div>
                  <div className="col-sm">
                    <span><p>Collateral </p></span>
-                    <span className="btn-inner--text"> {loanRequest.collateral.amount} {getTokenByAddress[loanRequest.collateral.address].symbol}</span>
+                    <span className="btn-inner--text"> {loanRequest.collateral.amount} {getTokenByAddress[loanRequest.collateral.address] && getTokenByAddress[loanRequest.collateral.address].symbol}</span>
                  </div>
                </div>
                    </div>
