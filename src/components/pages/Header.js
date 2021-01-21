@@ -185,7 +185,7 @@ export default class Header extends Component {
                     </svg>
                   </Link>
                 </li>
-                <li className="nav-item dropdown">
+                <li className="nav-item dropdown" style={{ verticalAlign: 'middle' }}>
                   <Link
                     to="#"
                     className="nav-link"
@@ -198,7 +198,16 @@ export default class Header extends Component {
                   </Link>
                 </li>
                 <li className="nav-item dropdown">
+                   <Link
+                    to="#"
+                    className="nav-link"
+                    data-toggle="tooltip"
+                    title="IN"
+                    to="#"
+                    role="button"
+                  >
                   <ReactCountryFlag code="IN" svg />
+                  </Link>
                 </li>
               </ul>
             </div>
