@@ -2,9 +2,9 @@
 
 UI for interacting with Smart Contracts over ETH Lending Platform. 
 
-## Functions / UI Methods 
+## Smart contract interaction
 
-### Loan request
+Loan request
 
 ```    
 const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
