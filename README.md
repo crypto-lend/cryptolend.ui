@@ -12,14 +12,14 @@ LoanBook.createNewLoanRequest(params);
 ```
 
 
-### Loan Offer
+Loan Offer
 
 ```
 const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
 LoanBook.createNewLoanOffer(params);
 ```
 
-### Get All loans
+Get All loan data
 
 ```
 const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
@@ -27,14 +27,14 @@ LoanBook.getAllLoans(params);
 })
 ```
 
-### Get collateral price
+Get collateral price
 
 ```
 const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
 LoanBook.getCollateralPrice(params.collateralAddress);
 ```
 
-### Standard Token
+Standard Token
 ```
 const ERC20 = web3.eth.contract(StandardTokenABI).at(params.ERC20Token);
 ERC20.approve(params.loanContractAddress, web3.toWei(params.tokenAmount));
