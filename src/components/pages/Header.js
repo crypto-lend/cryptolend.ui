@@ -198,7 +198,7 @@ export default class Header extends Component {
                   </Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <ReactCountryFlag code="GB" svg />
+                  <ReactCountryFlag code="IN" svg />
                 </li>
               </ul>
             </div>
