@@ -37,7 +37,7 @@ class LandingPage extends Component {
     return (
       <div>
         <Header/>
-        <div className="LandingPage text-center" style={{ color: "fff" }}>
+        <div className="LandingPage text-center">
           <div className="position-relative">
             <section className="section-hero section-shaped my-0">
               <div className="shape shape-style-1 shape-primary">
