@@ -56,4 +56,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ## Author
 
  [Dev](https://github.com/devilla)
- [Saransh](https://github.com/maektwain)
+
