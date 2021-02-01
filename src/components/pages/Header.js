@@ -48,11 +48,9 @@ export default class Header extends Component {
           <div className="container" style={{ maxWidth: "1080px" }}>
             <div className="navbar-collapse collapse" id="navbar_global">
               <ul className="navbar-nav-hover align-items-lg-center">
-              <li className="nav-item dropdown text-center">
               <Link to="/">
                 <img src={blocklendr} alt="Blocklendr" style={{ width: "20%" }} />
               </Link>
-              </li>
                 <li className="nav-item dropdown">
                   <Link to="/myloans"
                     className="nav-link"
