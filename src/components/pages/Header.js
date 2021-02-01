@@ -45,7 +45,7 @@ export default class Header extends Component {
           className="navbar navbar-main navbar-expand-lg navbar-light"
         >
 
-          <div className="container" style={{ maxWidth: "1080px" }}>
+          <div className="container">
             <div className="navbar-collapse collapse" id="navbar_global">
               <ul className="navbar-nav-hover align-items-lg-center">
               <Link to="/">
