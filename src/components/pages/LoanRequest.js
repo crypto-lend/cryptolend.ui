@@ -1,3 +1,4 @@
+// Import the required libraries and components
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Loader from 'react-loader';
@@ -7,6 +8,8 @@ import { ExecuteTokenApproval } from '../../services/token';
 import { FinalizeCollateralTransfer } from '../../services/loanContract';
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
+
+// Create a loan request class component extending React.Component
 class LoanRequest extends Component {
   constructor(){
     super();
@@ -47,7 +50,7 @@ class LoanRequest extends Component {
   }
 
 createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount) => {
-      
+      console.log(principal, duration, interest, collateralCurrency, collateralAmount);
       try {
         debugger;
         const loanContractAddress = await CreateNewLoanRequest({
@@ -395,7 +398,8 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
                   </div>
                   { allowCreateRequest && monthlyInt?
                     <div className="btn-wrapper text-center mb-5 mt-5" onClick={()=>{
-                      this.createLoanRequest(loanAmount,duration,monthlyInt*100,collateralCurrency,collateralValue);
+                  
+                      this.createLoanRequest(loanAmount,duration,monthlyInt*100,"0xaaeEbD331B94dD269c085cCB22F7643e6f70dde9",collateralValue,100);
                       }}>
                       <br/>
                       <a className="btn btn-primary btn-icon " style={{color:'white'}}>
