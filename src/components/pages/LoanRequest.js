@@ -49,8 +49,8 @@ class LoanRequest extends Component {
     };
   }
 
-createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount) => {
-      console.log(principal, duration, interest, collateralCurrency, collateralAmount);
+createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount, priceInEth) => {
+      console.log(principal, duration, interest, collateralCurrency, collateralAmount, priceInEth);
       try {
         debugger;
         const loanContractAddress = await CreateNewLoanRequest({
@@ -58,7 +58,8 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
           duration: duration,
           interest: interest,
           collateralAddress: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address,
-          collateralAmount: collateralAmount
+          collateralAmount: collateralAmount,
+          priceInEth: priceInEth
         });
 
         this.setState({
@@ -398,7 +399,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
                   </div>
                   { allowCreateRequest && monthlyInt?
                     <div className="btn-wrapper text-center mb-5 mt-5" onClick={()=>{
-                  
+
                       this.createLoanRequest(loanAmount,duration,monthlyInt*100,"0xaaeEbD331B94dD269c085cCB22F7643e6f70dde9",collateralValue,100);
                       }}>
                       <br/>

@@ -195,18 +195,6 @@ export default class Header extends Component {
                     <i className="ni ni-circle-08" aria-hidden="true"></i>
                   </Link>
                 </li>
-                <li className="nav-item dropdown">
-                   <Link
-                    to="#"
-                    className="nav-link"
-                    data-toggle="tooltip"
-                    title="IN"
-                    to="#"
-                    role="button"
-                  >
-                  <ReactCountryFlag code="IN" svg />
-                  </Link>
-                </li>
               </ul>
             </div>
           </div>
