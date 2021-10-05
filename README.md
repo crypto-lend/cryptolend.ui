@@ -27,13 +27,6 @@ LoanBook.getAllLoans(params);
 })
 ```
 
-Get collateral price
-
-```
-const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
-LoanBook.getCollateralPrice(params.collateralAddress);
-```
-
 Standard Token
 ```
 const ERC20 = web3.eth.contract(StandardTokenABI).at(params.ERC20Token);
