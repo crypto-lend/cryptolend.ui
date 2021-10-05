@@ -52,7 +52,7 @@ class LoanRequest extends Component {
 createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount, priceInEth) => {
       console.log(principal, duration, interest, collateralCurrency, collateralAmount, priceInEth);
       try {
-        debugger;
+        
         const loanContractAddress = await CreateNewLoanRequest({
           principal: principal,
           duration: duration,
@@ -80,7 +80,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
   handleERC20TokenApproval = async(collateralAddress, loanContractAddress, collateralValue) => {
 
     try {
-      debugger;
+
       await ExecuteTokenApproval({
         ERC20Token: collateralAddress,
         loanContractAddress: loanContractAddress,
@@ -143,7 +143,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
     let {collateralValue} = this.state;
 
     try {
-      debugger;
+
       const collateralPrice = await FetchCollateralPrice({
         collateralAddress: collateralAddress
       });

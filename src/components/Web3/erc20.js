@@ -5,13 +5,13 @@ export const supported_erc20_token = [
     {
         name: "Matic Token",
         symbol: "MATIC",
-        address: "0x4092d0Bb7eA9b783D6976c3aD78F896E9afFA1B9"
+        address: "0x70Bb12F4A179D816767aB4e8d24A914D573A2839"
     }
  ];
 
  // to get the token by its unique address
 export const getTokenByAddress = {
-  "0x4092d0Bb7eA9b783D6976c3aD78F896E9afFA1B9": {
+  "0x70Bb12F4A179D816767aB4e8d24A914D573A2839": {
       name: "Matic Token",
       symbol: "MATIC"
   }
@@ -22,6 +22,6 @@ export const getTokenBySymbol = {
 
   "MATIC": {
       name: "Matic Token",
-      address: "0x4092d0Bb7eA9b783D6976c3aD78F896E9afFA1B9"
+      address: "0x70Bb12F4A179D816767aB4e8d24A914D573A2839"
    }
 };

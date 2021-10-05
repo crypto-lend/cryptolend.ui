@@ -5,7 +5,6 @@ import { LoanBookABI, LoanBookAddress } from '../components/Web3/abi';
 export const GetLoans = () => {
     return new Promise((resolve, reject) => {
 
-        debugger;
         const { web3 } = window;
 
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
@@ -24,13 +23,12 @@ export const GetLoans = () => {
 export const CreateNewLoanRequest = (params) => {
 
     return new Promise((resolve, reject) => {
-        debugger;
         const { web3 } = window;
 
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
 
         LoanBook.createNewLoanRequest(web3.toWei(params.principal), params.duration,
-            [[web3.toHex(params.collateralAddress), web3.toHex(0), padLeft(web3.toHex(params.interest),64), params.priceInEth]],{
+            web3.toHex(params.collateralAddress), web3.toHex(0), padLeft(web3.toHex(params.interest),64), params.priceInEth,{
             from: web3.eth.accounts[0]
             },async(err, transactionHash) => {
                 if(!err){
@@ -49,7 +47,6 @@ export const CreateNewLoanRequest = (params) => {
 export const CreateNewLoanOffer = (params) => {
 
     return new Promise((resolve, reject) => {
-        debugger;
         const { web3 } = window;
 
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
