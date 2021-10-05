@@ -49,15 +49,14 @@ class LoanRequest extends Component {
     };
   }
 
-createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount, priceInEth) => {
-      console.log(principal, duration, interest, collateralCurrency, collateralAmount, priceInEth);
+createLoanRequest = async (principal, duration, interest, collateralAddress, collateralAmount, priceInEth) => {
       try {
         
         const loanContractAddress = await CreateNewLoanRequest({
           principal: principal,
           duration: duration,
           interest: interest,
-          collateralAddress: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address,
+          collateralAddress: collateralAddress,
           collateralAmount: collateralAmount,
           priceInEth: priceInEth
         });
@@ -67,7 +66,8 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
           createRequestAlert: true,
           approveRequestAlert: true,
           loanContractAddress: loanContractAddress,
-          collateralAddress: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address
+          collateralAddress: collateralAddress 
+          //getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address
         })
 
       } catch (e) {

@@ -24,7 +24,7 @@ export const CreateNewLoanRequest = (params) => {
 
     return new Promise((resolve, reject) => {
         const { web3 } = window;
-
+        console.log(params);
         const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
 
         LoanBook.createNewLoanRequest(web3.toWei(params.principal), params.duration,
