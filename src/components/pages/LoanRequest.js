@@ -400,7 +400,7 @@ createLoanRequest = async (principal, duration, interest, collateralCurrency, co
                   { allowCreateRequest && monthlyInt?
                     <div className="btn-wrapper text-center mb-5 mt-5" onClick={()=>{
 
-                      this.createLoanRequest(loanAmount,duration,monthlyInt*100,"0xaaeEbD331B94dD269c085cCB22F7643e6f70dde9",collateralValue,100);
+                      this.createLoanRequest(loanAmount,duration,monthlyInt*100,"0x70Bb12F4A179D816767aB4e8d24A914D573A2839",collateralValue,100);
                       }}>
                       <br/>
                       <a className="btn btn-primary btn-icon " style={{color:'white'}}>
