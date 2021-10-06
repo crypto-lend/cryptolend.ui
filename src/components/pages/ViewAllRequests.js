@@ -133,7 +133,7 @@ class ViewAllRequests extends Component {
 
 
 
-            <div className="card card-pricing border-0 col-md-4">
+            <div className="card card-pricing border-0 col-md-4" style={{marginTop:'-7.6%'}}>
             <div className="card-header bg-transparent">
               <i className="fa fa-filter" aria-hidden="true"></i>
               <a className="ls-1 text-primary py-3 mb-0 ml-2">View All Requests</a>
@@ -202,10 +202,10 @@ class ViewAllRequests extends Component {
                 <div className="mt-3">
                   <label for="">Monthly Interest</label>
                   <div className="">
-                  <label style={{marginLeft:'-180px'}}> ({minMonthlyInt} %) </label>
+                  <label style={{marginLeft:'-324px'}}> ({minMonthlyInt} %) </label>
                   </div>
-                  <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
-                  <label> ({maxMonthlyInt} %)</label>
+                  <div className="" style={{marginRight:'-416px',marginTop:'-38px',marginLeft:'9px',marginBottom:'11px'}}>
+                  <label style = {{marginLeft:'-73px'}}> ({maxMonthlyInt} %)</label>
                   </div>
                   <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]});}} />
                 </div>
@@ -214,10 +214,10 @@ class ViewAllRequests extends Component {
                 <div className="mt-3">
                   <label for="">Duration</label>
                   <div className="">
-                  <label style={{marginLeft:'-180px'}}> ({minDuration} Month) </label>
+                  <label style={{marginLeft:'-285px'}}> ({minDuration} Month) </label>
                   </div>
                   <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
-                  <label> ({maxDuration} Month)</label>
+                  <label style={{marginRight:'-135px'}} > ({maxDuration} Month)</label>
                   </div>
                   <Nouislider range={{ min: 0, max: 12 }} start={[0, 12]} connect onChange={(e)=>{this.setState({minDuration:e[0],maxDuration:e[1]});}} />
                   </div>
