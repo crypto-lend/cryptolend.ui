@@ -20,11 +20,10 @@ export const GetLoanDetails = (loanContractAddress) => {
 }
 
 export const FinalizeCollateralTransfer = (loanContractAddress, collateralAddress) => {
-
+console.log("FinalizeCollateralTransfer:",loanContractAddress, collateralAddress);
     return new Promise((resolve, reject) => {
 
         const { web3 } = window;
-        debugger;
         const LoanContract = web3.eth.contract(LoanContractABI).at(loanContractAddress);
 
         LoanContract.transferCollateralToLoan(collateralAddress, {
@@ -33,7 +32,7 @@ export const FinalizeCollateralTransfer = (loanContractAddress, collateralAddres
                 if(!err){
                     console.log(transactionHash);
                     const receipt = await fetchMinedTransactionReceipt(transactionHash);
-                    // need to see here if actually transferred 
+                    // need to see here if actually transferred
                     resolve(receipt);
                 } else {
                     reject(err);

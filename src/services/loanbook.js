@@ -34,7 +34,8 @@ export const CreateNewLoanRequest = (params) => {
                 if(!err){
                     console.log(transactionHash);
                     const receipt = await fetchMinedTransactionReceipt(transactionHash);
-                    resolve(padLeft(web3.toHex(web3.toBigNumber(receipt.logs[0].topics[2])), 32));
+                    console.log("receipt:",receipt.logs[0].topics[0]);
+                    resolve(padLeft(web3.toHex(web3.toBigNumber(receipt.logs[0].topics[0])), 32));
                 } else {
                     reject(err);
                 }
@@ -66,7 +67,6 @@ export const CreateNewLoanOffer = (params) => {
             if(!err){
                 console.log(transactionHash);
                 const receipt = await fetchMinedTransactionReceipt(transactionHash);
-                // console.log(receipt.logs[0].topics[2])
                 resolve(padLeft(web3.toHex(web3.toBigNumber(receipt.logs[0].topics[2])), 32));
             } else {
                 reject(err);
