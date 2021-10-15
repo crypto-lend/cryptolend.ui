@@ -1,37 +1,49 @@
 ## Description
 
-UI for interacting with Smart Contracts over ETH Blockchain 
+UI for interacting with Smart Contracts over ETH Lending Platform. 
 
-## Functions / UI Methods 
+## Smart contract interaction
 
 Loan request
-Borrower Request 
-Metamask
+
+```    
+const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
+LoanBook.createNewLoanRequest(params);
+```
 
 
-## How to run ?
+Loan Offer
 
+```
+const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
+LoanBook.createNewLoanOffer(params);
+```
 
+Get All loan data
 
-## Before running
+```
+const LoanBook = web3.eth.contract(LoanBookABI).at(LoanBookAddress);
+LoanBook.getAllLoans(params);
+})
+```
 
+Standard Token
+```
+const ERC20 = web3.eth.contract(StandardTokenABI).at(params.ERC20Token);
+ERC20.approve(params.loanContractAddress, web3.toWei(params.tokenAmount));
+```
 
-
-## Available Scripts
+### Available Scripts
 
 Install dependencies:
 
+`npm install`
 
-### `npm install`
+Run DApp in browser:
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`npm start`
 
 ## Author
 
- [Dev](https://github.com/devilla)
- [Saransh](https://github.com/maektwain)
+ [Dev Yadav](https://github.com/devilla)
+

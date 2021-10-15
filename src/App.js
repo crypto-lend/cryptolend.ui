@@ -17,11 +17,7 @@ import { enableWeb3 } from './components/Web3/enableWeb3';
 
 const App = () => (
   <Provider store={createAppStore()}>
-    {
-      enableWeb3()
-
-    }
-    <div style={{ backgroundColor: 'white' }}>
+    <div>
       <Web3Provider />
       <AppRouter />
     </div>

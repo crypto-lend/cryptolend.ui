@@ -1,3 +1,4 @@
+// Import the required libraries, styles and components
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/vendor/font-awesome/css/font-awesome.css';
@@ -8,9 +9,14 @@ import { CreateNewLoanOffer, FetchCollateralPrice } from '../../services/loanboo
 import { TransferFundsToLoanContract } from '../../services/loanContract';
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
+// Create a LoanOffer Class based component imported from 'react'
 class LoanOffer extends Component {
+
+  // Define the constructor and call `super()` method of parent class
   constructor() {
     super();
+
+    // Initialize the state variables
     this.state = {
       loanCurrency: true,
       collateral: false,
@@ -41,6 +47,7 @@ class LoanOffer extends Component {
     };
   }
 
+  // Array removal method
   arrayRemove = (arr, value) => {
 
     return arr.filter(function (ele) {
@@ -50,6 +57,7 @@ class LoanOffer extends Component {
   }
 
 
+  // Create Loan offer
   createLoanOffer = async (principal, duration, collateralMetadata) => {
     try {
       console.log("collateralMetadata", collateralMetadata);
@@ -81,8 +89,7 @@ class LoanOffer extends Component {
     }
   }
 
-
-
+  // Fund loan offer
   fundLoanOffer = async (loanAmount, loanContractAddress) => {
 
     try {
@@ -101,6 +108,7 @@ class LoanOffer extends Component {
     }
   }
 
+  // Accept loan offer
   acceptLoanOffer = async (interest, collateralAddress, loanContractAddress, collateralAmount, collateralPrice, ltv) => {
     console.log("acceptLoanOffer => loanContractAddress line 102", loanContractAddress);
     // var self = this;
@@ -116,6 +124,7 @@ class LoanOffer extends Component {
 
   }
 
+  // Handle addition of new collaterals
   handleAddCollateral = (collateralCurrency, ltv, mpr) => {
     let { collateralMetadata, erc20_tokens } = this.state;
     collateralMetadata.push({
@@ -133,16 +142,24 @@ class LoanOffer extends Component {
     this.setState({ collateralMetadata: collateralMetadata })
   }
 
+  // handle event after collaterals are selected
   handleCollateralNext = () => {
     this.setState({ durationView: true, collateral: false });
   }
 
+  // Call the render method for UI components
   render() {
+
+    // Initialize the state variables to the local variables
     const { loanAmount, duration, monthlyInt, loan, currency, borrow, durationView, durationArr, monthlyInterest, borrowLess, erc20_tokens, collateralMetadata, collateralValue,
       collateralCurrency, ltv, mpr, createOfferAlert, approveOfferAlert, acceptLoanAlert, loanContractAddress, ropstenTransactionhash } = this.state;
 
+    // Call the return() for UI components
     return (
+      // Create a parent `<div>` and must to keep every UI component inside it
       <div className="LoanOffer text-center">
+
+        {/** Display the Header component */}
         <Header />
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
@@ -158,12 +175,16 @@ class LoanOffer extends Component {
               <span className="span-50"></span>
               <span className="span-100"></span>
             </div>
-            <div className="container d-flex">
+
+            {/** Display Loan offer UI component */}
+            <div className="container shape- d-flex align-items-center">
               <div className="col-lg-7">
                 <div className="card">
                   <div className="card-header text-center">
                     <h5> New Loan Offer</h5>
                   </div>
+
+                  {/** Choose your loan currency UI*/}
                   <div className="card-body" style={{ display: this.state.loanCurrency ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text"><strong>Choose your loan offer currency.</strong></span>
@@ -185,6 +206,8 @@ class LoanOffer extends Component {
                       </div>
                     </div>
                   </div>
+
+                  {/** Insert Loan abbount UI */}
                   <div className="card-body" style={{ display: this.state.loan ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text"><strong>Insert the loan offer amount.</strong></span>
@@ -197,6 +220,7 @@ class LoanOffer extends Component {
                     </div>
                   </div>
 
+                  {/** Choose loan currency UI */}
                   <div className="card-body" style={{ display: this.state.currency ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text"><strong>Choose your loan currency.</strong></span>
@@ -219,13 +243,13 @@ class LoanOffer extends Component {
                       </a>
                     </div>
                   </div>
+
+                  {/** Add collateral UI */}
                   <div className="card-body" style={{ display: this.state.collateral ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Add your collateral.</span>
                     </div>
-
                     {<div className="row ml-2">
-
                       {<div className="card bg-gradient-success col-md-5" style={{ height: '300px', marginLeft: '30%' }}>
                         <div className="col-md-12 form-group mt-5">
                           <select className="form-control" id="exampleFormControlSelect1" style={{ width: '80px', display: 'inline' }} onClick={(e) => {
@@ -245,7 +269,6 @@ class LoanOffer extends Component {
                       </div>
                       }
                     </div>
-
                     }
 
                     <div className="text-center mt-3">
@@ -261,14 +284,12 @@ class LoanOffer extends Component {
                     </div>
                   </div>
 
-
+                  {/** Define loan duration UI */}
                   <div className="card-body" style={{ display: this.state.durationView ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Define loan duration.</span>
-
                     </div>
                     <br />
-
                     <div className="btn-wrapper" style={{ marginTop: '245px', cursor: 'pointer' }}>
                       {
                         this.state.durationArr.map((item, i) => {
@@ -276,10 +297,11 @@ class LoanOffer extends Component {
                         })
                       }
                     </div>
-
                   </div>
                 </div>
               </div>
+
+              {/** Loan Overview UI */}
               <div className="col-md-5">
                 <div className="card">
                   <div className="card-header text-center">
@@ -289,6 +311,7 @@ class LoanOffer extends Component {
                     <p>Loan amount {loanAmount} ETH</p>
                   </div>
 
+                  {/** Selected collateral UI */}
                   <div className="card-body text-left" style={{ marginBottom: !duration ? '45%' : '21%' }}>
                     <p>Collateral</p>
                     {collateralMetadata.map((collateral, i) => {
@@ -302,7 +325,7 @@ class LoanOffer extends Component {
                     })
 
                     }
-
+                    {/** Fund loan UI */}
                     {duration ? <div className="mt-4"><p>Duration {duration} days</p></div>
                       : <div className="mt-4"><p>Duration  (not set) </p></div>}
 
@@ -322,7 +345,7 @@ class LoanOffer extends Component {
                           this.fundLoanOffer(loanAmount, loanContractAddress);
                         }}>
                           Fund Loan
-                      </button>
+                        </button>
                       </div>}
                     {/*acceptLoanAlert &&
                   <div className="btn-wrapper text-center mt-3">
@@ -333,15 +356,18 @@ class LoanOffer extends Component {
                     </button>
                   </div>*/}
 
+                    {/** Funded loan status update UI */}
                     {acceptLoanAlert && <div className="alert alert-success mt-2" style={{ marginLeft: '-1.5%', width: '104.5%', marginTop: '-7%' }} role="alert">
                       Your loan is funded successfully!
-                  </div>}
+                    </div>}
                   </div>
                 </div>
               </div>
             </div>
           </section>
         </div>
+
+        {/** Loan offer creation status update UI */}
         {!createOfferAlert && <div className="alert alert-success" style={{ marginLeft: '9.5%', width: '46.5%', marginTop: '-7%' }} role="alert">
           <strong>Congratulations! Loan Offer is Created successfully!</strong>
         </div>}
@@ -351,4 +377,5 @@ class LoanOffer extends Component {
   }
 }
 
+// Export the LoanOffer component
 export default LoanOffer;

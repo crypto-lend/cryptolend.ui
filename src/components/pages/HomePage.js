@@ -37,7 +37,7 @@ class LandingPage extends Component {
     return (
       <div>
         <Header/>
-        <div className="LandingPage text-center" style={{ color: "fff" }}>
+        <div className="LandingPage text-center">
           <div className="position-relative">
             <section className="section-hero section-shaped my-0">
               <div className="shape shape-style-1 shape-primary">
@@ -56,7 +56,7 @@ class LandingPage extends Component {
               <div className="container shape-container d-flex align-items-center">
                 <div className="col px-0">
                   <div className="col-lg-7 text-center">
-                    <strong style={{ marginTop: "15%", fontSize: "50px" }}>
+                    <strong style={{ marginTop: "15%", fontSize: "50px", color: "#fff" }}>
                       {" "}
                       THE GLOBAL LENDING MARKETPLACE
                     </strong>

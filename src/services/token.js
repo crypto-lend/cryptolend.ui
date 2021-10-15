@@ -10,7 +10,7 @@ export const ExecuteTokenApproval = (params) => {
 
         const ERC20 = web3.eth.contract(StandardTokenABI).at(params.ERC20Token);
 
-        ERC20.approve(params.loanContractAddress, params.tokenAmount,{
+        ERC20.approve(params.loanContractAddress, web3.toWei(params.tokenAmount),{
             from: web3.eth.accounts[0]
             }, async (err, transactionHash) => {
                 if(!err){

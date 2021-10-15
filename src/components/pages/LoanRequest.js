@@ -1,3 +1,4 @@
+// Import the required libraries and components
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Loader from 'react-loader';
@@ -7,9 +8,15 @@ import { ExecuteTokenApproval } from '../../services/token';
 import { FinalizeCollateralTransfer } from '../../services/loanContract';
 import { supported_erc20_token, getTokenBySymbol, getTokenByAddress } from '../Web3/erc20';
 
+
+// Create a loan request class component extending React.Component
 class LoanRequest extends Component {
+
+  // Create a contructor and call `super()` method of parent class
   constructor() {
     super();
+
+    // Initialize the state variables inside the constructor
     this.state = {
       collateral: true,
       loan: false,
@@ -22,6 +29,7 @@ class LoanRequest extends Component {
       loaded: true,
       alertLoanAmount: false,
       createRequestAlert: false,
+      allowCreateRequest: true,
       approveRequestAlert: false,
       transferCollateralAlert: false,
       transferCollateralSuccessAlert: false,
@@ -45,25 +53,31 @@ class LoanRequest extends Component {
     };
   }
 
-  createLoanRequest = async (principal, duration, interest, collateralCurrency, collateralAmount) => {
-
+  // Define `createLoanRequest()` method
+  createLoanRequest = async (principal, duration, interest, collateralAddress, collateralAmount, priceInEth) => {
     try {
+      // Pass the required params as an object in thhe `CreateNewLoanRequest()` method
       const loanContractAddress = await CreateNewLoanRequest({
         principal: principal,
         duration: duration,
         interest: interest,
-        collateralAddress: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address,
-        collateralAmount: collateralAmount
+        collateralAddress: collateralAddress,
+        collateralAmount: collateralAmount,
+        priceInEth: priceInEth
       });
 
+      // Set the below state variables
       this.setState({
+        allowCreateRequest: false,
         createRequestAlert: true,
         approveRequestAlert: true,
         loanContractAddress: loanContractAddress,
-        collateralAddress: getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address
+        collateralAddress: collateralAddress
+        //getTokenBySymbol[collateralCurrency] && getTokenBySymbol[collateralCurrency].address
       })
 
     } catch (e) {
+      // Log the error if any occured
       console.log(e);
     } finally {
 
@@ -90,18 +104,23 @@ class LoanRequest extends Component {
     }
   }
 
+  // Define `handleTransferCollateral()` method
   handleTransferCollateral = async (loanContractAddress, collateralAddress) => {
 
+    // try-catch block to handle errors
     try {
-
+      // call `FinalizeCollateralTransfer()` method
       await FinalizeCollateralTransfer(loanContractAddress, collateralAddress);
 
+      // set the Collateral transfer variables responsible for UI change
       this.setState({
         transferCollateralAlert: false,
         transferCollateralSuccessAlert: true
       });
 
     } catch (error) {
+
+      // set the Collateral transfer variables responsible for UI change
       this.setState({
         transferCollateralAlert: false,
         transferCollateralFailAlert: true
@@ -109,11 +128,13 @@ class LoanRequest extends Component {
     }
   }
 
-
+  // Define `handleMonthlyInterest()` method 
   handleMonthlyInterest = (e) => {
 
+    // Assign the state variables to local variables
     const { loanAmount, monthlyInt, duration, totalPremium, monthlyInstallment, apr, originationFee } = this.state;
 
+    // conditions for increment of monthly interest value
     if (e.target.value == 'plus' && monthlyInt < 5) {
       this.setState({ monthlyInt: monthlyInt + 0.25 });
       let totalRepayment = ((loanAmount * (monthlyInt + 0.25) * ((duration / 30) + 1)) / (2 * 100))
@@ -122,6 +143,8 @@ class LoanRequest extends Component {
       this.setState({ apr: (totalRepayment / loanAmount) * 100 })
       console.log("apr : ", apr, totalRepayment);
     }
+
+    // conditions for decrement of monthly interest value
     else if (e.target.value == 'minus' && monthlyInt > 0) {
       this.setState({ monthlyInt: monthlyInt - 0.25 });
       let totalRepayment = ((loanAmount * (monthlyInt - 0.25) * ((duration / 30) + 1)) / (2 * 100))
@@ -131,15 +154,20 @@ class LoanRequest extends Component {
     }
   }
 
+  // Define `handleCollateralConversion()` method
   handleCollateralConversion = async (collateralAddress) => {
 
+    // Assign the state variable to local variable
     let { collateralValue } = this.state;
 
     try {
+
       const collateralPrice = await FetchCollateralPrice({
         collateralAddress: collateralAddress
       });
 
+      /* collateralPrice here is in ETH which is divided by 2 is used assuming fix LTV of 50%
+       and collateralValue is number of tokens which can be decimal value */
       this.setState({
         loanAmount: (collateralValue * collateralPrice / 2),
         currency: false,
@@ -147,22 +175,30 @@ class LoanRequest extends Component {
       })
 
     } catch (error) {
-
+      //Log error
+      console.log(error);
     }
   }
 
+  // Call the `render()` method to display the frontend
   render() {
 
-
+    // Assign the state variables to the local
     const { loanAmount, duration, monthlyInt, collateralAddress, collateralValue, collateralCurrency, collateral, erc20_tokens, loan, currency, borrow,
       durationView, durationArr, monthlyInterest, borrowLess, totalPremium, monthlyInstallment, originationFee, apr, alertLoanAmount,
-      loanAmountInput, createRequestAlert, loanContractAddress, ropstenTransactionhash, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
+      loanAmountInput, createRequestAlert, allowCreateRequest, loanContractAddress, ropstenTransactionhash, approveRequestAlert, transferCollateralAlert, transferCollateralSuccessAlert, transferCollateralFailAlert } = this.state;
 
-
+    // Call the `return()` method and display the frontend code
     return (
+
+      // Create a parent `<div>`
       <div className="LoanRequest text-center">
+
+        {/* Call the `<Header/>` and <Loader/> components*/}
         <Header />
         <Loader loaded={this.state.loaded} />
+
+        {/** Create New Loan Request UI */}
         <div className="position-relative">
           <section className="section-hero section-shaped my-0">
             <div className="">
@@ -183,12 +219,15 @@ class LoanRequest extends Component {
                   <div className="card-header text-center">
                     <h5> New Loan Request</h5>
                   </div>
+
+                  {/** Chose your collateral curency display only when `collateral is returned true`*/}
                   <div className="card-body" style={{ display: collateral ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your collateral currency.</span>
                     </div>
                     <div className="row mt-5">
-                      <div className="col-md-6" style={{ marginTop: '25px', marginBottom: '85px', cursor: 'pointer' }} onClick={() => { this.setState({ collateral: false, loan: true }); }}>
+                      <div className="col-md-6" style={{ marginTop: '25px', marginBottom: '85px', cursor: 'pointer' }}
+                        onClick={() => { this.setState({ collateral: false, loan: true }); }}>
                         <span className="btn-inner--text"><img style={{ width: '25px' }} src="/assets/img/eth.png" /></span>
                         <br />
                         <p>Ethereum</p>
@@ -205,7 +244,6 @@ class LoanRequest extends Component {
                           }
                         </select>
                       </div>
-
                     </div>
                     <div className="btn-wrapper" style={{ marginTop: '20px', cursor: 'pointer' }} onClick={() => { this.setState({ collateral: false, loan: true }) }}>
                       <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
@@ -213,6 +251,8 @@ class LoanRequest extends Component {
                       </a>
                     </div>
                   </div>
+
+                  {/** Choose collateral amount UI */}
                   <div className="card-body" style={{ display: loan ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Insert the collateral amount.</span>
@@ -234,6 +274,7 @@ class LoanRequest extends Component {
                     </div>
                   </div>
 
+                  {/** Choose loan currency UI */}
                   <div className="card-body" style={{ display: currency ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose your loan currency.</span>
@@ -248,14 +289,13 @@ class LoanRequest extends Component {
                         <span className="btn-inner--text">Back</span>
                       </a>
                     </div>
-
                   </div>
-
                   <div className="card-body" style={{ display: borrow ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Great! you can borrow :</span>
                     </div>
 
+                    {/** Select the borrow less feature*/}
                     {borrowLess ?
                       <div>
                         <input className="form-control form-control-lg" type="number" min="1" max={loanAmount} placeholder='Enter loan amount' Value={loanAmount} onChange={(e) => {
@@ -292,6 +332,8 @@ class LoanRequest extends Component {
                       </div>
                     </div>
                   </div>
+
+                  {/** Define the loan duration */}
                   <div className="card-body" style={{ display: durationView ? 'block' : 'none' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Define loan duration.</span>
@@ -301,17 +343,20 @@ class LoanRequest extends Component {
                     <div className="btn-wrapper" style={{ marginTop: '85px', cursor: 'pointer' }}>
                       {
                         durationArr.map((item, i) => {
-                          return <button id={i} type="button" className="btn btn-outline-primary" onClick={() => { this.setState({ duration: item }) }}>{item}</button>;
+                          return <button id={i} type="button" className="btn btn-outline-primary"
+                            onClick={() => { this.setState({ duration: item }) }}>{item}</button>;
                         })
                       }
                     </div>
                     <div className="row">
-                      <div className="col-md-6" style={{ marginTop: '20px', cursor: 'pointer' }} onClick={() => { this.setState({ durationView: false, borrow: true }); }}>
+                      <div className="col-md-6" style={{ marginTop: '20px', cursor: 'pointer' }}
+                        onClick={() => { this.setState({ durationView: false, borrow: true }); }}>
                         <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                           <span className="btn-inner--text">Back</span>
                         </a>
                       </div>
-                      <div className="col-md-6" style={{ marginTop: '20px', cursor: 'pointer' }} onClick={() => { this.setState({ durationView: false, monthlyInterest: true }) }}>
+                      <div className="col-md-6" style={{ marginTop: '20px', cursor: 'pointer' }}
+                        onClick={() => { this.setState({ durationView: false, monthlyInterest: true }) }}>
                         <a href="#" className="btn btn-primary btn-icon mb-3 mb-sm-0 m-5">
                           <span className="btn-inner--text">Next</span>
                         </a>
@@ -319,16 +364,16 @@ class LoanRequest extends Component {
                     </div>
                   </div>
 
+                  {/** Choose the monthly interest percentage */}
                   <div className="card-body" style={{ display: monthlyInterest ? 'block' : 'none', marginBottom: monthlyInt ? '123px' : '260px' }}>
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                       <span className="alert-text">Choose the monthly interest percentage for this loan.</span>
                     </div>
 
-
                     <div className="text-left">
                       <button className="btn btn-icon btn-primary" type="button" value="minus" onClick={this.handleMonthlyInterest}>
                         -
-                    </button>
+                      </button>
                     </div>
                     <div className="text-right">
                       <input className="form-control" type="text" value={monthlyInt} style={{ width: '60px', marginTop: '-43px', marginLeft: '373px' }} id="example-time-input" />
@@ -336,7 +381,7 @@ class LoanRequest extends Component {
                     <div className="text-right" style={{ marginTop: '-44px' }}>
                       <button className="btn btn-icon btn-primary" type="button" value="plus" onClick={this.handleMonthlyInterest}>
                         +
-                    </button>
+                      </button>
                     </div>
 
                     <div className="btn-wrapper" style={{ marginTop: '20px', cursor: 'pointer' }} onClick={() => { this.setState({ durationView: true, monthlyInterest: false }) }}>
@@ -347,6 +392,8 @@ class LoanRequest extends Component {
 
 
                   </div>
+
+                  {/** Loan Description */}
                   {monthlyInt ? <div>
                     <div className="alert alert-primary alert-dismissible fade show text-left pl-3 " role="alert">
                       <span className="alert-text">Total premium for this loan : {totalPremium} ETH ({apr.toFixed(2)}% APR)</span>
@@ -359,6 +406,8 @@ class LoanRequest extends Component {
                   }
                 </div>
               </div>
+
+              {/** Overview of the loan */}
               <div className="col-md-5">
                 <div className="card">
                   <div className="card-header text-center">
@@ -387,9 +436,12 @@ class LoanRequest extends Component {
                     }
 
                   </div>
-                  {monthlyInt ?
+
+                  {/** Create a loan request */}
+                  {allowCreateRequest && monthlyInt ?
                     <div className="btn-wrapper text-center mb-5 mt-5" onClick={() => {
-                      this.createLoanRequest(loanAmount, duration, monthlyInt * 100, collateralCurrency, collateralValue);
+
+                      this.createLoanRequest(loanAmount, duration, monthlyInt * 100, "0x70Bb12F4A179D816767aB4e8d24A914D573A2839", collateralValue, 100);
                     }}>
                       <br />
                       <a className="btn btn-primary btn-icon " style={{ color: 'white' }}>
@@ -398,6 +450,7 @@ class LoanRequest extends Component {
                     </div>
                     : ''
                   }
+                  {{/** Approve Loan Request UI*/ }}
                   {approveRequestAlert &&
                     <div className="alert alert-primary" role="alert">
                       <strong>Approve Transfer collateral of {collateralValue} {collateralCurrency} tokens</strong>
@@ -409,8 +462,9 @@ class LoanRequest extends Component {
                       this.handleERC20TokenApproval(collateralAddress, loanContractAddress, collateralValue)
                     }}>
                       Approve
-                  </button>}
+                    </button>}
 
+                  {/** Transfer Collateral UI */}
                   {transferCollateralAlert &&
                     <div className="alert alert-primary" role="alert">
                       <strong>Transfer collateral of {collateralValue} {collateralCurrency} tokens</strong>
@@ -421,7 +475,8 @@ class LoanRequest extends Component {
                       this.handleTransferCollateral(loanContractAddress, collateralAddress)
                     }}>
                       Transfer
-                  </button>}
+                    </button>}
+                  {/** Colateral Transfer status update UI */}
                   {transferCollateralFailAlert && <div className="alert alert-warning mt-2" style={{ marginLeft: '-1.5%', width: '104.5%' }} role="alert">
                     Collateral transfer has failed.
                   </div>}
@@ -442,4 +497,5 @@ class LoanRequest extends Component {
   }
 }
 
+// Export the `LoanRequest` class based component
 export default LoanRequest;

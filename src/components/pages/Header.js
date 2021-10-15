@@ -45,14 +45,12 @@ export default class Header extends Component {
           className="navbar navbar-main navbar-expand-lg navbar-light"
         >
 
-          <div className="container" style={{ maxWidth: "1080px" }}>
+          <div className="container">
             <div className="navbar-collapse collapse" id="navbar_global">
               <ul className="navbar-nav-hover align-items-lg-center">
-                {/* <li className="nav-item dropdown text-center">
-                  <Link to="/">
-                    <img src={Cryptolendr} alt="Cryptolendr" style={{ width: "20%" }} />
-                  </Link>
-                </li> */}
+              <Link to="/">
+                <img src={blocklendr} alt="Blocklendr" style={{ width: "20%" }} />
+              </Link>
                 <li className="nav-item dropdown">
                   <Link to="/myloans"
                     className="nav-link"
@@ -185,7 +183,7 @@ export default class Header extends Component {
                     </svg>
                   </Link>
                 </li>
-                <li className="nav-item dropdown">
+                <li className="nav-item dropdown" style={{ verticalAlign: 'middle' }}>
                   <Link
                     to="#"
                     className="nav-link"
@@ -196,9 +194,6 @@ export default class Header extends Component {
                   >
                     <i className="ni ni-circle-08" aria-hidden="true"></i>
                   </Link>
-                </li>
-                <li className="nav-item dropdown">
-                  <ReactCountryFlag code="GB" svg />
                 </li>
               </ul>
             </div>
