@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { EthereumIcon } from "../Web3/EthereumIcon";
 import { Link } from "react-router-dom";
-import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
+// import Cryptolendr from "../../assets/img/brand/CryptolendrLogo.png";
 import {
   fetchNetwork,
   fetchAccounts,

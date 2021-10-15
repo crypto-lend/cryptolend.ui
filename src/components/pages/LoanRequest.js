@@ -213,7 +213,7 @@ class LoanRequest extends Component {
               <span className="span-50"></span>
               <span className="span-100"></span>
             </div>
-            <div className="container shape- d-flex align-items-center">
+            <div className="container d-flex">
               <div className="col-lg-7">
                 <div className="card">
                   <div className="card-header text-center">

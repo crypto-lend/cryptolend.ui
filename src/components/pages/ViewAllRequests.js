@@ -198,7 +198,6 @@ class ViewAllRequests extends Component {
                             </div>
                           </form>
                         </div>
-<<<<<<< HEAD
                       </div>
                     </li>
                     {/** select range of Monthly Interest */}
@@ -231,113 +230,6 @@ class ViewAllRequests extends Component {
                       </div>
                     </li>
                   </ul>
-=======
-                      </form>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                <div className="mt-3">
-                  <label for="">Monthly Interest</label>
-                  <div className="">
-                  <label style={{marginLeft:'-324px'}}> ({minMonthlyInt} %) </label>
-                  </div>
-                  <div className="" style={{marginRight:'-416px',marginTop:'-38px',marginLeft:'9px',marginBottom:'11px'}}>
-                  <label style = {{marginLeft:'-73px'}}> ({maxMonthlyInt} %)</label>
-                  </div>
-                  <Nouislider range={{ min: 0, max: 5 }} start={[0, 5]} connect onChange={(e)=>{this.setState({minMonthlyInt:e[0],maxMonthlyInt:e[1]});}} />
-                </div>
-                </li>
-                <li>
-                <div className="mt-3">
-                  <label for="">Duration</label>
-                  <div className="">
-                  <label style={{marginLeft:'-285px'}}> ({minDuration} Month) </label>
-                  </div>
-                  <div className="" style={{marginRight:'-180px',marginTop:'-30px'}}>
-                  <label style={{marginRight:'-135px'}} > ({maxDuration} Month)</label>
-                  </div>
-                  <Nouislider range={{ min: 0, max: 12 }} start={[0, 12]} connect onChange={(e)=>{this.setState({minDuration:e[0],maxDuration:e[1]});}} />
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div className="card-footer" style={{marginTop:'-40px'}} onClick={()=>{
-              this.setState({ loanCurrency:'ETH',
-                    collateralCurrency:'ALL',
-                    waitingForLender:true,
-                    waitingForCollateral:false,
-                    waitingForPayback:false,
-                    finished:false,
-                    defaulted:false,
-                    minMonthlyInt:0,
-                    maxMonthlyInt:5,
-                    minDuration:0,
-                    maxDuration:12,})
-            }}>
-              <a href="#!" className=" text-muted">Reset Filters</a>
-            </div>
-          </div>
-
-            <div className="ml-4 row">
-              {
-                loanRequests.map((loanRequest)=>{
-                console.log("Testing collateral address: ", loanRequest.collateralAddress);
-                console.log("Testing collateral address new: ", loanRequest.collateral.collateralAddress);
-                return ((waitingForLender && loanRequest.status==2) ||
-                (waitingForPayback && loanRequest.status==3) ||
-                (finished && loanRequest.status==4)) &&
-                (collateralCurrency == 'ALL' || getTokenByAddress[loanRequest.collateral.address].symbol == collateralCurrency) &&
-                loanRequest.duration/30>minDuration && loanRequest.duration/30<maxDuration &&
-                loanRequest.interest>minMonthlyInt && loanRequest.interest<maxMonthlyInt &&
-              <div className="col">
-                 <div className="card">
-                   <div className="card-header">
-
-               <div className="row row-example" style={{fontSize:'60%'}}>
-                 <div className="col-sm">
-                   <span><p>Amount  </p></span>
-                   <span className="btn-inner--text"><img style={{width:'20px'}} src="/assets/img/eth.png"/> {loanRequest.loanAmount} ETH </span>
-                 </div>
-                 <div className="col-sm">
-                   <span><p>Collateral </p></span>
-                    <span className="btn-inner--text"> {loanRequest.collateral.amount} {getTokenByAddress[loanRequest.collateral.address] && getTokenByAddress[loanRequest.collateral.address].symbol}</span>
-                 </div>
-               </div>
-                   </div>
-                   <div className="card-body text-left">
-                   <p>Earnings : { loanRequest.interest } %</p>
-                   <p>Duration  : {loanRequest.duration} days</p>
-                   {/* <p>Safeness : {this.state.safeness}</p>
-                   <p>Expires in : {this.state.expireIn}</p> */}
-                   </div>
-                  {loanRequest.status==2 &&
-                  <div className="btn-wrapper text-center" onClick={()=>this.approveAndFundLoanRequest(loanRequest.loanAmount, loanRequest.loanAddress)}>
-                   <a href="#" className="btn btn-primary btn-icon m-1">
-                     <span className="btn-inner--text">Fund Now</span>
-                   </a>
-                 </div>}
-                 </div>
-                 <div
-                   className="alert alert-primary alert-dismissible fade show text-center"
-                   role="alert"
-                 >
-                   <span className="alert-text">{loanRequest.status==2?'Waiting for lender':loanRequest.status==3?'Waiting for payback':'Finished'}</span>
-                 </div>
-               </div>;
-                })
-            }
-            </div>
-              {/*
-                this.state.waitingForPayback && duration[1]/30>minDuration && duration[1]/30<=maxDuration && earnings[1]>minMonthlyInt && earnings[1]<=maxMonthlyInt &&
-                <div className="col-md-4">
-                <div className="card">
-                  <div className="card-header">
-                  <div className="row row-example">
-                <div className="col-sm">
-                  <span><p>Loan amount  </p></span>
-                  <span className="btn-inner--text"><img style={{width:'25px'}} src="/assets/img/eth.png"/> {this.state.loanAmount} ETH</span>
->>>>>>> 07e5c34410b7c9f652afe9f882d0a8873ee1e9d1
                 </div>
                 {/** reset filters to default */}
                 <div className="card-footer" style={{ marginTop: '-40px' }} onClick={() => {

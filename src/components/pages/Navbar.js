@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import blocklendr from "../../assets/img/brand/blocklendrLogo.png";
+// import Cryptolendr from "../../assets/img/brand/CryptolendrLogo.png";
 import ReactCountryFlag from "react-country-flag";
 import { FEATURES, INTEREST, COMPANY, ENTERPRISE } from "../config/navigation";
 
@@ -81,11 +81,11 @@ export default () => {
                   data-toggle="dropdown"
                   role="button"
                 >
-                  <img
-                    src={blocklendr}
-                    alt="Blocklendr"
+                  {/* <img
+                    src={Cryptolendr}
+                    alt="Cryptolendr"
                     style={{ width: "40%" }}
-                  />
+                  /> */}
                 </Link>
               </li>
               <MenuItem title={"Features"} options={FEATURES} />
